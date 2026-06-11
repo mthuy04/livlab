@@ -1,8 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getStoredConcepts, saveStoredConcepts, deleteStoredConcept } from '@/lib/storage';
-import { concepts as initialConcepts } from '@/lib/data';
 import { Concept } from '@/lib/types';
 import { Plus, Trash2, Search, Filter, Eye, Edit, EyeOff } from 'lucide-react';
 
@@ -10,25 +8,48 @@ import { importVerifiedConceptsFromCsv } from '@/lib/importVerifiedConcepts';
 
 export default function AdminConceptsPage() {
   const [concepts, setConcepts] = useState<Concept[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [loadingImport, setLoadingImport] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStyle, setFilterStyle] = useState('All');
   const [viewConcept, setViewConcept] = useState<Concept | null>(null);
 
   useEffect(() => {
-    const stored = getStoredConcepts();
-    if (stored) {
-      setConcepts(stored);
-    } else {
-      setConcepts(initialConcepts);
-      saveStoredConcepts(initialConcepts);
-    }
+    fetchConcepts();
   }, []);
 
-  const handleDelete = (id: string) => {
+  const fetchConcepts = async () => {
+    try {
+      const res = await fetch('/api/admin/concepts');
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || 'Không tải được dữ liệu từ database.');
+      } else {
+        setConcepts(data.concepts || []);
+        setError(null);
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Lỗi kết nối đến server.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
     if (!confirm('Bạn có chắc chắn muốn xóa concept này?')) return;
-    const updated = deleteStoredConcept(id);
-    setConcepts(updated);
+    try {
+      const res = await fetch(`/api/admin/concepts/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setConcepts(concepts.filter(c => c.id !== id));
+      } else {
+        const data = await res.json();
+        alert(data.error || 'Có lỗi xảy ra.');
+      }
+    } catch (err) {
+      alert('Có lỗi xảy ra.');
+    }
   };
 
   const handleImportVerified = async () => {
@@ -148,13 +169,12 @@ export default function AdminConceptsPage() {
               </div>
               <img src={viewConcept.image} alt={viewConcept.title} className="w-full h-48 rounded-xl object-cover bg-[#F3F7FA] mb-4" />
               <h3 className="text-lg font-bold text-[#0B1623] mb-1">{viewConcept.title}</h3>
-              <p className="text-sm text-[#627386] mb-4">{viewConcept.shortDescription}</p>
+              <p className="text-sm text-[#627386] mb-4">{viewConcept.shortDescription || viewConcept.description}</p>
               
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between border-b border-[#F3F7FA] pb-2"><span className="text-[#627386]">Loại phòng</span><span className="font-medium text-[#0B1623]">{viewConcept.roomType}</span></div>
                 <div className="flex justify-between border-b border-[#F3F7FA] pb-2"><span className="text-[#627386]">Phong cách</span><span className="font-medium text-[#0B1623]">{viewConcept.style}</span></div>
                 <div className="flex justify-between border-b border-[#F3F7FA] pb-2"><span className="text-[#627386]">Ngân sách</span><span className="font-medium text-[#0B1623]">{viewConcept.budgetRange}</span></div>
-                <div className="flex justify-between pb-2"><span className="text-[#627386]">Số sản phẩm gợi ý</span><span className="font-medium text-[#0B1623]">{viewConcept.productIds.length}</span></div>
               </div>
             </div>
             <div className="p-4 bg-[#F8FAFC] border-t border-[#D8E2EA] flex justify-end">

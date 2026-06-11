@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getLeads, updateLeadStatus, updateLeadAdminNote } from '@/lib/storage';
 import { Lead, LeadStatus } from '@/lib/types';
 import LeadTable from '@/components/showroom/LeadTable';
 import LeadKanban from '@/components/showroom/LeadKanban';
@@ -11,12 +10,32 @@ import { formatDate } from '@/lib/utils';
 
 export default function AdminLeadsPage() {
   const [leads, setLeads] = useState<Lead[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [viewMode, setViewMode] = useState<'table' | 'kanban'>('table');
 
   useEffect(() => {
-    setLeads(getLeads());
+    fetchLeads();
   }, []);
+
+  const fetchLeads = async () => {
+    try {
+      const res = await fetch('/api/admin/leads');
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || 'Không tải được dữ liệu từ database.');
+      } else {
+        setLeads(data.leads || []);
+        setError(null);
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Lỗi kết nối đến server.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleExportCSV = () => {
     if (leads.length === 0) return;
@@ -54,19 +73,43 @@ export default function AdminLeadsPage() {
     document.body.removeChild(link);
   };
 
-  const handleStatusChange = (id: string, status: LeadStatus) => {
-    const updated = updateLeadStatus(id, status);
-    setLeads(updated);
-    if (selectedLead?.id === id) {
-      setSelectedLead(updated.find(l => l.id === id) || null);
+  const handleStatusChange = async (id: string, status: LeadStatus) => {
+    try {
+      const res = await fetch(`/api/admin/leads/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status })
+      });
+      if (res.ok) {
+        setLeads(leads.map(l => l.id === id ? { ...l, status } : l));
+        if (selectedLead?.id === id) {
+          setSelectedLead({ ...selectedLead, status });
+        }
+      } else {
+        alert('Có lỗi xảy ra khi cập nhật.');
+      }
+    } catch (err) {
+      alert('Lỗi kết nối.');
     }
   };
 
-  const handleAdminNoteChange = (id: string, note: string) => {
-    const updated = updateLeadAdminNote(id, note);
-    setLeads(updated);
-    if (selectedLead?.id === id) {
-      setSelectedLead(updated.find(l => l.id === id) || null);
+  const handleAdminNoteChange = async (id: string, note: string) => {
+    try {
+      const res = await fetch(`/api/admin/leads/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ notes: note }) // mapping internal logic
+      });
+      if (res.ok) {
+        setLeads(leads.map(l => l.id === id ? { ...l, adminNote: note, notes: note } : l));
+        if (selectedLead?.id === id) {
+          setSelectedLead({ ...selectedLead, adminNote: note, notes: note });
+        }
+      } else {
+        alert('Có lỗi xảy ra khi cập nhật.');
+      }
+    } catch (err) {
+      alert('Lỗi kết nối.');
     }
   };
 
@@ -76,6 +119,12 @@ export default function AdminLeadsPage() {
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl">
+          <p className="font-bold">Lỗi</p>
+          <p className="text-sm">{error}</p>
+        </div>
+      )}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[#0B1623]">Quản lý yêu cầu báo giá</h1>
@@ -103,7 +152,9 @@ export default function AdminLeadsPage() {
       </div>
 
       <div className="bg-white rounded-2xl border border-[#D8E2EA] shadow-sm p-6">
-        {leads.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-20 text-[#627386]">Đang tải dữ liệu...</div>
+        ) : leads.length === 0 ? (
           <div className="text-center py-20 text-[#627386]">Chưa có dữ liệu yêu cầu báo giá.</div>
         ) : (
           viewMode === 'table' ? (

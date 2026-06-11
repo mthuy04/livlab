@@ -1,15 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getStoredProducts, saveStoredProducts, deleteStoredProduct } from '@/lib/storage';
 import { seedCatalogueFromCsvIfNeeded } from '@/lib/seedFromCsv';
 import { seedVisualProducts } from '@/lib/visualCatalogueSeed';
-import { products as initialProducts } from '@/lib/data';
 import { Product } from '@/lib/types';
-import { Plus, Trash2, Database, Download, Search, Filter, Eye, EyeOff, Edit } from 'lucide-react';
+import { Plus, Trash2, Search, Filter, Eye, EyeOff, Edit, Download } from 'lucide-react';
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
   const [newProduct, setNewProduct] = useState<Partial<Product>>({ name: '', brand: '', priceRange: '', image: '', category: 'Accessories' });
   const [searchTerm, setSearchTerm] = useState('');
@@ -17,14 +17,26 @@ export default function AdminProductsPage() {
   const [viewProduct, setViewProduct] = useState<Product | null>(null);
 
   useEffect(() => {
-    const stored = getStoredProducts();
-    if (stored) {
-      setProducts(stored);
-    } else {
-      setProducts(initialProducts);
-      saveStoredProducts(initialProducts);
-    }
+    fetchProducts();
   }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch('/api/admin/products');
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || 'Không tải được dữ liệu từ database.');
+      } else {
+        setProducts(data.products || []);
+        setError(null);
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Lỗi kết nối đến server.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSeed = async () => {
     if (!confirm('Thao tác này sẽ nạp catalogue mẫu từ CSV. Dữ liệu hiện tại có thể được thay thế. Tiếp tục?')) return;
@@ -46,8 +58,7 @@ export default function AdminProductsPage() {
     if (!confirm('Thao tác này sẽ thay catalogue hiện tại bằng bộ sản phẩm có ảnh đúng danh mục và thông tin thương mại đầy đủ hơn. Tiếp tục?')) return;
     try {
       await seedVisualProducts(true);
-      const stored = getStoredProducts();
-      setProducts(stored || []);
+      await fetchProducts();
       alert('Đã nạp catalogue thương mại thành công.');
     } catch (error) {
       console.error(error);
@@ -72,47 +83,57 @@ export default function AdminProductsPage() {
     }
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) return;
-    const updated = deleteStoredProduct(id);
-    setProducts(updated);
+    try {
+      const res = await fetch(`/api/admin/products/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setProducts(products.filter(p => p.id !== id));
+      } else {
+        const data = await res.json();
+        alert(data.error || 'Có lỗi xảy ra.');
+      }
+    } catch (err) {
+      alert('Có lỗi xảy ra.');
+    }
   };
 
-  const handleAdd = (e: React.FormEvent) => {
+  const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newProduct.name || !newProduct.priceRange) return;
-    const p: Product = {
-      id: `p-${Date.now()}`,
-      name: newProduct.name || '',
-      brand: newProduct.brand || 'LivLab',
-      priceRange: newProduct.priceRange || '',
-      image: newProduct.image || 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&q=80',
-      category: newProduct.category || 'Accessories',
-      description: 'Sản phẩm mới',
-      sku: `SKU-${Date.now()}`,
-      priceMin: parseInt(newProduct.priceRange?.replace(/\D/g, '') || '0'),
-      priceMax: parseInt(newProduct.priceRange?.replace(/\D/g, '') || '0'),
-      material: '', finish: '', availability: 'In Stock', suitableFor: [],
-      showroomName: 'LivLab', showroomLocation: '', showroomContact: '', sellerType: 'Partner',
-      status: 'Còn hàng', imageVerified: false, sourceNote: '', features: [], technicalSpecs: []
-    };
-    const updated = [p, ...products];
-    saveStoredProducts(updated);
-    setProducts(updated);
-    setShowAdd(false);
-    setNewProduct({ name: '', brand: '', priceRange: '', image: '', category: 'Accessories' });
+    
+    try {
+      const res = await fetch('/api/admin/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newProduct)
+      });
+      if (res.ok) {
+        await fetchProducts();
+        setShowAdd(false);
+        setNewProduct({ name: '', brand: '', priceRange: '', image: '', category: 'Accessories' });
+      } else {
+        alert('Có lỗi khi thêm sản phẩm.');
+      }
+    } catch (err) {
+      alert('Lỗi kết nối.');
+    }
   };
 
   const categories = ['All', ...Array.from(new Set(products.map(p => p.category)))];
 
   const filteredProducts = products.filter(p => {
-    const matchSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.brand.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) || (p.brand && p.brand.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchCat = filterCategory === 'All' || p.category === filterCategory;
     return matchSearch && matchCat;
   });
 
+  if (loading) return <div className="p-10 text-center text-[#627386]">Đang tải dữ liệu...</div>;
+
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
+      {error && <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl"><p className="font-bold">Lỗi</p><p className="text-sm">{error}</p></div>}
+      
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[#0B1623]">Quản lý sản phẩm</h1>

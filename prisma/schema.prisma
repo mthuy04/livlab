@@ -14,6 +14,14 @@ enum UserRole {
   ADMIN
 }
 
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUOTED
+  WON
+  LOST
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -22,4 +30,91 @@ model User {
   role         UserRole @default(CUSTOMER)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+model Showroom {
+  id          String   @id @default(cuid())
+  name        String
+  contactName String?
+  email       String?
+  phone       String?
+  address     String?
+  status      String   @default("ACTIVE")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products    Product[]
+  leads       QuoteLead[]
+}
+
+model Product {
+  id          String   @id
+  slug        String?
+  name        String
+  brand       String?
+  category    String?
+  priceMin    Int?
+  priceMax    Int?
+  priceRange  String?
+  material    String?
+  finish      String?
+  dimensions  String?
+  warranty    String?
+  image       String?
+  sourceUrl   String?
+  showroomId  String?
+  status      String   @default("ACTIVE")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  showroom    Showroom?   @relation(fields: [showroomId], references: [id])
+  quoteItems  QuoteItem[]
+}
+
+model Concept {
+  id          String   @id
+  slug        String?
+  name        String
+  roomType    String?
+  style       String?
+  budgetRange String?
+  description String?
+  image       String?
+  status      String   @default("ACTIVE")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model QuoteLead {
+  id             String      @id @default(cuid())
+  customerName   String
+  email          String?
+  phone          String?
+  roomType       String?
+  budgetRange    String?
+  conceptName    String?
+  estimatedValue Int?
+  status         LeadStatus  @default(NEW)
+  notes          String?
+  consent        Boolean     @default(true)
+  showroomId     String?
+  userId         String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  showroom       Showroom?   @relation(fields: [showroomId], references: [id])
+  items          QuoteItem[]
+}
+
+model QuoteItem {
+  id          String    @id @default(cuid())
+  leadId      String
+  productId   String?
+  productName String
+  quantity    Int       @default(1)
+  priceMin    Int?
+  priceMax    Int?
+
+  lead        QuoteLead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  product     Product?  @relation(fields: [productId], references: [id])
 }

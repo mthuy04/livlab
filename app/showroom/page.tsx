@@ -10,7 +10,6 @@ import { Lead, LeadStatus } from '@/lib/types';
 import LeadTable from '@/components/showroom/LeadTable';
 import LeadKanban from '@/components/showroom/LeadKanban';
 import LeadDetailModal from '@/components/showroom/LeadDetailModal';
-import { getLeads, updateLeadStatus } from '@/lib/storage';
 
 const COLORS = ['#123C5A', '#C8A96A', '#486581', '#D8E2EA', '#F05252'];
 
@@ -21,6 +20,7 @@ export default function ShowroomDashboard() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [viewMode, setViewMode] = useState<'table' | 'kanban'>('table');
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setIsClient(true);
@@ -30,13 +30,22 @@ export default function ShowroomDashboard() {
   }, [user, router]);
 
   useEffect(() => {
-    const rawLeads = getLeads();
-    if (rawLeads.length === 0) {
-      setLeads(demoShowroomLeads);
-    } else {
-      setLeads(rawLeads);
-    }
+    fetchLeads();
   }, []);
+
+  const fetchLeads = async () => {
+    try {
+      const res = await fetch('/api/showroom/leads');
+      if (res.ok) {
+        const data = await res.json();
+        setLeads(data.leads || []);
+      }
+    } catch (err) {
+      console.error('Error fetching showroom leads:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!isClient) return null;
   if (user?.role === 'CUSTOMER') return null;
@@ -54,12 +63,24 @@ export default function ShowroomDashboard() {
     if (n >= 1_000_000) return (n / 1_000_000).toFixed(0) + 'M';
     return n.toLocaleString('vi-VN');
   };
-
-  const handleStatusChange = (id: string, status: LeadStatus) => {
-    const updated = updateLeadStatus(id, status);
-    setLeads(updated.length > 0 ? updated : leads.map(l => l.id === id ? { ...l, status } : l));
-    if (selectedLead?.id === id) {
-      setSelectedLead(leads.find(l => l.id === id) || null);
+  const handleStatusChange = async (id: string, status: LeadStatus) => {
+    try {
+      // Assuming showroom shares the same API endpoint for updating
+      const res = await fetch(`/api/admin/leads/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status })
+      });
+      if (res.ok) {
+        setLeads(leads.map(l => l.id === id ? { ...l, status } : l));
+        if (selectedLead?.id === id) {
+          setSelectedLead({ ...selectedLead, status });
+        }
+      } else {
+        alert('Có lỗi xảy ra khi cập nhật.');
+      }
+    } catch (err) {
+      alert('Lỗi kết nối.');
     }
   };
 

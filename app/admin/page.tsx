@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getStoredProducts, getStoredConcepts, getLeads, updateLeadStatus, updateLeadAdminNote } from '@/lib/storage';
 import { Product, Concept, Lead, LeadStatus } from '@/lib/types';
 import { Package, Layers, FileText, TrendingUp, Users, DollarSign, LogOut } from 'lucide-react';
 import { useAuth } from '@/lib/context/AuthContext';
@@ -23,16 +22,33 @@ export default function AdminDashboardPage() {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
   useEffect(() => {
-    // We try to get from storage, if null it means the defaults from data.ts are used in the app, 
-    // but in admin we should show the real count. We'll just show the count from storage or default lengths.
-    // For MVP, we can just load the leads which is the main thing.
-    const storedLeads = getLeads();
-    setLeads(storedLeads);
-    
-    const p = getStoredProducts() || [];
-    setProducts(p.length > 0 ? p : []); // Actually, if we want real count including initial data, we'd import from data.ts
-    // For simplicity, let's just count leads for now.
+    fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const [leadsRes, prodsRes, conceptsRes] = await Promise.all([
+        fetch('/api/admin/leads'),
+        fetch('/api/admin/products'),
+        fetch('/api/admin/concepts')
+      ]);
+
+      if (leadsRes.ok) {
+        const data = await leadsRes.json();
+        setLeads(data.leads || []);
+      }
+      if (prodsRes.ok) {
+        const data = await prodsRes.json();
+        setProducts(data.products || []);
+      }
+      if (conceptsRes.ok) {
+        const data = await conceptsRes.json();
+        setConcepts(data.concepts || []);
+      }
+    } catch (err) {
+      console.error('Error fetching dashboard data:', err);
+    }
+  };
 
   const totalLeads = leads.length;
   const newLeads = leads.filter(l => l.status === 'Mới').length;
@@ -41,7 +57,7 @@ export default function AdminDashboardPage() {
 
   const pipelineValue = leads
     .filter(l => ['Mới', 'Đã liên hệ', 'Đã báo giá'].includes(l.status))
-    .reduce((sum, l) => sum + l.estimatedValueMax, 0);
+    .reduce((sum, l) => sum + (l.estimatedValueMax || 0), 0);
 
   const fmtValue = (n: number) => {
     if (n >= 1_000_000_000) return (n / 1_000_000_000).toFixed(1) + 'B';
@@ -49,19 +65,43 @@ export default function AdminDashboardPage() {
     return n.toLocaleString('vi-VN');
   };
 
-  const handleStatusChange = (id: string, status: LeadStatus) => {
-    const updated = updateLeadStatus(id, status);
-    setLeads(updated);
-    if (selectedLead?.id === id) {
-      setSelectedLead(updated.find(l => l.id === id) || null);
+  const handleStatusChange = async (id: string, status: LeadStatus) => {
+    try {
+      const res = await fetch(`/api/admin/leads/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status })
+      });
+      if (res.ok) {
+        setLeads(leads.map(l => l.id === id ? { ...l, status } : l));
+        if (selectedLead?.id === id) {
+          setSelectedLead({ ...selectedLead, status });
+        }
+      } else {
+        alert('Có lỗi xảy ra khi cập nhật.');
+      }
+    } catch (err) {
+      alert('Lỗi kết nối.');
     }
   };
 
-  const handleAdminNoteChange = (id: string, note: string) => {
-    const updated = updateLeadAdminNote(id, note);
-    setLeads(updated);
-    if (selectedLead?.id === id) {
-      setSelectedLead(updated.find(l => l.id === id) || null);
+  const handleAdminNoteChange = async (id: string, note: string) => {
+    try {
+      const res = await fetch(`/api/admin/leads/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ notes: note })
+      });
+      if (res.ok) {
+        setLeads(leads.map(l => l.id === id ? { ...l, adminNote: note, notes: note } : l));
+        if (selectedLead?.id === id) {
+          setSelectedLead({ ...selectedLead, adminNote: note, notes: note });
+        }
+      } else {
+        alert('Có lỗi xảy ra khi cập nhật.');
+      }
+    } catch (err) {
+      alert('Lỗi kết nối.');
     }
   };
 
