@@ -12,7 +12,7 @@ const exploreLinks = [
   { href: '/concepts',             label: 'Concept' },
   { href: '/products',             label: 'Sản phẩm' },
   { href: '/small-bathroom-combo', label: 'Combo phòng tắm' },
-  { href: '/suggestion',           label: 'Gợi ý thông minh' },
+  { href: '/ai-suggestion',        label: 'Gợi ý AI' },
   { href: '/visual-studio',        label: 'Visual Studio' },
   { href: '/blog',                 label: 'Cẩm nang' },
 ];

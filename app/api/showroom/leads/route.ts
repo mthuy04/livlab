@@ -56,7 +56,10 @@ export async function GET() {
         image: item.product?.imageUrl || null
       })),
       needsInstallation: false,
-      consent: l.consent
+      consent: l.consent,
+      aiSummary: l.aiSummary,
+      aiFitScore: l.aiFitScore,
+      aiSource: l.aiSource
     }));
 
     return NextResponse.json({ leads: mappedLeads, source: 'database' });

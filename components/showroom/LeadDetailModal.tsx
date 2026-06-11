@@ -144,6 +144,30 @@ export default function LeadDetailModal({ lead, onClose, onStatusChange, onAdmin
             </div>
           )}
 
+          {/* AI Suggestion Info */}
+          {lead.aiSource && (
+            <div className="bg-gradient-to-br from-[#EEF4F7] to-white rounded-2xl p-4 border border-[#D8E2EA] shadow-sm">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-6 h-6 rounded-full bg-[#123C5A] flex items-center justify-center">
+                  <span className="text-[10px] text-white font-bold">AI</span>
+                </div>
+                <h4 className="text-xs font-bold text-[#0B1623] uppercase tracking-wider">
+                  Khách chọn từ {lead.aiSource === 'GEMINI' ? 'Gemini AI' : 'LivLab Smart Fallback'}
+                </h4>
+                {lead.aiFitScore !== null && (
+                  <span className="ml-auto text-xs font-bold text-[#C8A96A] bg-[#FDF4EF] px-2 py-1 rounded-md">
+                    Điểm phù hợp: {lead.aiFitScore}/100
+                  </span>
+                )}
+              </div>
+              {lead.aiSummary && (
+                <p className="text-sm text-[#627386] italic leading-relaxed">
+                  "{lead.aiSummary}"
+                </p>
+              )}
+            </div>
+          )}
+
           {/* Notes */}
           {lead.notes && (
             <div className="bg-[#EEF4F7] rounded-2xl p-4 border border-[#D8E2EA]">

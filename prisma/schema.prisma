@@ -103,8 +103,13 @@ model QuoteLead {
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
 
+  aiSummary      String?
+  aiFitScore     Int?
+  aiSource       String?
+
   showroom       Showroom?   @relation(fields: [showroomId], references: [id])
   items          QuoteItem[]
+  aiLogs         AiSuggestionLog[]
 }
 
 model QuoteItem {
@@ -118,4 +123,19 @@ model QuoteItem {
 
   lead        QuoteLead @relation(fields: [leadId], references: [id], onDelete: Cascade)
   product     Product?  @relation(fields: [productId], references: [id])
+}
+
+model AiSuggestionLog {
+  id          String     @id @default(cuid())
+  inputJson   Json
+  outputJson  Json
+  source      String
+  createdAt   DateTime   @default(now())
+  quoteLeadId String?
+
+  quoteLead   QuoteLead? @relation(fields: [quoteLeadId], references: [id], onDelete: SetNull)
+
+  @@index([quoteLeadId])
+  @@index([source])
+  @@index([createdAt])
 }

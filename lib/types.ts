@@ -214,6 +214,9 @@ export interface Lead {
     note?: string;
   }[];
   adminNote?: string;
+  aiSummary?: string | null;
+  aiFitScore?: number | null;
+  aiSource?: string | null;
 }
 
 export interface BlogPost {
