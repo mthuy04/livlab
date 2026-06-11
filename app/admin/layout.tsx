@@ -10,6 +10,8 @@ import {
   FileText,
   ExternalLink,
   AlertCircle,
+  Users,
+  Store,
 } from 'lucide-react';
 
 const navItems = [
@@ -17,6 +19,8 @@ const navItems = [
   { href: '/admin/products', label: 'Sản phẩm', icon: Package, exact: false },
   { href: '/admin/concepts', label: 'Concept', icon: Layers, exact: false },
   { href: '/admin/leads', label: 'Yêu cầu báo giá', icon: FileText, exact: false },
+  { href: '/admin/users', label: 'Người dùng', icon: Users, exact: false },
+  { href: '/admin/showrooms', label: 'Showroom', icon: Store, exact: false },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

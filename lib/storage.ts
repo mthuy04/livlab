@@ -88,8 +88,14 @@ export function clearQuoteItems(): void {
 }
 
 // ─── Leads ────────────────────────────────────────────────────────────────────
+import { demoLeadsSeed } from './adminDemoAnalytics';
+
 export function getLeads(): Lead[] {
-  const rawLeads = safeGet<Lead[]>(LEADS_KEY, []);
+  let rawLeads = safeGet<Lead[]>(LEADS_KEY, []);
+  if (rawLeads.length === 0) {
+    rawLeads = demoLeadsSeed;
+    saveLeads(rawLeads);
+  }
   return rawLeads.map((lead) => {
     let normalized = { ...lead };
     if (!normalized.requestCode && typeof normalized.id === 'string' && normalized.id.startsWith('LLQ-')) {

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { getLeads, updateLeadStatus, updateLeadAdminNote } from '@/lib/storage';
 import { Lead, LeadStatus } from '@/lib/types';
 import LeadTable from '@/components/showroom/LeadTable';
+import LeadKanban from '@/components/showroom/LeadKanban';
 import LeadDetailModal from '@/components/showroom/LeadDetailModal';
 import { Download } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
@@ -11,6 +12,7 @@ import { formatDate } from '@/lib/utils';
 export default function AdminLeadsPage() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [viewMode, setViewMode] = useState<'table' | 'kanban'>('table');
 
   useEffect(() => {
     setLeads(getLeads());
@@ -79,22 +81,38 @@ export default function AdminLeadsPage() {
           <h1 className="text-2xl font-bold text-[#0B1623]">Quản lý yêu cầu báo giá</h1>
           <p className="text-sm text-[#627386] mt-1">Theo dõi và cập nhật trạng thái báo giá cho khách hàng</p>
         </div>
-        <button 
-          onClick={handleExportCSV}
-          className="flex items-center gap-2 bg-white border border-[#D8E2EA] text-[#0B1623] px-4 py-2 rounded-xl text-sm font-semibold hover:bg-[#EEF4F7] transition-colors"
-        >
-          <Download className="w-4 h-4" />
-          Xuất CSV
-        </button>
+        <div className="flex items-center gap-2">
+          <div className="flex gap-1 bg-[#EEF4F7] p-1 rounded-xl">
+            <button 
+              onClick={() => setViewMode('table')}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors ${viewMode === 'table' ? 'bg-[#123C5A] text-white' : 'text-[#627386] hover:text-[#0B1623]'}`}
+            >Danh sách</button>
+            <button 
+              onClick={() => setViewMode('kanban')}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors ${viewMode === 'kanban' ? 'bg-[#123C5A] text-white' : 'text-[#627386] hover:text-[#0B1623]'}`}
+            >Kanban</button>
+          </div>
+          <button 
+            onClick={handleExportCSV}
+            className="flex items-center gap-2 bg-white border border-[#D8E2EA] text-[#0B1623] px-4 py-2 rounded-xl text-sm font-semibold hover:bg-[#EEF4F7] transition-colors ml-2"
+          >
+            <Download className="w-4 h-4" />
+            Xuất CSV
+          </button>
+        </div>
       </div>
 
       <div className="bg-white rounded-2xl border border-[#D8E2EA] shadow-sm p-6">
         {leads.length === 0 ? (
           <div className="text-center py-20 text-[#627386]">Chưa có dữ liệu yêu cầu báo giá.</div>
         ) : (
-          <div className="overflow-x-auto">
-            <LeadTable leads={leads} onStatusChange={handleStatusChange} onLeadClick={handleLeadClick} />
-          </div>
+          viewMode === 'table' ? (
+            <div className="overflow-x-auto">
+              <LeadTable leads={leads} onStatusChange={handleStatusChange} onLeadClick={handleLeadClick} />
+            </div>
+          ) : (
+            <LeadKanban leads={leads} onStatusChange={handleStatusChange} onLeadClick={handleLeadClick} />
+          )
         )}
       </div>
 

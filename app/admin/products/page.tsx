@@ -6,12 +6,15 @@ import { seedCatalogueFromCsvIfNeeded } from '@/lib/seedFromCsv';
 import { seedVisualProducts } from '@/lib/visualCatalogueSeed';
 import { products as initialProducts } from '@/lib/data';
 import { Product } from '@/lib/types';
-import { Plus, Trash2, Database, Download } from 'lucide-react';
+import { Plus, Trash2, Database, Download, Search, Filter, Eye, EyeOff, Edit } from 'lucide-react';
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [showAdd, setShowAdd] = useState(false);
   const [newProduct, setNewProduct] = useState<Partial<Product>>({ name: '', brand: '', priceRange: '', image: '', category: 'Accessories' });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterCategory, setFilterCategory] = useState('All');
+  const [viewProduct, setViewProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     const stored = getStoredProducts();
@@ -100,6 +103,14 @@ export default function AdminProductsPage() {
     setNewProduct({ name: '', brand: '', priceRange: '', image: '', category: 'Accessories' });
   };
 
+  const categories = ['All', ...Array.from(new Set(products.map(p => p.category)))];
+
+  const filteredProducts = products.filter(p => {
+    const matchSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.brand.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchCat = filterCategory === 'All' || p.category === filterCategory;
+    return matchSearch && matchCat;
+  });
+
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
@@ -138,6 +149,30 @@ export default function AdminProductsPage() {
             <Plus className="w-4 h-4" />
             Thêm sản phẩm
           </button>
+        </div>
+      </div>
+
+      {/* Filters & Search */}
+      <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-2xl border border-[#D8E2EA] shadow-sm">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#627386]" />
+          <input 
+            type="text" 
+            placeholder="Tìm theo tên hoặc thương hiệu..." 
+            className="w-full pl-9 pr-4 py-2 border border-[#D8E2EA] rounded-xl text-sm outline-none focus:border-[#123C5A]"
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <Filter className="w-4 h-4 text-[#627386]" />
+          <select 
+            className="px-4 py-2 border border-[#D8E2EA] rounded-xl text-sm outline-none focus:border-[#123C5A] bg-white"
+            value={filterCategory}
+            onChange={e => setFilterCategory(e.target.value)}
+          >
+            {categories.map(c => <option key={c} value={c}>{c === 'All' ? 'Tất cả danh mục' : c}</option>)}
+          </select>
         </div>
       </div>
 
@@ -181,7 +216,7 @@ export default function AdminProductsPage() {
             </tr>
           </thead>
           <tbody>
-            {products.map((p) => (
+            {filteredProducts.map((p) => (
               <tr key={p.id} className="border-b border-[#D8E2EA] hover:bg-[#F3F7FA] transition-colors">
                 <td className="px-6 py-4">
                   <img src={p.image} alt={p.name} className="w-12 h-12 rounded-lg object-cover bg-[#EEF4F7]" />
@@ -190,15 +225,57 @@ export default function AdminProductsPage() {
                 <td className="px-6 py-4 text-sm text-[#627386]">{p.brand}</td>
                 <td className="px-6 py-4 text-sm font-semibold text-[#123C5A]">{p.priceRange}</td>
                 <td className="px-6 py-4 text-right">
-                  <button onClick={() => handleDelete(p.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors" aria-label="Xóa">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center justify-end gap-1">
+                    <button onClick={() => setViewProduct(p)} className="p-2 text-[#627386] hover:bg-[#D8E2EA] rounded-lg transition-colors" title="Xem chi tiết">
+                      <Eye className="w-4 h-4" />
+                    </button>
+                    <button className="p-2 text-[#627386] hover:bg-[#D8E2EA] rounded-lg transition-colors" title="Sửa">
+                      <Edit className="w-4 h-4" />
+                    </button>
+                    <button className="p-2 text-[#627386] hover:bg-[#D8E2EA] rounded-lg transition-colors" title="Ẩn/Hiện">
+                      <EyeOff className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => handleDelete(p.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Xóa">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {viewProduct && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0B1623]/40 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl relative animate-fade-in-up">
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-4">
+                <h2 className="text-xl font-bold text-[#0B1623]">Chi tiết sản phẩm</h2>
+                <button onClick={() => setViewProduct(null)} className="text-[#627386] hover:text-[#0B1623]">X</button>
+              </div>
+              <div className="flex gap-4 mb-6">
+                <img src={viewProduct.image} alt={viewProduct.name} className="w-24 h-24 rounded-xl object-cover bg-[#F3F7FA]" />
+                <div>
+                  <h3 className="font-bold text-[#0B1623]">{viewProduct.name}</h3>
+                  <p className="text-sm text-[#627386]">{viewProduct.brand} • {viewProduct.category}</p>
+                  <p className="text-lg font-bold text-[#C8A96A] mt-2">{viewProduct.priceRange}</p>
+                </div>
+              </div>
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between border-b border-[#F3F7FA] pb-2"><span className="text-[#627386]">Chất liệu</span><span className="font-medium text-[#0B1623]">{viewProduct.material || '—'}</span></div>
+                <div className="flex justify-between border-b border-[#F3F7FA] pb-2"><span className="text-[#627386]">Màu sắc/Finish</span><span className="font-medium text-[#0B1623]">{viewProduct.finish || '—'}</span></div>
+                <div className="flex justify-between border-b border-[#F3F7FA] pb-2"><span className="text-[#627386]">Tình trạng</span><span className="font-medium text-[#0B1623]">{viewProduct.availability}</span></div>
+                <div className="flex justify-between border-b border-[#F3F7FA] pb-2"><span className="text-[#627386]">Showroom</span><span className="font-medium text-[#0B1623]">{viewProduct.showroomName || '—'}</span></div>
+                <div className="flex justify-between pb-2"><span className="text-[#627386]">Source URL</span><span className="font-medium text-blue-600 truncate max-w-[200px]">{viewProduct.sourceUrl ? <a href={viewProduct.sourceUrl} target="_blank" rel="noreferrer">Xem link</a> : '—'}</span></div>
+              </div>
+            </div>
+            <div className="p-4 bg-[#F8FAFC] border-t border-[#D8E2EA] flex justify-end">
+              <button onClick={() => setViewProduct(null)} className="px-5 py-2.5 bg-white text-[#0B1623] border border-[#D8E2EA] font-semibold rounded-xl text-sm">Đóng</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -9,6 +9,10 @@ import DashboardStats from '@/components/showroom/DashboardStats';
 import LeadTable from '@/components/showroom/LeadTable';
 import LeadKanban from '@/components/showroom/LeadKanban';
 import LeadDetailModal from '@/components/showroom/LeadDetailModal';
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { adminDemoAnalytics } from '@/lib/adminDemoAnalytics';
+
+const COLORS = ['#123C5A', '#C8A96A', '#486581', '#D8E2EA', '#F05252'];
 
 export default function AdminDashboardPage() {
   const { user, logout } = useAuth();
@@ -98,7 +102,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <h3 className="text-3xl font-bold text-[#0B1623]">{newLeads}</h3>
-          <p className="text-xs text-[#627386] mt-2">Cần phản hồi ngay</p>
+          <p className="text-xs text-red-500 mt-2 flex items-center gap-1">-5% so với tuần trước</p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-[#D8E2EA] shadow-sm">
@@ -109,7 +113,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <h3 className="text-3xl font-bold text-[#0B1623]">{wonLeads}</h3>
-          <p className="text-xs text-[#627386] mt-2">Đơn hàng thành công</p>
+          <p className="text-xs text-green-600 mt-2 flex items-center gap-1"><TrendingUp className="w-3 h-3" /> +18% so với tháng trước</p>
         </div>
 
         <div className="bg-white p-5 rounded-2xl border border-[#D8E2EA] shadow-sm">
@@ -120,7 +124,74 @@ export default function AdminDashboardPage() {
             </div>
           </div>
           <h3 className="text-3xl font-bold text-[#0B1623]">~ {fmtValue(pipelineValue)}</h3>
-          <p className="text-xs text-[#627386] mt-2">Pipeline hiện tại</p>
+          <p className="text-xs text-green-600 mt-2 flex items-center gap-1"><TrendingUp className="w-3 h-3" /> +22% so với tháng trước</p>
+        </div>
+      </div>
+
+      {/* Analytics Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="bg-white rounded-2xl border border-[#D8E2EA] shadow-sm p-6 lg:col-span-2">
+          <h2 className="text-lg font-bold text-[#0B1623] mb-6">Xu hướng yêu cầu báo giá</h2>
+          <div className="h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={adminDemoAnalytics.weeklyRequests}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#EEF4F7" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#627386', fontSize: 12}} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{fill: '#627386', fontSize: 12}} dx={-10} />
+                <Tooltip 
+                  contentStyle={{borderRadius: '12px', border: '1px solid #D8E2EA', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'}}
+                  labelStyle={{fontWeight: 'bold', color: '#0B1623'}}
+                />
+                <Line type="monotone" dataKey="value" stroke="#123C5A" strokeWidth={3} dot={{r: 4, strokeWidth: 2}} activeDot={{r: 6}} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl border border-[#D8E2EA] shadow-sm p-6">
+          <h2 className="text-lg font-bold text-[#0B1623] mb-6">Phân bổ ngân sách</h2>
+          <div className="h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={adminDemoAnalytics.budgetDistribution}
+                  cx="50%"
+                  cy="45%"
+                  innerRadius={60}
+                  outerRadius={80}
+                  paddingAngle={2}
+                  dataKey="value"
+                >
+                  {adminDemoAnalytics.budgetDistribution.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip 
+                  contentStyle={{borderRadius: '12px', border: '1px solid #D8E2EA'}}
+                  itemStyle={{color: '#0B1623', fontWeight: 500}}
+                />
+                <Legend iconType="circle" wrapperStyle={{fontSize: '12px', paddingTop: '20px'}} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl border border-[#D8E2EA] shadow-sm p-6 lg:col-span-3">
+          <h2 className="text-lg font-bold text-[#0B1623] mb-6">Lead theo trạng thái</h2>
+          <div className="h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={adminDemoAnalytics.leadStatusDistribution} barSize={40}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#EEF4F7" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#627386', fontSize: 12}} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{fill: '#627386', fontSize: 12}} dx={-10} />
+                <Tooltip 
+                  cursor={{fill: '#F3F7FA'}}
+                  contentStyle={{borderRadius: '12px', border: '1px solid #D8E2EA'}}
+                />
+                <Bar dataKey="value" fill="#C8A96A" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
 
