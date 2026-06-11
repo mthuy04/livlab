@@ -2,7 +2,12 @@
 
 import React, { Suspense, useEffect, useState } from 'react';
 import { useGLTF, Center } from '@react-three/drei';
+import { useThree } from '@react-three/fiber';
 import { Product3DCategory } from '@/lib/livlabProductModels';
+// @ts-ignore
+import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
+
+let ktx2Loader: any = null;
 
 interface ProductModel3DProps {
   modelUrl: string;
@@ -35,7 +40,16 @@ class ModelErrorBoundary extends React.Component<{ onError?: () => void, childre
 }
 
 function ModelLoader({ modelUrl, position, scale, onSuccess }: { modelUrl: string, position?: [number, number, number], scale?: number | [number, number, number], onSuccess?: () => void }) {
-  const { scene } = useGLTF(modelUrl);
+  const gl = useThree((state) => state.gl);
+  
+  const { scene } = useGLTF(modelUrl, true, true, (loader: any) => {
+    if (!ktx2Loader) {
+      ktx2Loader = new KTX2Loader();
+      ktx2Loader.setTranscoderPath('https://unpkg.com/three@0.184.0/examples/jsm/libs/basis/');
+      ktx2Loader.detectSupport(gl);
+    }
+    loader.setKTX2Loader(ktx2Loader);
+  });
   
   useEffect(() => {
     if (scene && onSuccess) {
@@ -53,9 +67,6 @@ function ModelLoader({ modelUrl, position, scale, onSuccess }: { modelUrl: strin
 }
 
 export default function ProductModel3D({ modelUrl, position, scale, onError, onSuccess }: ProductModel3DProps) {
-  // Preload the model so it doesn't wait for render if it can start early
-  useGLTF.preload(modelUrl);
-
   return (
     <ModelErrorBoundary onError={onError}>
       <Suspense fallback={null}>
