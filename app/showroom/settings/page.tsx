@@ -1,0 +1,22 @@
+'use client';
+
+import { Settings } from 'lucide-react';
+
+export default function ShowroomSettingsPage() {
+  return (
+    <div className="p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-[#0B1623]">Cài đặt Showroom</h1>
+          <p className="text-[#627386] text-sm mt-1">Cấu hình thông tin tài khoản và hệ thống.</p>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-[20px] border border-[#D8E3EC] shadow-sm p-6 text-center py-16">
+        <Settings className="w-12 h-12 text-[#D8E2EA] mx-auto mb-4" />
+        <p className="text-lg text-[#0B1623] font-bold">Chưa có tính năng Cài đặt</p>
+        <p className="text-[#627386] text-sm mt-2">Tính năng đang trong quá trình phát triển.</p>
+      </div>
+    </div>
+  );
+}
