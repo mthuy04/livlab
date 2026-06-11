@@ -71,7 +71,7 @@ export const demoLeadsSeed: Lead[] = [
     status: 'Đã liên hệ',
     createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
     consent: true,
-    note: 'Cần thiết kế thêm tủ lavabo',
+    notes: 'Cần thiết kế thêm tủ lavabo',
   },
   {
     id: 'lead-3',
