@@ -74,14 +74,18 @@ async function main() {
   // 1. Create Default Showroom
   const showroom = await prisma.showroom.upsert({
     where: { id: 'sr-luxbath-1' },
-    update: {},
+    update: {
+      name: 'Luxbath Studio Hà Nội',
+      email: 'showroom@livlab.vn',
+      phone: '0901 234 567',
+      address: 'Mỹ Đình, Hà Nội'
+    },
     create: {
       id: 'sr-luxbath-1',
-      name: 'Luxbath / LivLab Partner Showroom',
-      contactName: 'Mr. Nam',
-      email: 'showroom@luxbath.vn',
-      phone: '0901234567',
-      address: 'Quận 1, TP. Hồ Chí Minh',
+      name: 'Luxbath Studio Hà Nội',
+      email: 'showroom@livlab.vn',
+      phone: '0901 234 567',
+      address: 'Mỹ Đình, Hà Nội',
       status: 'ACTIVE'
     }
   });
@@ -89,9 +93,10 @@ async function main() {
 
   // 2. Import Products
   const productsCsvPath = path.join(process.cwd(), 'public', 'data', 'livlab-seed', 'livlab_verified_products_master.csv');
+  let productsData: any[] = [];
   if (fs.existsSync(productsCsvPath)) {
     const productsText = fs.readFileSync(productsCsvPath, 'utf8');
-    const productsData = parseCSV(productsText);
+    productsData = parseCSV(productsText);
     
     let productCount = 0;
     for (const row of productsData) {
@@ -191,11 +196,113 @@ async function main() {
     console.warn(`File not found: ${conceptsCsvPath}`);
   }
 
-  // 4. Do not generate fake demo QuoteLeads or QuoteItems in production or ever.
-  // We want an empty table if there are no real leads yet.
+  // 4. Seed QuoteLead demo data (only if enabled)
+  const isDemo = process.env.SEED_DEMO_DATA === 'true' || process.env.NODE_ENV === 'development';
+  if (!isDemo) {
+    console.log('Skipped demo leads because SEED_DEMO_DATA is not enabled.');
+    return;
+  }
 
-  console.log('Skipping fake demo QuoteLeads generation.');
+  console.log('Seeding demo leads...');
 
+  const dbProducts = await prisma.product.findMany();
+  
+  const findProduct = (category: string) => {
+    return dbProducts.find(p => p.category?.toLowerCase() === category.toLowerCase()) || dbProducts[0];
+  };
+
+  const getQuoteItems = (categories: string[]) => {
+    return categories.map(cat => {
+      const p = findProduct(cat);
+      if (!p) return null;
+      return {
+        productId: p.id,
+        productName: p.name,
+        quantity: 1,
+        priceMin: p.priceMin,
+        priceMax: p.priceMax
+      };
+    }).filter(Boolean) as any[];
+  };
+
+  const demoLeads = [
+    {
+      customerName: 'Nguyễn Minh Anh',
+      phone: '0912 345 678',
+      roomType: 'Phòng tắm căn hộ',
+      budgetRange: '18,000,000 - 25,000,000 VND',
+      conceptName: 'Japandi / sáng sạch',
+      status: LeadStatus.NEW,
+      notes: 'Cần combo lavabo, gương, sen tắm và tủ chậu cho căn hộ mới.\nAdditional services:\n- Cần tư vấn phối concept\n- Cần lắp đặt thiết bị',
+      showroomId: showroom.id,
+      items: getQuoteItems(['Basin', 'Mirror', 'Shower', 'Cabinet'])
+    },
+    {
+      customerName: 'Trần Hoàng Nam',
+      phone: '0988 120 456',
+      roomType: 'Phòng tắm nhà phố',
+      budgetRange: '30,000,000 - 45,000,000 VND',
+      conceptName: 'Modern Gray',
+      status: LeadStatus.CONTACTED,
+      notes: 'Muốn cải tạo phòng tắm cũ, ưu tiên thiết bị bền, dễ vệ sinh.\nAdditional services:\n- Cần đo đạc thực tế\n- Cần cải tạo / thi công phòng tắm',
+      showroomId: showroom.id,
+      items: getQuoteItems(['Shower', 'Toilet', 'Basin'])
+    },
+    {
+      customerName: 'Lê Thu Hà',
+      phone: '0936 888 219',
+      roomType: 'Homestay bathroom',
+      budgetRange: '15,000,000 - 22,000,000 VND',
+      conceptName: 'Minimal White',
+      status: LeadStatus.QUOTED,
+      notes: 'Cần combo tiết kiệm nhưng nhìn sạch và phù hợp homestay.\nAdditional services:\n- Cần lắp đặt thiết bị',
+      showroomId: showroom.id,
+      items: getQuoteItems(['Basin', 'Toilet'])
+    },
+    {
+      customerName: 'Phạm Đức Long',
+      phone: '0977 456 111',
+      roomType: 'Phòng tắm cho thuê',
+      budgetRange: '10,000,000 - 16,000,000 VND',
+      conceptName: 'Rental Budget',
+      status: LeadStatus.WON,
+      notes: 'Cần giải pháp nhanh, chi phí hợp lý, dễ bảo trì.\nAdditional services:\n- Chưa chắc, cần showroom tư vấn thêm',
+      showroomId: showroom.id,
+      items: getQuoteItems(['Toilet', 'Shower'])
+    },
+    {
+      customerName: 'Vũ Ngọc Linh',
+      phone: '0904 222 789',
+      roomType: 'Master bathroom',
+      budgetRange: '50,000,000 - 70,000,000 VND',
+      conceptName: 'Luxury Hotel',
+      status: LeadStatus.LOST,
+      notes: 'Muốn concept cao cấp, có tủ chậu, gương LED, sen cây và phụ kiện đồng bộ.\nAdditional services:\n- Cần tư vấn concept\n- Cần kiến trúc sư / designer hỗ trợ',
+      showroomId: showroom.id,
+      items: getQuoteItems(['Cabinet', 'Mirror', 'Shower', 'Accessories'])
+    }
+  ];
+
+  await prisma.quoteLead.deleteMany({
+    where: { showroomId: showroom.id }
+  });
+
+  for (const leadData of demoLeads) {
+    const { items, ...leadDetails } = leadData;
+    const estimatedValue = items.reduce((sum, i) => sum + (i.priceMax || 0) * i.quantity, 0);
+
+    await prisma.quoteLead.create({
+      data: {
+        ...leadDetails,
+        estimatedValue,
+        items: {
+          create: items
+        }
+      }
+    });
+  }
+
+  console.log(`Created 5 demo leads with items.`);
   console.log('Seed completed successfully!');
 }
 
