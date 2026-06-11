@@ -65,7 +65,7 @@ export const normalizeProduct3DCategory = (product: Product): Product3DCategory 
 
 export const availableProductModels: Record<Product3DCategory, boolean> = {
   faucet: false,
-  lavabo: false,
+  lavabo: true,
   toilet: false,
   shower: false,
   mirror: false,
@@ -83,10 +83,22 @@ export const productModelMap: Record<Product3DCategory, string | null> = {
 
 export const getProductModel = (product: Product): string | null => {
   const category = normalizeProduct3DCategory(product);
-  if (!availableProductModels[category]) {
+  const modelUrl = productModelMap[category];
+  const available = availableProductModels[category];
+  
+  if (process.env.NODE_ENV !== 'production') {
+    console.log("[3D Model]", {
+      productName: product.name,
+      category,
+      modelUrl,
+      available
+    });
+  }
+
+  if (!available) {
     return null;
   }
-  return productModelMap[category];
+  return modelUrl;
 };
 
 export const getProduct3DLabel = (product: Product): string => {
