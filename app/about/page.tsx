@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Target, Lightbulb, ShieldCheck, Users, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Target, Lightbulb, ShieldCheck, Users, Sparkles, ArrowRight, CheckCircle2, Eye, MousePointerClick, Link as LinkIcon, PiggyBank, Award } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -9,205 +9,342 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-[#F3F7FA]">
-        <div className="absolute inset-0 bg-[url('/images/pattern-grid.svg')] opacity-5" />
-        <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#D8E2EA] mb-8">
-            <span className="w-2 h-2 rounded-full bg-[#C8A96A]" />
-            <span className="text-xs font-semibold tracking-widest uppercase text-[#627386]">Câu chuyện của chúng tôi</span>
-          </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#0B1623] leading-tight mb-6">
-            LivLab – Số hoá trải nghiệm <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#123C5A] to-[#486581]">chọn mua phòng tắm</span>
-          </h1>
-          <p className="text-lg text-[#627386] leading-relaxed max-w-2xl mx-auto">
-            Chúng tôi tin rằng việc thiết kế và trang bị cho không gian sống, đặc biệt là phòng tắm, cần phải trực quan, dễ dàng và đầy cảm hứng hơn là những quy trình phức tạp truyền thống.
-          </p>
-        </div>
-      </section>
-
-      {/* LivLab là gì & Vấn đề */}
-      <section className="py-20 lg:py-32">
+    <div className="min-h-screen bg-white text-[#0B1623]">
+      
+      {/* A. Hero Section */}
+      <section className="pt-32 pb-16 lg:pt-40 lg:pb-24 overflow-hidden bg-[#F8FAFC]">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="grid md:grid-cols-2 gap-16 lg:gap-24 items-center">
-            <div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-[#0B1623] mb-6">LivLab là gì?</h2>
-              <p className="text-[#627386] leading-relaxed mb-6">
-                LivLab là một nền tảng visual-commerce tập trung vào ngành nội thất và thiết bị phòng tắm. Chúng tôi chuyển đổi cách khách hàng tìm kiếm, lên ý tưởng và yêu cầu báo giá từ các showroom.
-              </p>
-              <p className="text-[#627386] leading-relaxed">
-                Thay vì phải tự mình chắp vá từng sản phẩm đơn lẻ từ catalogue, LivLab cho phép người dùng khám phá các thiết kế không gian tổng thể (concept) và bóc tách trực tiếp các sản phẩm có trong đó.
-              </p>
-            </div>
-            
-            <div className="bg-[#F8FAFC] rounded-[2rem] p-8 lg:p-12 border border-[#D8E2EA]">
-              <h2 className="text-2xl font-bold text-[#0B1623] mb-6 flex items-center gap-3">
-                <Lightbulb className="w-6 h-6 text-[#C8A96A]" />
-                Vấn đề chúng tôi nhìn thấy
-              </h2>
-              <ul className="space-y-5 text-[#627386]">
-                <li className="flex items-start gap-3">
-                  <div className="mt-1 w-1.5 h-1.5 rounded-full bg-[#123C5A] flex-shrink-0" />
-                  <p>Khách hàng khó hình dung sản phẩm đơn lẻ sẽ trông như thế nào khi kết hợp lại trong một phòng tắm thực tế.</p>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="mt-1 w-1.5 h-1.5 rounded-full bg-[#123C5A] flex-shrink-0" />
-                  <p>Quy trình lấy báo giá truyền thống tốn nhiều thời gian, qua lại nhiều bước thủ công.</p>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="mt-1 w-1.5 h-1.5 rounded-full bg-[#123C5A] flex-shrink-0" />
-                  <p>Showroom thiếu các công cụ số để trình bày sản phẩm một cách trực quan, khó nắm bắt đúng nhu cầu ngân sách ngay từ đầu.</p>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Tầm nhìn & Sứ mệnh */}
-      <section className="py-20 bg-[#0B1623] text-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
-            <div className="space-y-6">
-              <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
-                <Target className="w-6 h-6 text-[#C8A96A]" />
-              </div>
-              <h3 className="text-2xl font-bold">Sứ mệnh</h3>
-              <p className="text-white/70 leading-relaxed text-lg">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className="max-w-xl">
+              <h1 className="text-4xl lg:text-5xl font-bold leading-tight mb-6 text-[#0B1623]">
+                LivLab – Số hoá trải nghiệm <span className="text-[#123C5A]">chọn mua phòng tắm</span>
+              </h1>
+              <p className="text-lg text-[#627386] leading-relaxed mb-10">
                 LivLab giúp khách hàng hình dung phòng tắm hoàn chỉnh trước khi ra quyết định mua, đồng thời giúp showroom chuyển đổi cảm hứng thành yêu cầu báo giá rõ ràng, có cấu trúc và dễ theo dõi.
               </p>
-            </div>
-            <div className="space-y-6">
-              <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-[#C8A96A]" />
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <Link 
+                  href="/concepts" 
+                  className="w-full sm:w-auto px-8 py-4 bg-[#123C5A] text-white font-semibold rounded-full hover:bg-[#0D2B42] transition-colors flex items-center justify-center gap-2"
+                >
+                  Khám phá concept <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link 
+                  href="/quote" 
+                  className="w-full sm:w-auto px-8 py-4 bg-white text-[#0B1623] border border-[#D8E2EA] font-semibold rounded-full hover:border-[#0B1623] transition-colors flex items-center justify-center"
+                >
+                  Gửi yêu cầu báo giá
+                </Link>
               </div>
-              <h3 className="text-2xl font-bold">Tầm nhìn</h3>
-              <p className="text-white/70 leading-relaxed text-lg">
-                LivLab hướng tới trở thành nền tảng visual-commerce dành cho ngành home & living tại Việt Nam, nơi khách hàng có thể khám phá concept không gian, xem sản phẩm trong bối cảnh thực tế và kết nối trực tiếp với showroom phù hợp.
+            </div>
+            <div className="relative">
+              <div className="rounded-[2rem] overflow-hidden shadow-2xl relative z-10 aspect-[4/3] lg:aspect-square">
+                <img 
+                  src="/images/hero-bathroom-luxury.png" 
+                  alt="LivLab Hero" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-[#123C5A]/10 to-[#C8A96A]/10 rounded-full blur-3xl -z-10" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* B. LivLab là gì? */}
+      <section className="py-20 lg:py-32">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className="order-2 lg:order-1 rounded-[2rem] overflow-hidden shadow-lg aspect-[4/3]">
+               <img 
+                 src="/images/visual-studio-concept-preview.png" 
+                 alt="LivLab là gì" 
+                 className="w-full h-full object-cover"
+               />
+            </div>
+            <div className="order-1 lg:order-2">
+              <h2 className="text-3xl lg:text-4xl font-bold mb-6">LivLab là gì?</h2>
+              <p className="text-[#627386] leading-relaxed mb-6">
+                LivLab là nền tảng visual-commerce dành cho lĩnh vực phòng tắm và home-living. Thay vì để khách hàng xem từng sản phẩm riêng lẻ, LivLab trình bày sản phẩm trong các concept không gian hoàn chỉnh, cho phép người dùng khám phá sản phẩm qua hotspot, xem thông tin cơ bản và gửi yêu cầu báo giá đến showroom.
+              </p>
+              <p className="text-[#627386] leading-relaxed">
+                LivLab không phải là một cửa hàng thiết bị vệ sinh truyền thống, cũng không chỉ là một website thương mại điện tử thông thường. LivLab kết nối ba yếu tố: cảm hứng không gian, dữ liệu sản phẩm và quy trình báo giá có cấu trúc.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Giá trị cốt lõi */}
+      {/* C. Vấn đề chúng tôi nhìn thấy */}
+      <section className="py-20 lg:py-32 bg-[#F8FAFC]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div>
+              <div className="w-12 h-12 rounded-2xl bg-[#EEF4F7] flex items-center justify-center mb-6">
+                <Lightbulb className="w-6 h-6 text-[#123C5A]" />
+              </div>
+              <h2 className="text-3xl lg:text-4xl font-bold mb-6">Vấn đề chúng tôi nhìn thấy</h2>
+              <p className="text-[#627386] leading-relaxed mb-6">
+                Khi cải tạo hoặc thiết kế phòng tắm, khách hàng thường phải xem lavabo, gương, sen tắm, bồn cầu, tủ chậu và phụ kiện như những sản phẩm rời rạc. Điều này khiến họ khó hình dung tổng thể, khó biết sản phẩm nào phù hợp với nhau, khó ước lượng ngân sách và dễ trì hoãn quyết định mua hàng.
+              </p>
+              <p className="text-[#627386] leading-relaxed">
+                Ở phía showroom, nhiều đơn vị có danh mục sản phẩm phong phú nhưng vẫn gặp khó khăn trong việc tư vấn theo concept, thu thập thông tin nhu cầu của khách hàng và quản lý các yêu cầu báo giá đến từ nhiều kênh khác nhau như Zalo, điện thoại hoặc tin nhắn cá nhân.
+              </p>
+            </div>
+            <div className="rounded-[2rem] overflow-hidden shadow-lg aspect-[4/3]">
+               <img 
+                 src="/images/concept-compact-bathroom.png" 
+                 alt="Vấn đề phòng tắm" 
+                 className="w-full h-full object-cover"
+               />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* D. Sứ mệnh & E. Tầm nhìn */}
       <section className="py-20 lg:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-[#0B1623] mb-4">Giá trị cốt lõi</h2>
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+            <div className="space-y-12">
+              <div className="bg-[#123C5A] text-white p-10 rounded-[2rem] shadow-lg">
+                <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-6">
+                  <Target className="w-6 h-6 text-[#C8A96A]" />
+                </div>
+                <h3 className="text-2xl font-bold mb-4">Sứ mệnh</h3>
+                <p className="text-white/80 leading-relaxed">
+                  LivLab giúp khách hàng hình dung phòng tắm hoàn chỉnh trước khi ra quyết định mua, đồng thời giúp showroom chuyển đổi cảm hứng thành yêu cầu báo giá rõ ràng, có cấu trúc và dễ theo dõi.
+                </p>
+              </div>
+
+              <div className="bg-[#F8FAFC] p-10 rounded-[2rem] border border-[#D8E2EA] shadow-sm">
+                <div className="w-12 h-12 rounded-2xl bg-white border border-[#D8E2EA] flex items-center justify-center mb-6 shadow-sm">
+                  <Sparkles className="w-6 h-6 text-[#C8A96A]" />
+                </div>
+                <h3 className="text-2xl font-bold mb-4 text-[#0B1623]">Tầm nhìn</h3>
+                <p className="text-[#627386] leading-relaxed">
+                  LivLab hướng tới trở thành nền tảng visual-commerce dành cho ngành home & living tại Việt Nam, nơi khách hàng có thể khám phá concept không gian, xem sản phẩm trong bối cảnh thực tế và kết nối trực tiếp với showroom phù hợp.
+                </p>
+              </div>
+            </div>
+            <div className="rounded-[2rem] overflow-hidden shadow-xl aspect-[3/4] lg:aspect-auto h-full">
+               <img 
+                 src="/images/concept-japandi-bathroom.png" 
+                 alt="Tầm nhìn LivLab" 
+                 className="w-full h-full object-cover"
+               />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* F. Giá trị cốt lõi */}
+      <section className="py-20 lg:py-32 bg-[#F8FAFC]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="text-center mb-16 max-w-2xl mx-auto">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-6">Giá trị cốt lõi</h2>
             <p className="text-[#627386]">Những nguyên tắc nền tảng định hình sản phẩm của chúng tôi.</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <CoreValueCard 
+              icon={<Eye className="w-6 h-6 text-[#123C5A]" />}
               title="Trực quan"
-              desc="Giúp khách hàng nhìn thấy tổng thể trước khi mua."
-              delay="0"
+              desc="Giúp khách hàng nhìn thấy tổng thể trước khi mua, thay vì chỉ xem từng sản phẩm riêng lẻ."
             />
             <CoreValueCard 
+              icon={<MousePointerClick className="w-6 h-6 text-[#123C5A]" />}
               title="Đơn giản"
-              desc="Biến quá trình chọn thiết bị phòng tắm thành một trải nghiệm dễ hiểu."
-              delay="100"
+              desc="Biến quá trình chọn thiết bị phòng tắm thành một trải nghiệm dễ hiểu, dễ so sánh và dễ ra quyết định."
             />
             <CoreValueCard 
+              icon={<LinkIcon className="w-6 h-6 text-[#123C5A]" />}
               title="Kết nối"
-              desc="Kết nối khách hàng, concept, sản phẩm và showroom trong một luồng liền mạch."
-              delay="200"
+              desc="Kết nối khách hàng, concept, sản phẩm và showroom trong một luồng trải nghiệm liền mạch."
             />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             <CoreValueCard 
+              icon={<PiggyBank className="w-6 h-6 text-[#123C5A]" />}
               title="Thực tế"
-              desc="Tập trung vào nhu cầu cải tạo, ngân sách và khả năng báo giá thật."
-              delay="300"
+              desc="Tập trung vào nhu cầu cải tạo, diện tích, ngân sách và khả năng báo giá thật."
             />
             <CoreValueCard 
+              icon={<Award className="w-6 h-6 text-[#123C5A]" />}
               title="Tin cậy"
-              desc="Cung cấp thông tin sản phẩm và yêu cầu báo giá có cấu trúc."
-              delay="400"
+              desc="Cung cấp thông tin sản phẩm và yêu cầu báo giá có cấu trúc, giúp showroom dễ tư vấn và theo dõi."
             />
           </div>
         </div>
       </section>
 
-      {/* Dành cho ai & Khác biệt */}
-      <section className="py-20 lg:py-32 bg-[#F8FAFC]">
+      {/* G. LivLab dành cho ai? */}
+      <section className="py-20 lg:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
-          <div className="grid md:grid-cols-2 gap-16 lg:gap-24">
-            <div>
-              <div className="w-12 h-12 rounded-2xl bg-white border border-[#D8E2EA] flex items-center justify-center mb-6 shadow-sm">
-                <Users className="w-6 h-6 text-[#123C5A]" />
+          <div className="text-center mb-16 max-w-2xl mx-auto">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-6">LivLab dành cho ai?</h2>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="p-10 bg-white rounded-[2rem] border border-[#D8E2EA] shadow-sm hover:shadow-md transition-shadow">
+              <div className="w-14 h-14 rounded-2xl bg-[#EEF4F7] flex items-center justify-center mb-6">
+                <Users className="w-7 h-7 text-[#123C5A]" />
               </div>
-              <h2 className="text-2xl lg:text-3xl font-bold text-[#0B1623] mb-6">LivLab dành cho ai?</h2>
-              <div className="space-y-6">
-                <div className="bg-white p-6 rounded-2xl border border-[#D8E2EA] shadow-sm">
-                  <h4 className="font-bold text-[#0B1623] mb-2">Khách hàng cá nhân</h4>
-                  <p className="text-sm text-[#627386]">Những người đang xây dựng, cải tạo nhà cửa, cần tìm kiếm ý tưởng thiết kế phòng tắm và muốn lên ngân sách nhanh chóng, chuẩn xác mà không cần chuyên môn sâu.</p>
-                </div>
-                <div className="bg-white p-6 rounded-2xl border border-[#D8E2EA] shadow-sm">
-                  <h4 className="font-bold text-[#0B1623] mb-2">Showroom & Đối tác</h4>
-                  <p className="text-sm text-[#627386]">Các đơn vị phân phối thiết bị vệ sinh muốn số hoá catalogue, tiếp cận khách hàng qua hình ảnh trực quan và nhận được các yêu cầu báo giá chất lượng (qualified leads).</p>
-                </div>
-              </div>
+              <h3 className="text-2xl font-bold mb-6">Khách hàng cá nhân</h3>
+              <ul className="space-y-4 text-[#627386]">
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-[#C8A96A] flex-shrink-0 mt-0.5" />
+                  <span>Người trẻ mới nhận căn hộ.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-[#C8A96A] flex-shrink-0 mt-0.5" />
+                  <span>Gia đình đang cải tạo phòng tắm.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-[#C8A96A] flex-shrink-0 mt-0.5" />
+                  <span>Chủ homestay, căn hộ cho thuê hoặc nhà ở nhỏ.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-[#C8A96A] flex-shrink-0 mt-0.5" />
+                  <span>Người muốn xem concept tổng thể trước khi mua thiết bị.</span>
+                </li>
+              </ul>
             </div>
-
-            <div>
-              <div className="w-12 h-12 rounded-2xl bg-white border border-[#D8E2EA] flex items-center justify-center mb-6 shadow-sm">
-                <ShieldCheck className="w-6 h-6 text-[#123C5A]" />
+            
+            <div className="p-10 bg-[#123C5A] text-white rounded-[2rem] shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center mb-6">
+                <ShieldCheck className="w-7 h-7 text-[#C8A96A]" />
               </div>
-              <h2 className="text-2xl lg:text-3xl font-bold text-[#0B1623] mb-6">Vì sao LivLab khác biệt?</h2>
-              <ul className="space-y-4">
-                {[
-                  'Bắt đầu từ concept không gian, không phải từ từng món đồ lẻ tẻ.',
-                  'Trải nghiệm thương mại điện tử trực quan (Visual Commerce) thay vì list sản phẩm dài vô tận.',
-                  'Tạo giỏ báo giá (Quote Cart) chuẩn hóa cấu trúc giúp đôi bên dễ làm việc.',
-                  'Minh bạch khoảng giá tham khảo để quản lý kỳ vọng ngân sách.',
-                  'Hoàn toàn miễn phí cho người dùng cuối.'
-                ].map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-[#C8A96A] flex-shrink-0 mt-0.5" />
-                    <span className="text-[#627386]">{item}</span>
-                  </li>
-                ))}
+              <h3 className="text-2xl font-bold mb-6">Showroom và Đơn vị bán hàng</h3>
+              <ul className="space-y-4 text-white/80">
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-[#C8A96A] flex-shrink-0 mt-0.5" />
+                  <span>Showroom thiết bị vệ sinh.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-[#C8A96A] flex-shrink-0 mt-0.5" />
+                  <span>Nhà bán nội thất / home-living SME.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-[#C8A96A] flex-shrink-0 mt-0.5" />
+                  <span>Đơn vị muốn tư vấn theo concept thay vì chỉ gửi bảng giá rời rạc.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-[#C8A96A] flex-shrink-0 mt-0.5" />
+                  <span>Đơn vị muốn quản lý lead báo giá rõ ràng hơn.</span>
+                </li>
               </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 lg:py-32 text-center px-6">
-        <h2 className="text-3xl lg:text-4xl font-bold text-[#0B1623] mb-6">Bạn đã sẵn sàng trải nghiệm?</h2>
-        <p className="text-[#627386] mb-10 max-w-xl mx-auto">
-          Khám phá thư viện hàng trăm concept phòng tắm và gửi yêu cầu báo giá chỉ với vài thao tác đơn giản.
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link 
-            href="/concepts" 
-            className="w-full sm:w-auto px-8 py-4 bg-[#123C5A] text-white font-semibold rounded-full hover:bg-[#0D2B42] transition-colors flex items-center justify-center gap-2"
-          >
-            Khám phá concept phòng tắm <ArrowRight className="w-4 h-4" />
-          </Link>
-          <Link 
-            href="/quote" 
-            className="w-full sm:w-auto px-8 py-4 bg-white text-[#0B1623] border border-[#D8E2EA] font-semibold rounded-full hover:border-[#0B1623] transition-colors flex items-center justify-center"
-          >
-            Gửi yêu cầu báo giá
-          </Link>
+      {/* H. Vì sao LivLab khác biệt? */}
+      <section className="py-20 lg:py-32 bg-[#F8FAFC]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className="order-2 lg:order-1 relative">
+              <div className="rounded-[2rem] overflow-hidden shadow-xl aspect-square lg:aspect-[4/3]">
+                <img 
+                  src="/images/demo-path-concept-preview.png" 
+                  alt="LivLab khác biệt" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+            <div className="order-1 lg:order-2">
+              <h2 className="text-3xl lg:text-4xl font-bold mb-6">Vì sao LivLab khác biệt?</h2>
+              <p className="text-[#627386] leading-relaxed mb-6">
+                LivLab khác với marketplace truyền thống vì không chỉ liệt kê sản phẩm theo danh mục. LivLab đặt sản phẩm vào bối cảnh không gian thật, giúp khách hàng hiểu sản phẩm sẽ xuất hiện như thế nào trong phòng tắm hoàn chỉnh.
+              </p>
+              <p className="text-[#627386] leading-relaxed">
+                LivLab cũng khác với catalogue showroom tĩnh vì nền tảng cho phép khách hàng tương tác với concept, xem sản phẩm quan tâm và gửi yêu cầu báo giá có cấu trúc. Với showroom, LivLab không chỉ là nơi trưng bày sản phẩm mà còn là công cụ hỗ trợ chuyển đổi khách hàng tiềm năng.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* I. Concept nổi bật */}
+      <section className="py-20 lg:py-32">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Concept nổi bật trên LivLab</h2>
+            <p className="text-[#627386]">Khám phá các không gian phòng tắm được thiết kế chuẩn mực</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <ConceptCard 
+              image="/images/concept-hotel-gray-bathroom.png"
+              title="Hotel Gray Bathroom"
+              desc="Không gian phòng tắm hiện đại, trung tính, phù hợp căn hộ và homestay cao cấp."
+            />
+            <ConceptCard 
+              image="/images/concept-minimal-white-bathroom.png"
+              title="Minimal White Bathroom"
+              desc="Concept sáng, sạch và tối giản, phù hợp phòng tắm nhỏ và căn hộ đô thị."
+            />
+            <ConceptCard 
+              image="/images/concept-rental-budget-bathroom.png"
+              title="Rental Budget Bathroom"
+              desc="Giải pháp tiết kiệm ngân sách cho phòng trọ, căn hộ cho thuê và cải tạo nhanh."
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* J. CTA cuối trang */}
+      <section className="py-24 lg:py-32 bg-[#123C5A] text-white text-center px-6">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl lg:text-4xl font-bold mb-6">Sẵn sàng hình dung phòng tắm của bạn rõ hơn?</h2>
+          <p className="text-white/80 mb-10 text-lg leading-relaxed">
+            Khám phá các concept phòng tắm trên LivLab hoặc gửi yêu cầu báo giá để showroom có thể tư vấn theo nhu cầu, diện tích và ngân sách của bạn.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link 
+              href="/concepts" 
+              className="w-full sm:w-auto px-8 py-4 bg-[#C8A96A] text-[#0B1623] font-bold rounded-full hover:bg-[#b09459] transition-colors flex items-center justify-center gap-2"
+            >
+              Khám phá concept <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link 
+              href="/quote" 
+              className="w-full sm:w-auto px-8 py-4 bg-white/10 text-white border border-white/20 font-bold rounded-full hover:bg-white/20 transition-colors flex items-center justify-center"
+            >
+              Gửi yêu cầu báo giá
+            </Link>
+          </div>
         </div>
       </section>
     </div>
   );
 }
 
-function CoreValueCard({ title, desc, delay }: { title: string, desc: string, delay: string }) {
+function CoreValueCard({ icon, title, desc }: { icon: React.ReactNode, title: string, desc: string }) {
   return (
-    <div className="bg-white p-8 rounded-[2rem] border border-[#D8E2EA] shadow-sm hover:shadow-md transition-shadow">
-      <div className="w-12 h-12 rounded-2xl bg-[#EEF4F7] flex items-center justify-center mb-6">
-        <div className="w-3 h-3 rounded-full bg-[#123C5A]" />
+    <div className="bg-white p-8 rounded-[2rem] border border-[#D8E2EA] shadow-sm hover:shadow-md transition-shadow group">
+      <div className="w-12 h-12 rounded-2xl bg-[#F8FAFC] border border-[#D8E2EA] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+        {icon}
       </div>
       <h3 className="text-xl font-bold text-[#0B1623] mb-3">{title}</h3>
       <p className="text-[#627386] leading-relaxed text-sm">{desc}</p>
     </div>
+  );
+}
+
+function ConceptCard({ image, title, desc }: { image: string, title: string, desc: string }) {
+  return (
+    <Link href="/concepts" className="group block bg-white rounded-[2rem] border border-[#D8E2EA] overflow-hidden hover:shadow-xl transition-all duration-300">
+      <div className="aspect-[4/3] overflow-hidden">
+        <img 
+          src={image} 
+          alt={title} 
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+      </div>
+      <div className="p-6">
+        <h3 className="text-lg font-bold text-[#0B1623] mb-2">{title}</h3>
+        <p className="text-[#627386] text-sm leading-relaxed">{desc}</p>
+      </div>
+    </Link>
   );
 }
