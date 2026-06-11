@@ -128,3 +128,10 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.10);
   color: #DCEBF5;
 }
+
+
+@media print {
+  .print-hide { display: none !important; }
+  .print-main { overflow: visible !important; height: auto !important; }
+  .print-wrapper { background: white !important; }
+}

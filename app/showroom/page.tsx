@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { LogOut, Users, Package, FileText, TrendingUp, Download, Eye, Link } from 'lucide-react';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { showroomAnalytics, demoShowroomLeads, demoTopProducts } from '@/lib/showroomDemoData';
+import { showroomAnalytics } from '@/lib/showroomDemoData';
 import { Lead, LeadStatus } from '@/lib/types';
 import LeadTable from '@/components/showroom/LeadTable';
 import LeadKanban from '@/components/showroom/LeadKanban';
@@ -63,6 +63,18 @@ export default function ShowroomDashboard() {
     if (n >= 1_000_000) return (n / 1_000_000).toFixed(0) + 'M';
     return n.toLocaleString('vi-VN');
   };
+
+  const productCounts = leads.flatMap(l => l.selectedProducts).reduce((acc, p) => {
+    if (!acc[p.productId]) {
+      acc[p.productId] = { id: p.productId, name: p.name, image: p.image || '/images/products/placeholder-sanitary.png', price: `${p.priceMin.toLocaleString('vi-VN')} đ`, count: 0 };
+    }
+    acc[p.productId].count += p.quantity;
+    return acc;
+  }, {} as Record<string, any>);
+
+  const topProducts = Object.values(productCounts)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 5);
   const handleStatusChange = async (id: string, status: LeadStatus) => {
     try {
       // Assuming showroom shares the same API endpoint for updating
@@ -85,27 +97,19 @@ export default function ShowroomDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] p-6 lg:p-12 pt-28">
-      <div className="max-w-7xl mx-auto space-y-8">
-        <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-[#0B1623]">Bảng điều khiển Showroom</h1>
-            <p className="text-[#627386] text-sm mt-1">Xin chào, {user?.name || 'Showroom'} - Tổng quan hoạt động kinh doanh</p>
-          </div>
-          
-          <div className="flex items-center gap-3">
-            <button className="px-4 py-2 bg-[#123C5A] text-white rounded-xl text-sm font-bold shadow-sm hover:bg-[#0B1623] transition-colors">
-              Tạo báo giá
-            </button>
-            <button 
-              onClick={() => logout()}
-              className="flex items-center gap-2 px-4 py-2 bg-white border border-[#D8E3EC] rounded-xl text-sm font-bold text-[#627386] hover:text-red-600 hover:border-red-200 hover:bg-red-50 transition-colors shadow-sm"
-            >
-              <LogOut className="w-4 h-4" />
-              Đăng xuất
-            </button>
-          </div>
-        </header>
+    <div className="p-6 lg:p-8 space-y-8">
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-[#0B1623]">Tổng quan hoạt động</h1>
+          <p className="text-[#627386] text-sm mt-1">Xin chào, {user?.name || 'Showroom'} - Dưới đây là tóm tắt kinh doanh</p>
+        </div>
+        
+        <div className="flex items-center gap-3">
+          <button className="px-4 py-2 bg-[#123C5A] text-white rounded-xl text-sm font-bold shadow-sm hover:bg-[#0B1623] transition-colors">
+            Tạo báo giá mới
+          </button>
+        </div>
+      </header>
 
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -226,8 +230,10 @@ export default function ShowroomDashboard() {
             </div>
 
             {leads.length === 0 ? (
-              <div className="text-center py-10">
-                <p className="text-[#627386] text-sm">Chưa có yêu cầu báo giá nào.</p>
+              <div className="text-center py-10 border border-dashed border-[#D8E2EA] rounded-xl bg-[#F8FAFC]">
+                <FileText className="w-8 h-8 text-[#627386] mx-auto mb-3" />
+                <p className="text-[#0B1623] font-medium">Chưa có yêu cầu báo giá thật.</p>
+                <p className="text-[#627386] text-sm mt-1">Khi khách gửi form báo giá, lead sẽ xuất hiện tại đây.</p>
               </div>
             ) : (
               viewMode === 'table' ? (
@@ -245,25 +251,28 @@ export default function ShowroomDashboard() {
               <h2 className="text-lg font-bold text-[#0B1623]">Sản phẩm được quan tâm</h2>
             </div>
             <div className="space-y-4">
-              {demoTopProducts.map(p => (
-                <div key={p.id} className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F3F7FA] transition-colors border border-transparent hover:border-[#D8E2EA]">
-                  <img src={p.image} alt={p.name} className="w-12 h-12 rounded-lg object-cover" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-[#0B1623] truncate">{p.name}</p>
-                    <p className="text-xs text-[#627386]">{p.quotes} yêu cầu báo giá</p>
+              {topProducts.length === 0 ? (
+                 <div className="text-center py-6">
+                   <p className="text-[#627386] text-sm">Chưa có dữ liệu sản phẩm quan tâm.</p>
+                 </div>
+              ) : (
+                topProducts.map(p => (
+                  <div key={p.id} className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F3F7FA] transition-colors border border-transparent hover:border-[#D8E2EA]">
+                    <img src={p.image} alt={p.name} className="w-12 h-12 rounded-lg object-cover" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-[#0B1623] truncate">{p.name}</p>
+                      <p className="text-xs text-[#627386]">{p.count} yêu cầu báo giá</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-semibold text-[#123C5A]">{p.price}</p>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm font-semibold text-[#123C5A]">{p.price}</p>
-                  </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
-            <button className="w-full mt-4 py-2.5 bg-[#F3F7FA] text-[#123C5A] rounded-xl text-sm font-semibold hover:bg-[#D8E2EA] transition-colors">
-              Xem tất cả sản phẩm
-            </button>
           </div>
         </div>
-      </div>
+
 
       {selectedLead && (
         <LeadDetailModal 

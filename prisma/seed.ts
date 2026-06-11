@@ -56,6 +56,18 @@ function parseCSV(text: string): any[] {
   return result;
 }
 
+function normalizeImageUrl(url: string | undefined): string | null {
+  if (!url || url.trim() === '') return null;
+  const trimmed = url.trim();
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    return trimmed;
+  }
+  if (trimmed.startsWith('/')) {
+    return trimmed;
+  }
+  return '/' + trimmed;
+}
+
 async function main() {
   console.log('Starting seed...');
 
@@ -86,6 +98,9 @@ async function main() {
       if (!row.id && !row.name) continue;
       
       const id = row.id || `p_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+      const rawImage = row.image || row.imageUrl || row.thumbnail || null;
+      const imageUrl = normalizeImageUrl(rawImage);
+
       await prisma.product.upsert({
         where: { id },
         update: {
@@ -99,7 +114,7 @@ async function main() {
           finish: row.finish || '',
           dimensions: row.size || '',
           warranty: row.warranty || '',
-          image: row.image || '/images/products/placeholder-sanitary.png',
+          imageUrl,
           sourceUrl: row.sourceUrl || '',
           showroomId: showroom.id,
           status: 'ACTIVE'
@@ -116,7 +131,7 @@ async function main() {
           finish: row.finish || '',
           dimensions: row.size || '',
           warranty: row.warranty || '',
-          image: row.image || '/images/products/placeholder-sanitary.png',
+          imageUrl,
           sourceUrl: row.sourceUrl || '',
           showroomId: showroom.id,
           status: 'ACTIVE'
@@ -140,27 +155,32 @@ async function main() {
       if (!row.id && !row.title) continue;
       
       const id = row.id || `c_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+      const rawImage = row.image || row.imageUrl || null;
+      const imageUrl = normalizeImageUrl(rawImage);
+
       await prisma.concept.upsert({
         where: { id },
         update: {
-          name: row.title || 'Concept mẫu',
+          title: row.title || 'Concept mẫu',
           slug: row.slug || '',
           roomType: row.roomType || '',
           style: row.style || '',
           budgetRange: row.budgetRange || '',
+          areaRange: row.areaSize || '',
           description: row.description || '',
-          image: row.image || '/images/concepts/placeholder-room.jpg',
+          imageUrl,
           status: 'ACTIVE'
         },
         create: {
           id,
-          name: row.title || 'Concept mẫu',
+          title: row.title || 'Concept mẫu',
           slug: row.slug || '',
           roomType: row.roomType || '',
           style: row.style || '',
           budgetRange: row.budgetRange || '',
+          areaRange: row.areaSize || '',
           description: row.description || '',
-          image: row.image || '/images/concepts/placeholder-room.jpg',
+          imageUrl,
           status: 'ACTIVE'
         }
       });
@@ -171,105 +191,10 @@ async function main() {
     console.warn(`File not found: ${conceptsCsvPath}`);
   }
 
-  // 4. Seed 5 Quote Leads
-  const demoLeads = [
-    {
-      customerName: 'Nguyễn Minh Thùy',
-      email: 'thuy@example.com',
-      phone: '0901234567',
-      conceptName: 'Phòng tắm căn hộ nhỏ dưới 4m²',
-      roomType: 'Phòng tắm',
-      budgetRange: '30–60 triệu',
-      estimatedValue: 42000000,
-      status: LeadStatus.NEW,
-      notes: 'Khách cần thi công gấp'
-    },
-    {
-      customerName: 'Anh Hoàng',
-      email: 'hoang@example.com',
-      phone: '0912345678',
-      conceptName: 'Phòng tắm master cao cấp',
-      roomType: 'Phòng tắm master',
-      budgetRange: '60–100 triệu',
-      estimatedValue: 86000000,
-      status: LeadStatus.CONTACTED,
-      notes: 'Cần thiết kế thêm tủ lavabo'
-    },
-    {
-      customerName: 'Chị Linh',
-      email: 'linh@example.com',
-      phone: '0987654321',
-      conceptName: 'Phòng tắm Japandi sáng màu',
-      roomType: 'Phòng tắm',
-      budgetRange: '40–60 triệu',
-      estimatedValue: 55000000,
-      status: LeadStatus.QUOTED,
-      notes: 'Đã gửi file PDF báo giá'
-    },
-    {
-      customerName: 'Minh Anh Homestay',
-      email: 'minhanh@homestay.com',
-      phone: '0909090909',
-      conceptName: 'Phòng tắm tiết kiệm cho nhà cho thuê',
-      roomType: 'Phòng tắm',
-      budgetRange: '20–40 triệu',
-      estimatedValue: 32000000,
-      status: LeadStatus.WON,
-      notes: 'Đã ký hợp đồng'
-    },
-    {
-      customerName: 'Khách Luxbath',
-      email: 'khach@luxbath.vn',
-      phone: '0933333333',
-      conceptName: 'Phòng tắm khách sạn',
-      roomType: 'Phòng tắm',
-      budgetRange: '60–100 triệu',
-      estimatedValue: 92000000,
-      status: LeadStatus.LOST,
-      notes: 'Khách chọn nhà thầu khác'
-    }
-  ];
+  // 4. Do not generate fake demo QuoteLeads or QuoteItems in production or ever.
+  // We want an empty table if there are no real leads yet.
 
-  // Try to find an existing user or create one (optional, for userId relation)
-  const user = await prisma.user.findFirst();
-
-  // Clear existing leads and items to avoid duplicates if run multiple times
-  await prisma.quoteItem.deleteMany({});
-  await prisma.quoteLead.deleteMany({});
-
-  for (const leadData of demoLeads) {
-    const createdLead = await prisma.quoteLead.create({
-      data: {
-        customerName: leadData.customerName,
-        email: leadData.email,
-        phone: leadData.phone,
-        conceptName: leadData.conceptName,
-        roomType: leadData.roomType,
-        budgetRange: leadData.budgetRange,
-        estimatedValue: leadData.estimatedValue,
-        status: leadData.status,
-        notes: leadData.notes,
-        showroomId: showroom.id,
-        userId: user ? user.id : null,
-      }
-    });
-
-    // Add some random products to this lead
-    const randomProducts = await prisma.product.findMany({ take: 3 });
-    for (const p of randomProducts) {
-      await prisma.quoteItem.create({
-        data: {
-          leadId: createdLead.id,
-          productId: p.id,
-          productName: p.name,
-          quantity: 1,
-          priceMin: p.priceMin,
-          priceMax: p.priceMax
-        }
-      });
-    }
-  }
-  console.log('Imported 5 demo QuoteLeads with QuoteItems.');
+  console.log('Skipping fake demo QuoteLeads generation.');
 
   console.log('Seed completed successfully!');
 }

@@ -8,7 +8,9 @@ export async function GET() {
     // For now, we fetch leads assigned to the default showroom or all
     const leads = await prisma.quoteLead.findMany({
       include: {
-        items: true,
+        items: {
+          include: { product: true }
+        },
         showroom: true
       },
       orderBy: { createdAt: 'desc' }
@@ -20,7 +22,7 @@ export async function GET() {
     }
 
     if (leads.length === 0) {
-      return NextResponse.json({ error: 'Không tải được dữ liệu từ database. Chưa có yêu cầu báo giá nào.' }, { status: 404 });
+      return NextResponse.json({ leads: [], source: 'database' }, { status: 200 });
     }
 
     const statusMap: Record<string, any> = {
@@ -50,7 +52,8 @@ export async function GET() {
         name: item.productName,
         quantity: item.quantity,
         priceMin: item.priceMin || 0,
-        priceMax: item.priceMax || 0
+        priceMax: item.priceMax || 0,
+        image: item.product?.imageUrl || null
       })),
       needsInstallation: false,
       consent: l.consent

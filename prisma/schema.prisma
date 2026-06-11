@@ -60,7 +60,7 @@ model Product {
   finish      String?
   dimensions  String?
   warranty    String?
-  image       String?
+  imageUrl    String?
   sourceUrl   String?
   showroomId  String?
   status      String   @default("ACTIVE")
@@ -74,12 +74,13 @@ model Product {
 model Concept {
   id          String   @id
   slug        String?
-  name        String
+  title       String?
   roomType    String?
   style       String?
   budgetRange String?
+  areaRange   String?
   description String?
-  image       String?
+  imageUrl    String?
   status      String   @default("ACTIVE")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

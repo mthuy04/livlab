@@ -28,7 +28,7 @@ export default function QuoteSummary() {
       {items.length > 0 ? (
         <div className="space-y-3 mb-5 max-h-80 overflow-y-auto pr-1">
           {items.map((item) => {
-            const isUnrelatedRoomImage = (url: string | undefined) => {
+            const isUnrelatedRoomImage = (url: string | null | undefined) => {
               if (!url) return true;
               if (url.includes('unsplash.com')) return true;
               if (url.includes('placeholder-sanitary.png')) return true;
@@ -41,7 +41,7 @@ export default function QuoteSummary() {
                 <div className="w-12 h-12 rounded-xl overflow-hidden bg-[#EEF4F7] flex-shrink-0 relative">
                   {hasImg ? (
                     <img 
-                      src={item.image} 
+                      src={item.image ?? undefined} 
                       alt={item.name} 
                       className="w-full h-full object-cover"
                       onError={(e) => {

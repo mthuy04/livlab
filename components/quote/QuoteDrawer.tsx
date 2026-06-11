@@ -45,7 +45,7 @@ export default function QuoteDrawer() {
             </div>
           ) : (
             items.map((item) => {
-              const isUnrelatedRoomImage = (url: string | undefined) => {
+              const isUnrelatedRoomImage = (url: string | null | undefined) => {
                 if (!url) return true;
                 if (url.includes('unsplash.com')) return true;
                 if (url.includes('placeholder-sanitary.png')) return true;
@@ -59,18 +59,16 @@ export default function QuoteDrawer() {
                     <div className="w-14 h-14 rounded-xl overflow-hidden bg-[#EEF4F7] flex-shrink-0 relative">
                       {hasImg ? (
                         <img 
-                          src={item.image} 
+                          src={item.image ?? undefined} 
                           alt={item.name} 
                           className="w-full h-full object-cover"
                           onError={(e) => {
-                            // Fallback on error handled gracefully by hiding the broken image and showing fallback
                             (e.target as HTMLImageElement).style.display = 'none';
                             const parent = (e.target as HTMLImageElement).parentElement;
                             if (parent) parent.classList.add('fallback-active');
                           }}
                         />
-                      ) : null}
-                      {(!hasImg) && (
+                      ) : (
                         <div className="absolute inset-0 flex flex-col items-center justify-center text-[#486581] opacity-60">
                            <ShoppingBag className="w-6 h-6 mb-1" />
                            <span className="text-[8px] font-bold uppercase tracking-widest">{item.category}</span>

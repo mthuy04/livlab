@@ -34,8 +34,8 @@ export default function Navbar() {
   const dropRef = useRef<HTMLDivElement>(null);
   const accountRef = useRef<HTMLDivElement>(null);
 
-  // Do not render this navbar in admin pages
-  if (pathname.startsWith('/admin')) {
+  // Do not render this navbar in admin or showroom pages
+  if (pathname.startsWith('/admin') || pathname.startsWith('/showroom')) {
     return null;
   }
 

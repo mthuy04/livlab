@@ -9,27 +9,26 @@ export async function GET() {
       orderBy: { createdAt: 'desc' }
     });
 
-    if (concepts.length === 0 && process.env.NODE_ENV === 'development') {
-      console.log('[API] DB rỗng, trả về fallback demo data (Development)');
-      const fallback = seededConcepts.length > 0 ? seededConcepts : fallbackConcepts;
-      return NextResponse.json({ concepts: fallback, source: 'fallback' });
-    }
-
     if (concepts.length === 0) {
-      return NextResponse.json({ error: 'Không tải được dữ liệu từ database. Bảng Concept hiện đang trống.' }, { status: 404 });
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[API] DB rỗng, trả về fallback demo data (Development)');
+        const fallback = seededConcepts.length > 0 ? seededConcepts : fallbackConcepts;
+        return NextResponse.json({ concepts: fallback, source: 'fallback' });
+      }
+      return NextResponse.json({ concepts: [], source: 'database' }, { status: 200 });
     }
 
     const mappedConcepts = concepts.map(c => ({
       id: c.id,
       slug: c.slug || '',
-      title: c.name, // Prisma uses name
+      title: c.title || '',
       roomType: c.roomType || '',
       style: c.style || '',
       budgetRange: c.budgetRange || '',
-      areaSize: '',
+      areaSize: c.areaRange || '',
       shortDescription: c.description || '',
       description: c.description || '',
-      image: c.image || '/images/concepts/placeholder-room.jpg',
+      image: c.imageUrl || null,
       productIds: [],
       hotspots: []
     }));

@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Square, Mail, Phone, MessageCircle } from 'lucide-react';
 
 const footerLinks = {
@@ -23,6 +26,12 @@ const footerLinks = {
 };
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  if (pathname.startsWith('/admin') || pathname.startsWith('/showroom')) {
+    return null;
+  }
+
   return (
     <footer className="bg-[#0B1623] text-white/60">
       <div className="max-w-8xl mx-auto px-6 lg:px-10 py-16">

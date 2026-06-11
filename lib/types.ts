@@ -176,7 +176,7 @@ export interface QuoteItem {
   priceMax: number;
   priceRange: string;
   quantity: number;
-  image: string;
+  image?: string | null;
   material?: string;
   finish?: string;
   showroomName: string;
