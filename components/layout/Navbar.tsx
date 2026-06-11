@@ -19,6 +19,7 @@ const exploreLinks = [
 
 const mainLinks = [
   { href: '/',            label: 'Trang chủ' },
+  { href: '/about',       label: 'Về LivLab' },
   { href: '/track-quote', label: 'Tra cứu báo giá' },
 ];
 
@@ -94,6 +95,9 @@ export default function Navbar() {
         <div className="hidden lg:flex items-center gap-6">
           <Link href="/" className={`text-sm font-medium transition-colors hover:text-[#C8A96A] ${pathname === '/' ? activeColor : textColor}`}>
             Trang chủ
+          </Link>
+          <Link href="/about" className={`text-sm font-medium transition-colors hover:text-[#C8A96A] ${pathname === '/about' ? activeColor : textColor}`}>
+            Về LivLab
           </Link>
 
           {/* Explore Dropdown */}
@@ -197,7 +201,7 @@ export default function Navbar() {
         <div className="lg:hidden bg-white border-b border-[#D8E2EA] px-6 pb-5 pt-2">
           <div className="space-y-1">
             <p className="text-[10px] font-bold text-[#627386] uppercase tracking-widest mt-3 mb-1">Trang</p>
-            {[{ href: '/', label: 'Trang chủ' }, { href: '/track-quote', label: 'Tra cứu báo giá' }].map((l) => (
+            {[{ href: '/', label: 'Trang chủ' }, { href: '/about', label: 'Về LivLab' }, { href: '/track-quote', label: 'Tra cứu báo giá' }].map((l) => (
               <Link key={l.href} href={l.href} onClick={() => setMenuOpen(false)} className="block py-2.5 text-sm font-medium text-[#0B1623] border-b border-[#D8E2EA] hover:text-[#C8A96A] transition-colors">{l.label}</Link>
             ))}
             <p className="text-[10px] font-bold text-[#627386] uppercase tracking-widest mt-4 mb-1">Khám phá</p>
