@@ -149,14 +149,20 @@ export async function importVerifiedProductsFromCsv(force: boolean = false): Pro
     }
 
     console.log('[LivLab Verified Import] Fetching CSV...');
-    const response = await fetch('/data/livlab-seed/livlab_verified_products_master.csv');
+    const url = '/data/livlab-seed/livlab_verified_products_master.csv';
+    const response = await fetch(url);
     if (!response.ok) {
+      console.error(`[LivLab Verified Import] Fetch failed. URL: ${url}, Status: ${response.status} ${response.statusText}`);
       throw new Error(`Failed to fetch CSV: ${response.statusText}`);
     }
 
     const csvText = await response.text();
     const rows = parseCSV(csvText);
-    console.log(`[LivLab Verified Import] parsed rows: ${rows.length}`);
+    console.log(`[LivLab Verified Import] URL: ${url}, parsed rows: ${rows.length}`);
+
+    if (rows.length === 0) {
+      throw new Error(`No data parsed from CSV.`);
+    }
 
     const products = rows.map(mapCsvRowToProduct);
     
@@ -172,7 +178,7 @@ export async function importVerifiedProductsFromCsv(force: boolean = false): Pro
     
     return products;
   } catch (error) {
-    console.error('[LivLab Verified Import] Error:', error);
-    return [];
+    console.error('[LivLab Verified Import] Error parsing or fetching CSV:', error);
+    throw error;
   }
 }

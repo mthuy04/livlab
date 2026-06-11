@@ -42,9 +42,32 @@ export default function VisualStudioClient() {
   const [showToast, setShowToast] = useState(false);
   const [toastMsg, setToastMsg] = useState('');
 
+  const [dataError, setDataError] = useState<string | null>(null);
+  const [isLoadingData, setIsLoadingData] = useState(true);
+
   useEffect(() => {
-    setProducts(getStoredProducts() || []);
-    setConcepts(getStoredConcepts() || []);
+    async function loadData() {
+      try {
+        const { importVerifiedProductsFromCsv } = await import('@/lib/importVerifiedProducts');
+        const { importVerifiedConceptsFromCsv } = await import('@/lib/importVerifiedConcepts');
+        
+        setIsLoadingData(true);
+        const [loadedProducts, loadedConcepts] = await Promise.all([
+          importVerifiedProductsFromCsv(true),
+          importVerifiedConceptsFromCsv(true)
+        ]);
+        
+        setProducts(loadedProducts || []);
+        setConcepts(loadedConcepts || []);
+      } catch (err) {
+        console.error('Visual Studio data load error:', err);
+        setDataError('Không tải được dữ liệu sản phẩm. Vui lòng kiểm tra file CSV trong /public/data/livlab-seed/.');
+      } finally {
+        setIsLoadingData(false);
+      }
+    }
+
+    loadData();
 
     // Clear old background removal caches as requested
     const caches = [
@@ -250,6 +273,17 @@ export default function VisualStudioClient() {
     if (val === 0) return 'Liên hệ';
     return new Intl.NumberFormat('vi-VN').format(val) + 'đ';
   };
+
+  if (dataError) {
+    return (
+      <div className="pt-24 pb-32 bg-[#F3F7FA] min-h-screen flex items-center justify-center">
+        <div className="bg-white p-8 rounded-3xl text-center max-w-md border border-red-200 shadow-sm">
+          <p className="text-red-600 font-bold mb-2">Lỗi tải dữ liệu</p>
+          <p className="text-[#627386]">{dataError}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-24 pb-32 bg-[#F3F7FA] min-h-screen">
@@ -480,9 +514,11 @@ export default function VisualStudioClient() {
                   </div>
                 );
               })}
-              {panelProducts.length === 0 && (
+              {isLoadingData ? (
+                <div className="text-center text-sm text-[#627386] py-8">Đang tải dữ liệu sản phẩm...</div>
+              ) : panelProducts.length === 0 ? (
                 <div className="text-center text-sm text-[#627386] py-8">Không có sản phẩm trong danh mục này.</div>
-              )}
+              ) : null}
             </div>
           </div>
 

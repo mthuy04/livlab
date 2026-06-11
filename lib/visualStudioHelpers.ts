@@ -41,13 +41,14 @@ export type SelectedByZone = {
 };
 
 export const normalizeCategory = (cat: string) => {
+  if (!cat) return 'accessory';
   const l = cat.toLowerCase();
-  if (l.includes('lavabo') || l.includes('chậu rửa')) return 'lavabo';
-  if (l.includes('vòi lavabo') || l.includes('vòi rửa') || l.includes('faucet')) return 'faucet';
+  if (l.includes('tủ lavabo') || l.includes('vanity') || l.includes('cabinet') || l.includes('tủ chậu')) return 'vanity';
+  if (l.includes('vòi lavabo') || l.includes('vòi rửa') || l.includes('faucet') || l.includes('vòi')) return 'faucet';
+  if (l.includes('lavabo') || l.includes('chậu rửa') || l.includes('chậu')) return 'lavabo';
   if (l.includes('gương') || l.includes('mirror')) return 'mirror';
-  if (l.includes('bồn cầu') || l.includes('toilet')) return 'toilet';
+  if (l.includes('bồn cầu') || l.includes('toilet') || l.includes('bồn vệ sinh')) return 'toilet';
   if (l.includes('sen tắm') || l.includes('sen cây') || l.includes('shower')) return 'shower';
-  if (l.includes('tủ lavabo') || l.includes('vanity') || l.includes('cabinet')) return 'vanity';
   if (l.includes('gạch') || l.includes('tile')) return 'tile';
   if (l.includes('đèn') || l.includes('lighting')) return 'lighting';
   return 'accessory';
