@@ -9,6 +9,33 @@ import { getProductModel, getProduct3DLabel, normalizeProduct3DCategory, Product
 import ProductModel3D from './ProductModel3D';
 import { CheckCircle, AlertCircle, Box } from 'lucide-react';
 
+class CanvasErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
+  constructor(props: any) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch(error: any) {
+    console.error("Canvas crashed:", error);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="absolute inset-0 flex items-center justify-center p-6 bg-[#F8FAFC]">
+           <div className="bg-white border border-[#D8E2EA] rounded-[20px] p-6 max-w-md w-full shadow-lg text-center text-red-500">
+             <AlertCircle className="w-12 h-12 mx-auto mb-2 opacity-50" />
+             <p className="font-bold text-lg text-[#0B1623]">Model 3D hiện quá nặng để tải</p>
+             <p className="text-[#627386] text-sm mt-2">Trình duyệt đã quá tải bộ nhớ WebGL. Vui lòng dùng bản GLB đã nén/giảm polygon. Sản phẩm vẫn đã được thêm vào giỏ báo giá.</p>
+           </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 interface ProductRoom3DProps {
   placedProducts: StudioLayer[];
   productsData: Product[];
@@ -45,18 +72,27 @@ export default function ProductRoom3D({ placedProducts, productsData }: ProductR
   };
 
   const productModelData = useMemo(() => {
-    const counts: Record<string, number> = {};
     return products.map(product => {
       const category = normalizeProduct3DCategory(product);
       const modelUrl = getProductModel(product);
       const label = getProduct3DLabel(product);
-      
-      counts[category] = (counts[category] || 0) + 1;
-      const position = getCategoryPosition(category, counts[category] - 1);
-
-      return { product, category, modelUrl, label, position };
+      return { product, category, modelUrl, label };
     });
   }, [products]);
+
+  const uniqueModels = useMemo(() => {
+    const map = new Map<Product3DCategory, { category: Product3DCategory, modelUrl: string, position: [number, number, number] }>();
+    productModelData.forEach(d => {
+      if (!map.has(d.category) && d.modelUrl) {
+        map.set(d.category, {
+          category: d.category,
+          modelUrl: d.modelUrl,
+          position: getCategoryPosition(d.category, 0)
+        });
+      }
+    });
+    return Array.from(map.values());
+  }, [productModelData]);
 
   if (products.length === 0) {
     return (
@@ -97,48 +133,53 @@ export default function ProductRoom3D({ placedProducts, productsData }: ProductR
         </div>
 
         {hasAnyValidModel ? (
-          <Canvas camera={{ position: [0, 1.5, 4], fov: 45 }} className="w-full h-full bg-[#E5E9EC]">
-            <ambientLight intensity={0.6} />
-            <directionalLight position={[5, 5, 5]} intensity={0.8} castShadow />
-            <directionalLight position={[-5, 5, -5]} intensity={0.3} />
-            <Environment preset="city" />
-            
-            <OrbitControls 
-              enablePan={true}
-              enableZoom={true}
-              minPolarAngle={0}
-              maxPolarAngle={Math.PI / 2 + 0.1}
-              target={[0, 0.8, 0]}
-            />
+          <CanvasErrorBoundary>
+            <Canvas 
+              camera={{ position: [0, 1.5, 4], fov: 45 }} 
+              className="w-full h-full bg-[#E5E9EC]"
+              dpr={[1, 1.5]}
+              gl={{ antialias: true, powerPreference: "high-performance" }}
+            >
+              <ambientLight intensity={0.6} />
+              <directionalLight position={[5, 5, 5]} intensity={0.8} />
+              <directionalLight position={[-5, 5, -5]} intensity={0.3} />
+              <Environment preset="city" />
+              
+              <OrbitControls 
+                enablePan={true}
+                enableZoom={true}
+                minPolarAngle={0}
+                maxPolarAngle={Math.PI / 2 + 0.1}
+                target={[0, 0.8, 0]}
+              />
 
-            {/* Floor & Wall representation */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} receiveShadow>
-              <planeGeometry args={[15, 15]} />
-              <meshStandardMaterial color="#f0f2f5" />
-            </mesh>
+              {/* Floor & Wall representation */}
+              <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]}>
+                <planeGeometry args={[15, 15]} />
+                <meshStandardMaterial color="#f0f2f5" />
+              </mesh>
 
-            <mesh position={[0, 1.5, -0.5]} receiveShadow>
-              <planeGeometry args={[15, 3]} />
-              <meshStandardMaterial color="#ffffff" />
-            </mesh>
+              <mesh position={[0, 1.5, -0.5]}>
+                <planeGeometry args={[15, 3]} />
+                <meshStandardMaterial color="#ffffff" />
+              </mesh>
 
-            <ContactShadows position={[0, 0, 0]} opacity={0.4} scale={10} blur={2} far={4} />
-
-            {/* Render Models */}
-            {productModelData.map(({ product, modelUrl, position, category }) => {
-              if (!modelUrl || failedModels.has(product.id)) return null;
-              return (
-                <ProductModel3D 
-                  key={product.id}
-                  modelUrl={modelUrl}
-                  category={category}
-                  position={position}
-                  onError={() => handleModelError(product.id)}
-                  onSuccess={() => handleModelSuccess(product.id)}
-                />
-              );
-            })}
-          </Canvas>
+              {/* Render Unique Models */}
+              {uniqueModels.map(({ modelUrl, position, category }) => {
+                if (!modelUrl || failedModels.has(category)) return null;
+                return (
+                  <ProductModel3D 
+                    key={category}
+                    modelUrl={modelUrl}
+                    category={category}
+                    position={position}
+                    onError={() => handleModelError(category)}
+                    onSuccess={() => handleModelSuccess(category)}
+                  />
+                );
+              })}
+            </Canvas>
+          </CanvasErrorBoundary>
         ) : (
           <div className="absolute inset-0 flex items-center justify-center p-6 bg-[#F8FAFC]">
             <div className="bg-white border border-[#D8E2EA] rounded-[20px] p-6 max-w-md w-full shadow-lg flex flex-col items-center text-center">
@@ -176,10 +217,10 @@ export default function ProductRoom3D({ placedProducts, productsData }: ProductR
           <h3 className="font-bold text-[#0B1623] text-sm">Trạng thái Model 3D</h3>
         </div>
         <div className="flex-1 overflow-y-auto p-3 space-y-2">
-          {productModelData.map(({ product, label, modelUrl }) => {
+          {productModelData.map(({ product, category, label, modelUrl }) => {
             const hasModelUrl = !!modelUrl;
-            const isFailed = failedModels.has(product.id);
-            const isLoaded = loadedModels.has(product.id);
+            const isFailed = failedModels.has(category);
+            const isLoaded = loadedModels.has(category);
             
             let statusText = "Đang tải...";
             let statusColor = "text-blue-500";

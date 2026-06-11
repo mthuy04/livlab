@@ -53,33 +53,8 @@ function ModelLoader({ modelUrl, position, scale, onSuccess }: { modelUrl: strin
 }
 
 export default function ProductModel3D({ modelUrl, position, scale, onError, onSuccess }: ProductModel3DProps) {
-  const [fileExists, setFileExists] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    let isMounted = true;
-    // Check if the file exists before attempting to load it with useGLTF
-    // to prevent useGLTF from throwing a 404 error that triggers Next.js Error Overlay.
-    fetch(modelUrl, { method: 'HEAD' })
-      .then(res => {
-        if (!isMounted) return;
-        if (res.ok) {
-          setFileExists(true);
-        } else {
-          setFileExists(false);
-          if (onError) onError();
-        }
-      })
-      .catch(() => {
-        if (!isMounted) return;
-        setFileExists(false);
-        if (onError) onError();
-      });
-      
-    return () => { isMounted = false; };
-  }, [modelUrl, onError]);
-
-  if (fileExists === null) return null;
-  if (fileExists === false) return null;
+  // Preload the model so it doesn't wait for render if it can start early
+  useGLTF.preload(modelUrl);
 
   return (
     <ModelErrorBoundary onError={onError}>
