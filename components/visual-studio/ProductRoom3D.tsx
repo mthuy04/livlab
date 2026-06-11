@@ -51,12 +51,18 @@ export default function ProductRoom3D({ placedProducts, productsData }: ProductR
   const [failedModels, setFailedModels] = useState<Set<string>>(new Set());
   const [loadedModels, setLoadedModels] = useState<Set<string>>(new Set());
 
-  const handleModelError = (productId: string) => {
-    setFailedModels(prev => new Set(prev).add(productId));
+  const handleModelError = (category: string) => {
+    setFailedModels(prev => {
+      if (prev.has(category)) return prev;
+      return new Set(prev).add(category);
+    });
   };
 
-  const handleModelSuccess = (productId: string) => {
-    setLoadedModels(prev => new Set(prev).add(productId));
+  const handleModelSuccess = (category: string) => {
+    setLoadedModels(prev => {
+      if (prev.has(category)) return prev;
+      return new Set(prev).add(category);
+    });
   };
 
   const getCategoryPosition = (category: Product3DCategory, index: number): [number, number, number] => {
