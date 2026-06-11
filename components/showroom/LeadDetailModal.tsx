@@ -4,6 +4,7 @@ import { Lead, LeadStatus } from '@/lib/types';
 import { getProductById } from '@/lib/data';
 import { formatDate } from '@/lib/utils';
 import { X, Phone, Mail, MapPin, Calendar, Layers, Clock, Wrench } from 'lucide-react';
+import BudgetFitCard from '@/components/budget/BudgetFitCard';
 
 interface LeadDetailModalProps {
   lead: Lead | null;
@@ -106,12 +107,24 @@ export default function LeadDetailModal({ lead, onClose, onStatusChange, onAdmin
             </div>
           </div>
 
-          {/* Value */}
+          {/* Value and Budget Fit */}
           <div className="bg-[#FDF4EF] rounded-2xl p-4 border border-[#FBE3D5]">
             <h4 className="text-[10px] font-bold text-[#C8A96A] uppercase tracking-wider mb-1">Tổng giá trị ước tính</h4>
-            <p className="text-lg font-bold text-[#C8A96A]">
-              {lead.estimatedValueMin > 0 ? `${fmtVnd(lead.estimatedValueMin)} - ${fmtVnd(lead.estimatedValueMax)}` : 'Chưa có sản phẩm'}
+            <p className="text-lg font-bold text-[#C8A96A] mb-3">
+              {lead.estimatedValueMax > 0 ? `${fmtVnd(lead.estimatedValueMin)} - ${fmtVnd(lead.estimatedValueMax)}` : (lead.estimatedValueMin > 0 ? fmtVnd(lead.estimatedValueMin) : 'Chưa có sản phẩm')}
             </p>
+            {lead.budgetFit && lead.budgetFit !== 'UNKNOWN' && (
+              <div className="pt-3 border-t border-[#FBE3D5]">
+                <p className="text-[10px] font-bold text-[#C8A96A] uppercase tracking-wider mb-2">Mức độ phù hợp ngân sách</p>
+                <BudgetFitCard 
+                  total={lead.estimatedValueMax || lead.estimatedValueMin} 
+                  budgetMin={lead.budgetMin} 
+                  budgetMax={lead.budgetMax} 
+                  compact={true} 
+                  showAdvice={false} 
+                />
+              </div>
+            )}
           </div>
 
           {/* Products */}

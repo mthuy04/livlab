@@ -197,6 +197,9 @@ export interface Lead {
   roomType: string;
   roomSize?: string;
   budgetRange: string;
+  budgetMin?: number | null;
+  budgetMax?: number | null;
+  budgetFit?: string | null;
   style?: string;
   selectedConcept?: string;
   selectedProducts: QuoteItem[];

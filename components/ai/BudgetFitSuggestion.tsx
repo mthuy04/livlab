@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Sparkles, CheckCircle2, AlertCircle, RefreshCcw, ChevronRight, LayoutGrid } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import BudgetFitCard from '@/components/budget/BudgetFitCard';
 
 export default function BudgetFitSuggestion() {
   const router = useRouter();
@@ -86,6 +87,7 @@ export default function BudgetFitSuggestion() {
           conceptName: result.suggestion.recommendedConcept?.title || 'AI Suggestion',
           estimatedValue: result.suggestion.estimatedTotal,
           notes: `Style: ${formData.style}\nServices: ${formData.additionalServices.join(', ')}`,
+          budgetMax: formData.budgetMax,
           aiSummary: result.suggestion.summary,
           aiFitScore: result.suggestion.fitScore,
           aiSource: result.source,
@@ -261,8 +263,16 @@ export default function BudgetFitSuggestion() {
                   </div>
                   <div className="text-right">
                     <p className="text-[10px] uppercase font-bold text-[#627386] tracking-wider mb-1">Tổng chi phí dự kiến</p>
-                    <p className="text-2xl font-bold text-[#123C5A]">{fmtVnd(result.suggestion.estimatedTotal)}</p>
+                    <p className="text-2xl font-bold text-[#123C5A] mb-4">{fmtVnd(result.suggestion.estimatedTotal)}</p>
                   </div>
+                </div>
+                
+                <div className="mb-6">
+                  <BudgetFitCard 
+                    total={result.suggestion.estimatedTotal} 
+                    budgetMin={formData.budgetMin} 
+                    budgetMax={formData.budgetMax} 
+                  />
                 </div>
 
                 <div className="space-y-4">

@@ -17,6 +17,7 @@ import { Sparkles, Maximize2, Cuboid, CheckCircle, Upload, Plus, Trash2, Wallet,
 import Link from 'next/link';
 import { livlabImages } from '@/lib/livlabImages';
 import SafeImage from '@/components/ui/SafeImage';
+import BudgetFitCard from '@/components/budget/BudgetFitCard';
 
 const REQUIRED_CATEGORIES = ['lavabo', 'faucet', 'mirror', 'toilet', 'shower', 'accessory'];
 
@@ -273,6 +274,15 @@ export default function VisualStudioClient() {
     if (val === 0) return 'Liên hệ';
     return new Intl.NumberFormat('vi-VN').format(val) + 'đ';
   };
+
+  const getBudgetRangeValues = (label: string) => {
+    if (label === 'Dưới 30 triệu') return { min: 0, max: 30000000 };
+    if (label === '30–60 triệu') return { min: 30000000, max: 60000000 };
+    if (label === 'Trên 60 triệu') return { min: 60000000, max: 1000000000 }; // Arbitrary high max
+    return { min: null, max: null };
+  };
+
+  const { min: budgetMin, max: budgetMax } = getBudgetRangeValues(preferences.budget);
 
   if (dataError) {
     return (
@@ -540,9 +550,12 @@ export default function VisualStudioClient() {
                 </span>
                 <span className="text-xs bg-[#DCEBF5] text-[#123C5A] px-2 py-0.5 rounded font-bold">{layers.length} sản phẩm</span>
               </div>
-              <p className="text-[11px] text-[#627386] max-w-sm mt-0.5 line-clamp-1">
+              <p className="text-[11px] text-[#627386] max-w-sm mt-0.5 line-clamp-1 mb-2">
                 Giá tham khảo; showroom xác nhận giá cuối, tồn kho và phương án lắp đặt.
               </p>
+              <div className="w-full sm:w-[350px]">
+                <BudgetFitCard total={currentMin} budgetMin={budgetMin} budgetMax={budgetMax} compact={true} showAdvice={false} />
+              </div>
             </div>
           </div>
 

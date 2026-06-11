@@ -22,6 +22,14 @@ enum LeadStatus {
   LOST
 }
 
+enum BudgetFitStatus {
+  UNDER_BUDGET
+  WITHIN_BUDGET
+  SLIGHTLY_OVER_BUDGET
+  OVER_BUDGET
+  UNKNOWN
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -93,6 +101,9 @@ model QuoteLead {
   phone          String?
   roomType       String?
   budgetRange    String?
+  budgetMin      Int?
+  budgetMax      Int?
+  budgetFit      BudgetFitStatus? @default(UNKNOWN)
   conceptName    String?
   estimatedValue Int?
   status         LeadStatus  @default(NEW)

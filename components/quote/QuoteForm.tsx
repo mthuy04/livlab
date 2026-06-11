@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, FormEvent, useEffect } from 'react';
-import { Lead, QuoteItem } from '@/lib/types';
-import { addLead, getLeads, generateRequestCode, calculateQuoteTotalRange, getQuotePrefill, clearQuotePrefill } from '@/lib/storage';
+import { QuoteItem } from '@/lib/types';
+import { clearQuotePrefill, calculateQuoteTotalRange, getQuotePrefill } from '@/lib/storage';
 import { generateLeadId } from '@/lib/utils';
+import BudgetFitCard from '@/components/budget/BudgetFitCard';
 import { CheckCircle, Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/lib/context/AuthContext';
@@ -115,46 +116,59 @@ export default function QuoteForm({ quoteItems, onSuccess }: QuoteFormProps) {
     e.preventDefault();
     if (!validate()) return;
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 900));
 
-    const existingLeads = getLeads();
-    const requestCode = generateRequestCode(existingLeads);
-    const { min, max } = calculateQuoteTotalRange(quoteItems);
+    let parsedMin = null;
+    let parsedMax = null;
+    if (form.budgetRange === 'Dưới 30 triệu') {
+      parsedMin = 0; parsedMax = 30000000;
+    } else if (form.budgetRange === '30–60 triệu') {
+      parsedMin = 30000000; parsedMax = 60000000;
+    } else if (form.budgetRange === 'Trên 60 triệu') {
+      parsedMin = 60000000; parsedMax = 1000000000;
+    }
 
-    const lead: Lead = {
-      id:               crypto.randomUUID(),
-      requestCode:      requestCode,
-      customerId:       isCustomer ? user?.id : undefined,
-      customerEmail:    isCustomer ? user?.email : undefined,
-      customerName:     form.customerName,
-      phone:            form.phone,
-      email:            form.email || undefined,
-      roomType:         form.roomType,
-      roomSize:         form.roomSize || undefined,
-      budgetRange:      form.budgetRange,
-      style:            form.style || undefined,
-      selectedConcept:  form.selectedConcept || undefined,
-      selectedProducts: quoteItems.map((i) => ({ ...i })),
-      notes:            form.notes || undefined,
-      timeline:         form.timeline || undefined,
-      needsInstallation: form.needsInstallation,
-      consent:          form.consent,
-      status:           'Mới',
-      createdAt:        new Date().toISOString(),
-      estimatedValueMin: min,
-      estimatedValueMax: max,
-      statusHistory: [{
-        status: 'Mới',
-        at: new Date().toISOString(),
-        note: 'Khách hàng đã gửi yêu cầu báo giá.'
-      }]
-    };
-    console.log(`[LivLab] Lead created: ${requestCode}`);
-    addLead(lead);
-    clearQuotePrefill();
-    setLoading(false);
-    onSuccess(requestCode);
+    try {
+      const res = await fetch('/api/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerName: form.customerName,
+          phone: form.phone,
+          email: form.email,
+          roomType: form.roomType,
+          budgetRange: form.budgetRange,
+          budgetMin: parsedMin,
+          budgetMax: parsedMax,
+          conceptName: form.selectedConcept,
+          notes: form.notes + (form.timeline ? `\nTimeline: ${form.timeline}` : '') + (form.needsInstallation ? `\nNeeds Installation: Yes` : ''),
+          items: quoteItems,
+        })
+      });
+
+      if (!res.ok) throw new Error('Failed to submit quote');
+      
+      const data = await res.json();
+      console.log(`[LivLab] Lead created via API:`, data.lead.id);
+      
+      clearQuotePrefill();
+      onSuccess(data.lead.id);
+    } catch (err) {
+      console.error(err);
+      alert('Đã có lỗi xảy ra khi gửi yêu cầu báo giá.');
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const getBudgetRangeValues = (label: string) => {
+    if (label === 'Dưới 30 triệu') return { min: 0, max: 30000000 };
+    if (label === '30–60 triệu') return { min: 30000000, max: 60000000 };
+    if (label === 'Trên 60 triệu') return { min: 60000000, max: 1000000000 };
+    return { min: null, max: null };
+  };
+
+  const { min: currentBudgetMin, max: currentBudgetMax } = getBudgetRangeValues(form.budgetRange);
+  const { min: quoteTotalMin } = calculateQuoteTotalRange(quoteItems);
 
   return (
     <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-6 md:p-8 border border-[#D8E2EA] shadow-sm space-y-8 animate-fade-in-up">
@@ -262,6 +276,18 @@ export default function QuoteForm({ quoteItems, onSuccess }: QuoteFormProps) {
           Thông tin của bạn chỉ được dùng cho mục đích tư vấn và xử lý yêu cầu báo giá.
         </p>
       </div>
+
+      {/* Budget Fit Live Preview */}
+      {quoteItems.length > 0 && form.budgetRange && (
+        <div className="pt-4 border-t border-[#D8E2EA]">
+          <h3 className="text-base font-bold text-[#0B1623] mb-4">Mức độ phù hợp ngân sách</h3>
+          <BudgetFitCard 
+            total={quoteTotalMin} 
+            budgetMin={currentBudgetMin} 
+            budgetMax={currentBudgetMax} 
+          />
+        </div>
+      )}
 
       <button
         type="submit"

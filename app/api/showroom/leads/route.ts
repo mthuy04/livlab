@@ -59,7 +59,10 @@ export async function GET() {
       consent: l.consent,
       aiSummary: l.aiSummary,
       aiFitScore: l.aiFitScore,
-      aiSource: l.aiSource
+      aiSource: l.aiSource,
+      budgetMin: l.budgetMin,
+      budgetMax: l.budgetMax,
+      budgetFit: l.budgetFit
     }));
 
     return NextResponse.json({ leads: mappedLeads, source: 'database' });
