@@ -50,8 +50,11 @@ export async function POST(req: Request) {
         role: user.role
       }
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Registration error:', error);
+    if (error?.code === 'P2021' || error?.message?.includes('does not exist')) {
+      return NextResponse.json({ ok: false, error: 'Database schema has not been pushed. Please run npx prisma db push.' }, { status: 500 });
+    }
     return NextResponse.json({ ok: false, error: 'Có lỗi xảy ra khi đăng ký.' }, { status: 500 });
   }
 }
