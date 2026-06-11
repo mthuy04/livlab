@@ -1,26 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Midnight Water Luxury */
+  --bg-main: #F3F7FA;
+  --bg-secondary: #EEF4F7;
+  --bg-card: #FFFFFF;
+  --bg-ivory: #F8FBFD;
+  --bg-dark: #0B1623;
+  --bg-dark-2: #102A43;
+
+  --text-deep: #0B1623;
+  --text-muted: #627386;
+  --text-light: #8191A3;
+
+  --sage: #486581;
+  --deep-olive: #123C5A;
+  --soft-mint: #DCEBF5;
+  --copper: #C8A96A;
+
+  --border: #D8E2EA;
+  --border-strong: #AEBECD;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg-main: #F3F7FA;
+  --color-bg-secondary: #EEF4F7;
+  --color-bg-card: #FFFFFF;
+  --color-bg-ivory: #F8FBFD;
+  --color-bg-dark: #0B1623;
+  --color-text-deep: #0B1623;
+  --color-text-muted: #627386;
+  --color-sage: #486581;
+  --color-deep-olive: #123C5A;
+  --color-soft-mint: #DCEBF5;
+  --color-copper: #C8A96A;
+  --color-border: #D8E2EA;
+  --font-sans: 'Inter', system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #F3F7FA;
+  color: #0B1623;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #EEF4F7; }
+::-webkit-scrollbar-thumb { background: #486581; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #123C5A; }
+
+/* Hotspot pulse */
+@keyframes hotspot-pulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  70% { transform: scale(2); opacity: 0; }
+  100% { transform: scale(2); opacity: 0; }
+}
+.hotspot-pulse { animation: hotspot-pulse 2.2s ease-out infinite; }
+
+/* Fade in */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fade-in-up 0.35s ease-out forwards; }
+.animate-fade-in-up { animation: fade-in-up 0.25s ease-out forwards; }
+
+/* Slide in from right */
+@keyframes slide-in-right {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+.slide-in-right { animation: slide-in-right 0.3s ease-out forwards; }
+
+/* Toast */
+@keyframes toast-up {
+  from { opacity: 0; transform: translateY(16px) translateX(-50%); }
+  to   { opacity: 1; transform: translateY(0) translateX(-50%); }
+}
+.toast-enter { animation: toast-up 0.3s ease-out; }
+
+/* Drawer backdrop */
+.drawer-backdrop {
+  animation: fade-in-up 0.2s ease-out;
+}
+
+/* Premium Card System */
+.premium-card {
+  background: white;
+  border: 1px solid rgba(216, 226, 234, 0.95);
+  box-shadow: 0 18px 45px rgba(11, 22, 35, 0.055);
+  border-radius: 24px;
+  transition: all 0.3s ease-out;
+}
+.premium-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 24px 60px rgba(11, 22, 35, 0.09);
+  border-color: rgba(18, 60, 90, 0.26);
+}
+
+.premium-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: #EEF4F7;
+  border: 1px solid #D8E2EA;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #123C5A;
+  flex-shrink: 0;
+}
+
+.premium-icon-box.dark {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: #DCEBF5;
 }
