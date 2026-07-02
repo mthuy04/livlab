@@ -84,7 +84,13 @@ export default function ProductDetailClient({ product, gallery, reviews }: { pro
           )}
 
           {arModelUrl && (
-            <ARModelViewer modelUrl={arModelUrl} label={product.name} />
+            <ARModelViewer
+              modelUrl={arModelUrl}
+              label={product.name}
+              productId={product.id}
+              mountType={product.mountType}
+              usdzUrl={product.usdzUrl}
+            />
           )}
         </div>
 

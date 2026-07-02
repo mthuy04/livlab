@@ -68,8 +68,17 @@ export interface Product {
   size?: string;
   dimensions?: string;
   installationType?: string;
+  // Structured AR placement type, distinct from the free-text `installationType`
+  // (which holds unstructured Vietnamese phrases unsuitable for logic). Defaults
+  // to "floor" when unset — assign per-SKU manually, do not infer from name/text.
+  mountType?: 'wall' | 'floor';
   warranty?: string;
   origin?: string;
+
+  // Path to a pre-authored USDZ for this exact product, used as <model-viewer
+  // ios-src>. Leave unset until a real USDZ is exported and reviewed — do not
+  // rely on ios auto-generation from the GLB for production material quality.
+  usdzUrl?: string;
 
   image: string;
   images?: string[];

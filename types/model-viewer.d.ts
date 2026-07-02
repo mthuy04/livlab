@@ -10,6 +10,8 @@ type ModelViewerAttributes = DetailedHTMLProps<HTMLAttributes<ModelViewerElement
   'ios-src'?: string;
   ar?: boolean;
   'ar-modes'?: string;
+  'ar-scale'?: 'auto' | 'fixed';
+  'ar-placement'?: 'floor' | 'wall';
   'camera-controls'?: boolean;
   'auto-rotate'?: boolean;
   alt?: string;
