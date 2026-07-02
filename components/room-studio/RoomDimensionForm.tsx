@@ -18,6 +18,10 @@ export const TILE_COLOR_OPTIONS: TileColorOption[] = [
   { name: 'Xanh sage', hex: '#A8B5A0' },
   { name: 'Xanh navy đậm', hex: '#2C3E50' },
   { name: 'Nâu đất nung', hex: '#8B5A3C' },
+  { name: 'Xám đá', hex: '#6B6B68' },
+  { name: 'Hồng đất nhạt', hex: '#D6B7AC' },
+  { name: 'Xanh rêu đậm', hex: '#4A5D4E' },
+  { name: 'Trắng ngà ấm', hex: '#EDE6D6' },
 ];
 
 export const DIMENSION_LIMITS: Record<keyof RoomDimensions, { min: number; max: number; default: number }> = {
