@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, Html } from '@react-three/drei';
-import { AlertCircle } from 'lucide-react';
+import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
+import { AlertCircle, RotateCcw } from 'lucide-react';
 import ProductModel3D from '@/components/visual-studio/ProductModel3D';
 import { getProductModel, getProduct3DLabel, normalizeProduct3DCategory, Product3DCategory } from '@/lib/livlabProductModels';
 import { Product } from '@/lib/types';
@@ -48,12 +49,21 @@ function lightenHex(hex: string, ratio: number): string {
   return `#${channel(0)}${channel(2)}${channel(4)}`;
 }
 
+// Single source of truth for the "good angle" framing, shared by the Canvas's
+// initial/reactive camera prop and the "Xem góc chuẩn" reset button.
+function getDefaultCameraFraming(length: number, width: number, height: number) {
+  return {
+    position: [length * 0.55, height * 1.15, width * 1.9] as [number, number, number],
+    target: [0, height * 0.45, 0] as [number, number, number],
+  };
+}
+
 const CATEGORY_RELATIVE_POSITION: Record<string, { xFrac: number; y: number; zFrac: number }> = {
-  lavabo: { xFrac: -0.25, y: 0.45, zFrac: -0.35 },
-  faucet: { xFrac: -0.15, y: 0.9, zFrac: -0.35 },
-  toilet: { xFrac: 0.25, y: 0.45, zFrac: -0.25 },
-  shower: { xFrac: 0.35, y: 1.1, zFrac: 0.1 },
-  mirror: { xFrac: -0.25, y: 1.6, zFrac: -0.42 },
+  lavabo: { xFrac: -0.2, y: 0.45, zFrac: -0.28 },
+  faucet: { xFrac: -0.05, y: 0.9, zFrac: -0.28 },
+  toilet: { xFrac: 0.25, y: 0.45, zFrac: -0.2 },
+  shower: { xFrac: 0.32, y: 1.1, zFrac: 0.05 },
+  mirror: { xFrac: -0.2, y: 1.6, zFrac: -0.28 },
 };
 
 // getProductModel/normalizeProduct3DCategory only read id/slug/name/category,
@@ -71,12 +81,33 @@ interface RoomScene3DProps {
 
 export default function RoomScene3D({ length, width, height, tileColorHex }: RoomScene3DProps) {
   const wallColorHex = lightenHex(tileColorHex, 0.35);
+  const [hoveredKey, setHoveredKey] = useState<string | null>(null);
+  const controlsRef = useRef<OrbitControlsImpl>(null);
+  const { position: defaultPosition, target: defaultTarget } = getDefaultCameraFraming(length, width, height);
+
+  const resetCamera = () => {
+    const controls = controlsRef.current;
+    if (!controls) return;
+    const { position, target } = getDefaultCameraFraming(length, width, height);
+    controls.object.position.set(...position);
+    controls.target.set(...target);
+    controls.update();
+  };
 
   return (
     <div className="w-full aspect-[4/3] md:aspect-[16/9] relative bg-[#F8FAFC] rounded-3xl border border-[#D8E2EA] overflow-hidden shadow-inner">
+      <button
+        type="button"
+        onClick={resetCamera}
+        className="absolute top-3 right-3 z-10 flex items-center gap-1.5 bg-white/90 backdrop-blur px-3 py-1.5 rounded-full text-xs font-bold text-[#0B1623] shadow-sm border border-white/50 hover:bg-white transition-colors"
+      >
+        <RotateCcw className="w-3.5 h-3.5" />
+        Xem góc chuẩn
+      </button>
+
       <CanvasErrorBoundary>
         <Canvas
-          camera={{ position: [0, 1.5, 4], fov: 45 }}
+          camera={{ position: defaultPosition, fov: 45 }}
           className="w-full h-full bg-[#E5E9EC]"
           dpr={[1, 1.5]}
           gl={{ antialias: true, powerPreference: "high-performance" }}
@@ -87,11 +118,12 @@ export default function RoomScene3D({ length, width, height, tileColorHex }: Roo
           <Environment preset="city" />
 
           <OrbitControls
+            ref={controlsRef}
             enablePan={true}
             enableZoom={true}
             minPolarAngle={0}
             maxPolarAngle={Math.PI / 2 + 0.1}
-            target={[0, height / 2, 0]}
+            target={defaultTarget}
           />
 
           {/* Floor */}
@@ -127,15 +159,21 @@ export default function RoomScene3D({ length, width, height, tileColorHex }: Roo
             const label = getProduct3DLabel(product);
             return (
               <React.Fragment key={categoryKey}>
-                <mesh position={position}>
+                <mesh
+                  position={position}
+                  onPointerOver={(e) => { e.stopPropagation(); setHoveredKey(categoryKey); }}
+                  onPointerOut={(e) => { e.stopPropagation(); setHoveredKey((prev) => (prev === categoryKey ? null : prev)); }}
+                >
                   <boxGeometry args={[0.4, 0.4, 0.4]} />
                   <meshStandardMaterial color="#C8A96A" opacity={0.3} transparent />
                 </mesh>
-                <Html position={position} center>
-                  <div className="px-2 py-1 rounded-md bg-white text-[#0B1623] text-[10px] font-medium shadow-sm whitespace-nowrap">
-                    {label} — model đang cập nhật
-                  </div>
-                </Html>
+                {hoveredKey === categoryKey && (
+                  <Html position={position} center pointerEvents="none">
+                    <div className="px-2 py-1 rounded-md bg-white text-[#0B1623] text-[10px] font-medium shadow-sm whitespace-nowrap">
+                      {label} — model đang cập nhật
+                    </div>
+                  </Html>
+                )}
               </React.Fragment>
             );
           })}
