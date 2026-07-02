@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Concept } from '@/lib/types';
 import { ArrowUpRight, Layers, Image as ImageIcon } from 'lucide-react';
 import SaveButton from '@/components/concepts/SaveButton';
+import ConceptPopularityBadge from '@/components/concepts/ConceptPopularityBadge';
 import SafeImage from '@/components/ui/SafeImage';
 import { useState } from 'react';
 import { livlabImages } from '@/lib/livlabImages';
@@ -124,6 +125,9 @@ export default function ConceptCard({ concept, priority = false }: ConceptCardPr
               • {budgetVi[concept.budgetRange] || concept.budgetRange}
             </span>
           </div>
+
+          <ConceptPopularityBadge title={concept.title} className="mb-3" />
+
 
           <h3 className="text-base font-semibold text-[#0B1623] mb-3 leading-snug group-hover:text-[#123C5A] transition-colors">
             <Link href={`/concepts/${concept.slug}`} className="before:absolute before:inset-0">

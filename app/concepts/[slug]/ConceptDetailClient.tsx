@@ -9,6 +9,7 @@ import ConceptCard from '@/components/concepts/ConceptCard';
 import Link from 'next/link';
 import { ChevronRight, ArrowRight, CheckCircle, MapPin, Layers, Wallet, LayoutGrid } from 'lucide-react';
 import ConceptActions from '@/components/concepts/ConceptActions';
+import ConceptPopularityBadge from '@/components/concepts/ConceptPopularityBadge';
 
 const roomTypeVi: Record<string, string> = {
   Bathroom: 'Phòng tắm', 'Living Room': 'Phòng khách', Kitchen: 'Bếp', Studio: 'Studio',
@@ -108,6 +109,7 @@ export default function ConceptDetailClient({ slug }: { slug: string }) {
             <span className="text-[11px] font-semibold uppercase tracking-widest bg-[#EEF4F7] text-[#627386] px-3 py-1 rounded-full">
               {roomTypeVi[concept.roomType] || concept.roomType}
             </span>
+            <ConceptPopularityBadge title={concept.title} />
           </div>
           <h1 className="text-3xl lg:text-5xl font-bold text-[#0B1623] mb-3">{concept.title}</h1>
           <p className="text-[#627386] text-lg max-w-2xl leading-relaxed">{concept.description}</p>
