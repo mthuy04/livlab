@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Suspense, useMemo, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, Html, useGLTF } from '@react-three/drei';
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
@@ -133,23 +133,17 @@ interface RoomScene3DProps {
   height: number;
   tileColorHex: string;
   visibleCategories: Set<string>;
-  activeCategory: string | null;
   placedPositions: Record<string, [number, number, number] | null>;
   onPlacePosition: (category: string, point: [number, number, number]) => void;
+  cameraRef: React.MutableRefObject<THREE.Camera | null>;
 }
 
-export default function RoomScene3D({ length, width, height, tileColorHex, visibleCategories, activeCategory, placedPositions, onPlacePosition }: RoomScene3DProps) {
+export default function RoomScene3D({ length, width, height, tileColorHex, visibleCategories, placedPositions, onPlacePosition, cameraRef }: RoomScene3DProps) {
   const wallColorHex = lightenHex(tileColorHex, 0.35);
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
   const controlsRef = useRef<OrbitControlsImpl>(null);
+  const dropContainerRef = useRef<HTMLDivElement>(null);
   const { position: defaultPosition, target: defaultTarget } = getDefaultCameraFraming(length, width, height);
-
-  // Defensive reset so the cursor never gets stuck as "crosshair" if
-  // placement mode is cancelled without the pointer leaving the floor.
-  useEffect(() => {
-    if (!activeCategory) document.body.style.cursor = 'auto';
-    return () => { document.body.style.cursor = 'auto'; };
-  }, [activeCategory]);
 
   const floorTexture = useMemo(() => createTileTexture(tileColorHex, length / 0.3, width / 0.3), [tileColorHex, length, width]);
   const backWallTexture = useMemo(() => createTileTexture(wallColorHex, length / 0.3, height / 0.3), [wallColorHex, length, height]);
@@ -164,8 +158,45 @@ export default function RoomScene3D({ length, width, height, tileColorHex, visib
     controls.update();
   };
 
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const category = e.dataTransfer.getData('category');
+    const categoryDefaults = CATEGORY_RELATIVE_POSITION[category];
+    const camera = cameraRef.current;
+    const container = dropContainerRef.current;
+    if (!category || !categoryDefaults || !camera || !container) return;
+
+    const rect = container.getBoundingClientRect();
+    const ndcX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    const ndcY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(new THREE.Vector2(ndcX, ndcY), camera);
+
+    const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+    const intersection = new THREE.Vector3();
+    if (!raycaster.ray.intersectPlane(plane, intersection)) return;
+
+    const marginX = length / 2 - 0.2;
+    const marginZ = width / 2 - 0.2;
+    const x = Math.min(marginX, Math.max(-marginX, intersection.x));
+    const z = Math.min(marginZ, Math.max(-marginZ, intersection.z));
+
+    onPlacePosition(category, [x, categoryDefaults.y, z]);
+  };
+
   return (
-    <div className="w-full aspect-[4/3] md:aspect-[16/9] relative bg-[#F8FAFC] rounded-3xl border border-[#D8E2EA] overflow-hidden shadow-inner">
+    <div
+      ref={dropContainerRef}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+      className="w-full aspect-[4/3] md:aspect-[16/9] relative bg-[#F8FAFC] rounded-3xl border border-[#D8E2EA] overflow-hidden shadow-inner"
+    >
       <button
         type="button"
         onClick={resetCamera}
@@ -178,6 +209,7 @@ export default function RoomScene3D({ length, width, height, tileColorHex, visib
       <CanvasErrorBoundary>
         <Canvas
           camera={{ position: defaultPosition, fov: 45 }}
+          onCreated={(state) => { cameraRef.current = state.camera; }}
           className="w-full h-full bg-[#E5E9EC]"
           dpr={[1, 1.5]}
           gl={{ antialias: true, powerPreference: "high-performance" }}
@@ -197,31 +229,7 @@ export default function RoomScene3D({ length, width, height, tileColorHex, visib
           />
 
           {/* Floor */}
-          <mesh
-            rotation={[-Math.PI / 2, 0, 0]}
-            position={[0, 0, 0]}
-            onClick={(e) => {
-              if (!activeCategory) return;
-              e.stopPropagation();
-              const categoryDefaults = CATEGORY_RELATIVE_POSITION[activeCategory];
-              if (!categoryDefaults) return;
-              const marginX = length / 2 - 0.2;
-              const marginZ = width / 2 - 0.2;
-              const x = Math.min(marginX, Math.max(-marginX, e.point.x));
-              const z = Math.min(marginZ, Math.max(-marginZ, e.point.z));
-              onPlacePosition(activeCategory, [x, categoryDefaults.y, z]);
-            }}
-            onPointerOver={(e) => {
-              if (activeCategory) {
-                e.stopPropagation();
-                document.body.style.cursor = 'crosshair';
-              }
-            }}
-            onPointerOut={(e) => {
-              e.stopPropagation();
-              document.body.style.cursor = 'auto';
-            }}
-          >
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
             <planeGeometry args={[length, width]} />
             <meshStandardMaterial map={floorTexture ?? undefined} roughness={0.35} metalness={0.05} />
           </mesh>

@@ -1,8 +1,10 @@
 'use client';
 
-import { useDeferredValue, useState } from 'react';
+import { useDeferredValue, useRef, useState } from 'react';
+import type { Camera } from 'three';
 import RoomDimensionForm, { RoomDimensions, DIMENSION_LIMITS, TILE_COLOR_OPTIONS } from '@/components/room-studio/RoomDimensionForm';
 import RoomScene3D from '@/components/room-studio/RoomScene3D';
+import ProductPanel from '@/components/room-studio/ProductPanel';
 import { availableProductModels, Product3DCategory } from '@/lib/livlabProductModels';
 
 const CATEGORY_OPTIONS: { key: Product3DCategory; label: string }[] = [
@@ -25,24 +27,31 @@ export default function RoomStudioClient() {
   });
   const [tileColorHex, setTileColorHex] = useState<string>(TILE_COLOR_OPTIONS[0].hex);
   const [visibleCategories, setVisibleCategories] = useState<Set<string>>(DEFAULT_VISIBLE_CATEGORIES);
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [placedPositions, setPlacedPositions] = useState<Record<string, [number, number, number] | null>>({});
+  const cameraRef = useRef<Camera | null>(null);
 
-  const toggleCategory = (key: string) => {
+  const handleHideCategory = (key: string) => {
     setVisibleCategories((prev) => {
+      if (!prev.has(key)) return prev;
       const next = new Set(prev);
-      if (next.has(key)) next.delete(key); else next.add(key);
+      next.delete(key);
       return next;
     });
   };
 
   const handlePlacePosition = (category: string, point: [number, number, number]) => {
     setPlacedPositions((prev) => ({ ...prev, [category]: point }));
+    setVisibleCategories((prev) => {
+      if (prev.has(category)) return prev;
+      const next = new Set(prev);
+      next.add(category);
+      return next;
+    });
   };
 
   // Defers Canvas re-renders behind fast typing/clicking in the form, without
   // hand-rolled debounce logic. Placement state is deliberately excluded —
-  // click-to-place needs to feel immediate, not debounced.
+  // drag-and-drop needs to feel immediate, not debounced.
   const sceneInput = useDeferredValue({ ...dimensions, tileColorHex, visibleCategories });
   const floorAreaM2 = dimensions.length * dimensions.width;
   const volumeM3 = dimensions.length * dimensions.width * dimensions.height;
@@ -76,47 +85,7 @@ export default function RoomStudioClient() {
                 Diện tích sàn: <strong className="text-[#0B1623]">{floorAreaM2.toFixed(1)} m²</strong> · Thể tích: <strong className="text-[#0B1623]">{volumeM3.toFixed(1)} m³</strong>
               </p>
 
-              <div className="bg-white rounded-3xl border border-[#D8E2EA] p-6">
-                <h3 className="text-xs font-bold text-[#0B1623] uppercase tracking-wider mb-1">Hiện sản phẩm</h3>
-                <p className="text-[11px] text-[#627386] mb-4">Bấm tên sản phẩm rồi bấm vào sàn để đặt lại vị trí.</p>
-                <div className="space-y-2">
-                  {CATEGORY_OPTIONS.map(({ key, label }) => {
-                    const available = !!availableProductModels[key];
-                    const checked = visibleCategories.has(key);
-                    const isActive = activeCategory === key;
-                    const canActivate = available && checked;
-                    return (
-                      <div key={key} className="flex items-center gap-2.5 text-sm">
-                        <input
-                          type="checkbox"
-                          checked={checked}
-                          disabled={!available}
-                          onChange={() => toggleCategory(key)}
-                          className="w-4 h-4 shrink-0 rounded border-[#D8E2EA] accent-[#0F3D5C] disabled:opacity-50"
-                        />
-                        <button
-                          type="button"
-                          disabled={!canActivate}
-                          onClick={() => setActiveCategory((prev) => (prev === key ? null : key))}
-                          className={`flex-1 text-left px-2 py-1 rounded-lg border transition-colors ${
-                            isActive
-                              ? 'border-[#C8A96A] bg-[#FBF6EC] text-[#0B1623] font-semibold'
-                              : canActivate
-                              ? 'border-transparent text-[#0B1623] hover:border-[#D8E2EA]'
-                              : 'border-transparent text-[#627386]/60 cursor-not-allowed'
-                          }`}
-                        >
-                          {label}
-                          {!available && <span className="text-xs italic ml-1">(sắp có)</span>}
-                        </button>
-                      </div>
-                    );
-                  })}
-                </div>
-                {activeCategory && (
-                  <p className="mt-3 text-[11px] text-[#C8A96A] font-medium">Đang chờ đặt — bấm vào sàn để chọn vị trí.</p>
-                )}
-              </div>
+              <ProductPanel visibleCategories={visibleCategories} onHideCategory={handleHideCategory} />
             </div>
           </div>
 
@@ -127,9 +96,9 @@ export default function RoomStudioClient() {
               height={sceneInput.height}
               tileColorHex={sceneInput.tileColorHex}
               visibleCategories={sceneInput.visibleCategories}
-              activeCategory={activeCategory}
               placedPositions={placedPositions}
               onPlacePosition={handlePlacePosition}
+              cameraRef={cameraRef}
             />
           </div>
         </div>
