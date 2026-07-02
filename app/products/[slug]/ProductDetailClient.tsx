@@ -5,6 +5,8 @@ import { Product, ProductReview } from '@/lib/types';
 import { useState } from 'react';
 import { useQuote } from '@/lib/context/QuoteContext';
 import ProductImageFallback from '@/components/products/ProductImageFallback';
+import ARModelViewer from '@/components/products/ARModelViewer';
+import { getProductModel } from '@/lib/livlabProductModels';
 import { CheckCircle, MapPin, Tag, Palette, Box, Layers, ShieldCheck, ShieldAlert, Star, ExternalLink } from 'lucide-react';
 
 export default function ProductDetailClient({ product, gallery, reviews }: { product: Product, gallery: string[], reviews: ProductReview[] }) {
@@ -25,6 +27,7 @@ export default function ProductDetailClient({ product, gallery, reviews }: { pro
   };
 
   const currentImage = gallery[selectedImageIdx] || null;
+  const arModelUrl = getProductModel(product);
 
   const renderSuitableTags = () => {
     const tags = [];
@@ -78,6 +81,10 @@ export default function ProductDetailClient({ product, gallery, reviews }: { pro
                 </button>
               ))}
             </div>
+          )}
+
+          {arModelUrl && (
+            <ARModelViewer modelUrl={arModelUrl} label={product.name} />
           )}
         </div>
 
