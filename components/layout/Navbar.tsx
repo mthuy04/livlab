@@ -14,6 +14,7 @@ const exploreLinks = [
   { href: '/small-bathroom-combo', label: 'Combo phòng tắm' },
   { href: '/ai-suggestion',        label: 'Gợi ý AI' },
   { href: '/visual-studio',        label: 'Visual Studio' },
+  { href: '/room-studio',          label: 'Room Studio' },
   { href: '/blog',                 label: 'Cẩm nang' },
 ];
 
