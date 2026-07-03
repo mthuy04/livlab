@@ -79,5 +79,25 @@ export function useObjectCoverHotspots<T extends HTMLElement = HTMLDivElement>()
     [box]
   );
 
-  return { containerRef, imgRef, onImageLoad, toDisplayPercent, isMeasured: box !== null };
+  // Inverse of toDisplayPercent: given a % position on the RENDERED (cropped) container,
+  // returns the equivalent % against the image's natural dimensions — i.e. what should
+  // actually be stored as xPercent/yPercent so toDisplayPercent reproduces this same spot.
+  const toNaturalPercent = useCallback(
+    (displayLeftPercent: number, displayTopPercent: number): { xPercent: number; yPercent: number } => {
+      if (!box) return { xPercent: displayLeftPercent, yPercent: displayTopPercent };
+      const { containerWidth, containerHeight, naturalWidth, naturalHeight } = box;
+      const scale = Math.max(containerWidth / naturalWidth, containerHeight / naturalHeight);
+      const displayedWidth = naturalWidth * scale;
+      const displayedHeight = naturalHeight * scale;
+      const cropX = (displayedWidth - containerWidth) / 2;
+      const cropY = (displayedHeight - containerHeight) / 2;
+      return {
+        xPercent: (((displayLeftPercent / 100) * containerWidth + cropX) / displayedWidth) * 100,
+        yPercent: (((displayTopPercent / 100) * containerHeight + cropY) / displayedHeight) * 100,
+      };
+    },
+    [box]
+  );
+
+  return { containerRef, imgRef, onImageLoad, toDisplayPercent, toNaturalPercent, isMeasured: box !== null };
 }
