@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { LogOut, Users, Package, FileText, TrendingUp, Download, Eye, Link } from 'lucide-react';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { showroomAnalytics } from '@/lib/showroomDemoData';
+import DemoDataBadge from '@/components/ui/DemoDataBadge';
 import { Lead, LeadStatus } from '@/lib/types';
 import LeadTable from '@/components/showroom/LeadTable';
 import LeadKanban from '@/components/showroom/LeadKanban';
@@ -146,7 +147,10 @@ export default function ShowroomDashboard() {
         {/* Analytics Section */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="bg-white rounded-[20px] border border-[#D8E3EC] shadow-sm p-6 lg:col-span-2">
-            <h2 className="text-lg font-bold text-[#0B1623] mb-6">Xu hướng lead trong tuần</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-bold text-[#0B1623]">Xu hướng lead trong tuần</h2>
+              <DemoDataBadge />
+            </div>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={showroomAnalytics.weeklyRequests}>
@@ -164,7 +168,10 @@ export default function ShowroomDashboard() {
           </div>
 
           <div className="bg-white rounded-[20px] border border-[#D8E3EC] shadow-sm p-6">
-            <h2 className="text-lg font-bold text-[#0B1623] mb-6">Phân bổ ngân sách khách hàng</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-bold text-[#0B1623]">Phân bổ ngân sách khách hàng</h2>
+              <DemoDataBadge />
+            </div>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -192,7 +199,10 @@ export default function ShowroomDashboard() {
           </div>
 
           <div className="bg-white rounded-[20px] border border-[#D8E3EC] shadow-sm p-6 lg:col-span-3">
-            <h2 className="text-lg font-bold text-[#0B1623] mb-6">Lead theo trạng thái</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-bold text-[#0B1623]">Lead theo trạng thái</h2>
+              <DemoDataBadge />
+            </div>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={showroomAnalytics.leadStatusDistribution} barSize={40}>

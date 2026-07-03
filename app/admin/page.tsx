@@ -10,6 +10,7 @@ import LeadKanban from '@/components/showroom/LeadKanban';
 import LeadDetailModal from '@/components/showroom/LeadDetailModal';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { adminDemoAnalytics } from '@/lib/adminDemoAnalytics';
+import DemoDataBadge from '@/components/ui/DemoDataBadge';
 
 const COLORS = ['#123C5A', '#C8A96A', '#486581', '#D8E2EA', '#F05252'];
 
@@ -171,7 +172,10 @@ export default function AdminDashboardPage() {
       {/* Analytics Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="bg-white rounded-2xl border border-[#D8E2EA] shadow-sm p-6 lg:col-span-2">
-          <h2 className="text-lg font-bold text-[#0B1623] mb-6">Xu hướng yêu cầu báo giá</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg font-bold text-[#0B1623]">Xu hướng yêu cầu báo giá</h2>
+            <DemoDataBadge />
+          </div>
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={adminDemoAnalytics.weeklyRequests}>
@@ -189,7 +193,10 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="bg-white rounded-2xl border border-[#D8E2EA] shadow-sm p-6">
-          <h2 className="text-lg font-bold text-[#0B1623] mb-6">Phân bổ ngân sách</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg font-bold text-[#0B1623]">Phân bổ ngân sách</h2>
+            <DemoDataBadge />
+          </div>
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -217,7 +224,10 @@ export default function AdminDashboardPage() {
         </div>
 
         <div className="bg-white rounded-2xl border border-[#D8E2EA] shadow-sm p-6 lg:col-span-3">
-          <h2 className="text-lg font-bold text-[#0B1623] mb-6">Lead theo trạng thái</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg font-bold text-[#0B1623]">Lead theo trạng thái</h2>
+            <DemoDataBadge />
+          </div>
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={adminDemoAnalytics.leadStatusDistribution} barSize={40}>

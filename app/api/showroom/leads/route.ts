@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { demoShowroomLeads } from '@/lib/showroomDemoData';
+import { getSessionUser, hasRole, unauthorized, forbidden, showroomScopeFilter } from '@/lib/auth/session';
 
 export async function GET() {
+  const user = await getSessionUser();
+  if (!user) return unauthorized();
+  if (!hasRole(user, 'ADMIN', 'SHOWROOM')) return forbidden();
+
   try {
-    // Ideally we would filter by the logged-in user's showroomId
-    // For now, we fetch leads assigned to the default showroom or all
     const leads = await prisma.quoteLead.findMany({
+      where: showroomScopeFilter(user),
       include: {
         items: {
           include: { product: true }
@@ -16,7 +20,11 @@ export async function GET() {
       orderBy: { createdAt: 'desc' }
     });
 
-    if (leads.length === 0 && process.env.NODE_ENV === 'development') {
+    // Only ADMIN's unscoped query can tell us the table itself is empty. A SHOWROOM
+    // user's result being empty may just mean they're correctly scoped to zero
+    // (e.g. not assigned to a showroom yet) — showing demo data there would defeat
+    // the showroom scoping this route exists to enforce.
+    if (leads.length === 0 && process.env.NODE_ENV === 'development' && user.role === 'ADMIN') {
       console.log('[API] DB rỗng, trả về fallback demo data (Development)');
       return NextResponse.json({ leads: demoShowroomLeads, source: 'fallback' });
     }

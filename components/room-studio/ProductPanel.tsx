@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Product } from '@/lib/types';
-import { normalizeProduct3DCategory, Product3DCategory } from '@/lib/livlabProductModels';
+import { normalizeProduct3DCategory, Product3DCategory, availableProductModels } from '@/lib/livlabProductModels';
 import { X } from 'lucide-react';
 
 const CATEGORY_OPTIONS: { key: Product3DCategory; label: string }[] = [
@@ -61,13 +61,21 @@ export default function ProductPanel({ visibleCategories, onHideCategory }: Prod
           {CATEGORY_OPTIONS.map(({ key, label }) => {
             const product = productsByCategory[key];
             const isVisible = visibleCategories.has(key);
+            const hasModel = availableProductModels[key];
             return (
               <div
                 key={key}
-                draggable
-                onDragStart={(e) => handleDragStart(e, key)}
-                className="relative flex gap-3 border border-[#D8E2EA] rounded-2xl p-3 cursor-grab active:cursor-grabbing hover:border-[#C8A96A]/60 transition-colors bg-white"
+                draggable={hasModel}
+                onDragStart={(e) => hasModel && handleDragStart(e, key)}
+                className={`relative flex gap-3 border border-[#D8E2EA] rounded-2xl p-3 transition-colors bg-white ${
+                  hasModel ? 'cursor-grab active:cursor-grabbing hover:border-[#C8A96A]/60' : 'opacity-60 cursor-not-allowed'
+                }`}
               >
+                {!hasModel && (
+                  <span className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-[#0B1623] text-white text-[9px] font-bold uppercase tracking-wide shadow-sm">
+                    Sắp có
+                  </span>
+                )}
                 {isVisible && (
                   <button
                     type="button"

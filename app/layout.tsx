@@ -6,6 +6,7 @@ import QuoteDrawer from '@/components/quote/QuoteDrawer';
 import { QuoteProvider } from '@/lib/context/QuoteContext';
 import { AuthProvider } from '@/lib/context/AuthContext';
 import FloatingSupportButton from '@/components/support/FloatingSupportButton';
+import CatalogSync from '@/components/layout/CatalogSync';
 
 export const metadata: Metadata = {
   title: 'LivLab — Số hoá trải nghiệm chọn mua nội thất',
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#F3F7FA] text-[#0B1623] antialiased" suppressHydrationWarning>
         <AuthProvider>
           <QuoteProvider>
+            <CatalogSync />
             <Navbar />
             <QuoteDrawer />
             <main className="flex-1">{children}</main>

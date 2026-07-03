@@ -244,7 +244,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
                 <Link href="/concepts" className="w-full sm:w-auto px-6 py-3.5 bg-white text-[#0B1623] border border-[#D8E2EA] font-bold rounded-xl hover:bg-[#F3F7FA] transition-colors flex items-center justify-center gap-2">
                   <LayoutGrid className="w-4 h-4" /> Khám phá concept
                 </Link>
-                <Link href="/suggestion" className="w-full sm:w-auto px-6 py-3.5 bg-white text-[#0B1623] border border-[#D8E2EA] font-bold rounded-xl hover:bg-[#F3F7FA] transition-colors flex items-center justify-center gap-2">
+                <Link href="/ai-suggestion" className="w-full sm:w-auto px-6 py-3.5 bg-white text-[#0B1623] border border-[#D8E2EA] font-bold rounded-xl hover:bg-[#F3F7FA] transition-colors flex items-center justify-center gap-2">
                   <Lightbulb className="w-4 h-4" /> Nhận gợi ý theo ngân sách
                 </Link>
                 <Link href="/quote" className="w-full sm:w-auto px-6 py-3.5 bg-[#123C5A] text-white font-bold rounded-xl hover:bg-[#0B1623] transition-colors flex items-center justify-center gap-2">
@@ -319,7 +319,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
                   <Link href="/quote" className="block text-center w-full py-3 bg-[#123C5A] hover:bg-[#0B1623] text-white font-bold rounded-xl transition-colors">
                     Yêu cầu báo giá
                   </Link>
-                  <Link href="/suggestion" className="block text-center w-full py-3 bg-[#F3F7FA] hover:bg-[#EEF4F7] text-[#123C5A] font-bold rounded-xl transition-colors">
+                  <Link href="/ai-suggestion" className="block text-center w-full py-3 bg-[#F3F7FA] hover:bg-[#EEF4F7] text-[#123C5A] font-bold rounded-xl transition-colors">
                     Nhận gợi ý ngân sách
                   </Link>
                 </div>

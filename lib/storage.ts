@@ -289,3 +289,20 @@ export function seedRichProductCatalogIfNeeded(force = false): void {
     console.log('Seeded rich catalogue successfully!');
   }
 }
+
+// ─── Server sync ──────────────────────────────────────────────────────────────
+export async function syncProductCatalogFromServer(): Promise<void> {
+  try {
+    const res = await fetch('/api/products');
+    if (!res.ok) throw new Error(`Unexpected response: ${res.status}`);
+    const data = await res.json();
+    if (data.isEmpty) {
+      seedRichProductCatalogIfNeeded();
+    } else if (data.products) {
+      saveStoredProducts(data.products);
+    }
+  } catch (error) {
+    console.error('Failed to sync product catalog from server, falling back to demo data:', error);
+    seedRichProductCatalogIfNeeded();
+  }
+}

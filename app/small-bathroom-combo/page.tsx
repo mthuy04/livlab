@@ -3,23 +3,19 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Concept, Product } from '@/lib/types';
-import { getStoredConcepts, getStoredProducts } from '@/lib/storage';
+import { Product } from '@/lib/types';
+import { getStoredProducts } from '@/lib/storage';
 import { combos, ComboPackage } from '@/lib/smallBathroomCombos';
 import { useQuote } from '@/lib/context/QuoteContext';
-import { CheckCircle, AlertTriangle, ArrowRight, LayoutGrid, Droplet, Zap, Star } from 'lucide-react';
-import ConceptCard from '@/components/concepts/ConceptCard';
-import ProductCard from '@/components/products/ProductCard';
+import { CheckCircle, AlertTriangle, Droplet, Zap, Star } from 'lucide-react';
 
 export default function SmallBathroomComboPage() {
   const router = useRouter();
   const { addItem } = useQuote();
-  const [concepts, setConcepts] = useState<Concept[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setConcepts(getStoredConcepts() || []);
     setProducts(getStoredProducts() || []);
     setLoading(false);
   }, []);
@@ -29,18 +25,18 @@ export default function SmallBathroomComboPage() {
     // First, filter products that fit the budget roughly
     const isEconomy = combo.productSelectionRules.budgetSegment === 'Economy';
     const isPremium = combo.productSelectionRules.budgetSegment === 'Premium';
-    
+
     // Sort products logically to pick the best match
     // E.g. cheaper products for Economy, expensive for Premium
     const sortedProducts = [...products].sort((a, b) => {
       if (isEconomy) return a.priceMin - b.priceMin;
       if (isPremium) return b.priceMin - a.priceMin;
-      // Mid-range: random sort or middle
-      return 0.5 - Math.random();
+      // Mid-range: highest popularity first, so results are stable across clicks
+      return (b.popularity ?? 0) - (a.popularity ?? 0);
     });
 
     const selectedProducts: Product[] = [];
-    
+
     for (const cat of combo.productSelectionRules.categories) {
       const match = sortedProducts.find(p => p.category === cat && !selectedProducts.find(sp => sp.id === p.id));
       if (match) {
@@ -59,15 +55,6 @@ export default function SmallBathroomComboPage() {
   };
 
   if (loading) return <div className="min-h-screen bg-[#F3F7FA] pt-24 pb-20"></div>;
-
-  // Filter concepts
-  const featuredConcepts = concepts
-    .filter(c => c.roomType === 'Bathroom' || c.roomType === 'Phòng tắm')
-    .slice(0, 3);
-
-  // Filter products by representative categories
-  const featuredCats = ['Lavabo', 'Vòi chậu', 'Bồn cầu', 'Sen tắm'];
-  const featuredProducts = products.filter(p => featuredCats.includes(p.category)).slice(0, 4);
 
   return (
     <div className="pt-16 bg-[#F3F7FA] min-h-screen">
@@ -88,14 +75,11 @@ export default function SmallBathroomComboPage() {
               <a href="#packages" className="px-8 py-4 bg-[#123C5A] text-white font-semibold rounded-full hover:bg-[#123C5A]/80 transition-colors">
                 Khám phá combo
               </a>
-              <Link href="/suggestion" className="px-8 py-4 bg-white/10 text-white font-semibold rounded-full hover:bg-white/20 transition-colors border border-white/20">
-                Nhận gợi ý
-              </Link>
-              <Link href="/visual-studio" className="px-8 py-4 bg-white/10 text-white font-semibold rounded-full hover:bg-white/20 transition-colors border border-white/20 flex items-center gap-2">
-                <LayoutGrid className="w-5 h-5" /> Visual Studio
+              <Link href="/ai-suggestion" className="px-8 py-4 bg-white/10 text-white font-semibold rounded-full hover:bg-white/20 transition-colors border border-white/20">
+                Nhận gợi ý AI cá nhân hoá
               </Link>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-4 text-sm text-white/70">
               <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#486581]" /> Concept rõ ràng</div>
               <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#486581]" /> Sản phẩm đồng bộ</div>
@@ -165,7 +149,7 @@ export default function SmallBathroomComboPage() {
                 <h3 className="text-2xl font-bold text-[#0B1623] mb-2 mt-4">{combo.name}</h3>
                 <p className="text-3xl font-bold text-[#123C5A] mb-4">{combo.budgetLabel}</p>
                 <p className="text-sm text-[#627386] mb-6 min-h-[60px]">{combo.description}</p>
-                
+
                 <div className="mb-6">
                   <p className="text-xs font-bold uppercase text-[#0B1623] tracking-wider mb-2">Phù hợp cho:</p>
                   <ul className="space-y-1.5 mb-6">
@@ -175,7 +159,7 @@ export default function SmallBathroomComboPage() {
                       </li>
                     ))}
                   </ul>
-                  
+
                   <p className="text-xs font-bold uppercase text-[#0B1623] tracking-wider mb-2">Bao gồm:</p>
                   <ul className="space-y-1.5">
                     {combo.includedCategories.map((cat, i) => (
@@ -185,16 +169,16 @@ export default function SmallBathroomComboPage() {
                     ))}
                   </ul>
                 </div>
-                
+
                 <div className="mt-auto space-y-3">
-                  <button 
+                  <button
                     onClick={() => handleAddComboToQuote(combo)}
                     className="w-full py-4 bg-[#123C5A] text-white font-semibold rounded-2xl hover:bg-[#123C5A] transition-colors flex items-center justify-center gap-2"
                   >
                     Thêm combo vào giỏ báo giá
                   </button>
-                  <Link 
-                    href="/concepts" 
+                  <Link
+                    href="/concepts"
                     className="w-full py-3.5 bg-white text-[#0B1623] font-semibold rounded-2xl border border-[#D8E2EA] hover:border-[#0B1623] transition-colors flex items-center justify-center"
                   >
                     Xem concept phù hợp
@@ -238,47 +222,7 @@ export default function SmallBathroomComboPage() {
         </div>
       </section>
 
-      {/* E. Featured Concepts */}
-      {featuredConcepts.length > 0 && (
-        <section className="py-24 px-6 bg-[#F3F7FA]">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-end justify-between mb-10">
-              <div>
-                <h2 className="text-3xl font-bold text-[#0B1623] mb-2">Concept phòng tắm nổi bật</h2>
-                <p className="text-[#627386]">Ý tưởng thiết kế thực tế cho không gian nhỏ.</p>
-              </div>
-              <Link href="/concepts" className="hidden sm:flex items-center gap-2 text-[#627386] hover:text-[#0B1623] font-medium">
-                Xem tất cả <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredConcepts.map(c => <ConceptCard key={c.id} concept={c} />)}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* F. Featured Products */}
-      {featuredProducts.length > 0 && (
-        <section className="py-24 px-6 bg-white">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-end justify-between mb-10">
-              <div>
-                <h2 className="text-3xl font-bold text-[#0B1623] mb-2">Thiết bị bán chạy</h2>
-                <p className="text-[#627386]">Sản phẩm được tối ưu cho phòng tắm căn hộ.</p>
-              </div>
-              <Link href="/products" className="hidden sm:flex items-center gap-2 text-[#627386] hover:text-[#0B1623] font-medium">
-                Xem tất cả <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-              {featuredProducts.map(p => <ProductCard key={p.id} product={p} />)}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* G. Final CTA */}
+      {/* E. Final CTA */}
       <section className="py-24 px-6 bg-[#0B1623] text-center">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">Bạn muốn nhận báo giá cho phòng tắm của mình?</h2>
@@ -286,8 +230,8 @@ export default function SmallBathroomComboPage() {
             LivLab gợi ý sản phẩm để hỗ trợ quá trình chọn mua. Tồn kho có thể thay đổi theo thời điểm.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link href="/suggestion" className="px-8 py-4 bg-[#123C5A] text-white font-semibold rounded-full hover:bg-[#123C5A]/80 transition-colors">
-              Nhận gợi ý combo
+            <Link href="/ai-suggestion" className="px-8 py-4 bg-[#123C5A] text-white font-semibold rounded-full hover:bg-[#123C5A]/80 transition-colors">
+              Nhận gợi ý AI cá nhân hoá
             </Link>
             <Link href="/quote" className="px-8 py-4 bg-white/10 text-white font-semibold rounded-full hover:bg-white/20 transition-colors border border-white/20">
               Gửi yêu cầu báo giá

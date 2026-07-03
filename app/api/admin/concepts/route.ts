@@ -2,8 +2,13 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { concepts as fallbackConcepts } from '@/lib/data';
 import { seededConcepts } from '@/lib/seedData';
+import { getSessionUser, hasRole, unauthorized, forbidden } from '@/lib/auth/session';
 
 export async function GET() {
+  const user = await getSessionUser();
+  if (!user) return unauthorized();
+  if (!hasRole(user, 'ADMIN')) return forbidden();
+
   try {
     const concepts = await prisma.concept.findMany({
       orderBy: { createdAt: 'desc' }

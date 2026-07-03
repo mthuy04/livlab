@@ -2,15 +2,25 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { products as fallbackProducts } from '@/lib/data';
 import { seededProducts } from '@/lib/seedData';
+import { getSessionUser, hasRole, unauthorized, forbidden, showroomScopeFilter } from '@/lib/auth/session';
 
 export async function GET() {
+  const user = await getSessionUser();
+  if (!user) return unauthorized();
+  if (!hasRole(user, 'ADMIN', 'SHOWROOM')) return forbidden();
+
   try {
     const products = await prisma.product.findMany({
+      where: showroomScopeFilter(user),
       orderBy: { createdAt: 'desc' }
     });
 
     if (products.length === 0) {
-      if (process.env.NODE_ENV === 'development') {
+      // Only ADMIN's unscoped query tells us the table itself is empty. A SHOWROOM
+      // user's result being empty may just mean they're correctly scoped to zero
+      // (e.g. not assigned to a showroom yet) — showing demo data there would defeat
+      // the showroom scoping this route exists to enforce.
+      if (process.env.NODE_ENV === 'development' && user.role === 'ADMIN') {
         console.log('[API] DB rỗng, trả về fallback demo data (Development)');
         const fallback = seededProducts.length > 0 ? seededProducts : fallbackProducts;
         return NextResponse.json({ products: fallback, source: 'fallback' });
@@ -31,6 +41,10 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const user = await getSessionUser();
+  if (!user) return unauthorized();
+  if (!hasRole(user, 'ADMIN')) return forbidden();
+
   try {
     const data = await request.json();
     const newProduct = await prisma.product.create({

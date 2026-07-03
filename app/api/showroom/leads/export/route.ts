@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { LeadStatus } from '@prisma/client';
+import { getSessionUser, hasRole, unauthorized, forbidden, showroomScopeFilter } from '@/lib/auth/session';
 
 const statusMap: Record<string, string> = {
   NEW: 'Mới',
@@ -11,8 +12,13 @@ const statusMap: Record<string, string> = {
 };
 
 export async function GET() {
+  const user = await getSessionUser();
+  if (!user) return unauthorized();
+  if (!hasRole(user, 'ADMIN', 'SHOWROOM')) return forbidden();
+
   try {
     const leads = await prisma.quoteLead.findMany({
+      where: showroomScopeFilter(user),
       include: {
         items: true,
       },

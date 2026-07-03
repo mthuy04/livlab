@@ -1,7 +1,12 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getSessionUser, hasRole, unauthorized, forbidden } from '@/lib/auth/session';
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const user = await getSessionUser();
+  if (!user) return unauthorized();
+  if (!hasRole(user, 'ADMIN')) return forbidden();
+
   try {
     const resolvedParams = await params;
     const { id } = resolvedParams;
@@ -24,6 +29,10 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 }
 
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const user = await getSessionUser();
+  if (!user) return unauthorized();
+  if (!hasRole(user, 'ADMIN')) return forbidden();
+
   try {
     const resolvedParams = await params;
     const { id } = resolvedParams;

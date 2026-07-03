@@ -1,8 +1,13 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { demoShowroomLeads } from '@/lib/showroomDemoData';
+import { getSessionUser, hasRole, unauthorized, forbidden } from '@/lib/auth/session';
 
 export async function GET() {
+  const user = await getSessionUser();
+  if (!user) return unauthorized();
+  if (!hasRole(user, 'ADMIN')) return forbidden();
+
   try {
     const leads = await prisma.quoteLead.findMany({
       include: {

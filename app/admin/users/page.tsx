@@ -4,22 +4,26 @@ import { useEffect, useState } from 'react';
 import { Shield, User, Lock, Trash2, Search, Edit } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 
+type Showroom = {
+  id: string;
+  name: string;
+};
+
 type DbUser = {
   id: string;
   name: string | null;
   email: string;
   role: 'CUSTOMER' | 'SHOWROOM' | 'ADMIN';
   createdAt: string;
+  showroomId: string | null;
+  showroom: Showroom | null;
 };
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<DbUser[]>([]);
+  const [showrooms, setShowrooms] = useState<Showroom[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
 
   const fetchUsers = async () => {
     try {
@@ -35,6 +39,23 @@ export default function AdminUsersPage() {
     }
   };
 
+  const fetchShowrooms = async () => {
+    try {
+      const res = await fetch('/api/admin/showrooms');
+      const data = await res.json();
+      if (data.showrooms) {
+        setShowrooms(data.showrooms);
+      }
+    } catch (error) {
+      console.error('Failed to fetch showrooms:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+    fetchShowrooms();
+  }, []);
+
   const handleRoleChange = async (id: string, newRole: string) => {
     if (!confirm(`Bạn có chắc chắn muốn đổi quyền thành ${newRole}?`)) return;
     try {
@@ -44,7 +65,11 @@ export default function AdminUsersPage() {
         body: JSON.stringify({ role: newRole })
       });
       if (res.ok) {
-        setUsers(users.map(u => u.id === id ? { ...u, role: newRole as any } : u));
+        setUsers(users.map(u => u.id === id ? {
+          ...u,
+          role: newRole as any,
+          ...(newRole !== 'SHOWROOM' ? { showroomId: null, showroom: null } : {})
+        } : u));
       } else {
         alert('Có lỗi xảy ra khi đổi quyền.');
       }
@@ -54,8 +79,27 @@ export default function AdminUsersPage() {
     }
   };
 
-  const filteredUsers = users.filter(u => 
-    u.email.toLowerCase().includes(searchTerm.toLowerCase()) || 
+  const handleShowroomChange = async (id: string, showroomId: string) => {
+    try {
+      const res = await fetch(`/api/admin/users/${id}/role`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: 'SHOWROOM', showroomId })
+      });
+      if (res.ok) {
+        const showroom = showrooms.find(s => s.id === showroomId) || null;
+        setUsers(users.map(u => u.id === id ? { ...u, showroomId: showroom?.id ?? null, showroom } : u));
+      } else {
+        alert('Có lỗi xảy ra khi gán showroom.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Có lỗi xảy ra.');
+    }
+  };
+
+  const filteredUsers = users.filter(u =>
+    u.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (u.name && u.name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
@@ -71,9 +115,9 @@ export default function AdminUsersPage() {
       <div className="flex bg-white p-4 rounded-2xl border border-[#D8E2EA] shadow-sm">
         <div className="relative w-full max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#627386]" />
-          <input 
-            type="text" 
-            placeholder="Tìm theo tên hoặc email..." 
+          <input
+            type="text"
+            placeholder="Tìm theo tên hoặc email..."
             className="w-full pl-9 pr-4 py-2 border border-[#D8E2EA] rounded-xl text-sm outline-none focus:border-[#123C5A]"
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
@@ -90,6 +134,7 @@ export default function AdminUsersPage() {
               <tr className="border-b border-[#D8E2EA] bg-[#F3F7FA]">
                 <th className="px-6 py-4 text-xs font-bold text-[#627386] uppercase tracking-wider">Người dùng</th>
                 <th className="px-6 py-4 text-xs font-bold text-[#627386] uppercase tracking-wider">Phân quyền</th>
+                <th className="px-6 py-4 text-xs font-bold text-[#627386] uppercase tracking-wider">Showroom</th>
                 <th className="px-6 py-4 text-xs font-bold text-[#627386] uppercase tracking-wider">Ngày tạo</th>
                 <th className="px-6 py-4 text-xs font-bold text-[#627386] uppercase tracking-wider text-right">Thao tác</th>
               </tr>
@@ -119,12 +164,28 @@ export default function AdminUsersPage() {
                       {u.role}
                     </span>
                   </td>
+                  <td className="px-6 py-4">
+                    {u.role === 'SHOWROOM' ? (
+                      <select
+                        className="text-xs border border-[#D8E2EA] rounded-lg px-2 py-1 outline-none bg-white max-w-[180px]"
+                        value={u.showroomId ?? ''}
+                        onChange={(e) => handleShowroomChange(u.id, e.target.value)}
+                      >
+                        <option value="">— Chưa gán —</option>
+                        {showrooms.map(s => (
+                          <option key={s.id} value={s.id}>{s.name}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <span className="text-sm text-[#627386]">—</span>
+                    )}
+                  </td>
                   <td className="px-6 py-4 text-sm text-[#627386]">
                     {formatDate(u.createdAt)}
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-1">
-                      <select 
+                      <select
                         className="text-xs border border-[#D8E2EA] rounded-lg px-2 py-1 outline-none mr-2 bg-white"
                         value={u.role}
                         onChange={(e) => handleRoleChange(u.id, e.target.value)}
@@ -142,7 +203,7 @@ export default function AdminUsersPage() {
               ))}
               {filteredUsers.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-6 py-10 text-center text-[#627386]">
+                  <td colSpan={5} className="px-6 py-10 text-center text-[#627386]">
                     Không tìm thấy người dùng nào.
                   </td>
                 </tr>

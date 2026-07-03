@@ -36,8 +36,13 @@ model User {
   passwordHash String
   name         String?
   role         UserRole @default(CUSTOMER)
+  showroomId   String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  showroom     Showroom? @relation(fields: [showroomId], references: [id])
+
+  @@index([showroomId])
 }
 
 model Showroom {
@@ -53,6 +58,7 @@ model Showroom {
 
   products    Product[]
   leads       QuoteLead[]
+  users       User[]
 }
 
 model Product {
