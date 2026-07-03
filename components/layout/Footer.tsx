@@ -9,8 +9,7 @@ const footerLinks = {
   'Khám phá': [
     { href: '/concepts', label: 'Thư viện concept' },
     { href: '/products', label: 'Danh mục sản phẩm' },
-    { href: '/small-bathroom-combo', label: 'Small Bathroom Combo' },
-    { href: '/suggestion', label: 'Gợi ý theo ngân sách' },
+    { href: '/small-bathroom-combo', label: 'Combo phòng tắm' },
   ],
   'Dịch vụ': [
     { href: '/quote', label: 'Yêu cầu báo giá' },
@@ -22,7 +21,7 @@ const footerLinks = {
     { href: '/quote-process', label: 'Quy trình báo giá' },
     { href: '/privacy', label: 'Chính sách bảo mật' },
     { href: '/terms', label: 'Điều khoản sử dụng' },
-    { href: '/admin', label: 'Showroom Portal' },
+    { href: '/showrooms', label: 'Dành cho showroom' },
   ],
 };
 
@@ -74,12 +73,15 @@ export default function Footer() {
                 <Phone className="w-3.5 h-3.5" /> 024 1234 5678
               </a>
 
-              <a
-                href="#"
-                className="flex items-center gap-2 text-xs text-white/40 hover:text-white/70 transition-colors"
-              >
-                <MessageCircle className="w-3.5 h-3.5" /> Zalo / Facebook
-              </a>
+              {/* TODO: bật lại khi có link Zalo/Facebook Business thật */}
+              {false && (
+                <a
+                  href="#"
+                  className="flex items-center gap-2 text-xs text-white/40 hover:text-white/70 transition-colors"
+                >
+                  <MessageCircle className="w-3.5 h-3.5" /> Zalo / Facebook
+                </a>
+              )}
             </div>
           </div>
 
