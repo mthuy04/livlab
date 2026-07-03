@@ -7,6 +7,7 @@ import { Menu, X, Square, ShoppingBag, ChevronDown, LayoutGrid } from 'lucide-re
 import { useQuote } from '@/lib/context/QuoteContext';
 import { useAuth } from '@/lib/context/AuthContext';
 import { User } from 'lucide-react';
+import Image from 'next/image';
 
 const exploreLinks = [
   { href: '/concepts',             label: 'Concept' },
