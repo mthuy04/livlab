@@ -7,7 +7,29 @@ import { Product } from '@/lib/types';
 import { getStoredProducts } from '@/lib/storage';
 import { combos, ComboPackage } from '@/lib/smallBathroomCombos';
 import { useQuote } from '@/lib/context/QuoteContext';
-import { CheckCircle, AlertTriangle, Droplet, Zap, Star } from 'lucide-react';
+import { getProductSlug } from '@/lib/productHelpers';
+import { CheckCircle, AlertTriangle, Droplet, Zap, Star, Scan } from 'lucide-react';
+
+// Shared with handleAddComboToQuote so the preview grid shows the same products a click would add.
+function selectComboProducts(combo: ComboPackage, products: Product[]): Product[] {
+  const isEconomy = combo.productSelectionRules.budgetSegment === 'Economy';
+  const isPremium = combo.productSelectionRules.budgetSegment === 'Premium';
+
+  const sortedProducts = [...products].sort((a, b) => {
+    if (isEconomy) return a.priceMin - b.priceMin;
+    if (isPremium) return b.priceMin - a.priceMin;
+    return (b.popularity ?? 0) - (a.popularity ?? 0);
+  });
+
+  const selectedProducts: Product[] = [];
+  for (const cat of combo.productSelectionRules.categories) {
+    const match = sortedProducts.find(p => p.category === cat && !selectedProducts.find(sp => sp.id === p.id));
+    if (match) {
+      selectedProducts.push(match);
+    }
+  }
+  return selectedProducts;
+}
 
 export default function SmallBathroomComboPage() {
   const router = useRouter();
@@ -21,33 +43,12 @@ export default function SmallBathroomComboPage() {
   }, []);
 
   const handleAddComboToQuote = (combo: ComboPackage) => {
-    // Basic logic: Find 1 product per category based on combo rules
-    // First, filter products that fit the budget roughly
-    const isEconomy = combo.productSelectionRules.budgetSegment === 'Economy';
-    const isPremium = combo.productSelectionRules.budgetSegment === 'Premium';
-
-    // Sort products logically to pick the best match
-    // E.g. cheaper products for Economy, expensive for Premium
-    const sortedProducts = [...products].sort((a, b) => {
-      if (isEconomy) return a.priceMin - b.priceMin;
-      if (isPremium) return b.priceMin - a.priceMin;
-      // Mid-range: highest popularity first, so results are stable across clicks
-      return (b.popularity ?? 0) - (a.popularity ?? 0);
-    });
-
-    const selectedProducts: Product[] = [];
-
-    for (const cat of combo.productSelectionRules.categories) {
-      const match = sortedProducts.find(p => p.category === cat && !selectedProducts.find(sp => sp.id === p.id));
-      if (match) {
-        selectedProducts.push(match);
-      }
-    }
+    const selectedProducts = selectComboProducts(combo, products);
 
     if (selectedProducts.length > 0) {
       // Don't clear quote, just add items.
       selectedProducts.forEach(p => addItem(p));
-      alert(`Đã thêm ${selectedProducts.length} sản phẩm của combo ${combo.name} vào báo giá.`);
+      alert(`Đã thêm ${selectedProducts.length} sản phẩm của combo ${combo.name} vào báo giá. Bạn có thể chỉnh sửa từng món trong giỏ trước khi gửi yêu cầu.`);
       router.push('/quote');
     } else {
       alert('Không tìm thấy sản phẩm phù hợp cho combo này. Vui lòng thử lại sau.');
@@ -55,6 +56,8 @@ export default function SmallBathroomComboPage() {
   };
 
   if (loading) return <div className="min-h-screen bg-[#F3F7FA] pt-24 pb-20"></div>;
+
+  const allCategories = Array.from(new Set(combos.flatMap((c) => c.includedCategories)));
 
   return (
     <div className="pt-16 bg-[#F3F7FA] min-h-screen">
@@ -67,14 +70,18 @@ export default function SmallBathroomComboPage() {
         <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
             <span className="text-[#C8A96A] uppercase tracking-widest text-xs font-bold mb-4 block">Small Bathroom Makeover</span>
-            <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">Combo cải tạo phòng tắm nhỏ</h1>
+            <h1 className="text-4xl lg:text-6xl font-bold text-white mb-4 leading-tight">Combo cải tạo phòng tắm nhỏ</h1>
+            <p className="text-[#C8A96A] font-semibold text-lg mb-6">Không cần trả lời câu hỏi nào — chọn 1 gói, có ngay.</p>
             <p className="text-lg text-white/80 mb-10 max-w-lg leading-relaxed">
               LivLab giúp bạn chọn nhanh concept, sản phẩm và ngân sách tham khảo cho phòng tắm căn hộ, nhà phố, homestay hoặc không gian cho thuê.
             </p>
-            <div className="flex flex-wrap gap-4 mb-10">
-              <a href="#packages" className="px-8 py-4 bg-[#123C5A] text-white font-semibold rounded-full hover:bg-[#123C5A]/80 transition-colors">
-                Khám phá combo
-              </a>
+            <div className="flex flex-wrap items-start gap-4 mb-10">
+              <div>
+                <a href="#packages" className="px-8 py-4 bg-[#123C5A] text-white font-semibold rounded-full hover:bg-[#123C5A]/80 transition-colors inline-block">
+                  Khám phá combo
+                </a>
+                <p className="text-xs text-white/50 mt-2 px-1">3 gói dựng sẵn, xem là quyết định được luôn.</p>
+              </div>
               <Link href="/ai-suggestion" className="px-8 py-4 bg-white/10 text-white font-semibold rounded-full hover:bg-white/20 transition-colors border border-white/20">
                 Nhận gợi ý AI cá nhân hoá
               </Link>
@@ -143,12 +150,46 @@ export default function SmallBathroomComboPage() {
             <h2 className="text-3xl lg:text-5xl font-bold text-[#0B1623]">Chọn combo phù hợp</h2>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {combos.map((combo) => (
+            {combos.map((combo) => {
+              const previewProducts = selectComboProducts(combo, products).slice(0, 6);
+              return (
               <div key={combo.id} className="bg-white rounded-3xl p-8 border border-[#D8E2EA] flex flex-col hover:shadow-xl transition-shadow duration-300 relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#486581] to-[#C97855]" />
                 <h3 className="text-2xl font-bold text-[#0B1623] mb-2 mt-4">{combo.name}</h3>
                 <p className="text-3xl font-bold text-[#123C5A] mb-4">{combo.budgetLabel}</p>
+                <p className="text-sm italic text-[#627386] mb-3">
+                  Chọn gói này nếu bạn đang cần: {combo.targetUsers.join(', ')}.
+                </p>
                 <p className="text-sm text-[#627386] mb-6 min-h-[60px]">{combo.description}</p>
+
+                {previewProducts.length > 0 && (
+                  <div className="mb-6">
+                    <p className="text-xs font-bold uppercase text-[#0B1623] tracking-wider mb-2">Sản phẩm tiêu biểu:</p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {previewProducts.map((p) => {
+                        const thumb = (
+                          <div className="relative aspect-square rounded-xl overflow-hidden bg-[#EEF4F7] border border-[#D8E2EA]">
+                            <img src={p.image} alt={p.imageAlt || p.name} className="w-full h-full object-cover" />
+                            {p.usdzUrl && (
+                              <span
+                                title="Có thể xem AR"
+                                aria-label="Có thể xem AR"
+                                className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-[#0B1623]/80 flex items-center justify-center"
+                              >
+                                <Scan className="w-3 h-3 text-white" />
+                              </span>
+                            )}
+                          </div>
+                        );
+                        return (
+                          <Link key={p.id} href={`/products/${getProductSlug(p)}`} className="block">
+                            {thumb}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
 
                 <div className="mb-6">
                   <p className="text-xs font-bold uppercase text-[#0B1623] tracking-wider mb-2">Phù hợp cho:</p>
@@ -185,7 +226,48 @@ export default function SmallBathroomComboPage() {
                   </Link>
                 </div>
               </div>
-            ))}
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* C2. Quick Compare Section */}
+      <section className="py-16 px-6 bg-[#EEF4F7]">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-10">
+            <span className="text-[#C8A96A] uppercase tracking-widest text-xs font-bold mb-2 block">Compare</span>
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#0B1623]">So sánh nhanh 3 gói</h2>
+          </div>
+          <div className="overflow-x-auto rounded-2xl border border-[#D8E2EA] bg-white">
+            <table className="w-full min-w-[640px] border-collapse text-left">
+              <thead>
+                <tr className="bg-[#F3F7FA]">
+                  <th className="p-4 text-xs font-bold uppercase tracking-wider text-[#0B1623]">Hạng mục</th>
+                  {combos.map((combo) => (
+                    <th key={combo.id} className="p-4 text-sm font-bold text-[#0B1623]">{combo.name}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {allCategories.map((cat) => (
+                  <tr key={cat} className="border-t border-[#EEF4F7]">
+                    <td className="p-4 text-sm font-medium text-[#627386]">{cat}</td>
+                    {combos.map((combo) => (
+                      <td key={combo.id} className="p-4 text-sm text-[#0B1623]">
+                        {combo.includedCategories.includes(cat) ? cat : ''}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+                <tr className="border-t border-[#D8E2EA] bg-[#F3F7FA]">
+                  <td className="p-4 text-xs font-bold uppercase tracking-wider text-[#0B1623]">Ngân sách</td>
+                  {combos.map((combo) => (
+                    <td key={combo.id} className="p-4 text-sm font-bold text-[#123C5A]">{combo.budgetLabel}</td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
