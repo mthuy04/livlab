@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { Concept, Hotspot, Product } from '@/lib/types';
 import { getStoredProducts } from '@/lib/storage';
 import { useQuote } from '@/lib/context/QuoteContext';
+import { useObjectCoverHotspots } from '@/lib/hooks/useObjectCoverHotspots';
 import { CheckCircle, Tag, Palette, Box, ArrowRight, MapPin } from 'lucide-react';
 import Link from 'next/link';
 
@@ -30,6 +31,7 @@ export default function InteractiveRoomViewer({ concept }: InteractiveRoomViewer
   const [imgError, setImgError] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const { addItem, hasItem } = useQuote();
+  const { containerRef, imgRef, onImageLoad, toDisplayPercent } = useObjectCoverHotspots<HTMLDivElement>();
 
   useEffect(() => {
     setProducts(getStoredProducts() || []);
@@ -62,10 +64,10 @@ export default function InteractiveRoomViewer({ concept }: InteractiveRoomViewer
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Room Image + Hotspots */}
-        <div className="lg:col-span-3 relative rounded-[32px] overflow-hidden bg-[#EEF4F7] aspect-[4/3] shadow-lg border border-[#D8E2EA]">
+        <div ref={containerRef} className="lg:col-span-3 relative rounded-[32px] overflow-hidden bg-[#EEF4F7] aspect-[4/3] shadow-lg border border-[#D8E2EA]">
           <span className="absolute top-5 left-5 text-[10px] uppercase tracking-widest font-bold px-3 py-1.5 rounded-full bg-white/90 text-[#123C5A] shadow-sm z-10 border border-white/50 backdrop-blur-md">Hotspot tương tác</span>
           {!imgError && concept.image ? (
-            <img src={concept.image} alt={concept.title} className="w-full h-full object-cover" onError={() => setImgError(true)} />
+            <img ref={imgRef} src={concept.image} alt={concept.title} className="w-full h-full object-cover" onLoad={onImageLoad} onError={() => setImgError(true)} />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#EEF4F7] to-[#F3F7FA] text-[#123C5A]">
               <span className="text-[12px] bg-white/50 px-3 py-1 rounded-full opacity-60 border border-[#D8E2EA] mb-4">Ảnh concept minh hoạ</span>
@@ -76,20 +78,7 @@ export default function InteractiveRoomViewer({ concept }: InteractiveRoomViewer
           <div className="absolute inset-0 bg-black/5" />
 
           {concept.hotspots.map((hotspot) => {
-            // Normalize bathroom hotspots to logical areas
-            let nx = hotspot.x;
-            let ny = hotspot.y;
-            if (concept.roomType === 'Bathroom' || concept.roomType === 'Phòng tắm') {
-              const lbl = hotspot.label.toLowerCase();
-              if (lbl.includes('gương') || lbl.includes('mirror')) { nx = 50; ny = 25; }
-              else if (lbl.includes('vòi') || lbl.includes('faucet')) { nx = 50; ny = 45; }
-              else if (lbl.includes('lavabo') || lbl.includes('tủ') || lbl.includes('vanity')) { nx = 50; ny = 65; }
-              else if (lbl.includes('bồn cầu') || lbl.includes('toilet')) { nx = 75; ny = 65; }
-              else if (lbl.includes('sen tắm') || lbl.includes('shower')) { nx = 25; ny = 45; }
-              else if (lbl.includes('gạch') || lbl.includes('tile')) { nx = 15; ny = 80; }
-              else if (lbl.includes('phụ kiện') || lbl.includes('accessory') || lbl.includes('kệ')) { nx = 85; ny = 40; }
-            }
-
+            const { left: nx, top: ny } = toDisplayPercent(hotspot.xPercent, hotspot.yPercent);
             const isActive = activeHotspot?.id === hotspot.id;
             const isAdded  = hasItem(hotspot.productId);
             return (

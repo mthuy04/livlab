@@ -1,0 +1,7 @@
+[
+  { "id": "spot-1", "imageId": "home-hero", "productId": "p-004", "label": "Sen tắm", "xPercent": 12, "yPercent": 28 },
+  { "id": "spot-2", "imageId": "home-hero", "productId": "p-003", "label": "Gương", "xPercent": 73, "yPercent": 28 },
+  { "id": "spot-3", "imageId": "home-hero", "productId": "p-002", "label": "Vòi lavabo", "xPercent": 76, "yPercent": 54 },
+  { "id": "spot-4", "imageId": "home-hero", "productId": "p-001", "label": "Lavabo", "xPercent": 74, "yPercent": 61 },
+  { "id": "spot-5", "imageId": "home-hero", "productId": "p-005", "label": "Bồn cầu", "xPercent": 58, "yPercent": 72 }
+]

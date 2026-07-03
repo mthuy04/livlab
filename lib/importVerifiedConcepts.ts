@@ -34,7 +34,9 @@ export function mapCsvRowToConcept(row: Record<string, string>, products: Produc
       if (cleanHotspotsStr.startsWith('"') && cleanHotspotsStr.endsWith('"')) {
         cleanHotspotsStr = cleanHotspotsStr.slice(1, -1);
       }
-      hotspots = JSON.parse(cleanHotspotsStr) as Hotspot[];
+      const rawHotspots = JSON.parse(cleanHotspotsStr) as Array<Omit<Hotspot, 'imageId'>>;
+      // CSV stores hotspots scoped per-row; imageId is the row's own concept id, not duplicated in the CSV.
+      hotspots = rawHotspots.map((h) => ({ ...h, imageId: row.id }));
     }
   } catch (error) {
     console.warn(`[LivLab Verified Import] Failed to parse hotspots for concept ${row.id}`, error);
@@ -69,7 +71,11 @@ export function mapCsvRowToConcept(row: Record<string, string>, products: Produc
 export async function importVerifiedConceptsFromCsv(force: boolean = false): Promise<Concept[]> {
   try {
     const existingConcepts = getStoredConcepts();
-    const shouldImport = force || !existingConcepts || existingConcepts.length === 0 || existingConcepts.some(c => c.image?.includes('placeholder'));
+    // Hotspots cached from before the xPercent/yPercent schema migration have `x`/`y` but no `imageId` — force a refresh so they don't render as NaN%.
+    const hasLegacyHotspotSchema = existingConcepts?.some((c) =>
+      c.hotspots?.some((h) => (h as unknown as { imageId?: string }).imageId === undefined)
+    );
+    const shouldImport = force || !existingConcepts || existingConcepts.length === 0 || existingConcepts.some(c => c.image?.includes('placeholder')) || hasLegacyHotspotSchema;
 
     if (!shouldImport) {
       return existingConcepts || [];

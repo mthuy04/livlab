@@ -17,11 +17,11 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm nhỏ gọn cho căn hộ",
     productIds: ["v_lavabo_5", "v_faucet_1", "v_toilet_4", "v_shower_2", "v_mirror_3", "v_cabinet_2"],
     hotspots: [
-      { id: "hs-1-1", productId: "v_mirror_3", x: 52, y: 28, label: "Gương LED" },
-      { id: "hs-1-2", productId: "v_lavabo_5", x: 50, y: 55, label: "Lavabo" },
-      { id: "hs-1-3", productId: "v_cabinet_2", x: 48, y: 70, label: "Tủ Lavabo" },
-      { id: "hs-1-4", productId: "v_shower_2", x: 22, y: 35, label: "Sen tắm" },
-      { id: "hs-1-5", productId: "v_toilet_4", x: 76, y: 62, label: "Bồn cầu" }
+      { id: "hs-1-1", imageId: "vc-bath-1", productId: "v_mirror_3", label: "Gương LED", xPercent: 52, yPercent: 28 },
+      { id: "hs-1-2", imageId: "vc-bath-1", productId: "v_lavabo_5", label: "Lavabo", xPercent: 50, yPercent: 55 },
+      { id: "hs-1-3", imageId: "vc-bath-1", productId: "v_cabinet_2", label: "Tủ Lavabo", xPercent: 48, yPercent: 70 },
+      { id: "hs-1-4", imageId: "vc-bath-1", productId: "v_shower_2", label: "Sen tắm", xPercent: 22, yPercent: 35 },
+      { id: "hs-1-5", imageId: "vc-bath-1", productId: "v_toilet_4", label: "Bồn cầu", xPercent: 76, yPercent: 62 }
     ],
     whyItWorks: ["Thiết kế nhỏ gọn", "Tối ưu lưu trữ", "Màu sắc sáng"],
     productCount: 6,
@@ -47,11 +47,11 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm Japandi",
     productIds: ["v_lavabo_7", "v_faucet_6", "v_toilet_7", "v_shower_6", "v_mirror_6", "v_cabinet_4"],
     hotspots: [
-      { id: "hs-2-1", productId: "v_mirror_6", x: 52, y: 28, label: "Gương LED vân gỗ" },
-      { id: "hs-2-2", productId: "v_lavabo_7", x: 50, y: 55, label: "Lavabo đặt bàn" },
-      { id: "hs-2-3", productId: "v_cabinet_4", x: 48, y: 70, label: "Tủ Lavabo vân sồi" },
-      { id: "hs-2-4", productId: "v_shower_6", x: 22, y: 35, label: "Sen cây mạ đen" },
-      { id: "hs-2-5", productId: "v_toilet_7", x: 76, y: 62, label: "Bồn cầu điện tử" }
+      { id: "hs-2-1", imageId: "vc-bath-2", productId: "v_mirror_6", label: "Gương LED vân gỗ", xPercent: 52, yPercent: 28 },
+      { id: "hs-2-2", imageId: "vc-bath-2", productId: "v_lavabo_7", label: "Lavabo đặt bàn", xPercent: 50, yPercent: 55 },
+      { id: "hs-2-3", imageId: "vc-bath-2", productId: "v_cabinet_4", label: "Tủ Lavabo vân sồi", xPercent: 48, yPercent: 70 },
+      { id: "hs-2-4", imageId: "vc-bath-2", productId: "v_shower_6", label: "Sen cây mạ đen", xPercent: 22, yPercent: 35 },
+      { id: "hs-2-5", imageId: "vc-bath-2", productId: "v_toilet_7", label: "Bồn cầu điện tử", xPercent: 76, yPercent: 62 }
     ],
     whyItWorks: ["Cảm giác ấm cúng", "Vật liệu tự nhiên", "Dễ dàng vệ sinh"],
     productCount: 6,
@@ -77,11 +77,11 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm khách sạn sang trọng",
     productIds: ["v_lavabo_8", "v_faucet_9", "v_toilet_8", "v_shower_8", "v_mirror_7", "v_cabinet_5", "v_tile_2"],
     hotspots: [
-      { id: "hs-3-1", productId: "v_mirror_7", x: 50, y: 30, label: "Gương LED âm tường" },
-      { id: "hs-3-2", productId: "v_lavabo_8", x: 50, y: 55, label: "Chậu rửa mặt" },
-      { id: "hs-3-3", productId: "v_shower_8", x: 20, y: 40, label: "Sen cây nhiệt độ" },
-      { id: "hs-3-4", productId: "v_toilet_8", x: 80, y: 65, label: "Bồn cầu thông minh" },
-      { id: "hs-3-5", productId: "v_tile_2", x: 15, y: 80, label: "Gạch vân đá Marble" }
+      { id: "hs-3-1", imageId: "vc-bath-3", productId: "v_mirror_7", label: "Gương LED âm tường", xPercent: 50, yPercent: 30 },
+      { id: "hs-3-2", imageId: "vc-bath-3", productId: "v_lavabo_8", label: "Chậu rửa mặt", xPercent: 50, yPercent: 55 },
+      { id: "hs-3-3", imageId: "vc-bath-3", productId: "v_shower_8", label: "Sen cây nhiệt độ", xPercent: 20, yPercent: 40 },
+      { id: "hs-3-4", imageId: "vc-bath-3", productId: "v_toilet_8", label: "Bồn cầu thông minh", xPercent: 80, yPercent: 65 },
+      { id: "hs-3-5", imageId: "vc-bath-3", productId: "v_tile_2", label: "Gạch vân đá Marble", xPercent: 15, yPercent: 80 }
     ],
     whyItWorks: ["Sang trọng", "Trải nghiệm thư giãn", "Đồng bộ cao"],
     productCount: 7,
@@ -107,11 +107,11 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm nhà cho thuê",
     productIds: ["v_lavabo_1", "v_faucet_3", "v_toilet_1", "v_shower_1", "v_mirror_1", "v_acc_1"],
     hotspots: [
-      { id: "hs-4-1", productId: "v_mirror_1", x: 50, y: 30, label: "Gương soi" },
-      { id: "hs-4-2", productId: "v_lavabo_1", x: 50, y: 55, label: "Lavabo treo tường" },
-      { id: "hs-4-3", productId: "v_faucet_3", x: 50, y: 48, label: "Vòi lạnh" },
-      { id: "hs-4-4", productId: "v_shower_1", x: 20, y: 40, label: "Sen tắm cầm tay" },
-      { id: "hs-4-5", productId: "v_toilet_1", x: 80, y: 65, label: "Bồn cầu 2 khối" }
+      { id: "hs-4-1", imageId: "vc-bath-4", productId: "v_mirror_1", label: "Gương soi", xPercent: 50, yPercent: 30 },
+      { id: "hs-4-2", imageId: "vc-bath-4", productId: "v_lavabo_1", label: "Lavabo treo tường", xPercent: 50, yPercent: 55 },
+      { id: "hs-4-3", imageId: "vc-bath-4", productId: "v_faucet_3", label: "Vòi lạnh", xPercent: 50, yPercent: 48 },
+      { id: "hs-4-4", imageId: "vc-bath-4", productId: "v_shower_1", label: "Sen tắm cầm tay", xPercent: 20, yPercent: 40 },
+      { id: "hs-4-5", imageId: "vc-bath-4", productId: "v_toilet_1", label: "Bồn cầu 2 khối", xPercent: 80, yPercent: 65 }
     ],
     whyItWorks: ["Chi phí thấp", "Độ bền cao", "Dễ bảo trì"],
     productCount: 6,
@@ -137,11 +137,11 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm Master sang trọng",
     productIds: ["v_lavabo_8", "v_faucet_8", "v_toilet_10", "v_shower_9", "v_mirror_8", "v_tile_5", "v_acc_7"],
     hotspots: [
-      { id: "hs-5-1", productId: "v_mirror_8", x: 50, y: 30, label: "Gương LED thông minh" },
-      { id: "hs-5-2", productId: "v_lavabo_8", x: 50, y: 55, label: "Chậu rửa mặt đôi" },
-      { id: "hs-5-3", productId: "v_shower_9", x: 20, y: 40, label: "Hệ thống sen tắm âm tường" },
-      { id: "hs-5-4", productId: "v_toilet_10", x: 80, y: 65, label: "Bồn cầu NEOREST" },
-      { id: "hs-5-5", productId: "v_tile_5", x: 15, y: 80, label: "Gạch khổ lớn cao cấp" }
+      { id: "hs-5-1", imageId: "vc-bath-5", productId: "v_mirror_8", label: "Gương LED thông minh", xPercent: 50, yPercent: 30 },
+      { id: "hs-5-2", imageId: "vc-bath-5", productId: "v_lavabo_8", label: "Chậu rửa mặt đôi", xPercent: 50, yPercent: 55 },
+      { id: "hs-5-3", imageId: "vc-bath-5", productId: "v_shower_9", label: "Hệ thống sen tắm âm tường", xPercent: 20, yPercent: 40 },
+      { id: "hs-5-4", imageId: "vc-bath-5", productId: "v_toilet_10", label: "Bồn cầu NEOREST", xPercent: 80, yPercent: 65 },
+      { id: "hs-5-5", imageId: "vc-bath-5", productId: "v_tile_5", label: "Gạch khổ lớn cao cấp", xPercent: 15, yPercent: 80 }
     ],
     whyItWorks: ["Tinh tế", "Đẳng cấp", "Công nghệ cao"],
     productCount: 7,
@@ -167,11 +167,11 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm tối giản tông trắng",
     productIds: ["v_lavabo_2", "v_faucet_2", "v_toilet_2", "v_shower_4", "v_mirror_2", "v_tile_1"],
     hotspots: [
-      { id: "hs-6-1", productId: "v_mirror_2", x: 52, y: 28, label: "Gương viền mỏng" },
-      { id: "hs-6-2", productId: "v_lavabo_2", x: 50, y: 55, label: "Lavabo vuông vắn" },
-      { id: "hs-6-3", productId: "v_faucet_2", x: 48, y: 48, label: "Vòi lavabo cong" },
-      { id: "hs-6-4", productId: "v_shower_4", x: 22, y: 35, label: "Sen tắm âm tường" },
-      { id: "hs-6-5", productId: "v_toilet_2", x: 76, y: 62, label: "Bồn cầu 1 khối" }
+      { id: "hs-6-1", imageId: "vc-bath-6", productId: "v_mirror_2", label: "Gương viền mỏng", xPercent: 52, yPercent: 28 },
+      { id: "hs-6-2", imageId: "vc-bath-6", productId: "v_lavabo_2", label: "Lavabo vuông vắn", xPercent: 50, yPercent: 55 },
+      { id: "hs-6-3", imageId: "vc-bath-6", productId: "v_faucet_2", label: "Vòi lavabo cong", xPercent: 48, yPercent: 48 },
+      { id: "hs-6-4", imageId: "vc-bath-6", productId: "v_shower_4", label: "Sen tắm âm tường", xPercent: 22, yPercent: 35 },
+      { id: "hs-6-5", imageId: "vc-bath-6", productId: "v_toilet_2", label: "Bồn cầu 1 khối", xPercent: 76, yPercent: 62 }
     ],
     whyItWorks: ["Rộng rãi", "Sạch sẽ", "Thanh lịch"],
     productCount: 6,
@@ -197,11 +197,11 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm màu be ấm",
     productIds: ["v_lavabo_6", "v_faucet_7", "v_toilet_6", "v_shower_7", "v_mirror_5", "v_tile_3"],
     hotspots: [
-      { id: "hs-7-1", productId: "v_mirror_5", x: 50, y: 30, label: "Gương LED tròn" },
-      { id: "hs-7-2", productId: "v_lavabo_6", x: 50, y: 55, label: "Lavabo màu nhám" },
-      { id: "hs-7-3", productId: "v_shower_7", x: 20, y: 40, label: "Sen tắm màu đồng/xám" },
-      { id: "hs-7-4", productId: "v_toilet_6", x: 80, y: 65, label: "Bồn cầu hiện đại" },
-      { id: "hs-7-5", productId: "v_tile_3", x: 15, y: 80, label: "Gạch màu be ấm" }
+      { id: "hs-7-1", imageId: "vc-bath-7", productId: "v_mirror_5", label: "Gương LED tròn", xPercent: 50, yPercent: 30 },
+      { id: "hs-7-2", imageId: "vc-bath-7", productId: "v_lavabo_6", label: "Lavabo màu nhám", xPercent: 50, yPercent: 55 },
+      { id: "hs-7-3", imageId: "vc-bath-7", productId: "v_shower_7", label: "Sen tắm màu đồng/xám", xPercent: 20, yPercent: 40 },
+      { id: "hs-7-4", imageId: "vc-bath-7", productId: "v_toilet_6", label: "Bồn cầu hiện đại", xPercent: 80, yPercent: 65 },
+      { id: "hs-7-5", imageId: "vc-bath-7", productId: "v_tile_3", label: "Gạch màu be ấm", xPercent: 15, yPercent: 80 }
     ],
     whyItWorks: ["Ấm cúng", "Không lỗi mốt", "Dễ chịu"],
     productCount: 6,
@@ -227,11 +227,11 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm đen trắng",
     productIds: ["v_lavabo_4", "v_faucet_5", "v_toilet_5", "v_shower_5", "v_mirror_4", "v_tile_4", "v_acc_4"],
     hotspots: [
-      { id: "hs-8-1", productId: "v_mirror_4", x: 50, y: 30, label: "Gương viền đen" },
-      { id: "hs-8-2", productId: "v_lavabo_4", x: 50, y: 55, label: "Lavabo vuông" },
-      { id: "hs-8-3", productId: "v_faucet_5", x: 50, y: 48, label: "Vòi lavabo đen mờ" },
-      { id: "hs-8-4", productId: "v_shower_5", x: 20, y: 40, label: "Sen cây đen mờ" },
-      { id: "hs-8-5", productId: "v_tile_4", x: 15, y: 80, label: "Gạch xám nhạt/trắng" }
+      { id: "hs-8-1", imageId: "vc-bath-8", productId: "v_mirror_4", label: "Gương viền đen", xPercent: 50, yPercent: 30 },
+      { id: "hs-8-2", imageId: "vc-bath-8", productId: "v_lavabo_4", label: "Lavabo vuông", xPercent: 50, yPercent: 55 },
+      { id: "hs-8-3", imageId: "vc-bath-8", productId: "v_faucet_5", label: "Vòi lavabo đen mờ", xPercent: 50, yPercent: 48 },
+      { id: "hs-8-4", imageId: "vc-bath-8", productId: "v_shower_5", label: "Sen cây đen mờ", xPercent: 20, yPercent: 40 },
+      { id: "hs-8-5", imageId: "vc-bath-8", productId: "v_tile_4", label: "Gạch xám nhạt/trắng", xPercent: 15, yPercent: 80 }
     ],
     whyItWorks: ["Cá tính", "Mạnh mẽ", "Tương phản cao"],
     productCount: 7,
@@ -257,10 +257,10 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm chống ẩm",
     productIds: ["v_lavabo_3", "v_faucet_4", "v_toilet_3", "v_shower_3", "v_mirror_3", "v_tile_6"],
     hotspots: [
-      { id: "hs-9-1", productId: "v_mirror_3", x: 50, y: 30, label: "Gương sấy nhiệt" },
-      { id: "hs-9-2", productId: "v_lavabo_3", x: 50, y: 55, label: "Lavabo chống bám bẩn" },
-      { id: "hs-9-3", productId: "v_toilet_3", x: 80, y: 65, label: "Bồn cầu kháng khuẩn" },
-      { id: "hs-9-4", productId: "v_tile_6", x: 15, y: 80, label: "Gạch chống trơn" }
+      { id: "hs-9-1", imageId: "vc-bath-9", productId: "v_mirror_3", label: "Gương sấy nhiệt", xPercent: 50, yPercent: 30 },
+      { id: "hs-9-2", imageId: "vc-bath-9", productId: "v_lavabo_3", label: "Lavabo chống bám bẩn", xPercent: 50, yPercent: 55 },
+      { id: "hs-9-3", imageId: "vc-bath-9", productId: "v_toilet_3", label: "Bồn cầu kháng khuẩn", xPercent: 80, yPercent: 65 },
+      { id: "hs-9-4", imageId: "vc-bath-9", productId: "v_tile_6", label: "Gạch chống trơn", xPercent: 15, yPercent: 80 }
     ],
     whyItWorks: ["An toàn", "Khô ráo", "Sạch sẽ"],
     productCount: 6,
@@ -286,9 +286,9 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm dễ vệ sinh",
     productIds: ["v_lavabo_9", "v_faucet_8", "v_toilet_9", "v_shower_8", "v_mirror_6", "v_cabinet_3"],
     hotspots: [
-      { id: "hs-10-1", productId: "v_lavabo_9", x: 50, y: 55, label: "Lavabo nguyên khối" },
-      { id: "hs-10-2", productId: "v_toilet_9", x: 80, y: 60, label: "Bồn cầu treo tường" },
-      { id: "hs-10-3", productId: "v_cabinet_3", x: 50, y: 70, label: "Tủ lavabo treo" }
+      { id: "hs-10-1", imageId: "vc-bath-10", productId: "v_lavabo_9", label: "Lavabo nguyên khối", xPercent: 50, yPercent: 55 },
+      { id: "hs-10-2", imageId: "vc-bath-10", productId: "v_toilet_9", label: "Bồn cầu treo tường", xPercent: 80, yPercent: 60 },
+      { id: "hs-10-3", imageId: "vc-bath-10", productId: "v_cabinet_3", label: "Tủ lavabo treo", xPercent: 50, yPercent: 70 }
     ],
     whyItWorks: ["Tiết kiệm thời gian", "Không góc chết"],
     productCount: 6,
@@ -314,8 +314,8 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm boutique",
     productIds: ["v_lavabo_6", "v_faucet_7", "v_toilet_4", "v_shower_7", "v_mirror_5", "v_acc_5"],
     hotspots: [
-      { id: "hs-11-1", productId: "v_mirror_5", x: 50, y: 30, label: "Gương LED trang trí" },
-      { id: "hs-11-2", productId: "v_faucet_7", x: 50, y: 48, label: "Vòi mạ đồng/vàng" }
+      { id: "hs-11-1", imageId: "vc-bath-11", productId: "v_mirror_5", label: "Gương LED trang trí", xPercent: 50, yPercent: 30 },
+      { id: "hs-11-2", imageId: "vc-bath-11", productId: "v_faucet_7", label: "Vòi mạ đồng/vàng", xPercent: 50, yPercent: 48 }
     ],
     whyItWorks: ["Ăn ảnh", "Độc đáo", "Thu hút khách"],
     productCount: 6,
@@ -341,8 +341,8 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm compact với tủ",
     productIds: ["v_lavabo_5", "v_faucet_2", "v_toilet_2", "v_shower_2", "v_mirror_2", "v_cabinet_1"],
     hotspots: [
-      { id: "hs-12-1", productId: "v_cabinet_1", x: 50, y: 70, label: "Tủ nhựa PVC chống nước" },
-      { id: "hs-12-2", productId: "v_lavabo_5", x: 50, y: 55, label: "Lavabo âm bàn" }
+      { id: "hs-12-1", imageId: "vc-bath-12", productId: "v_cabinet_1", label: "Tủ nhựa PVC chống nước", xPercent: 50, yPercent: 70 },
+      { id: "hs-12-2", imageId: "vc-bath-12", productId: "v_lavabo_5", label: "Lavabo âm bàn", xPercent: 50, yPercent: 55 }
     ],
     whyItWorks: ["Gọn gàng", "Chứa nhiều đồ", "Giá hợp lý"],
     productCount: 6,
@@ -368,8 +368,8 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm nhà ống hẹp",
     productIds: ["v_lavabo_1", "v_faucet_3", "v_toilet_2", "v_shower_3", "v_mirror_1", "v_acc_2"],
     hotspots: [
-      { id: "hs-13-1", productId: "v_lavabo_1", x: 50, y: 55, label: "Lavabo góc/treo nhỏ" },
-      { id: "hs-13-2", productId: "v_toilet_2", x: 80, y: 65, label: "Bồn cầu gọn gàng" }
+      { id: "hs-13-1", imageId: "vc-bath-13", productId: "v_lavabo_1", label: "Lavabo góc/treo nhỏ", xPercent: 50, yPercent: 55 },
+      { id: "hs-13-2", imageId: "vc-bath-13", productId: "v_toilet_2", label: "Bồn cầu gọn gàng", xPercent: 80, yPercent: 65 }
     ],
     whyItWorks: ["Tối ưu bề ngang", "Di chuyển dễ dàng"],
     productCount: 6,
@@ -395,8 +395,8 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Cải tạo phòng tắm sáng màu",
     productIds: ["v_lavabo_10", "v_faucet_2", "v_toilet_3", "v_shower_2", "v_mirror_2", "v_cabinet_2"],
     hotspots: [
-      { id: "hs-14-1", productId: "v_lavabo_10", x: 50, y: 55, label: "Lavabo mới sáng bóng" },
-      { id: "hs-14-2", productId: "v_mirror_2", x: 50, y: 30, label: "Gương to bản" }
+      { id: "hs-14-1", imageId: "vc-bath-14", productId: "v_lavabo_10", label: "Lavabo mới sáng bóng", xPercent: 50, yPercent: 55 },
+      { id: "hs-14-2", imageId: "vc-bath-14", productId: "v_mirror_2", label: "Gương to bản", xPercent: 50, yPercent: 30 }
     ],
     whyItWorks: ["Tươi mới", "Cải thiện ánh sáng", "Sạch sẽ"],
     productCount: 6,
@@ -422,9 +422,9 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm Luxury công nghệ",
     productIds: ["v_lavabo_8", "v_faucet_9", "v_toilet_8", "v_shower_8", "v_mirror_8", "v_cabinet_5", "v_acc_8"],
     hotspots: [
-      { id: "hs-15-1", productId: "v_shower_8", x: 20, y: 40, label: "Sen cây tĩnh nhiệt" },
-      { id: "hs-15-2", productId: "v_mirror_8", x: 50, y: 30, label: "Gương LED chống sương" },
-      { id: "hs-15-3", productId: "v_toilet_8", x: 80, y: 65, label: "Bồn cầu điện tử" }
+      { id: "hs-15-1", imageId: "vc-bath-15", productId: "v_shower_8", label: "Sen cây tĩnh nhiệt", xPercent: 20, yPercent: 40 },
+      { id: "hs-15-2", imageId: "vc-bath-15", productId: "v_mirror_8", label: "Gương LED chống sương", xPercent: 50, yPercent: 30 },
+      { id: "hs-15-3", imageId: "vc-bath-15", productId: "v_toilet_8", label: "Bồn cầu điện tử", xPercent: 80, yPercent: 65 }
     ],
     whyItWorks: ["Hiện đại", "Tiện nghi cao cấp", "Thư giãn"],
     productCount: 7,
@@ -450,8 +450,8 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm tiết kiệm",
     productIds: ["v_lavabo_1", "v_faucet_1", "v_toilet_1", "v_shower_1", "v_mirror_1", "v_acc_1"],
     hotspots: [
-      { id: "hs-16-1", productId: "v_lavabo_1", x: 50, y: 55, label: "Lavabo cơ bản" },
-      { id: "hs-16-2", productId: "v_toilet_1", x: 80, y: 65, label: "Bồn cầu tiết kiệm" }
+      { id: "hs-16-1", imageId: "vc-bath-16", productId: "v_lavabo_1", label: "Lavabo cơ bản", xPercent: 50, yPercent: 55 },
+      { id: "hs-16-2", imageId: "vc-bath-16", productId: "v_toilet_1", label: "Bồn cầu tiết kiệm", xPercent: 80, yPercent: 65 }
     ],
     whyItWorks: ["Rẻ", "Đảm bảo chất lượng", "Chính hãng"],
     productCount: 6,
@@ -477,9 +477,9 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm cân bằng",
     productIds: ["v_lavabo_5", "v_faucet_4", "v_toilet_4", "v_shower_4", "v_mirror_3", "v_cabinet_2"],
     hotspots: [
-      { id: "hs-17-1", productId: "v_toilet_4", x: 80, y: 65, label: "Bồn cầu 1 khối" },
-      { id: "hs-17-2", productId: "v_cabinet_2", x: 50, y: 70, label: "Tủ chậu chống nước" },
-      { id: "hs-17-3", productId: "v_shower_4", x: 20, y: 40, label: "Sen cây thẩm mỹ" }
+      { id: "hs-17-1", imageId: "vc-bath-17", productId: "v_toilet_4", label: "Bồn cầu 1 khối", xPercent: 80, yPercent: 65 },
+      { id: "hs-17-2", imageId: "vc-bath-17", productId: "v_cabinet_2", label: "Tủ chậu chống nước", xPercent: 50, yPercent: 70 },
+      { id: "hs-17-3", imageId: "vc-bath-17", productId: "v_shower_4", label: "Sen cây thẩm mỹ", xPercent: 20, yPercent: 40 }
     ],
     whyItWorks: ["Chất lượng cao", "Thẩm mỹ tốt", "Đáng tiền"],
     productCount: 6,
@@ -505,9 +505,9 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng tắm siêu cao cấp",
     productIds: ["v_lavabo_11", "v_faucet_10", "v_toilet_10", "v_shower_10", "v_mirror_8", "v_cabinet_6"],
     hotspots: [
-      { id: "hs-18-1", productId: "v_toilet_10", x: 80, y: 65, label: "Bồn cầu thông minh tự động" },
-      { id: "hs-18-2", productId: "v_faucet_10", x: 50, y: 48, label: "Vòi lavabo thiết kế Ý" },
-      { id: "hs-18-3", productId: "v_shower_10", x: 20, y: 40, label: "Sen tắm âm trần đa chế độ" }
+      { id: "hs-18-1", imageId: "vc-bath-18", productId: "v_toilet_10", label: "Bồn cầu thông minh tự động", xPercent: 80, yPercent: 65 },
+      { id: "hs-18-2", imageId: "vc-bath-18", productId: "v_faucet_10", label: "Vòi lavabo thiết kế Ý", xPercent: 50, yPercent: 48 },
+      { id: "hs-18-3", imageId: "vc-bath-18", productId: "v_shower_10", label: "Sen tắm âm trần đa chế độ", xPercent: 20, yPercent: 40 }
     ],
     whyItWorks: ["Độc bản", "Siêu tiện nghi", "Công nghệ tiên phong"],
     productCount: 6,
@@ -535,7 +535,7 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Bếp tối giản",
     productIds: ["v_faucet_2"], // Kitchen catalogue is limited, reuse valid products and fallback
     hotspots: [
-      { id: "hs-k1-1", productId: "v_faucet_2", x: 50, y: 55, label: "Vòi rửa cổ ngỗng cong" }
+      { id: "hs-k1-1", imageId: "vc-kit-1", productId: "v_faucet_2", label: "Vòi rửa cổ ngỗng cong", xPercent: 50, yPercent: 55 }
     ],
     whyItWorks: ["Sạch sẽ", "Gọn gàng", "Dễ lau chùi"],
     productCount: 1,
@@ -561,8 +561,8 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Bếp chữ I nhỏ gọn",
     productIds: ["v_faucet_1", "v_tile_1"],
     hotspots: [
-      { id: "hs-k2-1", productId: "v_faucet_1", x: 60, y: 50, label: "Vòi bồn rửa" },
-      { id: "hs-k2-2", productId: "v_tile_1", x: 40, y: 30, label: "Gạch ốp bếp dễ lau" }
+      { id: "hs-k2-1", imageId: "vc-kit-2", productId: "v_faucet_1", label: "Vòi bồn rửa", xPercent: 60, yPercent: 50 },
+      { id: "hs-k2-2", imageId: "vc-kit-2", productId: "v_tile_1", label: "Gạch ốp bếp dễ lau", xPercent: 40, yPercent: 30 }
     ],
     whyItWorks: ["Tối ưu diện tích", "Tiết kiệm chi phí"],
     productCount: 2,
@@ -588,8 +588,8 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Bếp Warm Neutral gia đình",
     productIds: ["v_faucet_7", "v_tile_3"],
     hotspots: [
-      { id: "hs-k3-1", productId: "v_faucet_7", x: 50, y: 55, label: "Vòi mạ màu đồng/vàng ấm" },
-      { id: "hs-k3-2", productId: "v_tile_3", x: 20, y: 60, label: "Sàn giả gỗ hoặc vân đá be" }
+      { id: "hs-k3-1", imageId: "vc-kit-3", productId: "v_faucet_7", label: "Vòi mạ màu đồng/vàng ấm", xPercent: 50, yPercent: 55 },
+      { id: "hs-k3-2", imageId: "vc-kit-3", productId: "v_tile_3", label: "Sàn giả gỗ hoặc vân đá be", xPercent: 20, yPercent: 60 }
     ],
     whyItWorks: ["Ấm cúng", "Sang trọng", "Gần gũi"],
     productCount: 2,
@@ -615,7 +615,7 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Bếp cho thuê dễ bảo trì",
     productIds: ["v_faucet_3", "v_tile_6"],
     hotspots: [
-      { id: "hs-k4-1", productId: "v_faucet_3", x: 45, y: 55, label: "Vòi rửa bát cơ bản bền bỉ" }
+      { id: "hs-k4-1", imageId: "vc-kit-4", productId: "v_faucet_3", label: "Vòi rửa bát cơ bản bền bỉ", xPercent: 45, yPercent: 55 }
     ],
     whyItWorks: ["Bền", "Rẻ", "Dễ làm sạch"],
     productCount: 2,
@@ -641,7 +641,7 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Bếp Japandi vân gỗ",
     productIds: ["v_faucet_6", "v_tile_3"],
     hotspots: [
-      { id: "hs-k5-1", productId: "v_faucet_6", x: 50, y: 50, label: "Vòi nước màu đen/inox xước" }
+      { id: "hs-k5-1", imageId: "vc-kit-5", productId: "v_faucet_6", label: "Vòi nước màu đen/inox xước", xPercent: 50, yPercent: 50 }
     ],
     whyItWorks: ["Nhẹ nhàng", "Gần gũi thiên nhiên", "Yên bình"],
     productCount: 2,
@@ -669,7 +669,7 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng khách tối giản ấm",
     productIds: ["v_tile_2"], // Use tiles/lights if available
     hotspots: [
-      { id: "hs-l1-1", productId: "v_tile_2", x: 20, y: 70, label: "Sàn gạch khổ lớn/Gỗ" }
+      { id: "hs-l1-1", imageId: "vc-liv-1", productId: "v_tile_2", label: "Sàn gạch khổ lớn/Gỗ", xPercent: 20, yPercent: 70 }
     ],
     whyItWorks: ["Rộng rãi", "Dễ chịu", "Ít bám bụi"],
     productCount: 1,
@@ -695,7 +695,7 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng khách diện tích nhỏ",
     productIds: ["v_tile_1"],
     hotspots: [
-      { id: "hs-l2-1", productId: "v_tile_1", x: 50, y: 80, label: "Sàn sáng màu giúp rộng nhà" }
+      { id: "hs-l2-1", imageId: "vc-liv-2", productId: "v_tile_1", label: "Sàn sáng màu giúp rộng nhà", xPercent: 50, yPercent: 80 }
     ],
     whyItWorks: ["Gọn gàng", "Thông thoáng"],
     productCount: 1,
@@ -721,7 +721,7 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng khách Japandi mộc mạc",
     productIds: ["v_tile_3"],
     hotspots: [
-      { id: "hs-l3-1", productId: "v_tile_3", x: 50, y: 80, label: "Sàn vân gỗ sáng" }
+      { id: "hs-l3-1", imageId: "vc-liv-3", productId: "v_tile_3", label: "Sàn vân gỗ sáng", xPercent: 50, yPercent: 80 }
     ],
     whyItWorks: ["Thư giãn tâm trí", "Cảm giác bình yên"],
     productCount: 1,
@@ -747,7 +747,7 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng khách ấm áp màu be",
     productIds: ["v_tile_3"],
     hotspots: [
-      { id: "hs-l4-1", productId: "v_tile_3", x: 40, y: 80, label: "Sàn tông ấm" }
+      { id: "hs-l4-1", imageId: "vc-liv-4", productId: "v_tile_3", label: "Sàn tông ấm", xPercent: 40, yPercent: 80 }
     ],
     whyItWorks: ["Sang trọng mềm mại", "Không bao giờ lỗi thời"],
     productCount: 1,
@@ -773,7 +773,7 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng khách homestay bắt mắt",
     productIds: ["v_acc_4"],
     hotspots: [
-      { id: "hs-l5-1", productId: "v_acc_4", x: 50, y: 50, label: "Phụ kiện trang trí điểm nhấn" }
+      { id: "hs-l5-1", imageId: "vc-liv-5", productId: "v_acc_4", label: "Phụ kiện trang trí điểm nhấn", xPercent: 50, yPercent: 50 }
     ],
     whyItWorks: ["Ấn tượng từ cái nhìn đầu tiên", "Chi phí vừa phải"],
     productCount: 1,
@@ -799,7 +799,7 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Phòng khách cơ bản hiện đại",
     productIds: ["v_tile_6"],
     hotspots: [
-      { id: "hs-l6-1", productId: "v_tile_6", x: 50, y: 80, label: "Sàn gạch/nhựa giả gỗ tiết kiệm" }
+      { id: "hs-l6-1", imageId: "vc-liv-6", productId: "v_tile_6", label: "Sàn gạch/nhựa giả gỗ tiết kiệm", xPercent: 50, yPercent: 80 }
     ],
     whyItWorks: ["Giá cả phải chăng", "Dễ thi công", "Nhanh gọn"],
     productCount: 1,
@@ -827,8 +827,8 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Căn hộ Studio nhỏ",
     productIds: ["v_faucet_3", "v_lavabo_1", "v_shower_1"],
     hotspots: [
-      { id: "hs-s1-1", productId: "v_lavabo_1", x: 20, y: 50, label: "Lavabo tích hợp khu vệ sinh gọn" },
-      { id: "hs-s1-2", productId: "v_faucet_3", x: 80, y: 50, label: "Bếp nhỏ xinh" }
+      { id: "hs-s1-1", imageId: "vc-stu-1", productId: "v_lavabo_1", label: "Lavabo tích hợp khu vệ sinh gọn", xPercent: 20, yPercent: 50 },
+      { id: "hs-s1-2", imageId: "vc-stu-1", productId: "v_faucet_3", label: "Bếp nhỏ xinh", xPercent: 80, yPercent: 50 }
     ],
     whyItWorks: ["Không vướng víu", "Cảm giác rộng hơn diện tích thực"],
     productCount: 3,
@@ -854,8 +854,8 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Studio Japandi",
     productIds: ["v_tile_3", "v_mirror_5"],
     hotspots: [
-      { id: "hs-s2-1", productId: "v_tile_3", x: 50, y: 80, label: "Sàn vân gỗ ấm áp" },
-      { id: "hs-s2-2", productId: "v_mirror_5", x: 80, y: 40, label: "Gương tròn soi toàn thân" }
+      { id: "hs-s2-1", imageId: "vc-stu-2", productId: "v_tile_3", label: "Sàn vân gỗ ấm áp", xPercent: 50, yPercent: 80 },
+      { id: "hs-s2-2", imageId: "vc-stu-2", productId: "v_mirror_5", label: "Gương tròn soi toàn thân", xPercent: 80, yPercent: 40 }
     ],
     whyItWorks: ["Chill", "Trẻ trung", "Giá cực rẻ do dùng đồ tái chế/lắp ráp"],
     productCount: 2,
@@ -881,8 +881,8 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Homestay chuẩn khách sạn",
     productIds: ["v_lavabo_8", "v_shower_8", "v_mirror_7", "v_tile_5"],
     hotspots: [
-      { id: "hs-s3-1", productId: "v_shower_8", x: 80, y: 50, label: "Vách kính tắm sen cây" },
-      { id: "hs-s3-2", productId: "v_mirror_7", x: 85, y: 35, label: "Gương LED nịnh mặt" }
+      { id: "hs-s3-1", imageId: "vc-stu-3", productId: "v_shower_8", label: "Vách kính tắm sen cây", xPercent: 80, yPercent: 50 },
+      { id: "hs-s3-2", imageId: "vc-stu-3", productId: "v_mirror_7", label: "Gương LED nịnh mặt", xPercent: 85, yPercent: 35 }
     ],
     whyItWorks: ["Trải nghiệm cao", "Khách hàng sẵn sàng chi tiền"],
     productCount: 4,
@@ -908,8 +908,8 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Căn hộ dịch vụ thực dụng",
     productIds: ["v_tile_6", "v_toilet_1", "v_lavabo_1", "v_faucet_3"],
     hotspots: [
-      { id: "hs-s4-1", productId: "v_tile_6", x: 50, y: 85, label: "Sàn gạch giả gỗ siêu bền" },
-      { id: "hs-s4-2", productId: "v_faucet_3", x: 80, y: 55, label: "Thiết bị inox cơ bản bền bỉ" }
+      { id: "hs-s4-1", imageId: "vc-stu-4", productId: "v_tile_6", label: "Sàn gạch giả gỗ siêu bền", xPercent: 50, yPercent: 85 },
+      { id: "hs-s4-2", imageId: "vc-stu-4", productId: "v_faucet_3", label: "Thiết bị inox cơ bản bền bỉ", xPercent: 80, yPercent: 55 }
     ],
     whyItWorks: ["Không lo khách phá", "Chi phí khấu hao thấp"],
     productCount: 4,
@@ -935,8 +935,8 @@ export const visualConcepts: Concept[] = [
     imageAlt: "Cải tạo phòng thuê ngân sách thấp",
     productIds: ["v_acc_2", "v_mirror_1"],
     hotspots: [
-      { id: "hs-s5-1", productId: "v_mirror_1", x: 40, y: 30, label: "Gương dán tường" },
-      { id: "hs-s5-2", productId: "v_acc_2", x: 60, y: 50, label: "Kệ để đồ lắp ghép" }
+      { id: "hs-s5-1", imageId: "vc-stu-5", productId: "v_mirror_1", label: "Gương dán tường", xPercent: 40, yPercent: 30 },
+      { id: "hs-s5-2", imageId: "vc-stu-5", productId: "v_acc_2", label: "Kệ để đồ lắp ghép", xPercent: 60, yPercent: 50 }
     ],
     whyItWorks: ["Cực rẻ", "Tự làm được (DIY)", "Hiệu quả thị giác cao"],
     productCount: 2,

@@ -3592,45 +3592,51 @@ export const seededConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h-c-001-0",
+        "imageId": "c-001",
         "productId": "p-001",
-        "x": 25,
-        "y": 50,
-        "label": "Basin"
+        "label": "Basin",
+        "xPercent": 25,
+        "yPercent": 50
       },
       {
         "id": "h-c-001-1",
+        "imageId": "c-001",
         "productId": "p-029",
-        "x": 24,
-        "y": 36,
-        "label": "Faucet"
+        "label": "Faucet",
+        "xPercent": 24,
+        "yPercent": 36
       },
       {
         "id": "h-c-001-2",
+        "imageId": "c-001",
         "productId": "p-069",
-        "x": 36,
-        "y": 77,
-        "label": "Toilet"
+        "label": "Toilet",
+        "xPercent": 36,
+        "yPercent": 77
       },
       {
         "id": "h-c-001-3",
+        "imageId": "c-001",
         "productId": "p-045",
-        "x": 34,
-        "y": 62,
-        "label": "Shower"
+        "label": "Shower",
+        "xPercent": 34,
+        "yPercent": 62
       },
       {
         "id": "h-c-001-4",
+        "imageId": "c-001",
         "productId": "p-031",
-        "x": 62,
-        "y": 80,
-        "label": "Mirror"
+        "label": "Mirror",
+        "xPercent": 62,
+        "yPercent": 80
       },
       {
         "id": "h-c-001-5",
+        "imageId": "c-001",
         "productId": "p-080",
-        "x": 54,
-        "y": 64,
-        "label": "Tiles"
+        "label": "Tiles",
+        "xPercent": 54,
+        "yPercent": 64
       }
     ],
     "whyItWorks": [
@@ -3663,45 +3669,51 @@ export const seededConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h-c-002-0",
+        "imageId": "c-002",
         "productId": "p-011",
-        "x": 26,
-        "y": 46,
-        "label": "Basin"
+        "label": "Basin",
+        "xPercent": 26,
+        "yPercent": 46
       },
       {
         "id": "h-c-002-1",
+        "imageId": "c-002",
         "productId": "p-026",
-        "x": 43,
-        "y": 54,
-        "label": "Faucet"
+        "label": "Faucet",
+        "xPercent": 43,
+        "yPercent": 54
       },
       {
         "id": "h-c-002-2",
+        "imageId": "c-002",
         "productId": "p-064",
-        "x": 36,
-        "y": 31,
-        "label": "Toilet"
+        "label": "Toilet",
+        "xPercent": 36,
+        "yPercent": 31
       },
       {
         "id": "h-c-002-3",
+        "imageId": "c-002",
         "productId": "p-051",
-        "x": 41,
-        "y": 34,
-        "label": "Shower"
+        "label": "Shower",
+        "xPercent": 41,
+        "yPercent": 34
       },
       {
         "id": "h-c-002-4",
+        "imageId": "c-002",
         "productId": "p-034",
-        "x": 28,
-        "y": 20,
-        "label": "Mirror"
+        "label": "Mirror",
+        "xPercent": 28,
+        "yPercent": 20
       },
       {
         "id": "h-c-002-5",
+        "imageId": "c-002",
         "productId": "p-076",
-        "x": 73,
-        "y": 25,
-        "label": "Tiles"
+        "label": "Tiles",
+        "xPercent": 73,
+        "yPercent": 25
       }
     ],
     "whyItWorks": [
@@ -3734,45 +3746,51 @@ export const seededConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h-c-003-0",
+        "imageId": "c-003",
         "productId": "p-002",
-        "x": 40,
-        "y": 24,
-        "label": "Basin"
+        "label": "Basin",
+        "xPercent": 40,
+        "yPercent": 24
       },
       {
         "id": "h-c-003-1",
+        "imageId": "c-003",
         "productId": "p-017",
-        "x": 34,
-        "y": 29,
-        "label": "Faucet"
+        "label": "Faucet",
+        "xPercent": 34,
+        "yPercent": 29
       },
       {
         "id": "h-c-003-2",
+        "imageId": "c-003",
         "productId": "p-057",
-        "x": 55,
-        "y": 79,
-        "label": "Toilet"
+        "label": "Toilet",
+        "xPercent": 55,
+        "yPercent": 79
       },
       {
         "id": "h-c-003-3",
+        "imageId": "c-003",
         "productId": "p-050",
-        "x": 42,
-        "y": 51,
-        "label": "Shower"
+        "label": "Shower",
+        "xPercent": 42,
+        "yPercent": 51
       },
       {
         "id": "h-c-003-4",
+        "imageId": "c-003",
         "productId": "p-036",
-        "x": 48,
-        "y": 66,
-        "label": "Mirror"
+        "label": "Mirror",
+        "xPercent": 48,
+        "yPercent": 66
       },
       {
         "id": "h-c-003-5",
+        "imageId": "c-003",
         "productId": "p-080",
-        "x": 59,
-        "y": 59,
-        "label": "Tiles"
+        "label": "Tiles",
+        "xPercent": 59,
+        "yPercent": 59
       }
     ],
     "whyItWorks": [
@@ -3805,45 +3823,51 @@ export const seededConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h-c-004-0",
+        "imageId": "c-004",
         "productId": "p-001",
-        "x": 60,
-        "y": 43,
-        "label": "Basin"
+        "label": "Basin",
+        "xPercent": 60,
+        "yPercent": 43
       },
       {
         "id": "h-c-004-1",
+        "imageId": "c-004",
         "productId": "p-016",
-        "x": 79,
-        "y": 78,
-        "label": "Faucet"
+        "label": "Faucet",
+        "xPercent": 79,
+        "yPercent": 78
       },
       {
         "id": "h-c-004-2",
+        "imageId": "c-004",
         "productId": "p-059",
-        "x": 25,
-        "y": 72,
-        "label": "Toilet"
+        "label": "Toilet",
+        "xPercent": 25,
+        "yPercent": 72
       },
       {
         "id": "h-c-004-3",
+        "imageId": "c-004",
         "productId": "p-049",
-        "x": 66,
-        "y": 71,
-        "label": "Shower"
+        "label": "Shower",
+        "xPercent": 66,
+        "yPercent": 71
       },
       {
         "id": "h-c-004-4",
+        "imageId": "c-004",
         "productId": "p-032",
-        "x": 76,
-        "y": 51,
-        "label": "Mirror"
+        "label": "Mirror",
+        "xPercent": 76,
+        "yPercent": 51
       },
       {
         "id": "h-c-004-5",
+        "imageId": "c-004",
         "productId": "p-077",
-        "x": 60,
-        "y": 45,
-        "label": "Tiles"
+        "label": "Tiles",
+        "xPercent": 60,
+        "yPercent": 45
       }
     ],
     "whyItWorks": [
@@ -3876,45 +3900,51 @@ export const seededConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h-c-005-0",
+        "imageId": "c-005",
         "productId": "p-014",
-        "x": 80,
-        "y": 75,
-        "label": "Basin"
+        "label": "Basin",
+        "xPercent": 80,
+        "yPercent": 75
       },
       {
         "id": "h-c-005-1",
+        "imageId": "c-005",
         "productId": "p-017",
-        "x": 45,
-        "y": 56,
-        "label": "Faucet"
+        "label": "Faucet",
+        "xPercent": 45,
+        "yPercent": 56
       },
       {
         "id": "h-c-005-2",
+        "imageId": "c-005",
         "productId": "p-070",
-        "x": 37,
-        "y": 77,
-        "label": "Toilet"
+        "label": "Toilet",
+        "xPercent": 37,
+        "yPercent": 77
       },
       {
         "id": "h-c-005-3",
+        "imageId": "c-005",
         "productId": "p-041",
-        "x": 27,
-        "y": 22,
-        "label": "Shower"
+        "label": "Shower",
+        "xPercent": 27,
+        "yPercent": 22
       },
       {
         "id": "h-c-005-4",
+        "imageId": "c-005",
         "productId": "p-039",
-        "x": 52,
-        "y": 45,
-        "label": "Mirror"
+        "label": "Mirror",
+        "xPercent": 52,
+        "yPercent": 45
       },
       {
         "id": "h-c-005-5",
+        "imageId": "c-005",
         "productId": "p-072",
-        "x": 24,
-        "y": 42,
-        "label": "Tiles"
+        "label": "Tiles",
+        "xPercent": 24,
+        "yPercent": 42
       }
     ],
     "whyItWorks": [
@@ -3947,45 +3977,51 @@ export const seededConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h-c-006-0",
+        "imageId": "c-006",
         "productId": "p-015",
-        "x": 49,
-        "y": 73,
-        "label": "Basin"
+        "label": "Basin",
+        "xPercent": 49,
+        "yPercent": 73
       },
       {
         "id": "h-c-006-1",
+        "imageId": "c-006",
         "productId": "p-030",
-        "x": 40,
-        "y": 77,
-        "label": "Faucet"
+        "label": "Faucet",
+        "xPercent": 40,
+        "yPercent": 77
       },
       {
         "id": "h-c-006-2",
+        "imageId": "c-006",
         "productId": "p-057",
-        "x": 61,
-        "y": 68,
-        "label": "Toilet"
+        "label": "Toilet",
+        "xPercent": 61,
+        "yPercent": 68
       },
       {
         "id": "h-c-006-3",
+        "imageId": "c-006",
         "productId": "p-051",
-        "x": 28,
-        "y": 66,
-        "label": "Shower"
+        "label": "Shower",
+        "xPercent": 28,
+        "yPercent": 66
       },
       {
         "id": "h-c-006-4",
+        "imageId": "c-006",
         "productId": "p-034",
-        "x": 47,
-        "y": 45,
-        "label": "Mirror"
+        "label": "Mirror",
+        "xPercent": 47,
+        "yPercent": 45
       },
       {
         "id": "h-c-006-5",
+        "imageId": "c-006",
         "productId": "p-073",
-        "x": 64,
-        "y": 37,
-        "label": "Tiles"
+        "label": "Tiles",
+        "xPercent": 64,
+        "yPercent": 37
       }
     ],
     "whyItWorks": [
@@ -4016,31 +4052,35 @@ export const seededConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h-c-007-0",
+        "imageId": "c-007",
         "productId": "p-095",
-        "x": 66,
-        "y": 55,
-        "label": "Lighting"
+        "label": "Lighting",
+        "xPercent": 66,
+        "yPercent": 55
       },
       {
         "id": "h-c-007-1",
+        "imageId": "c-007",
         "productId": "p-106",
-        "x": 22,
-        "y": 36,
-        "label": "Accessories"
+        "label": "Accessories",
+        "xPercent": 22,
+        "yPercent": 36
       },
       {
         "id": "h-c-007-2",
+        "imageId": "c-007",
         "productId": "p-087",
-        "x": 49,
-        "y": 23,
-        "label": "Cabinet"
+        "label": "Cabinet",
+        "xPercent": 49,
+        "yPercent": 23
       },
       {
         "id": "h-c-007-3",
+        "imageId": "c-007",
         "productId": "p-076",
-        "x": 36,
-        "y": 54,
-        "label": "Tiles"
+        "label": "Tiles",
+        "xPercent": 36,
+        "yPercent": 54
       }
     ],
     "whyItWorks": [
@@ -4071,31 +4111,35 @@ export const seededConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h-c-008-0",
+        "imageId": "c-008",
         "productId": "p-093",
-        "x": 53,
-        "y": 64,
-        "label": "Lighting"
+        "label": "Lighting",
+        "xPercent": 53,
+        "yPercent": 64
       },
       {
         "id": "h-c-008-1",
+        "imageId": "c-008",
         "productId": "p-113",
-        "x": 28,
-        "y": 60,
-        "label": "Accessories"
+        "label": "Accessories",
+        "xPercent": 28,
+        "yPercent": 60
       },
       {
         "id": "h-c-008-2",
+        "imageId": "c-008",
         "productId": "p-087",
-        "x": 31,
-        "y": 33,
-        "label": "Cabinet"
+        "label": "Cabinet",
+        "xPercent": 31,
+        "yPercent": 33
       },
       {
         "id": "h-c-008-3",
+        "imageId": "c-008",
         "productId": "p-074",
-        "x": 21,
-        "y": 26,
-        "label": "Tiles"
+        "label": "Tiles",
+        "xPercent": 21,
+        "yPercent": 26
       }
     ],
     "whyItWorks": [
@@ -4126,31 +4170,35 @@ export const seededConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h-c-009-0",
+        "imageId": "c-009",
         "productId": "p-094",
-        "x": 71,
-        "y": 76,
-        "label": "Lighting"
+        "label": "Lighting",
+        "xPercent": 71,
+        "yPercent": 76
       },
       {
         "id": "h-c-009-1",
+        "imageId": "c-009",
         "productId": "p-111",
-        "x": 52,
-        "y": 20,
-        "label": "Accessories"
+        "label": "Accessories",
+        "xPercent": 52,
+        "yPercent": 20
       },
       {
         "id": "h-c-009-2",
+        "imageId": "c-009",
         "productId": "p-086",
-        "x": 25,
-        "y": 41,
-        "label": "Cabinet"
+        "label": "Cabinet",
+        "xPercent": 25,
+        "yPercent": 41
       },
       {
         "id": "h-c-009-3",
+        "imageId": "c-009",
         "productId": "p-074",
-        "x": 45,
-        "y": 29,
-        "label": "Tiles"
+        "label": "Tiles",
+        "xPercent": 45,
+        "yPercent": 29
       }
     ],
     "whyItWorks": [

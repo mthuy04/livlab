@@ -6,22 +6,19 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { products } from '@/lib/data';
 import SafeProductImage from '@/components/ui/SafeProductImage';
 import { useQuote } from '@/lib/context/QuoteContext';
+import { useObjectCoverHotspots } from '@/lib/hooks/useObjectCoverHotspots';
 import { getStoredProducts } from '@/lib/storage';
-import { Product } from '@/lib/types';
+import { Hotspot, Product } from '@/lib/types';
+import homeHotspots from '@/lib/data/homeHotspots.json';
 
 const hotspotImage = 'https://images.unsplash.com/photo-1620626011761-996317b8d101?w=1920&q=90';
 
-const hotspots = [
-  { id: 'spot-1', label: 'Sen tắm', x: '12%', y: '28%', productId: 'p-004' },
-  { id: 'spot-2', label: 'Gương', x: '73%', y: '28%', productId: 'p-003' },
-  { id: 'spot-3', label: 'Vòi lavabo', x: '76%', y: '54%', productId: 'p-002' },
-  { id: 'spot-4', label: 'Lavabo', x: '74%', y: '61%', productId: 'p-001' },
-  { id: 'spot-5', label: 'Bồn cầu', x: '58%', y: '72%', productId: 'p-005' },
-];
+const hotspots = homeHotspots as Hotspot[];
 
 export default function HomeHotspotSection() {
   const [activeSpot, setActiveSpot] = useState(hotspots[2]);
   const { addItem, hasItem } = useQuote();
+  const { containerRef, imgRef, onImageLoad, toDisplayPercent } = useObjectCoverHotspots<HTMLDivElement>();
 
   // Load products once
   const [allProducts, setAllProducts] = useState<Product[]>([]);
@@ -71,11 +68,13 @@ export default function HomeHotspotSection() {
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1.55fr_1fr]">
-      <div className="relative overflow-hidden rounded-[2rem] border border-[#D8E2EA] bg-[#DCEBF5] shadow-[0_22px_55px_rgba(11,22,35,0.08)]">
+      <div ref={containerRef} className="relative overflow-hidden rounded-[2rem] border border-[#D8E2EA] bg-[#DCEBF5] shadow-[0_22px_55px_rgba(11,22,35,0.08)]">
         <img
+          ref={imgRef}
           src={hotspotImage}
           alt="Không gian phòng tắm có hotspot sản phẩm"
           className="h-full min-h-[520px] w-full object-cover"
+          onLoad={onImageLoad}
         />
         <div className="absolute left-5 top-5 rounded-full bg-white/90 px-4 py-2 text-xs font-bold uppercase tracking-wide text-[#0B2239] shadow-sm backdrop-blur">
           Hotspot tương tác
@@ -83,6 +82,7 @@ export default function HomeHotspotSection() {
 
         {hotspots.map((spot) => {
           const isActive = activeSpot.id === spot.id;
+          const { left, top } = toDisplayPercent(spot.xPercent, spot.yPercent);
           return (
             <button
               key={spot.id}
@@ -92,7 +92,7 @@ export default function HomeHotspotSection() {
                   ? 'border-[#C8A45D] bg-[#0B2239] text-white scale-110'
                   : 'border-white/50 bg-white/92 text-[#0B2239]'
               }`}
-              style={{ left: spot.x, top: spot.y }}
+              style={{ left: `${left}%`, top: `${top}%` }}
               aria-label={`Xem ${spot.label}`}
             >
               <span className={`h-2 w-2 rounded-full ${isActive ? 'bg-[#C8A45D]' : 'bg-[#0B2239]'}`} />

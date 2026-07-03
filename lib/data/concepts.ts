@@ -20,18 +20,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-0",
+        "imageId": "concept-bath-1",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-0",
+        "imageId": "concept-bath-1",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -72,18 +74,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-1",
+        "imageId": "concept-bath-2",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-1",
+        "imageId": "concept-bath-2",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -124,18 +128,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-2",
+        "imageId": "concept-bath-3",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-2",
+        "imageId": "concept-bath-3",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -176,18 +182,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-3",
+        "imageId": "concept-bath-4",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-3",
+        "imageId": "concept-bath-4",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -228,18 +236,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-4",
+        "imageId": "concept-bath-5",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-4",
+        "imageId": "concept-bath-5",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -280,18 +290,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-5",
+        "imageId": "concept-bath-6",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-5",
+        "imageId": "concept-bath-6",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -332,18 +344,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-6",
+        "imageId": "concept-bath-7",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-6",
+        "imageId": "concept-bath-7",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -384,18 +398,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-7",
+        "imageId": "concept-bath-8",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-7",
+        "imageId": "concept-bath-8",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -436,18 +452,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-8",
+        "imageId": "concept-bath-9",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-8",
+        "imageId": "concept-bath-9",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -488,18 +506,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-9",
+        "imageId": "concept-bath-10",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-9",
+        "imageId": "concept-bath-10",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -540,18 +560,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-10",
+        "imageId": "concept-bath-11",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-10",
+        "imageId": "concept-bath-11",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -592,18 +614,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-11",
+        "imageId": "concept-bath-12",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-11",
+        "imageId": "concept-bath-12",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -644,18 +668,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-12",
+        "imageId": "concept-bath-13",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-12",
+        "imageId": "concept-bath-13",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -696,18 +722,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-13",
+        "imageId": "concept-bath-14",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-13",
+        "imageId": "concept-bath-14",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -748,18 +776,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-14",
+        "imageId": "concept-bath-15",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-14",
+        "imageId": "concept-bath-15",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -800,18 +830,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-15",
+        "imageId": "concept-bath-16",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-15",
+        "imageId": "concept-bath-16",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -852,18 +884,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-16",
+        "imageId": "concept-bath-17",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-16",
+        "imageId": "concept-bath-17",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -904,18 +938,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-17",
+        "imageId": "concept-bath-18",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-17",
+        "imageId": "concept-bath-18",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -956,18 +992,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-18",
+        "imageId": "concept-bath-19",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-18",
+        "imageId": "concept-bath-19",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],
@@ -1008,18 +1046,20 @@ export const generatedConcepts: Concept[] = [
     "hotspots": [
       {
         "id": "h1-19",
+        "imageId": "concept-bath-20",
         "productId": "llv-lav-toto-lt1705-xw",
         "label": "Lavabo",
-        "x": 45,
-        "y": 55,
+        "xPercent": 45,
+        "yPercent": 55,
         "category": "Lavabo"
       },
       {
         "id": "h2-19",
+        "imageId": "concept-bath-20",
         "productId": "llv-fau-toto-tx109ld",
         "label": "Vòi",
-        "x": 45,
-        "y": 45,
+        "xPercent": 45,
+        "yPercent": 45,
         "category": "Vòi lavabo"
       }
     ],

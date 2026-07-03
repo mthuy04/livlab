@@ -140,10 +140,11 @@ export interface ComboPackage {
 
 export interface Hotspot {
   id: string;
+  imageId: string; // scopes this hotspot to a specific image (concept.id for CSV-sourced concepts, or a stable key for standalone JSON hotspot sets)
   productId: string;
   label: string;
-  x: number; // percentage from left
-  y: number; // percentage from top
+  xPercent: number; // % from left, relative to the ORIGINAL (natural) image dimensions — not the display container
+  yPercent: number; // % from top, relative to the ORIGINAL (natural) image dimensions — not the display container
   category?: string;
   note?: string;
 }
