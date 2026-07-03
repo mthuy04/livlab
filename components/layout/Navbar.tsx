@@ -85,13 +85,21 @@ export default function Navbar() {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${solidBg ? 'bg-white/95 backdrop-blur-md border-b border-[#D8E2EA] shadow-sm' : 'bg-gradient-to-b from-[#0B1623]/60 to-transparent border-b border-transparent'}`}>
       <nav className="max-w-8xl mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
-          <div className="w-7 h-7 bg-[#123C5A] rounded-lg flex items-center justify-center group-hover:bg-[#123C5A] transition-colors duration-200">
-            <Square className="w-3 h-3 text-white fill-white" />
-          </div>
-          <span className={`text-xl font-bold tracking-tight transition-colors ${solidBg ? 'text-[#0B1623]' : 'text-white'}`}>LivLab</span>
-        </Link>
-
+       {/* Logo */}
+<Link
+  href="/"
+  aria-label="LivLab"
+  className={`flex items-center group flex-shrink-0 rounded-2xl transition-all duration-200 ${solidBg ? '' : 'bg-white/95 px-3 py-1.5 shadow-sm'}`}
+>
+  <Image
+    src="/images/logo.png"
+    alt="LivLab"
+    width={132}
+    height={40}
+    priority
+    className="h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
+  />
+</Link>
         {/* Desktop Nav */}
         <div className="hidden lg:flex items-center gap-6">
           <Link href="/" className={`text-sm font-medium transition-colors hover:text-[#C8A96A] ${pathname === '/' ? activeColor : textColor}`}>
