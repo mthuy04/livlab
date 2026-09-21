@@ -1,104 +1,123 @@
 'use client';
 
-export interface RoomDimensions {
-  length: number;
-  width: number;
-  height: number;
-}
-
-export interface TileColorOption {
-  name: string;
-  hex: string;
-}
-
-export const TILE_COLOR_OPTIONS: TileColorOption[] = [
-  { name: 'Trắng tinh khôi', hex: '#F5F5F0' },
-  { name: 'Xám bê tông', hex: '#A8A8A0' },
-  { name: 'Be cát', hex: '#D9CBB4' },
-  { name: 'Xanh sage', hex: '#A8B5A0' },
-  { name: 'Xanh navy đậm', hex: '#2C3E50' },
-  { name: 'Nâu đất nung', hex: '#8B5A3C' },
-  { name: 'Xám đá', hex: '#6B6B68' },
-  { name: 'Hồng đất nhạt', hex: '#D6B7AC' },
-  { name: 'Xanh rêu đậm', hex: '#4A5D4E' },
-  { name: 'Trắng ngà ấm', hex: '#EDE6D6' },
-];
-
-export const DIMENSION_LIMITS: Record<keyof RoomDimensions, { min: number; max: number; default: number }> = {
-  length: { min: 2.0, max: 6.0, default: 3.0 },
-  width: { min: 1.5, max: 4.0, default: 2.0 },
-  height: { min: 2.2, max: 3.2, default: 2.7 },
-};
-
-function clamp(value: number, min: number, max: number): number {
-  if (Number.isNaN(value)) return min;
-  return Math.min(max, Math.max(min, value));
-}
-
-const dimensionFields: { key: keyof RoomDimensions; label: string }[] = [
-  { key: 'length', label: 'Chiều dài' },
-  { key: 'width', label: 'Chiều rộng' },
-  { key: 'height', label: 'Chiều cao' },
-];
+import { useState } from 'react';
+import { Ruler } from 'lucide-react';
+import {
+  DIMENSION_LIMITS,
+  clampDimension,
+  getFloorArea,
+  getVolume,
+  validateDimension,
+  type RoomDimensionKey,
+  type RoomDimensions,
+} from '@/lib/room-studio/roomGeometry';
 
 interface RoomDimensionFormProps {
   dimensions: RoomDimensions;
   onDimensionsChange: (dimensions: RoomDimensions) => void;
-  tileColorHex: string;
-  onTileColorChange: (hex: string) => void;
 }
 
-export default function RoomDimensionForm({ dimensions, onDimensionsChange, tileColorHex, onTileColorChange }: RoomDimensionFormProps) {
-  const handleChange = (key: keyof RoomDimensions) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { min, max } = DIMENSION_LIMITS[key];
-    const clamped = clamp(parseFloat(e.target.value), min, max);
-    onDimensionsChange({ ...dimensions, [key]: clamped });
+const FIELDS: RoomDimensionKey[] = ['length', 'width', 'height'];
+
+/**
+ * Room dimensions in metres — the single deterministic input the 3D room is
+ * built from.
+ *
+ * The field keeps its own text state so a customer can clear it and retype
+ * without the value snapping back mid-edit. Only valid values are committed to
+ * the scene; invalid ones show a message and leave the room as it was.
+ */
+export default function RoomDimensionForm({ dimensions, onDimensionsChange }: RoomDimensionFormProps) {
+  const [drafts, setDrafts] = useState<Record<RoomDimensionKey, string>>({
+    length: String(dimensions.length),
+    width: String(dimensions.width),
+    height: String(dimensions.height),
+  });
+  const [errors, setErrors] = useState<Partial<Record<RoomDimensionKey, string>>>({});
+
+  // Re-sync the inputs when the room changes from somewhere else — a restored
+  // session, or a reset. `syncedKey` is also advanced by this form's own commits,
+  // so typing "2." is never clobbered by the value it just produced.
+  const dimensionKey = `${dimensions.length}|${dimensions.width}|${dimensions.height}`;
+  const [syncedKey, setSyncedKey] = useState(dimensionKey);
+  if (syncedKey !== dimensionKey) {
+    setSyncedKey(dimensionKey);
+    setDrafts({
+      length: String(dimensions.length),
+      width: String(dimensions.width),
+      height: String(dimensions.height),
+    });
+  }
+
+  const commit = (next: RoomDimensions) => {
+    setSyncedKey(`${next.length}|${next.width}|${next.height}`);
+    onDimensionsChange(next);
+  };
+
+  const handleChange = (key: RoomDimensionKey) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
+    setDrafts((prev) => ({ ...prev, [key]: text }));
+
+    if (text.trim() === '') {
+      setErrors((prev) => ({ ...prev, [key]: `Vui lòng nhập ${DIMENSION_LIMITS[key].label.toLowerCase()} của phòng.` }));
+      return;
+    }
+
+    const value = parseFloat(text.replace(',', '.'));
+    const message = validateDimension(key, value);
+    setErrors((prev) => ({ ...prev, [key]: message }));
+    if (!message) commit({ ...dimensions, [key]: value });
+  };
+
+  // On blur, snap an out-of-range value back into range so the form never sits
+  // in a broken state after the customer moves on.
+  const handleBlur = (key: RoomDimensionKey) => () => {
+    const value = parseFloat(drafts[key].replace(',', '.'));
+    const safe = clampDimension(key, value);
+    setDrafts((prev) => ({ ...prev, [key]: String(safe) }));
+    setErrors((prev) => ({ ...prev, [key]: undefined }));
+    if (safe !== dimensions[key]) commit({ ...dimensions, [key]: safe });
   };
 
   return (
-    <div className="bg-white rounded-3xl border border-[#D8E2EA] p-6 space-y-8">
-      <div>
-        <h3 className="text-xs font-bold text-[#0B1623] uppercase tracking-wider mb-4">Kích thước phòng tắm (mét)</h3>
-        <div className="grid grid-cols-1 gap-4">
-          {dimensionFields.map(({ key, label }) => {
-            const { min, max } = DIMENSION_LIMITS[key];
-            return (
-              <label key={key} className="flex flex-col gap-1.5">
-                <span className="text-xs text-[#627386]">{label} ({min}–{max}m)</span>
-                <input
-                  type="number"
-                  step={0.1}
-                  min={min}
-                  max={max}
-                  value={dimensions[key]}
-                  onChange={handleChange(key)}
-                  className="px-3 py-2.5 rounded-xl border border-[#D8E2EA] text-sm text-[#0B1623] focus:outline-none focus:border-[#0F3D5C] transition-colors"
-                />
-              </label>
-            );
-          })}
-        </div>
+    <div className="rounded-3xl border border-[#D8E2EA] bg-white p-5">
+      <div className="mb-4 flex items-center gap-2">
+        <Ruler className="h-4 w-4 text-[#C8A96A]" />
+        <h3 className="text-xs font-bold uppercase tracking-wider text-[#0B1623]">Kích thước phòng (mét)</h3>
       </div>
 
-      <div>
-        <h3 className="text-xs font-bold text-[#0B1623] uppercase tracking-wider mb-4">Màu gạch</h3>
-        <div className="flex flex-wrap gap-3">
-          {TILE_COLOR_OPTIONS.map((color) => (
-            <button
-              key={color.hex}
-              type="button"
-              onClick={() => onTileColorChange(color.hex)}
-              title={color.name}
-              aria-label={color.name}
-              aria-pressed={tileColorHex === color.hex}
-              className={`w-9 h-9 rounded-full border-2 transition-all ${
-                tileColorHex === color.hex ? 'border-[#0F3D5C] scale-110 shadow-md' : 'border-[#D8E2EA] hover:scale-105'
-              }`}
-              style={{ backgroundColor: color.hex }}
-            />
-          ))}
-        </div>
+      <div className="grid grid-cols-1 gap-3">
+        {FIELDS.map((key) => {
+          const { min, max, label } = DIMENSION_LIMITS[key];
+          const error = errors[key];
+          return (
+            <label key={key} className="flex flex-col gap-1">
+              <span className="text-[11px] text-[#627386]">
+                {label} <span className="text-[#9AA9B6]">({min}–{max}m)</span>
+              </span>
+              <input
+                type="number"
+                inputMode="decimal"
+                step={0.1}
+                value={drafts[key]}
+                onChange={handleChange(key)}
+                onBlur={handleBlur(key)}
+                aria-invalid={Boolean(error)}
+                aria-label={`${label} (mét)`}
+                className={`rounded-xl border px-3 py-2.5 text-sm text-[#0B1623] transition-colors focus:outline-none ${
+                  error ? 'border-red-400 focus:border-red-500' : 'border-[#D8E2EA] focus:border-[#0F3D5C]'
+                }`}
+              />
+              {error && <span className="text-[11px] font-medium text-red-500">{error}</span>}
+            </label>
+          );
+        })}
       </div>
+
+      <p className="mt-4 rounded-xl bg-[#F3F7FA] px-3 py-2 text-[11px] text-[#627386]">
+        Diện tích sàn <strong className="text-[#0B1623]">{getFloorArea(dimensions).toFixed(1)} m²</strong> · Thể tích{' '}
+        <strong className="text-[#0B1623]">{getVolume(dimensions).toFixed(1)} m³</strong>
+      </p>
     </div>
   );
 }
