@@ -304,6 +304,13 @@ export default function VisualStudioClient() {
           <p className="text-[#627386] text-lg">
             Tải ảnh phòng tắm hiện tại hoặc chọn không gian mẫu, sau đó kéo thả sản phẩm để ướm thử concept và ước lượng ngân sách trước khi gửi yêu cầu báo giá.
           </p>
+          <Link
+            href="/room-studio"
+            className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#D8E2EA] bg-white px-4 py-2 text-xs font-bold text-[#0B1623] shadow-sm transition-colors hover:border-[#123C5A]"
+          >
+            <Cuboid className="h-4 w-4 text-[#C8A96A]" />
+            Biết kích thước phòng? Dựng phòng 3D trong Room Studio →
+          </Link>
         </div>
 
         <div className="flex flex-col xl:flex-row gap-6 items-start">
