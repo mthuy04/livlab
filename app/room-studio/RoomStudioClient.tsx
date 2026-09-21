@@ -14,6 +14,9 @@ import RoomContextPanel from '@/components/room-studio/RoomContextPanel';
 import ProductLibraryPanel from '@/components/room-studio/ProductLibraryPanel';
 import SelectedProductToolbar from '@/components/room-studio/SelectedProductToolbar';
 import BudgetSummaryBar from '@/components/room-studio/BudgetSummaryBar';
+import BudgetTargetCard from '@/components/room-studio/BudgetTargetCard';
+import LivLabExpertTrigger from '@/components/room-studio/expert/LivLabExpertTrigger';
+import LivLabExpertPanel from '@/components/room-studio/expert/LivLabExpertPanel';
 
 /**
  * The 3D canvas is client-only and pulls in three.js, so it is loaded on demand
@@ -31,9 +34,10 @@ const RoomScene3D = dynamic(() => import('@/components/room-studio/RoomScene3D')
 
 export default function RoomStudioClient() {
   const studio = useRoomStudio();
-  const { addItem, hasItem } = useQuote();
+  const { addItem, hasItem, items: quoteItems } = useQuote();
   const [showCeiling, setShowCeiling] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [isExpertOpen, setIsExpertOpen] = useState(false);
 
   const showToast = useCallback((message: string) => {
     setToast(message);
@@ -122,6 +126,10 @@ export default function RoomStudioClient() {
               showCeiling={showCeiling}
               onToggleCeiling={setShowCeiling}
             />
+            <BudgetTargetCard
+              targetBudget={studio.state.targetBudget}
+              onChange={studio.setTargetBudget}
+            />
             <RoomContextPanel
               contextImage={studio.state.roomContextImage}
               contextLabel={studio.state.roomContextLabel}
@@ -179,6 +187,30 @@ export default function RoomStudioClient() {
         budget={studio.budget}
         onAddAllToQuote={handleAddAllToQuote}
         onClearRoom={studio.clearProducts}
+      />
+
+      {!isExpertOpen && (
+        <LivLabExpertTrigger
+          onClick={() => setIsExpertOpen(true)}
+          hint={
+            studio.placedViews.length > 0
+              ? `${studio.placedViews.length} sản phẩm trong phòng`
+              : 'Tư vấn sản phẩm & ngân sách'
+          }
+        />
+      )}
+
+      <LivLabExpertPanel
+        open={isExpertOpen}
+        onClose={() => setIsExpertOpen(false)}
+        state={studio.state}
+        placedViews={studio.placedViews}
+        selected={studio.selected}
+        budget={studio.budget}
+        products={studio.products}
+        quoteItems={quoteItems}
+        onAddProductToRoom={studio.addProduct}
+        onAddProductToQuote={(product) => addItem(product.source)}
       />
 
       {toast && (
