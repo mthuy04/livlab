@@ -40,6 +40,14 @@ export interface RoomState {
    */
   roomContextImage?: string;
   roomContextLabel?: string;
+  /**
+   * What the customer says they want to spend, in VND. Optional: the studio is
+   * fully usable without it, and LivLab Expert reports budget fit only when it
+   * is set rather than inventing a target.
+   */
+  targetBudget?: number;
+  /** Style tags the customer picked, reused as context for LivLab Expert. */
+  stylePreferences?: string[];
 }
 
 export function createInitialRoomState(): RoomState {
@@ -177,6 +185,15 @@ export function setRoomContextImage(state: RoomState, image?: string, label?: st
   return { ...state, roomContextImage: image, roomContextLabel: label };
 }
 
+export function setTargetBudget(state: RoomState, targetBudget?: number): RoomState {
+  const safe = targetBudget !== undefined && Number.isFinite(targetBudget) && targetBudget > 0 ? targetBudget : undefined;
+  return { ...state, targetBudget: safe };
+}
+
+export function setStylePreferences(state: RoomState, stylePreferences: string[]): RoomState {
+  return { ...state, stylePreferences };
+}
+
 // ─── Serialization ────────────────────────────────────────────────────────────
 
 /**
@@ -224,6 +241,13 @@ export function deserializeRoomState(raw: unknown): RoomState {
     placedProducts,
     roomContextImage: typeof data.roomContextImage === 'string' ? data.roomContextImage : undefined,
     roomContextLabel: typeof data.roomContextLabel === 'string' ? data.roomContextLabel : undefined,
+    targetBudget:
+      typeof data.targetBudget === 'number' && Number.isFinite(data.targetBudget) && data.targetBudget > 0
+        ? data.targetBudget
+        : undefined,
+    stylePreferences: Array.isArray(data.stylePreferences)
+      ? data.stylePreferences.filter((s): s is string => typeof s === 'string')
+      : undefined,
   };
 }
 

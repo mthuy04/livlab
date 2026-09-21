@@ -179,6 +179,14 @@ export function useRoomStudio() {
     setState((prev) => ops.setRoomContextImage(prev, image, label));
   }, []);
 
+  const setTargetBudget = useCallback((targetBudget?: number) => {
+    setState((prev) => ops.setTargetBudget(prev, targetBudget));
+  }, []);
+
+  const setStylePreferences = useCallback((styles: string[]) => {
+    setState((prev) => ops.setStylePreferences(prev, styles));
+  }, []);
+
   const resetRoom = useCallback(() => {
     setState(ops.createInitialRoomState());
     setSelectedInstanceId(null);
@@ -205,6 +213,8 @@ export function useRoomStudio() {
     rotateProduct,
     clearProducts,
     setRoomContextImage,
+    setTargetBudget,
+    setStylePreferences,
     resetRoom,
   };
 }
