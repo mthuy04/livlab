@@ -24,7 +24,12 @@ import LivLabExpertEntry from '@/components/room-studio/expert/LivLabExpertEntry
 import LivLabExpertPanel from '@/components/room-studio/expert/LivLabExpertPanel';
 import ImplementationFlow from '@/components/room-studio/implementation/ImplementationFlow';
 import type { ImplementationRequestType } from '@/lib/implementation/types';
-import { isHandoffIntent, type ExpertIntent, type ExpertNudgeContext } from '@/lib/room-studio/expertNudges';
+import {
+  isHandoffIntent,
+  isNavigationIntent,
+  type ExpertIntent,
+  type ExpertNudgeContext,
+} from '@/lib/room-studio/expertNudges';
 import { DEFAULT_DIMENSIONS } from '@/lib/room-studio/roomGeometry';
 
 /**
@@ -59,6 +64,8 @@ export default function RoomStudioClient() {
     type: ImplementationRequestType | null;
     id: number;
   }>({ open: false, type: null, id: 0 });
+  // Bumped to make the Technical Advisor panel open and scroll into view.
+  const [technicalFocus, setTechnicalFocus] = useState(0);
 
   const showToast = useCallback((message: string) => {
     setToast(message);
@@ -121,6 +128,13 @@ export default function RoomStudioClient() {
    */
   const handleOpenExpert = useCallback(
     (intent?: ExpertIntent) => {
+      // "Xem chi tiết" shows the customer the findings themselves. It costs no
+      // API call and asks nothing of them — they can decide what to do only
+      // after reading what the problem actually is.
+      if (intent && isNavigationIntent(intent)) {
+        setTechnicalFocus((n) => n + 1);
+        return;
+      }
       if (intent && isHandoffIntent(intent)) {
         const byIntent: Record<string, ImplementationRequestType> = {
           REQUEST_QUOTATION: 'QUOTATION',
@@ -228,6 +242,7 @@ export default function RoomStudioClient() {
               selectedProductName={studio.selected?.product.name}
               hasProducts={studio.placedViews.length > 0}
               onRequestTechnicalCheck={() => openImplementation('TECHNICAL_CHECK')}
+              focusSignal={technicalFocus}
             />
             <UtilityPointsCard
               dimensions={studio.state.dimensions}

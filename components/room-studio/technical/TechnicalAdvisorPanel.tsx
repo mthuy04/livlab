@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AlertTriangle, CheckCircle2, ChevronDown, Lightbulb, ShieldCheck, Wrench } from 'lucide-react';
 import { TECHNICAL_DISCLAIMER } from '@/lib/technical-advisor/config';
 import { filterForInstance, summarise, topFindings } from '@/lib/technical-advisor/engine';
@@ -15,6 +15,12 @@ interface TechnicalAdvisorPanelProps {
   hasProducts: boolean;
   /** Opens the technical-check request with these findings attached. */
   onRequestTechnicalCheck: () => void;
+  /**
+   * Incremented when something elsewhere (the Expert's "Xem chi tiết") wants
+   * the customer to actually READ these findings. Expands the panel and brings
+   * it into view instead of sending them somewhere else to be told about it.
+   */
+  focusSignal?: number;
 }
 
 /**
@@ -34,8 +40,35 @@ export default function TechnicalAdvisorPanel({
   selectedProductName,
   hasProducts,
   onRequestTechnicalCheck,
+  focusSignal = 0,
 }: TechnicalAdvisorPanelProps) {
-  const [expanded, setExpanded] = useState(false);
+  /**
+   * Expansion is DERIVED, not stored.
+   *
+   * Two things open this panel: the customer tapping the header, and the
+   * Expert asking them to read the findings. Rather than an effect that pushes
+   * one into the other's state, a manual toggle records which signal it
+   * answered — so it wins until a NEW request arrives, and a fresh "Xem chi
+   * tiết" always opens the panel even if the customer had closed it.
+   */
+  const [userToggled, setUserToggled] = useState<{ value: boolean; atSignal: number } | null>(null);
+  const expanded = userToggled?.atSignal === focusSignal ? userToggled.value : focusSignal > 0;
+  const setExpanded = (value: boolean) => setUserToggled({ value, atSignal: focusSignal });
+
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // 0 is the initial value: only a real request should scroll the page.
+    if (focusSignal === 0) return;
+    const el = rootRef.current;
+    if (!el) return;
+    // Not scrollIntoView: expanded, this panel is taller than the viewport, so
+    // centring it would land the customer in the middle of the list rather
+    // than at its heading. Scroll to its top instead, clearing the fixed navbar.
+    const NAVBAR_CLEARANCE = 88;
+    const top = el.getBoundingClientRect().top + window.scrollY - NAVBAR_CLEARANCE;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  }, [focusSignal]);
 
   const summary = useMemo(() => summarise(findings), [findings]);
 
@@ -51,7 +84,7 @@ export default function TechnicalAdvisorPanel({
 
   if (!hasProducts) {
     return (
-      <div className="rounded-3xl border border-[#D8E2EA] bg-white p-5">
+      <div ref={rootRef} className="rounded-3xl border border-[#D8E2EA] bg-white p-5">
         <div className="mb-2 flex items-center gap-2">
           <ShieldCheck className="h-4 w-4 text-[#C8A96A]" />
           <h3 className="text-xs font-bold uppercase tracking-wider text-[#0B1623]">Kiểm tra kỹ thuật</h3>
@@ -64,10 +97,10 @@ export default function TechnicalAdvisorPanel({
   }
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-[#D8E2EA] bg-white">
+    <div ref={rootRef} className="overflow-hidden rounded-3xl border border-[#D8E2EA] bg-white">
       <button
         type="button"
-        onClick={() => setExpanded((v) => !v)}
+        onClick={() => setExpanded(!expanded)}
         aria-expanded={expanded}
         className="flex w-full items-center justify-between gap-3 p-5 text-left transition-colors hover:bg-[#F8FAFC]"
       >

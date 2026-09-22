@@ -35,11 +35,19 @@ export type ExpertIntent =
   | 'RECOMMEND_NEXT_PRODUCT'
   | 'REVIEW_COMBO'
   | 'START_ROOM'
+  // Navigation intent: shows the customer something already on screen. Costs
+  // nothing and asks nothing of them.
+  | 'REVIEW_TECHNICAL_FINDINGS'
   // Handoff intents: open the implementation request flow instead. The Expert
   // may PROPOSE these; submitting is always the customer's own click.
   | 'REQUEST_QUOTATION'
   | 'REQUEST_SHOWROOM_CONSULTATION'
   | 'REQUEST_TECHNICAL_CHECK';
+
+/** Intents that only move the customer's attention. No API call, no form. */
+export function isNavigationIntent(intent: ExpertIntent): boolean {
+  return intent === 'REVIEW_TECHNICAL_FINDINGS';
+}
 
 /** Handoff intents never reach Gemini — they open a form the customer fills in. */
 export const HANDOFF_INTENTS = [
@@ -185,9 +193,14 @@ export function evaluateExpertNudges(context: ExpertNudgeContext): ExpertNudge[]
       mode: 'Kỹ thuật',
       message:
         realWarnings.length === 1
-          ? 'Có 1 điểm cần kiểm tra trước khi chốt. Bạn có thể nhờ kỹ thuật viên xác nhận thực tế.'
-          : `Có ${realWarnings.length} điểm cần kiểm tra trước khi chốt. Bạn có thể nhờ kỹ thuật viên xác nhận thực tế.`,
-      cta: { label: 'Nhờ kiểm tra', intent: 'REQUEST_TECHNICAL_CHECK' },
+          ? 'Có 1 điểm cần kiểm tra trước khi chốt.'
+          : `Có ${realWarnings.length} điểm cần kiểm tra trước khi chốt.`,
+      // Shows the findings; it does NOT ask for a technician. A customer who
+      // has not yet read what the problem is cannot decide whether they need
+      // one, and jumping them to a contact form is the CTA doing the deciding
+      // for them. Requesting a check is offered at the END of that list, once
+      // they know what it is about.
+      cta: { label: 'Xem chi tiết', intent: 'REVIEW_TECHNICAL_FINDINGS' },
       persistent: true,
     });
   }
@@ -226,7 +239,9 @@ export function evaluateExpertNudges(context: ExpertNudgeContext): ExpertNudge[]
         dataGaps.length === 1 && dataGaps[0].affectedInstanceIds.length > 0
           ? 'LivLab chưa có đủ dữ liệu kỹ thuật để xác nhận sản phẩm này.'
           : 'LivLab chưa có đủ dữ liệu kỹ thuật cho một số sản phẩm trong phòng.',
-      cta: { label: 'Xem chi tiết', intent: 'EXPLAIN_MISSING_DATA' },
+      // Same reasoning: show which products are missing data before asking the
+      // customer to do anything about it.
+      cta: { label: 'Xem chi tiết', intent: 'REVIEW_TECHNICAL_FINDINGS' },
       persistent: true,
     });
   }
