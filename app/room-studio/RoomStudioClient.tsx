@@ -3,9 +3,10 @@
 import { useCallback, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { CheckCircle, Info } from 'lucide-react';
+import { CheckCircle, Info, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useQuote } from '@/lib/context/QuoteContext';
 import { useRoomStudio, type PlacedProductView } from '@/lib/room-studio/useRoomStudio';
+import { useLayoutPreference } from '@/lib/room-studio/useLayoutPreference';
 import type { RoomStudioProduct } from '@/lib/room-studio/productAdapter';
 import type { Vec3 } from '@/lib/room-studio/placementRules';
 import RoomDimensionForm from '@/components/room-studio/RoomDimensionForm';
@@ -66,6 +67,12 @@ export default function RoomStudioClient() {
   }>({ open: false, type: null, id: 0 });
   // Bumped to make the Technical Advisor panel open and scroll into view.
   const [technicalFocus, setTechnicalFocus] = useState(0);
+  // Only meaningful in the xl three-column layout; below that the panels are
+  // stacked in normal flow and nothing is competing for width.
+  const [isConfigCollapsed, setIsConfigCollapsed] = useLayoutPreference(
+    'livlab_room_studio_config_collapsed',
+    false
+  );
 
   const showToast = useCallback((message: string) => {
     setToast(message);
@@ -224,7 +231,11 @@ export default function RoomStudioClient() {
       <div className="mx-auto max-w-[1600px] px-4 py-8 md:px-6 md:py-10">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-start">
           {/* LEFT: room setup */}
-          <div className="flex w-full shrink-0 flex-col gap-5 xl:w-[300px]">
+          <div
+            className={`flex w-full shrink-0 flex-col gap-5 xl:w-[300px] ${
+              isConfigCollapsed ? 'xl:hidden' : ''
+            }`}
+          >
             <RoomDimensionForm dimensions={studio.state.dimensions} onDimensionsChange={studio.setDimensions} />
             <SurfaceMaterialPanel
               surfaceStyles={studio.state.surfaceStyles}
@@ -260,6 +271,21 @@ export default function RoomStudioClient() {
           {/* CENTER: the room */}
           <div className="flex w-full min-w-0 flex-1 flex-col gap-4">
             <RoomScene3D
+              overlayTopLeft={
+                <button
+                  type="button"
+                  onClick={() => setIsConfigCollapsed(!isConfigCollapsed)}
+                  aria-pressed={isConfigCollapsed}
+                  className="hidden items-center gap-1.5 rounded-full border border-white/50 bg-white/90 px-3 py-1.5 text-xs font-bold text-[#0B1623] shadow-sm backdrop-blur transition-colors hover:bg-white xl:flex"
+                >
+                  {isConfigCollapsed ? (
+                    <PanelLeftOpen className="h-3.5 w-3.5" />
+                  ) : (
+                    <PanelLeftClose className="h-3.5 w-3.5" />
+                  )}
+                  {isConfigCollapsed ? 'Hiện bảng điều khiển' : 'Thu gọn'}
+                </button>
+              }
               dimensions={studio.state.dimensions}
               floorStyle={studio.state.surfaceStyles.floor}
               wallStyle={studio.state.surfaceStyles.walls}

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment, ContactShadows, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
@@ -63,6 +63,8 @@ class EnvironmentBoundary extends React.Component<{ children: React.ReactNode },
 
 interface RoomScene3DProps {
   dimensions: RoomDimensions;
+  /** Chrome rendered over the canvas's top-left corner (the layout toggle). */
+  overlayTopLeft?: ReactNode;
   floorStyle: SurfaceStyle;
   wallStyle: SurfaceStyle;
   placedViews: PlacedProductView[];
@@ -76,6 +78,7 @@ interface RoomScene3DProps {
 
 export default function RoomScene3D({
   dimensions,
+  overlayTopLeft,
   floorStyle,
   wallStyle,
   placedViews,
@@ -176,10 +179,16 @@ export default function RoomScene3D({
       }}
       onDragLeave={() => setIsDropTarget(false)}
       onDrop={handleHtmlDrop}
-      className={`relative aspect-[4/3] w-full overflow-hidden rounded-3xl border bg-[#F8FAFC] shadow-inner transition-colors md:aspect-[16/10] ${
+      // Below xl the three-column layout is stacked and a ratio keeps the
+      // canvas a sensible shape. At xl it is the main working surface, so it
+      // takes the viewport height instead: a fixed 16/10 left ~250px of screen
+      // unused and made the room smaller than the panels around it.
+      className={`relative aspect-[4/3] w-full overflow-hidden rounded-3xl border bg-[#F8FAFC] shadow-inner transition-colors md:aspect-[16/10] xl:aspect-auto xl:h-[calc(100vh-15rem)] xl:min-h-[480px] ${
         isDropTarget ? 'border-[#C8A96A] ring-2 ring-[#C8A96A]/40' : 'border-[#D8E2EA]'
       }`}
     >
+      {overlayTopLeft && <div className="absolute left-3 top-3 z-10 flex gap-2">{overlayTopLeft}</div>}
+
       <div className="absolute right-3 top-3 z-10 flex gap-2">
         <button
           type="button"
