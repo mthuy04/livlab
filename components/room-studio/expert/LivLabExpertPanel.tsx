@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { RotateCcw, Sparkles, X } from 'lucide-react';
 import type { QuoteItem } from '@/lib/types';
 import type { RoomState } from '@/lib/room-studio/roomState';
@@ -8,6 +8,7 @@ import type { BudgetEstimate } from '@/lib/room-studio/budgetCalculator';
 import type { PlacedProductView } from '@/lib/room-studio/useRoomStudio';
 import type { RoomStudioProduct } from '@/lib/room-studio/productAdapter';
 import { buildExpertContext } from '@/lib/room-studio/expertContextBuilder';
+import { buildIntentPrompt, type ExpertIntent } from '@/lib/room-studio/expertNudges';
 import { useLivLabExpert } from './useLivLabExpert';
 import ExpertMessageList from './ExpertMessageList';
 import ExpertComposer from './ExpertComposer';
@@ -15,6 +16,12 @@ import ExpertQuickActions from './ExpertQuickActions';
 
 interface LivLabExpertPanelProps {
   open: boolean;
+  /**
+   * Set when the panel was opened from a proactive nudge's call to action.
+   * `id` changes on every request so tapping the same CTA twice asks twice;
+   * without it the effect below could not tell a repeat from a re-render.
+   */
+  request?: { intent: ExpertIntent; id: number } | null;
   onClose: () => void;
   state: RoomState;
   placedViews: PlacedProductView[];
@@ -42,6 +49,7 @@ interface LivLabExpertPanelProps {
  */
 export default function LivLabExpertPanel({
   open,
+  request,
   onClose,
   state,
   placedViews,
@@ -94,6 +102,21 @@ export default function LivLabExpertPanel({
     },
     [resolveProduct, onAddProductToQuote]
   );
+
+  // A CTA opens the panel and immediately asks the matching question, so the
+  // customer lands in a conversation that is already about what they tapped
+  // rather than on an empty composer. This is the ONLY place a nudge reaches
+  // Gemini — showing the bubble itself costs nothing.
+  // The guard, not the dependency list, is what makes this fire once per
+  // request: the effect may re-run freely, but a request id is consumed only
+  // the first time it is seen.
+  const consumedRequestId = useRef<number | null>(null);
+  useEffect(() => {
+    if (!open || !request) return;
+    if (consumedRequestId.current === request.id) return;
+    consumedRequestId.current = request.id;
+    void expert.send(buildIntentPrompt(request.intent, selected?.product.name));
+  }, [open, request, expert, selected]);
 
   const handleRetry = useCallback(() => {
     if (expert.lastUserMessage) void expert.send(expert.lastUserMessage);

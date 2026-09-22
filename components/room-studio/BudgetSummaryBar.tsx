@@ -18,7 +18,13 @@ interface BudgetSummaryBarProps {
  */
 export default function BudgetSummaryBar({ budget, onAddAllToQuote, onClearRoom }: BudgetSummaryBarProps) {
   return (
-    <div className="sticky bottom-0 z-40 border-t border-[#D8E2EA] bg-white/95 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] backdrop-blur">
+    <div
+      /* Read by the LivLab Expert entry, which parks itself directly above this
+         bar. Its height is not constant — the CTAs wrap on narrow and tablet
+         widths — so the Expert measures it rather than assuming a number. */
+      data-budget-bar
+      className="sticky bottom-0 z-40 border-t border-[#D8E2EA] bg-white/95 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] backdrop-blur"
+    >
       <div className="mx-auto flex max-w-[1600px] flex-col gap-3 px-4 py-3 md:flex-row md:items-center md:justify-between md:px-6 md:py-4">
         <div className="flex items-center gap-3">
           <div className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#EEF4F7] sm:flex">

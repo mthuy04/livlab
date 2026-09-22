@@ -20,8 +20,10 @@ import UtilityPointsCard from '@/components/room-studio/technical/UtilityPointsC
 import { useTechnicalAdvisor } from '@/lib/technical-advisor/useTechnicalAdvisor';
 import { filterForInstance } from '@/lib/technical-advisor/engine';
 import TechnicalFindingRow from '@/components/room-studio/technical/TechnicalFindingRow';
-import LivLabExpertTrigger from '@/components/room-studio/expert/LivLabExpertTrigger';
+import LivLabExpertEntry from '@/components/room-studio/expert/LivLabExpertEntry';
 import LivLabExpertPanel from '@/components/room-studio/expert/LivLabExpertPanel';
+import type { ExpertIntent, ExpertNudgeContext } from '@/lib/room-studio/expertNudges';
+import { DEFAULT_DIMENSIONS } from '@/lib/room-studio/roomGeometry';
 
 /**
  * The 3D canvas is client-only and pulls in three.js, so it is loaded on demand
@@ -43,6 +45,9 @@ export default function RoomStudioClient() {
   const [showCeiling, setShowCeiling] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [isExpertOpen, setIsExpertOpen] = useState(false);
+  // Carries the structured intent from a nudge CTA into the panel. The id makes
+  // each tap a distinct request, so the same CTA can be used twice.
+  const [expertRequest, setExpertRequest] = useState<{ intent: ExpertIntent; id: number } | null>(null);
 
   const showToast = useCallback((message: string) => {
     setToast(message);
@@ -61,6 +66,41 @@ export default function RoomStudioClient() {
     () => (studio.selectedInstanceId ? filterForInstance(technicalFindings, studio.selectedInstanceId) : []),
     [technicalFindings, studio.selectedInstanceId]
   );
+
+  /**
+   * Everything the proactive nudge engine reads. Assembled from state Room
+   * Studio already owns — there is no second source of truth here, and no
+   * network call: the bubble is rendered entirely from these numbers.
+   */
+  const nudgeContext = useMemo<ExpertNudgeContext>(
+    () => ({
+      dimensions: studio.state.dimensions,
+      hasCustomDimensions:
+        studio.state.dimensions.length !== DEFAULT_DIMENSIONS.length ||
+        studio.state.dimensions.width !== DEFAULT_DIMENSIONS.width ||
+        studio.state.dimensions.height !== DEFAULT_DIMENSIONS.height,
+      placedCount: studio.placedViews.length,
+      selectedProductName: studio.selected?.product.name,
+      budget: studio.budget,
+      targetBudget: studio.state.targetBudget,
+      findings: technicalFindings,
+      quoteItemCount: quoteItems.length,
+    }),
+    [
+      studio.state.dimensions,
+      studio.state.targetBudget,
+      studio.placedViews.length,
+      studio.selected,
+      studio.budget,
+      technicalFindings,
+      quoteItems.length,
+    ]
+  );
+
+  const handleOpenExpert = useCallback((intent?: ExpertIntent) => {
+    setExpertRequest(intent ? { intent, id: Date.now() } : null);
+    setIsExpertOpen(true);
+  }, []);
 
   const placedProductIds = useMemo(
     () => new Set(studio.placedViews.map((v) => v.product.id)),
@@ -228,19 +268,15 @@ export default function RoomStudioClient() {
         onClearRoom={studio.clearProducts}
       />
 
-      {!isExpertOpen && (
-        <LivLabExpertTrigger
-          onClick={() => setIsExpertOpen(true)}
-          hint={
-            studio.placedViews.length > 0
-              ? `${studio.placedViews.length} sản phẩm trong phòng`
-              : 'Tư vấn sản phẩm & ngân sách'
-          }
-        />
+      {/* One entry point only: the character replaced the old black pill, and
+          reuses the same open/close state it drove. */}
+      {!isExpertOpen && studio.isHydrated && (
+        <LivLabExpertEntry context={nudgeContext} enabled={!isExpertOpen} onOpen={handleOpenExpert} />
       )}
 
       <LivLabExpertPanel
         open={isExpertOpen}
+        request={expertRequest}
         onClose={() => setIsExpertOpen(false)}
         state={studio.state}
         placedViews={studio.placedViews}
