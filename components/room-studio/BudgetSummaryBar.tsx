@@ -1,13 +1,14 @@
 'use client';
 
-import Link from 'next/link';
-import { Wallet } from 'lucide-react';
+import { ArrowRight, Wallet } from 'lucide-react';
 import { formatBudgetRange, type BudgetEstimate } from '@/lib/room-studio/budgetCalculator';
 
 interface BudgetSummaryBarProps {
   budget: BudgetEstimate;
   onAddAllToQuote: () => void;
   onClearRoom: () => void;
+  /** Opens the implementation flow ("Tiếp tục với không gian này"). */
+  onContinue: () => void;
 }
 
 /**
@@ -16,7 +17,7 @@ interface BudgetSummaryBarProps {
  * Wording matters here: this is "chi phí sản phẩm tham khảo", never a quotation.
  * The showroom still confirms final price, promotion, stock and installation.
  */
-export default function BudgetSummaryBar({ budget, onAddAllToQuote, onClearRoom }: BudgetSummaryBarProps) {
+export default function BudgetSummaryBar({ budget, onAddAllToQuote, onClearRoom, onContinue }: BudgetSummaryBarProps) {
   return (
     <div
       /* Read by the LivLab Expert entry, which parks itself directly above this
@@ -62,12 +63,18 @@ export default function BudgetSummaryBar({ budget, onAddAllToQuote, onClearRoom 
           >
             Lưu vào giỏ báo giá
           </button>
-          <Link
-            href="/quote"
-            className="flex-1 rounded-xl bg-[#0B2239] px-4 py-3 text-center text-xs font-bold text-white transition-colors hover:bg-[#061827] md:flex-none"
+          {/* Replaces the old direct link to /quote rather than sitting beside
+              it: one primary action that opens the three real next steps, so
+              the bar does not grow a button per request type. /quote is still
+              reachable from the quote drawer. */}
+          <button
+            type="button"
+            onClick={onContinue}
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-[#0B2239] px-4 py-3 text-center text-xs font-bold text-white transition-colors hover:bg-[#061827] md:flex-none"
           >
-            Gửi yêu cầu báo giá
-          </Link>
+            Gửi yêu cầu
+            <ArrowRight className="h-3.5 w-3.5" />
+          </button>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { AlertTriangle, CheckCircle2, ChevronDown, Lightbulb, ShieldCheck } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, ChevronDown, Lightbulb, ShieldCheck, Wrench } from 'lucide-react';
 import { TECHNICAL_DISCLAIMER } from '@/lib/technical-advisor/config';
 import { filterForInstance, summarise, topFindings } from '@/lib/technical-advisor/engine';
 import type { TechnicalValidationResult } from '@/lib/technical-advisor/types';
@@ -13,6 +13,8 @@ interface TechnicalAdvisorPanelProps {
   selectedInstanceId: string | null;
   selectedProductName?: string;
   hasProducts: boolean;
+  /** Opens the technical-check request with these findings attached. */
+  onRequestTechnicalCheck: () => void;
 }
 
 /**
@@ -31,6 +33,7 @@ export default function TechnicalAdvisorPanel({
   selectedInstanceId,
   selectedProductName,
   hasProducts,
+  onRequestTechnicalCheck,
 }: TechnicalAdvisorPanelProps) {
   const [expanded, setExpanded] = useState(false);
 
@@ -122,6 +125,20 @@ export default function TechnicalAdvisorPanel({
                 ))}
               </ul>
             </div>
+          )}
+
+          {/* Offered only when LivLab actually flagged something. A standing
+              "nhờ kỹ thuật viên" on a clean room would manufacture a worry the
+              Advisor did not find. Opens the request; never submits it. */}
+          {summary.verify > 0 && (
+            <button
+              type="button"
+              onClick={onRequestTechnicalCheck}
+              className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-xl border border-[#C8A96A] bg-[#FDFBF6] px-3 py-2.5 text-[11px] font-bold text-[#8A6520] transition-colors hover:bg-[#FBF0DC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A96A]"
+            >
+              <Wrench className="h-3.5 w-3.5" />
+              Nhờ kỹ thuật viên kiểm tra
+            </button>
           )}
 
           <p className="mt-4 border-t border-[#D8E2EA] pt-3 text-[10px] leading-relaxed text-[#9AA9B6]">

@@ -27,13 +27,30 @@ import type { TechnicalValidationResult } from '@/lib/technical-advisor/types';
  * without touching the nudge copy.
  */
 export type ExpertIntent =
+  // Conversational intents: open the Expert panel and ask Gemini.
   | 'OPTIMIZE_BUDGET'
   | 'EXPLAIN_TECHNICAL_WARNINGS'
   | 'EXPLAIN_MISSING_DATA'
   | 'ADVISE_SELECTED_PRODUCT'
   | 'RECOMMEND_NEXT_PRODUCT'
   | 'REVIEW_COMBO'
-  | 'START_ROOM';
+  | 'START_ROOM'
+  // Handoff intents: open the implementation request flow instead. The Expert
+  // may PROPOSE these; submitting is always the customer's own click.
+  | 'REQUEST_QUOTATION'
+  | 'REQUEST_SHOWROOM_CONSULTATION'
+  | 'REQUEST_TECHNICAL_CHECK';
+
+/** Handoff intents never reach Gemini — they open a form the customer fills in. */
+export const HANDOFF_INTENTS = [
+  'REQUEST_QUOTATION',
+  'REQUEST_SHOWROOM_CONSULTATION',
+  'REQUEST_TECHNICAL_CHECK',
+] as const satisfies readonly ExpertIntent[];
+
+export function isHandoffIntent(intent: ExpertIntent): boolean {
+  return (HANDOFF_INTENTS as readonly string[]).includes(intent);
+}
 
 export type ExpertNudgeType =
   | 'WELCOME'
@@ -168,9 +185,9 @@ export function evaluateExpertNudges(context: ExpertNudgeContext): ExpertNudge[]
       mode: 'Kỹ thuật',
       message:
         realWarnings.length === 1
-          ? 'Có 1 điểm cần kiểm tra kỹ thuật trước khi chốt.'
-          : `Có ${realWarnings.length} điểm cần kiểm tra trước khi chốt.`,
-      cta: { label: 'Xem chi tiết', intent: 'EXPLAIN_TECHNICAL_WARNINGS' },
+          ? 'Có 1 điểm cần kiểm tra trước khi chốt. Bạn có thể nhờ kỹ thuật viên xác nhận thực tế.'
+          : `Có ${realWarnings.length} điểm cần kiểm tra trước khi chốt. Bạn có thể nhờ kỹ thuật viên xác nhận thực tế.`,
+      cta: { label: 'Nhờ kiểm tra', intent: 'REQUEST_TECHNICAL_CHECK' },
       persistent: true,
     });
   }
@@ -235,8 +252,9 @@ export function evaluateExpertNudges(context: ExpertNudgeContext): ExpertNudge[]
       key: `QUOTE_READY:${placedCount}`,
       type: 'QUOTE_READY',
       mode: 'Sản phẩm',
-      message: 'Combo đã khá hoàn chỉnh. Bạn có thể lưu vào giỏ báo giá để showroom tư vấn tiếp.',
-      cta: { label: 'Xem gợi ý', intent: 'REVIEW_COMBO' },
+      message:
+        'Combo của bạn đã khá hoàn chỉnh. Bạn có thể gửi yêu cầu báo giá để showroom xác nhận giá cuối và tình trạng cung ứng.',
+      cta: { label: 'Yêu cầu báo giá', intent: 'REQUEST_QUOTATION' },
     });
   }
 

@@ -22,7 +22,9 @@ import { filterForInstance } from '@/lib/technical-advisor/engine';
 import TechnicalFindingRow from '@/components/room-studio/technical/TechnicalFindingRow';
 import LivLabExpertEntry from '@/components/room-studio/expert/LivLabExpertEntry';
 import LivLabExpertPanel from '@/components/room-studio/expert/LivLabExpertPanel';
-import type { ExpertIntent, ExpertNudgeContext } from '@/lib/room-studio/expertNudges';
+import ImplementationFlow from '@/components/room-studio/implementation/ImplementationFlow';
+import type { ImplementationRequestType } from '@/lib/implementation/types';
+import { isHandoffIntent, type ExpertIntent, type ExpertNudgeContext } from '@/lib/room-studio/expertNudges';
 import { DEFAULT_DIMENSIONS } from '@/lib/room-studio/roomGeometry';
 
 /**
@@ -48,6 +50,15 @@ export default function RoomStudioClient() {
   // Carries the structured intent from a nudge CTA into the panel. The id makes
   // each tap a distinct request, so the same CTA can be used twice.
   const [expertRequest, setExpertRequest] = useState<{ intent: ExpertIntent; id: number } | null>(null);
+  // The implementation flow. `type` is set when a contextual CTA already knows
+  // which request the customer wants; null opens the chooser.
+  // `id` increments on every open and is used as the flow's React key, so each
+  // open mounts a clean flow with no leftover step, error or result.
+  const [implementation, setImplementation] = useState<{
+    open: boolean;
+    type: ImplementationRequestType | null;
+    id: number;
+  }>({ open: false, type: null, id: 0 });
 
   const showToast = useCallback((message: string) => {
     setToast(message);
@@ -97,10 +108,33 @@ export default function RoomStudioClient() {
     ]
   );
 
-  const handleOpenExpert = useCallback((intent?: ExpertIntent) => {
-    setExpertRequest(intent ? { intent, id: Date.now() } : null);
-    setIsExpertOpen(true);
+  const openImplementation = useCallback((type: ImplementationRequestType | null = null) => {
+    setImplementation((prev) => ({ open: true, type, id: prev.id + 1 }));
   }, []);
+
+  /**
+   * One entry point for every Expert call to action.
+   *
+   * A handoff intent opens the request flow instead of the chat panel — the
+   * Expert PROPOSES the next step, and the customer still fills in and submits
+   * the form themselves. The Expert can never send a request on their behalf.
+   */
+  const handleOpenExpert = useCallback(
+    (intent?: ExpertIntent) => {
+      if (intent && isHandoffIntent(intent)) {
+        const byIntent: Record<string, ImplementationRequestType> = {
+          REQUEST_QUOTATION: 'QUOTATION',
+          REQUEST_SHOWROOM_CONSULTATION: 'SHOWROOM_CONSULTATION',
+          REQUEST_TECHNICAL_CHECK: 'TECHNICAL_CHECK',
+        };
+        openImplementation(byIntent[intent] ?? null);
+        return;
+      }
+      setExpertRequest(intent ? { intent, id: Date.now() } : null);
+      setIsExpertOpen(true);
+    },
+    [openImplementation]
+  );
 
   const placedProductIds = useMemo(
     () => new Set(studio.placedViews.map((v) => v.product.id)),
@@ -193,6 +227,7 @@ export default function RoomStudioClient() {
               selectedInstanceId={studio.selectedInstanceId}
               selectedProductName={studio.selected?.product.name}
               hasProducts={studio.placedViews.length > 0}
+              onRequestTechnicalCheck={() => openImplementation('TECHNICAL_CHECK')}
             />
             <UtilityPointsCard
               dimensions={studio.state.dimensions}
@@ -266,6 +301,18 @@ export default function RoomStudioClient() {
         budget={studio.budget}
         onAddAllToQuote={handleAddAllToQuote}
         onClearRoom={studio.clearProducts}
+        onContinue={() => openImplementation()}
+      />
+
+      <ImplementationFlow
+        key={implementation.id}
+        open={implementation.open}
+        initialType={implementation.type}
+        onClose={() => setImplementation((prev) => ({ ...prev, open: false, type: null }))}
+        state={studio.state}
+        placedViews={studio.placedViews}
+        budget={studio.budget}
+        findings={technicalFindings}
       />
 
       {/* One entry point only: the character replaced the old black pill, and
