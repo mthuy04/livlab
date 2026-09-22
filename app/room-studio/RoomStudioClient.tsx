@@ -15,6 +15,11 @@ import ProductLibraryPanel from '@/components/room-studio/ProductLibraryPanel';
 import SelectedProductToolbar from '@/components/room-studio/SelectedProductToolbar';
 import BudgetSummaryBar from '@/components/room-studio/BudgetSummaryBar';
 import BudgetTargetCard from '@/components/room-studio/BudgetTargetCard';
+import TechnicalAdvisorPanel from '@/components/room-studio/technical/TechnicalAdvisorPanel';
+import UtilityPointsCard from '@/components/room-studio/technical/UtilityPointsCard';
+import { useTechnicalAdvisor } from '@/lib/technical-advisor/useTechnicalAdvisor';
+import { filterForInstance } from '@/lib/technical-advisor/engine';
+import TechnicalFindingRow from '@/components/room-studio/technical/TechnicalFindingRow';
 import LivLabExpertTrigger from '@/components/room-studio/expert/LivLabExpertTrigger';
 import LivLabExpertPanel from '@/components/room-studio/expert/LivLabExpertPanel';
 
@@ -43,6 +48,19 @@ export default function RoomStudioClient() {
     setToast(message);
     setTimeout(() => setToast(null), 2800);
   }, []);
+
+  // Deterministic technical validation. Runs entirely locally — no Gemini, no
+  // network — so it keeps working when the Expert is unavailable.
+  const technicalFindings = useTechnicalAdvisor({
+    dimensions: studio.state.dimensions,
+    placedViews: studio.placedViews,
+    utilityPoints: studio.state.utilityPoints ?? [],
+  });
+
+  const selectedFindings = useMemo(
+    () => (studio.selectedInstanceId ? filterForInstance(technicalFindings, studio.selectedInstanceId) : []),
+    [technicalFindings, studio.selectedInstanceId]
+  );
 
   const placedProductIds = useMemo(
     () => new Set(studio.placedViews.map((v) => v.product.id)),
@@ -121,14 +139,26 @@ export default function RoomStudioClient() {
           <div className="flex w-full shrink-0 flex-col gap-5 xl:w-[300px]">
             <RoomDimensionForm dimensions={studio.state.dimensions} onDimensionsChange={studio.setDimensions} />
             <SurfaceMaterialPanel
-              selectedMaterials={studio.state.selectedMaterials}
-              onMaterialChange={studio.setMaterial}
+              surfaceStyles={studio.state.surfaceStyles}
+              onStyleChange={studio.setSurfaceStyle}
               showCeiling={showCeiling}
               onToggleCeiling={setShowCeiling}
             />
             <BudgetTargetCard
               targetBudget={studio.state.targetBudget}
               onChange={studio.setTargetBudget}
+            />
+            <TechnicalAdvisorPanel
+              findings={technicalFindings}
+              selectedInstanceId={studio.selectedInstanceId}
+              selectedProductName={studio.selected?.product.name}
+              hasProducts={studio.placedViews.length > 0}
+            />
+            <UtilityPointsCard
+              dimensions={studio.state.dimensions}
+              points={studio.state.utilityPoints ?? []}
+              onAdd={studio.addUtilityPoint}
+              onRemove={studio.removeUtilityPoint}
             />
             <RoomContextPanel
               contextImage={studio.state.roomContextImage}
@@ -141,8 +171,8 @@ export default function RoomStudioClient() {
           <div className="flex w-full min-w-0 flex-1 flex-col gap-4">
             <RoomScene3D
               dimensions={studio.state.dimensions}
-              floorMaterialId={studio.state.selectedMaterials.floor}
-              wallMaterialId={studio.state.selectedMaterials.walls}
+              floorStyle={studio.state.surfaceStyles.floor}
+              wallStyle={studio.state.surfaceStyles.walls}
               placedViews={studio.placedViews}
               selectedInstanceId={studio.selectedInstanceId}
               showCeiling={showCeiling}
@@ -152,6 +182,7 @@ export default function RoomStudioClient() {
             />
 
             {studio.selected ? (
+              <>
               <SelectedProductToolbar
                 selection={studio.selected}
                 isInQuote={hasItem(studio.selected.product.id)}
@@ -160,6 +191,14 @@ export default function RoomStudioClient() {
                 onRemove={studio.removeProduct}
                 onAddToQuote={handleAddToQuote}
               />
+              {selectedFindings.length > 0 && (
+                <ul className="space-y-2">
+                  {selectedFindings.map((finding) => (
+                    <TechnicalFindingRow key={finding.id} finding={finding} />
+                  ))}
+                </ul>
+              )}
+              </>
             ) : (
               <div className="flex items-start gap-2.5 rounded-2xl border border-[#D8E2EA] bg-white p-4 text-xs leading-relaxed text-[#627386]">
                 <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#C8A96A]" />

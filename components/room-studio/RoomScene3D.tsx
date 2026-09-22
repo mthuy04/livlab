@@ -10,6 +10,7 @@ import { getDefaultCameraFraming } from '@/lib/room-studio/roomGeometry';
 import type { PlacedProductView } from '@/lib/room-studio/useRoomStudio';
 import type { Vec3 } from '@/lib/room-studio/placementRules';
 import RoomShell from './scene/RoomShell';
+import type { SurfaceStyle } from '@/lib/room-studio/materials';
 import PlacedProductNode from './scene/PlacedProductNode';
 import DragPlane from './scene/DragPlane';
 import RoomCameraControls from './scene/RoomCameraControls';
@@ -62,8 +63,8 @@ class EnvironmentBoundary extends React.Component<{ children: React.ReactNode },
 
 interface RoomScene3DProps {
   dimensions: RoomDimensions;
-  floorMaterialId: string;
-  wallMaterialId: string;
+  floorStyle: SurfaceStyle;
+  wallStyle: SurfaceStyle;
   placedViews: PlacedProductView[];
   selectedInstanceId: string | null;
   showCeiling: boolean;
@@ -75,8 +76,8 @@ interface RoomScene3DProps {
 
 export default function RoomScene3D({
   dimensions,
-  floorMaterialId,
-  wallMaterialId,
+  floorStyle,
+  wallStyle,
   placedViews,
   selectedInstanceId,
   showCeiling,
@@ -219,8 +220,8 @@ export default function RoomScene3D({
 
           <RoomShell
             dimensions={dimensions}
-            floorMaterialId={floorMaterialId}
-            wallMaterialId={wallMaterialId}
+            floorStyle={floorStyle}
+            wallStyle={wallStyle}
             showCeiling={showCeiling}
           />
 

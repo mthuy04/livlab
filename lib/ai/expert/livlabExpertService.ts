@@ -236,8 +236,15 @@ function renderContextBlock(context: LivLabExpertContext, candidates: ExpertProd
   }
 
   if (context.validationResults?.length) {
-    lines.push('KẾT QUẢ KIỂM TRA TỰ ĐỘNG:');
-    context.validationResults.forEach((v) => lines.push(`- [${v.severity}] ${v.message} (nguồn: ${v.source})`));
+    // Presented as authoritative on purpose. These come from the deterministic
+    // Technical Advisor engine, and the system prompt forbids the model from
+    // overriding them or adding technical requirements of its own.
+    lines.push('KẾT QUẢ KIỂM TRA KỸ THUẬT (do LivLab tính toán, là nguồn thông tin chính xác — không được tự suy diễn khác):');
+    context.validationResults.forEach((v) => {
+      const who = v.productName ? ` — ${v.productName}` : '';
+      const human = v.requiresHumanVerification ? ' [cần kỹ thuật viên/showroom xác nhận]' : '';
+      lines.push(`- [${v.severity}] ${v.title}${who}: ${v.message} (nguồn dữ liệu: ${v.source})${human}`);
+    });
   }
 
   lines.push('');

@@ -160,27 +160,25 @@ export function footprintsOverlap(
 }
 
 // ─── Technical Advisor surface ────────────────────────────────────────────────
-// Deliberately NOT implemented in this phase. The signatures exist so the
-// advisor can be filled in later without changing a single call site.
-
-export interface PlacementIssue {
-  code: 'out-of-room' | 'overlap' | 'clearance' | 'door-collision' | 'plumbing' | 'surface';
-  severity: 'info' | 'warning' | 'error';
-  message: string;
-}
-
-export function checkClearance(): PlacementIssue[] {
-  return [];
-}
-
-export function checkDoorCollision(): PlacementIssue[] {
-  return [];
-}
-
-export function checkPlumbingCompatibility(): PlacementIssue[] {
-  return [];
-}
-
-export function checkInstallationSurface(): PlacementIssue[] {
-  return [];
-}
+//
+// These were placeholders in the Room Studio phase. The Technical Advisor now
+// implements them for real, in lib/technical-advisor/, as pure rules over
+// geometry and declared product data.
+//
+// They are not re-exported from here, because a rule needs far more context
+// than a single placement (the whole room, every other product, the declared
+// utility points). Call the engine instead:
+//
+//   import { runTechnicalAdvisor } from '@/lib/technical-advisor/engine';
+//
+// The individual rules live at:
+//   clearance              -> rules/clearanceRule.ts
+//   installation surface   -> rules/placementSurfaceRule.ts
+//   plumbing compatibility -> rules/plumbingPointRule.ts
+//   room bounds            -> rules/roomBoundsRule.ts
+//   collision              -> rules/collisionRule.ts
+//
+// Door collision is still genuinely unimplemented: RoomState carries no door
+// geometry yet, so there is nothing deterministic to check against. It is
+// deliberately absent rather than stubbed, so no caller can mistake an empty
+// array for "no door problems".

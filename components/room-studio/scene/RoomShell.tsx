@@ -2,11 +2,11 @@
 
 import { memo } from 'react';
 import type { RoomDimensions } from '@/lib/room-studio/roomGeometry';
-import { getMaterialById } from '@/lib/room-studio/materials';
+import { resolveSurfaceMaterial, type SurfaceStyle } from '@/lib/room-studio/materials';
 import { useSurfaceTexture } from './useSurfaceTexture';
 
 interface SurfacePlaneProps {
-  materialId: string;
+  style: SurfaceStyle;
   /** Real-world size of this plane in metres, used to keep the finish's own
    *  real-world scale correct regardless of room size. */
   planeWidth: number;
@@ -17,8 +17,8 @@ interface SurfacePlaneProps {
   tint?: number;
 }
 
-function SurfacePlane({ materialId, planeWidth, planeHeight, position, rotation, tint = 1 }: SurfacePlaneProps) {
-  const material = getMaterialById(materialId);
+function SurfacePlane({ style, planeWidth, planeHeight, position, rotation, tint = 1 }: SurfacePlaneProps) {
+  const material = resolveSurfaceMaterial(style);
   const texture = useSurfaceTexture(material, planeWidth, planeHeight);
 
   return (
@@ -36,8 +36,8 @@ function SurfacePlane({ materialId, planeWidth, planeHeight, position, rotation,
 
 interface RoomShellProps {
   dimensions: RoomDimensions;
-  floorMaterialId: string;
-  wallMaterialId: string;
+  floorStyle: SurfaceStyle;
+  wallStyle: SurfaceStyle;
   showCeiling?: boolean;
 }
 
@@ -49,14 +49,14 @@ interface RoomShellProps {
  * Changing a material only swaps the texture on an existing plane; geometry is
  * rebuilt only when a dimension actually changes.
  */
-function RoomShell({ dimensions, floorMaterialId, wallMaterialId, showCeiling = false }: RoomShellProps) {
+function RoomShell({ dimensions, floorStyle, wallStyle, showCeiling = false }: RoomShellProps) {
   const { length, width, height } = dimensions;
 
   return (
     <group>
       {/* Floor */}
       <SurfacePlane
-        materialId={floorMaterialId}
+        style={floorStyle}
         planeWidth={length}
         planeHeight={width}
         position={[0, 0, 0]}
@@ -65,7 +65,7 @@ function RoomShell({ dimensions, floorMaterialId, wallMaterialId, showCeiling = 
 
       {/* Back wall (faces the camera's default position) */}
       <SurfacePlane
-        materialId={wallMaterialId}
+        style={wallStyle}
         planeWidth={length}
         planeHeight={height}
         position={[0, height / 2, -width / 2]}
@@ -74,7 +74,7 @@ function RoomShell({ dimensions, floorMaterialId, wallMaterialId, showCeiling = 
 
       {/* Left wall */}
       <SurfacePlane
-        materialId={wallMaterialId}
+        style={wallStyle}
         planeWidth={width}
         planeHeight={height}
         position={[-length / 2, height / 2, 0]}
@@ -84,7 +84,7 @@ function RoomShell({ dimensions, floorMaterialId, wallMaterialId, showCeiling = 
 
       {/* Right wall */}
       <SurfacePlane
-        materialId={wallMaterialId}
+        style={wallStyle}
         planeWidth={width}
         planeHeight={height}
         position={[length / 2, height / 2, 0]}
@@ -94,7 +94,7 @@ function RoomShell({ dimensions, floorMaterialId, wallMaterialId, showCeiling = 
 
       {showCeiling && (
         <SurfacePlane
-          materialId={wallMaterialId}
+          style={wallStyle}
           planeWidth={length}
           planeHeight={width}
           position={[0, height, 0]}

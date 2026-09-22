@@ -10,7 +10,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { RoomDimensions } from './roomGeometry';
-import type { SurfaceId } from './materials';
+import type { SurfaceId, SurfaceStyle } from './materials';
 import type { RoomStudioProduct } from './productAdapter';
 import { loadRoomStudioProducts } from './productAdapter';
 import { roomStateRepository } from './roomStateRepository';
@@ -19,6 +19,7 @@ import { getRealWorldSize } from './assetResolver';
 import { clampToRoom, type Vec3 } from './placementRules';
 import * as ops from './roomState';
 import type { PlacedProduct, RoomState } from './roomState';
+import type { UtilityPoint } from '@/lib/technical-advisor/types';
 
 const SAVE_DEBOUNCE_MS = 400;
 
@@ -120,8 +121,9 @@ export function useRoomStudio() {
     [resolveProduct]
   );
 
-  const setMaterial = useCallback((surface: SurfaceId, materialId: string) => {
-    setState((prev) => ops.setMaterial(prev, surface, materialId));
+  /** Patch one axis (material / color / finish) of a surface's finish. */
+  const setSurfaceStyle = useCallback((surface: SurfaceId, patch: Partial<SurfaceStyle>) => {
+    setState((prev) => ops.setSurfaceStyle(prev, surface, patch));
   }, []);
 
   /** Adds a product and returns the id of the instance that was created. */
@@ -187,6 +189,14 @@ export function useRoomStudio() {
     setState((prev) => ops.setStylePreferences(prev, styles));
   }, []);
 
+  const addUtilityPoint = useCallback((point: UtilityPoint) => {
+    setState((prev) => ops.addUtilityPoint(prev, point));
+  }, []);
+
+  const removeUtilityPoint = useCallback((id: string) => {
+    setState((prev) => ops.removeUtilityPoint(prev, id));
+  }, []);
+
   const resetRoom = useCallback(() => {
     setState(ops.createInitialRoomState());
     setSelectedInstanceId(null);
@@ -205,7 +215,7 @@ export function useRoomStudio() {
     loadError,
     setSelectedInstanceId,
     setDimensions,
-    setMaterial,
+    setSurfaceStyle,
     addProduct,
     removeProduct,
     duplicateProduct,
@@ -215,6 +225,8 @@ export function useRoomStudio() {
     setRoomContextImage,
     setTargetBudget,
     setStylePreferences,
+    addUtilityPoint,
+    removeUtilityPoint,
     resetRoom,
   };
 }

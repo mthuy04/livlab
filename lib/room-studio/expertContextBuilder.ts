@@ -21,10 +21,12 @@ import type { QuoteItem } from '@/lib/types';
 import { getBudgetFit } from '@/lib/budget/getBudgetFit';
 import type { BudgetEstimate } from './budgetCalculator';
 import { getFloorArea } from './roomGeometry';
-import { getMaterialById } from './materials';
+import { describeSurfaceStyle } from './materials';
 import type { RoomState } from './roomState';
 import type { RoomStudioProduct } from './productAdapter';
 import type { PlacedProductView } from './useRoomStudio';
+import { buildEntries, runTechnicalAdvisor, topFindings } from '@/lib/technical-advisor/engine';
+import type { TechnicalValidationResult } from '@/lib/technical-advisor/types';
 import type {
   ExpertPlacedProduct,
   ExpertProductRef,
@@ -67,48 +69,28 @@ function toProductRef(product: RoomStudioProduct): ExpertProductRef {
 }
 
 /**
- * The basic deterministic checks Room Studio already performs today.
+ * Projects Technical Advisor findings into the Expert's context.
  *
- * This is the slot the future Technical Advisor plugs into: once
- * checkClearance / checkDoorCollision / checkPlumbingCompatibility /
- * checkInstallationSurface in placementRules.ts return real findings, map them
- * here and the Expert quotes them without any prompt or UI change.
+ * This is where the deterministic layer meets the AI layer, and the direction
+ * is one-way: findings flow in, and the Expert may explain them. No Three.js
+ * object, no geometry and no raw room state crosses this boundary — only the
+ * structured result the engine already produced.
  */
-function buildValidationResults(
-  state: RoomState,
-  placedViews: PlacedProductView[]
+function toExpertValidationResults(
+  results: TechnicalValidationResult[],
+  nameByInstanceId: Map<string, string>
 ): ExpertValidationResult[] {
-  const results: ExpertValidationResult[] = [];
-
-  const floorArea = getFloorArea(state.dimensions);
-  if (placedViews.length > 0 && floorArea > 0) {
-    // Purely geometric: sum of stated footprints against the floor. No plumbing
-    // or clearance standards are implied.
-    const footprint = placedViews.reduce((sum, { product }) => {
-      if (product.width === undefined || product.depth === undefined) return sum;
-      return sum + product.width * product.depth;
-    }, 0);
-    if (footprint > floorArea * 0.5) {
-      results.push({
-        type: 'floor-occupancy',
-        severity: 'warning',
-        message: `Tổng diện tích chiếm sàn của các sản phẩm đã chiếm hơn một nửa diện tích phòng (${floorArea.toFixed(1)} m²). Cần kiểm tra lại lối đi.`,
-        source: 'roomGeometry',
-      });
-    }
-  }
-
-  const unpriced = placedViews.filter(({ product }) => !product.priceMin && !product.priceMax);
-  if (unpriced.length > 0) {
-    results.push({
-      type: 'missing-price',
-      severity: 'info',
-      message: `${unpriced.length} sản phẩm trong phòng chưa có giá tham khảo trong dữ liệu LivLab.`,
-      source: 'budgetCalculator',
-    });
-  }
-
-  return results;
+  return results.map((result) => ({
+    category: result.category,
+    severity: result.severity,
+    title: result.title,
+    message: result.message,
+    productName: result.affectedInstanceIds
+      .map((id) => nameByInstanceId.get(id))
+      .filter((n): n is string => Boolean(n))[0],
+    source: result.dataSource,
+    requiresHumanVerification: result.requiresHumanVerification,
+  }));
 }
 
 export function buildExpertContext(params: {
@@ -135,8 +117,8 @@ export function buildExpertContext(params: {
       width: state.dimensions.width,
       height: state.dimensions.height,
       floorAreaM2: getFloorArea(state.dimensions),
-      floorMaterial: getMaterialById(state.selectedMaterials.floor).name,
-      wallMaterial: getMaterialById(state.selectedMaterials.walls).name,
+      floorMaterial: describeSurfaceStyle(state.surfaceStyles.floor),
+      wallMaterial: describeSurfaceStyle(state.surfaceStyles.walls),
       hasReferencePhoto: Boolean(state.roomContextImage),
     },
     selectedProduct: selected ? toProductRef(selected.product) : undefined,
@@ -159,6 +141,16 @@ export function buildExpertContext(params: {
       name: i.name,
       quantity: i.quantity,
     })),
-    validationResults: buildValidationResults(state, placedViews),
+    validationResults: toExpertValidationResults(
+      // Capped: the Expert needs the actionable findings, not all of them.
+      topFindings(
+        runTechnicalAdvisor({
+          room: state.dimensions,
+          entries: buildEntries(placedViews),
+          utilityPoints: state.utilityPoints ?? [],
+        })
+      ),
+      new Map(placedViews.map(({ placed, product }) => [placed.instanceId, product.name]))
+    ),
   };
 }

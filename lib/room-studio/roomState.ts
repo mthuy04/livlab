@@ -7,10 +7,17 @@
  */
 
 import { DEFAULT_DIMENSIONS, clampDimensions, type RoomDimensions } from './roomGeometry';
-import { DEFAULT_FLOOR_MATERIAL_ID, DEFAULT_WALL_MATERIAL_ID, type SurfaceId } from './materials';
+import {
+  DEFAULT_SURFACE_STYLES,
+  LEGACY_MATERIAL_STYLES,
+  normalizeSurfaceStyle,
+  type SurfaceId,
+  type SurfaceStyle,
+} from './materials';
 import { clampToRoom, getDefaultPlacement, type PlacementType, type Vec3, type WallId } from './placementRules';
 import { getRealWorldSize } from './assetResolver';
 import type { RoomStudioProduct } from './productAdapter';
+import type { UtilityPoint } from '@/lib/technical-advisor/types';
 
 export const ROOM_STATE_VERSION = 1;
 
@@ -31,7 +38,11 @@ export interface PlacedProduct {
 export interface RoomState {
   version: number;
   dimensions: RoomDimensions;
-  selectedMaterials: Record<SurfaceId, string>;
+  /**
+   * Structured finish per surface — material, colour and finish are three
+   * separate decisions, never one mixed label. See ./materials.ts.
+   */
+  surfaceStyles: Record<SurfaceId, SurfaceStyle>;
   placedProducts: PlacedProduct[];
   /**
    * Optional photo of the customer's real room, shown as context beside the 3D
@@ -48,15 +59,22 @@ export interface RoomState {
   targetBudget?: number;
   /** Style tags the customer picked, reused as context for LivLab Expert. */
   stylePreferences?: string[];
+  /**
+   * Cấp/thoát nước points the customer has DECLARED. Optional and always
+   * manual: LivLab never infers plumbing positions from a photo or a floor
+   * plan, and the Technical Advisor reports "chưa có dữ liệu" rather than
+   * assuming when this is empty.
+   */
+  utilityPoints?: UtilityPoint[];
 }
 
 export function createInitialRoomState(): RoomState {
   return {
     version: ROOM_STATE_VERSION,
     dimensions: { ...DEFAULT_DIMENSIONS },
-    selectedMaterials: {
-      floor: DEFAULT_FLOOR_MATERIAL_ID,
-      walls: DEFAULT_WALL_MATERIAL_ID,
+    surfaceStyles: {
+      floor: { ...DEFAULT_SURFACE_STYLES.floor },
+      walls: { ...DEFAULT_SURFACE_STYLES.walls },
     },
     placedProducts: [],
   };
@@ -104,10 +122,20 @@ export function reflowPlacements(
   return { ...state, placedProducts };
 }
 
-export function setMaterial(state: RoomState, surface: SurfaceId, materialId: string): RoomState {
+/**
+ * Applies a partial change to one surface's style. The patch is re-normalised,
+ * so switching material while an unavailable colour/finish is selected snaps to
+ * something the catalogue actually sells rather than storing a dead combination.
+ */
+export function setSurfaceStyle(
+  state: RoomState,
+  surface: SurfaceId,
+  patch: Partial<SurfaceStyle>
+): RoomState {
+  const next = normalizeSurfaceStyle(surface, { ...state.surfaceStyles[surface], ...patch });
   return {
     ...state,
-    selectedMaterials: { ...state.selectedMaterials, [surface]: materialId },
+    surfaceStyles: { ...state.surfaceStyles, [surface]: next },
   };
 }
 
@@ -194,7 +222,35 @@ export function setStylePreferences(state: RoomState, stylePreferences: string[]
   return { ...state, stylePreferences };
 }
 
+export function addUtilityPoint(state: RoomState, point: UtilityPoint): RoomState {
+  return { ...state, utilityPoints: [...(state.utilityPoints ?? []), point] };
+}
+
+export function removeUtilityPoint(state: RoomState, id: string): RoomState {
+  return { ...state, utilityPoints: (state.utilityPoints ?? []).filter((p) => p.id !== id) };
+}
+
 // ─── Serialization ────────────────────────────────────────────────────────────
+
+/**
+ * Reads one surface's finish from a snapshot. Handles three shapes: the current
+ * structured style, a pre-refactor mixed material id (`"tile-beige"`), and
+ * nothing at all. Every result is normalised, so a snapshot naming a material
+ * that is no longer offered on that surface still renders.
+ */
+function parseSurfaceStyle(
+  surface: SurfaceId,
+  style: unknown,
+  legacyMaterialId: unknown
+): SurfaceStyle {
+  if (style && typeof style === 'object') {
+    return normalizeSurfaceStyle(surface, style as Partial<SurfaceStyle>);
+  }
+  if (typeof legacyMaterialId === 'string' && LEGACY_MATERIAL_STYLES[legacyMaterialId]) {
+    return normalizeSurfaceStyle(surface, LEGACY_MATERIAL_STYLES[legacyMaterialId]);
+  }
+  return { ...DEFAULT_SURFACE_STYLES[surface] };
+}
 
 /**
  * Accepts anything (an old snapshot, a Supabase row, junk) and returns a state
@@ -204,7 +260,9 @@ export function setStylePreferences(state: RoomState, stylePreferences: string[]
 export function deserializeRoomState(raw: unknown): RoomState {
   const base = createInitialRoomState();
   if (!raw || typeof raw !== 'object') return base;
-  const data = raw as Partial<RoomState>;
+  // `selectedMaterials` is the pre-refactor field; it is not on RoomState any
+  // more, so it is read off the untyped snapshot.
+  const data = raw as Partial<RoomState> & { selectedMaterials?: Record<string, unknown> };
 
   const dimensions = clampDimensions(data.dimensions ?? base.dimensions);
 
@@ -234,9 +292,9 @@ export function deserializeRoomState(raw: unknown): RoomState {
   return {
     version: ROOM_STATE_VERSION,
     dimensions,
-    selectedMaterials: {
-      floor: data.selectedMaterials?.floor ?? base.selectedMaterials.floor,
-      walls: data.selectedMaterials?.walls ?? base.selectedMaterials.walls,
+    surfaceStyles: {
+      floor: parseSurfaceStyle('floor', data.surfaceStyles?.floor, data.selectedMaterials?.floor),
+      walls: parseSurfaceStyle('walls', data.surfaceStyles?.walls, data.selectedMaterials?.walls),
     },
     placedProducts,
     roomContextImage: typeof data.roomContextImage === 'string' ? data.roomContextImage : undefined,
@@ -247,6 +305,19 @@ export function deserializeRoomState(raw: unknown): RoomState {
         : undefined,
     stylePreferences: Array.isArray(data.stylePreferences)
       ? data.stylePreferences.filter((s): s is string => typeof s === 'string')
+      : undefined,
+    // Older snapshots predate utility points; absence simply means "not
+    // declared", which every technical rule already handles.
+    utilityPoints: Array.isArray(data.utilityPoints)
+      ? data.utilityPoints.filter(
+          (p): p is UtilityPoint =>
+            Boolean(p) &&
+            typeof p.id === 'string' &&
+            typeof p.type === 'string' &&
+            Array.isArray(p.position) &&
+            p.position.length === 3 &&
+            p.position.every((n) => typeof n === 'number' && Number.isFinite(n))
+        )
       : undefined,
   };
 }

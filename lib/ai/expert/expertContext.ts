@@ -71,21 +71,27 @@ export interface ExpertBudgetContext {
 }
 
 /**
- * Where future deterministic checks arrive.
+ * Deterministic findings from the Technical Advisor.
  *
- * The Technical Advisor is NOT implemented in this phase. When
- * checkClearance() / checkDoorCollision() / checkPlumbingCompatibility() /
- * checkInstallationSurface() in lib/room-studio/placementRules.ts start
- * returning real results, they get mapped into this array and the Expert will
- * quote them as facts without any prompt change. Today it carries only the
- * basic room-bounds checks Room Studio already performs.
+ * These are the SOURCE OF TRUTH for anything technical. The engine that
+ * produces them (lib/technical-advisor) never calls an LLM, and the Expert's
+ * system prompt forbids overriding, re-deciding or extending them. Gemini may
+ * explain a finding and suggest catalogue alternatives; it may not invent an
+ * installation requirement or declare something safe.
  */
 export interface ExpertValidationResult {
-  type: string;
-  severity: 'info' | 'warning' | 'error';
+  /** ROOM_BOUNDS | COLLISION | CLEARANCE | PLACEMENT_SURFACE | PLUMBING | DATA_COMPLETENESS */
+  category: string;
+  /** SUITABLE | OPTIMIZE | VERIFY */
+  severity: string;
+  title: string;
   message: string;
-  /** Which deterministic rule produced this, so the Expert can attribute it. */
+  /** Which product this is about, for the Expert to name it. */
+  productName?: string;
+  /** PRODUCT_METADATA | ROOM_GEOMETRY | ROOM_UTILITY_POINT | LIVLAB_RULE | UNKNOWN */
   source: string;
+  /** True when a showroom or technician must confirm before installation. */
+  requiresHumanVerification: boolean;
 }
 
 export interface LivLabExpertContext {

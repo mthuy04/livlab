@@ -10,7 +10,8 @@
     "postinstall": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
-    "inspect:glb-materials": "node scripts/inspectGlbMaterials.mjs"
+    "inspect:glb-materials": "node scripts/inspectGlbMaterials.mjs",
+    "test:technical": "npx tsx scripts/testTechnicalAdvisor.mts"
   },
   "dependencies": {
     "@google/genai": "^2.8.0",
