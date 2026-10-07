@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import type { Route } from 'next';
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/context/AuthContext';
 import {
   LayoutDashboard,
@@ -46,8 +48,20 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
 
   const currentPageLabel =
     [...navItems].reverse().find((item) => isActive(item.href, item.exact))?.label ?? 'Bảng điều khiển';
-  const showroomName = 'Showroom';
+  // Real name, so the header is not hardcoded to one partner the way it used
+  // to read "Luxbath Showroom" for every showroom.
+  const [showroomName, setShowroomName] = useState('Showroom');
   const initials = (user?.name || user?.email || '?').slice(0, 2).toUpperCase();
+
+  useEffect(() => {
+    if (!user) return;
+    fetch('/api/showroom/profile')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => data?.showroom?.name && setShowroomName(data.showroom.name))
+      .catch(() => {
+        // Header falls back to the generic label; not worth surfacing.
+      });
+  }, [user]);
 
   function isActive(href: string, exact: boolean) {
     if (exact) return pathname === href;
@@ -146,7 +160,7 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
                 return (
                   <Link
                     key={item.href}
-                    href={item.href as any}
+                    href={item.href as Route}
                     className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-colors ${
                       active
                         ? 'bg-[#123C5A] text-white'

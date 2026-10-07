@@ -238,3 +238,144 @@ export async function getDashboard(showroomId: string): Promise<DashboardViewMod
     };
   });
 }
+
+/**
+ * Customers, derived from leads rather than stored separately.
+ *
+ * LivLab has no Customer table, and inventing one for this screen would create
+ * a second identity for people who already exist as leads. Phone is the
+ * grouping key because it is the one contact detail a Vietnamese customer
+ * reliably gives; email is often blank.
+ */
+export async function listCustomers(showroomId: string) {
+  return withSchemaGuard(async () => {
+    const leads = await prisma.quoteLead.findMany({
+      where: { showroomId },
+      select: {
+        id: true, customerName: true, phone: true, email: true, status: true, stage: true,
+        estimatedValue: true, createdAt: true, firstContactAt: true,
+        quotes: { select: { id: true, code: true, total: true, status: true }, orderBy: { createdAt: 'desc' } },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    const byKey = new Map<string, {
+      key: string; name: string; phone: string | null; email: string | null;
+      leadCount: number; openLeads: number; lastActivityAt: Date;
+      latestQuoteCode: string | null; latestQuoteTotal: number | null; wonValue: number;
+    }>();
+
+    for (const lead of leads) {
+      const key = lead.phone?.replace(/\s/g, '') || lead.email || lead.id;
+      const stage = resolveStage(lead);
+      const existing = byKey.get(key);
+      const quote = lead.quotes[0];
+
+      if (existing) {
+        existing.leadCount += 1;
+        if (isOpenStage(stage)) existing.openLeads += 1;
+        if (lead.createdAt > existing.lastActivityAt) existing.lastActivityAt = lead.createdAt;
+        if (!existing.latestQuoteCode && quote) {
+          existing.latestQuoteCode = quote.code;
+          existing.latestQuoteTotal = quote.total;
+        }
+        // Only an accepted quote counts as won value. A sent quote is a hope.
+        if (stage === 'WON') existing.wonValue += quote?.status === 'ACCEPTED' ? quote.total : 0;
+      } else {
+        byKey.set(key, {
+          key, name: lead.customerName, phone: lead.phone, email: lead.email,
+          leadCount: 1, openLeads: isOpenStage(stage) ? 1 : 0, lastActivityAt: lead.createdAt,
+          latestQuoteCode: quote?.code ?? null, latestQuoteTotal: quote?.total ?? null,
+          wonValue: stage === 'WON' && quote?.status === 'ACCEPTED' ? quote.total : 0,
+        });
+      }
+    }
+
+    return [...byKey.values()].sort((a, b) => b.lastActivityAt.getTime() - a.lastActivityAt.getTime());
+  });
+}
+
+export interface ReportViewModel {
+  funnel: { label: string; count: number; rate: number | null }[];
+  medianFirstResponseHours: number | null;
+  uncontacted24h: number;
+  quotesSent: number;
+  quotedValue: number;
+  acceptedValue: number;
+  quoteWinRate: number | null;
+  averageQuoteValue: number | null;
+  /** Reasons a figure is unavailable, shown instead of inventing a number. */
+  gaps: string[];
+}
+
+/**
+ * Reports derived only from what the database actually records.
+ *
+ * Where a figure cannot be derived, it is returned as null and the UI says
+ * "chưa đủ dữ liệu". Seeding a plausible number would make the dashboard look
+ * finished while telling the showroom something untrue about its own business.
+ */
+export async function getReports(showroomId: string): Promise<ReportViewModel> {
+  return withSchemaGuard(async () => {
+    const leads = await prisma.quoteLead.findMany({
+      where: { showroomId },
+      select: { id: true, status: true, stage: true, createdAt: true, firstContactAt: true },
+    });
+    const quotes = await prisma.quote.findMany({
+      where: { showroomId },
+      select: { status: true, total: true, sentAt: true },
+    });
+
+    const stages = leads.map((l) => resolveStage(l));
+    const total = leads.length;
+    const contacted = stages.filter((s) => s !== 'NEW').length;
+    const qualified = stages.filter((s) => ['QUALIFIED', 'QUOTING', 'QUOTE_SENT', 'FOLLOW_UP', 'WON'].includes(s)).length;
+    const quoted = stages.filter((s) => ['QUOTE_SENT', 'FOLLOW_UP', 'WON'].includes(s)).length;
+    const won = stages.filter((s) => s === 'WON').length;
+
+    const rate = (n: number) => (total === 0 ? null : Math.round((n / total) * 100));
+    const funnel = [
+      { label: 'Lead', count: total, rate: total === 0 ? null : 100 },
+      { label: 'Đã liên hệ', count: contacted, rate: rate(contacted) },
+      { label: 'Đã xác định nhu cầu', count: qualified, rate: rate(qualified) },
+      { label: 'Đã gửi báo giá', count: quoted, rate: rate(quoted) },
+      { label: 'Đã chốt', count: won, rate: rate(won) },
+    ];
+
+    // Only leads that were actually contacted can measure response time.
+    const responseHours = leads
+      .filter((l) => l.firstContactAt)
+      .map((l) => (l.firstContactAt!.getTime() - l.createdAt.getTime()) / 3_600_000)
+      .sort((a, b) => a - b);
+    const medianFirstResponseHours =
+      responseHours.length === 0
+        ? null
+        : Math.round(responseHours[Math.floor(responseHours.length / 2)] * 10) / 10;
+
+    const sent = quotes.filter((q) => q.sentAt);
+    const accepted = quotes.filter((q) => q.status === 'ACCEPTED');
+    const quotedValue = sent.reduce((s, q) => s + q.total, 0);
+
+    const gaps: string[] = [];
+    if (responseHours.length === 0) {
+      gaps.push('Chưa có lead nào được ghi nhận thời điểm liên hệ đầu tiên, nên chưa tính được thời gian phản hồi.');
+    }
+    if (sent.length === 0) {
+      gaps.push('Chưa có báo giá nào được gửi, nên chưa tính được tỉ lệ chốt từ báo giá.');
+    }
+
+    return {
+      funnel,
+      medianFirstResponseHours,
+      uncontacted24h: leads.filter(
+        (l) => !l.firstContactAt && Date.now() - l.createdAt.getTime() > 86_400_000
+      ).length,
+      quotesSent: sent.length,
+      quotedValue,
+      acceptedValue: accepted.reduce((s, q) => s + q.total, 0),
+      quoteWinRate: sent.length === 0 ? null : Math.round((accepted.length / sent.length) * 100),
+      averageQuoteValue: sent.length === 0 ? null : Math.round(quotedValue / sent.length),
+      gaps,
+    };
+  });
+}

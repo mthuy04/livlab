@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { LeadStatus } from '@prisma/client';
 import { getSessionUser, hasRole, unauthorized, forbidden, showroomScopeFilter, showroomUnassigned } from '@/lib/auth/session';
 
 const statusMap: Record<string, string> = {

@@ -1,107 +1,95 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { BarChart, Download, Printer, Loader2, PieChart } from 'lucide-react';
-import { Lead } from '@/lib/types';
+import { PageShell, Section, Metric, MigrationNotice, EmptyState, money } from '@/components/showroom/ui/primitives';
+import type { ReportViewModel } from '@/lib/showroom/showroomRepository';
 
+/**
+ * Reports built only from recorded facts.
+ *
+ * The previous page showed three charts fed by `showroomDemoData` — invented
+ * weekly volumes, budget splits and status mixes. Those are gone. Where a
+ * figure cannot be derived, this page says so instead of filling the space.
+ */
 export default function ShowroomReportsPage() {
-  const [leads, setLeads] = useState<Lead[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<ReportViewModel | null>(null);
+  const [state, setState] = useState<'loading' | 'ready' | 'migration' | 'error'>('loading');
 
   useEffect(() => {
-    async function fetchLeads() {
-      try {
-        const res = await fetch('/api/showroom/leads');
-        const data = await res.json();
-        setLeads(data.leads || []);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchLeads();
+    (async () => {
+      const res = await fetch('/api/showroom/reports');
+      if (res.status === 503) return setState('migration');
+      if (!res.ok) return setState('error');
+      setData(await res.json());
+      setState('ready');
+    })();
   }, []);
 
-  const totalValue = leads.reduce((sum, l) => sum + (l.estimatedValueMin || 0), 0);
-  
-  const budgetFitStats = leads.reduce((acc, lead) => {
-    const fit = lead.budgetFit || 'UNKNOWN';
-    acc[fit] = (acc[fit] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+  if (state === 'migration') return <PageShell title="Báo cáo"><MigrationNotice /></PageShell>;
+  if (state === 'loading') return <PageShell title="Báo cáo"><p className="text-[14px] text-[#5B6B7C]">Đang tải…</p></PageShell>;
+  if (!data) return <PageShell title="Báo cáo"><Section><EmptyState title="Không tải được báo cáo" /></Section></PageShell>;
 
-  const fmtVnd = (n: number) => n.toLocaleString('vi-VN') + 'đ';
+  const maxCount = Math.max(...data.funnel.map((f) => f.count), 1);
 
   return (
-    <div className="p-6 lg:p-8 space-y-6 max-w-7xl mx-auto">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-[#0B1623]">Báo cáo và Phân tích</h1>
-          <p className="text-[#627386] text-sm mt-1">Xem số liệu hoạt động và hiệu suất kinh doanh.</p>
+    <PageShell title="Báo cáo" description="Suy ra từ lead và báo giá thật của showroom.">
+      <Section title="Phễu bán hàng">
+        <div className="space-y-2.5 px-5 py-4">
+          {data.funnel.map((step) => (
+            <div key={step.label} className="flex items-center gap-4">
+              <span className="w-44 shrink-0 text-[14px] text-[#45586B]">{step.label}</span>
+              <div className="h-7 flex-1 rounded bg-[#F2F5F8]">
+                <div className="h-7 rounded bg-[#123C5A]" style={{ width: `${(step.count / maxCount) * 100}%` }} />
+              </div>
+              <span className="w-28 shrink-0 text-right text-[14px] font-semibold text-[#0B1623]">
+                {step.count}
+                {step.rate !== null && <span className="ml-1.5 text-[12px] font-normal text-[#7A8795]">{step.rate}%</span>}
+              </span>
+            </div>
+          ))}
         </div>
+      </Section>
 
-        <div className="flex items-center gap-3">
-          <button 
-            onClick={() => window.print()}
-            className="flex items-center gap-1.5 px-4 py-2 bg-white text-[#123C5A] text-sm font-semibold rounded-xl border border-[#D8E2EA] hover:border-[#123C5A] hover:bg-[#EEF4F7] transition-colors"
-          >
-            <Printer className="w-4 h-4" /> Xuất PDF
-          </button>
-          <a 
-            href="/api/showroom/leads/export"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 px-4 py-2 bg-[#123C5A] text-white text-sm font-semibold rounded-xl hover:bg-[#0D2B42] transition-colors"
-          >
-            <Download className="w-4 h-4" /> Xuất CSV
-          </a>
-        </div>
+      <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <Metric
+          label="Phản hồi trung vị"
+          value={data.medianFirstResponseHours !== null ? `${data.medianFirstResponseHours}h` : 'Chưa đủ dữ liệu'}
+        />
+        <Metric label="Chưa liên hệ quá 24h" value={data.uncontacted24h} tone="negative" />
+        <Metric label="Báo giá đã gửi" value={data.quotesSent} />
+        <Metric
+          label="Tỉ lệ chốt từ báo giá"
+          value={data.quoteWinRate !== null ? `${data.quoteWinRate}%` : 'Chưa đủ dữ liệu'}
+        />
       </div>
 
-      {loading ? (
-        <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-[#123C5A]" /></div>
-      ) : leads.length === 0 ? (
-        <div className="bg-white rounded-[20px] border border-[#D8E3EC] shadow-sm p-6 text-center py-16">
-          <BarChart className="w-12 h-12 text-[#D8E2EA] mx-auto mb-4" />
-          <p className="text-lg text-[#0B1623] font-bold">Báo cáo đang trống</p>
-          <p className="text-[#627386] text-sm mt-2">Chưa có đủ dữ liệu từ yêu cầu báo giá thật để tạo biểu đồ báo cáo.</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-3xl p-6 border border-[#D8E2EA] shadow-sm">
-            <h3 className="text-sm font-bold text-[#627386] uppercase tracking-wider mb-2">Tổng giá trị dự toán</h3>
-            <p className="text-3xl font-bold text-[#123C5A]">{fmtVnd(totalValue)}</p>
-            <p className="text-xs text-[#627386] mt-2">Từ {leads.length} yêu cầu báo giá</p>
+      <Section title="Giá trị báo giá" className="mt-5">
+        <dl className="grid grid-cols-1 gap-4 px-5 py-4 text-[14px] sm:grid-cols-3">
+          <div>
+            <dt className="text-[12px] text-[#7A8795]">Tổng giá trị đã gửi</dt>
+            <dd className="mt-1 text-[20px] font-bold text-[#0B1623]">{money(data.quotedValue)}</dd>
+            <p className="text-[12px] text-[#7A8795]">Chưa chốt — không phải doanh thu.</p>
           </div>
+          <div>
+            <dt className="text-[12px] text-[#7A8795]">Giá trị khách đã duyệt</dt>
+            <dd className="mt-1 text-[20px] font-bold text-[#2E7D52]">{money(data.acceptedValue)}</dd>
+          </div>
+          <div>
+            <dt className="text-[12px] text-[#7A8795]">Giá trị báo giá trung bình</dt>
+            <dd className="mt-1 text-[20px] font-bold text-[#0B1623]">
+              {data.averageQuoteValue !== null ? money(data.averageQuoteValue) : 'Chưa đủ dữ liệu'}
+            </dd>
+          </div>
+        </dl>
+      </Section>
 
-          <div className="md:col-span-2 bg-white rounded-3xl p-6 border border-[#D8E2EA] shadow-sm">
-            <div className="flex items-center gap-2 mb-4">
-              <PieChart className="w-5 h-5 text-[#C8A96A]" />
-              <h3 className="text-sm font-bold text-[#0B1623] uppercase tracking-wider">Mức độ phù hợp ngân sách</h3>
-            </div>
-            
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="p-4 bg-green-50 rounded-2xl border border-green-100">
-                <p className="text-[10px] uppercase font-bold text-green-700 mb-1">Vừa ngân sách</p>
-                <p className="text-2xl font-bold text-green-800">{budgetFitStats['WITHIN_BUDGET'] || 0}</p>
-              </div>
-              <div className="p-4 bg-blue-50 rounded-2xl border border-blue-100">
-                <p className="text-[10px] uppercase font-bold text-blue-700 mb-1">Dưới ngân sách</p>
-                <p className="text-2xl font-bold text-blue-800">{budgetFitStats['UNDER_BUDGET'] || 0}</p>
-              </div>
-              <div className="p-4 bg-amber-50 rounded-2xl border border-amber-100">
-                <p className="text-[10px] uppercase font-bold text-amber-700 mb-1">Hơi vượt</p>
-                <p className="text-2xl font-bold text-amber-800">{budgetFitStats['SLIGHTLY_OVER_BUDGET'] || 0}</p>
-              </div>
-              <div className="p-4 bg-red-50 rounded-2xl border border-red-100">
-                <p className="text-[10px] uppercase font-bold text-red-700 mb-1">Vượt ngân sách</p>
-                <p className="text-2xl font-bold text-red-800">{budgetFitStats['OVER_BUDGET'] || 0}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+      {data.gaps.length > 0 && (
+        <Section title="Chưa đủ dữ liệu" className="mt-5">
+          <ul className="space-y-1.5 px-5 py-4 text-[13px] leading-relaxed text-[#5B6B7C]">
+            {data.gaps.map((gap, i) => <li key={i}>• {gap}</li>)}
+          </ul>
+        </Section>
       )}
-    </div>
+    </PageShell>
   );
 }
