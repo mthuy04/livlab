@@ -7,20 +7,20 @@
  * the same POST /api/quote that the site's quote form already uses, so they
  * land in the same QuoteLead table and appear in the same showroom dashboard.
  *
- * The one thing that table cannot hold today is the structured Room Studio
- * context — it has no requestType or context column, and adding one would mean
- * migrating a live shared database, which is out of scope for this phase. So
- * the context crosses in two forms:
+ * The context crosses in two forms, and both matter:
  *
- *   • `notes` carries a readable Vietnamese briefing. This is not a fallback
- *     hack: a salesperson opening the lead needs prose, not JSON, and this is
- *     the field their dashboard already shows them.
- *   • the full machine-readable snapshot is kept by the repository, ready to be
- *     written to a real column the moment one exists.
+ *   • `requestType` and `contextJson` are the machine-readable handoff the
+ *     Showroom workspace reads, filters and reports on.
+ *   • `notes` carries the same thing as a readable Vietnamese briefing. Not a
+ *     fallback hack: a salesperson opening a lead wants prose, not JSON, and
+ *     older screens and the CSV export already show that field.
+ *
+ * The prose is written FROM the snapshot, never parsed back into it.
  */
 
 import { formatVnd } from '@/lib/room-studio/budgetCalculator';
 import { implementationRequestRepository, nextRequestCode } from './implementationRequestRepository';
+import { toLeadContext } from './leadContext';
 import { REQUEST_TYPES, type HumanHandoffPackage, type ImplementationRequest } from './types';
 
 /** Mirrors the buckets the existing quote form and budget dashboard use, so
@@ -141,9 +141,13 @@ export async function submitImplementationRequest(pkg: HumanHandoffPackage): Pro
         budgetRange: budgetRange.label ?? null,
         budgetMin: budgetRange.min ?? null,
         budgetMax: budgetRange.max ?? null,
-        // Until QuoteLead has a requestType column, the type leads the notes so
-        // it is the first thing a showroom sees on the lead.
         conceptName: `Room Studio · ${REQUEST_TYPES[pkg.requestType].label}`,
+        // The machine-readable handoff. The showroom workspace reads these;
+        // `notes` below stays as the human-readable summary that existing
+        // screens and exports depend on. The prose is never parsed back — it
+        // is a compatibility surface, not a data source.
+        requestType: pkg.requestType,
+        context: toLeadContext(pkg),
         notes: formatHandoffNotes(pkg),
         items: pkg.products.map((p) => ({
           productId: p.productId,

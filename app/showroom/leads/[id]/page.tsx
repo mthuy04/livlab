@@ -92,8 +92,13 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
     );
   }
 
+  // Versioned snapshot written at lead creation (see lib/implementation/
+  // leadContext.ts). Null on leads created before it existed — nothing was
+  // backfilled, so those fall back to the prose briefing further down.
   const ctx = lead.contextJson as
-    | { room?: { length?: number; width?: number; height?: number; floorFinish?: string; wallFinish?: string };
+    | { version?: number;
+        room?: { length?: number; width?: number; height?: number };
+        materials?: { floor?: string; walls?: string };
         technicalFindings?: { severity: string; title: string; message?: string; affectedProduct?: string }[] }
     | null;
   const openQuote = lead.quotes[0];
@@ -175,11 +180,11 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
                   <div><dt className="text-[12px] text-[#7A8795]">Kích thước</dt>
                     <dd className="font-semibold">{ctx.room.length} × {ctx.room.width} × {ctx.room.height} m</dd></div>
                 )}
-                {ctx?.room?.floorFinish && (
-                  <div><dt className="text-[12px] text-[#7A8795]">Sàn</dt><dd className="font-semibold">{ctx.room.floorFinish}</dd></div>
+                {ctx?.materials?.floor && (
+                  <div><dt className="text-[12px] text-[#7A8795]">Sàn</dt><dd className="font-semibold">{ctx.materials.floor}</dd></div>
                 )}
-                {ctx?.room?.wallFinish && (
-                  <div><dt className="text-[12px] text-[#7A8795]">Tường</dt><dd className="font-semibold">{ctx.room.wallFinish}</dd></div>
+                {ctx?.materials?.walls && (
+                  <div><dt className="text-[12px] text-[#7A8795]">Tường</dt><dd className="font-semibold">{ctx.materials.walls}</dd></div>
                 )}
                 {lead.roomType && !ctx?.room && (
                   <div><dt className="text-[12px] text-[#7A8795]">Loại phòng</dt><dd className="font-semibold">{lead.roomType}</dd></div>

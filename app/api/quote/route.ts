@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient, BudgetFitStatus } from '@prisma/client';
+import { PrismaClient, BudgetFitStatus, LeadRequestType, Prisma } from '@prisma/client';
 import { getBudgetFit } from '@/lib/budget/getBudgetFit';
 
 const prisma = new PrismaClient();
@@ -48,6 +48,14 @@ export async function POST(request: Request) {
       budgetMax
     });
 
+    // Validated against the enum rather than trusted: this endpoint is public,
+    // and an unknown value would fail the insert and lose the whole request.
+    const requestType =
+      typeof body.requestType === 'string' &&
+      Object.values(LeadRequestType).includes(body.requestType as LeadRequestType)
+        ? (body.requestType as LeadRequestType)
+        : null;
+
     const lead = await prisma.quoteLead.create({
       data: {
         customerName: body.customerName || 'Khách hàng ẩn danh',
@@ -65,6 +73,10 @@ export async function POST(request: Request) {
         aiSummary: body.aiSummary || null,
         aiFitScore: body.aiFitScore || null,
         aiSource: body.aiSource || null,
+        requestType,
+        // Stored as sent. Old leads keep a null context; nothing is backfilled,
+        // and the prose in `notes` is never parsed into this column.
+        contextJson: body.context ? (body.context as Prisma.InputJsonValue) : Prisma.DbNull,
         items: {
           create: itemsData
         }
