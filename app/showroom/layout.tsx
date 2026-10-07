@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '@/lib/context/AuthContext';
 import {
   LayoutDashboard,
@@ -30,8 +30,7 @@ const navItems = [
 
 export default function ShowroomLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { user, loading } = useAuth();
-  const router = useRouter();
+  const { user, loading, logout } = useAuth();
 
   function isActive(href: string, exact: boolean) {
     if (exact) return pathname === href;
@@ -40,6 +39,40 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
 
   if (loading) {
     return <div className="min-h-screen bg-[#F3F7FA] flex items-center justify-center">Đang tải...</div>;
+  }
+
+  // Valid credentials, correct role, but no showroom assigned. Distinguished
+  // from "access denied" on purpose: telling a legitimate partner they lack
+  // permission would send them to re-login forever, when what they need is for
+  // an admin to finish setting the account up. Before this, they simply saw an
+  // empty dashboard and reported the login as broken.
+  if (user && user.role === 'SHOWROOM' && !user.showroomId) {
+    return (
+      <div className="min-h-screen bg-[#F3F7FA] flex items-center justify-center p-6">
+        <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-[#D8E2EA] shadow-sm text-center">
+          <div className="w-16 h-16 rounded-2xl bg-amber-50 flex items-center justify-center mx-auto mb-6">
+            <AlertCircle className="w-8 h-8 text-[#C8A96A]" />
+          </div>
+          <h2 className="text-2xl font-bold text-[#0B1623] mb-2">Tài khoản chưa được gán showroom</h2>
+          <p className="text-[#627386] text-sm mb-8 leading-relaxed">
+            Bạn đã đăng nhập thành công với tư cách Showroom Partner, nhưng tài khoản
+            <span className="font-semibold text-[#0B1623]"> {user.email} </span>
+            chưa được gán vào showroom nào. Vui lòng liên hệ LivLab để được cấp quyền truy cập.
+          </p>
+          <div className="space-y-3">
+            <Link href="/" className="flex items-center justify-center w-full py-3.5 bg-[#123C5A] text-white font-semibold rounded-2xl hover:bg-[#0D2B42] transition-colors text-sm">
+              Quay lại trang chủ
+            </Link>
+            <button
+              onClick={logout}
+              className="flex items-center justify-center w-full py-3.5 bg-white text-[#0B1623] font-semibold rounded-2xl border border-[#D8E2EA] hover:border-[#0B1623] transition-colors text-sm"
+            >
+              Đăng xuất
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!user || user.role !== 'SHOWROOM' && user.role !== 'ADMIN') {

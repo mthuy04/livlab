@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { LeadStatus } from '@prisma/client';
-import { getSessionUser, hasRole, unauthorized, forbidden, showroomScopeFilter } from '@/lib/auth/session';
+import { getSessionUser, hasRole, unauthorized, forbidden, showroomScopeFilter, showroomUnassigned } from '@/lib/auth/session';
 
 const statusMap: Record<string, string> = {
   NEW: 'Mới',
@@ -15,6 +15,11 @@ export async function GET() {
   const user = await getSessionUser();
   if (!user) return unauthorized();
   if (!hasRole(user, 'ADMIN', 'SHOWROOM')) return forbidden();
+
+  // A SHOWROOM account with no showroom would otherwise get an empty result
+  // set that reads as "no leads" rather than "not configured yet".
+  const unassigned = showroomUnassigned(user);
+  if (unassigned) return unassigned;
 
   try {
     const leads = await prisma.quoteLead.findMany({
