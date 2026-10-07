@@ -37,6 +37,12 @@ export interface AuthUser {
   email: string;
   phone?: string;
   role: UserRole;
+  /**
+   * The showroom a SHOWROOM user administers. Null means the account exists
+   * but has not been assigned one yet — the portal needs to know so it can say
+   * so instead of rendering an empty dashboard.
+   */
+  showroomId?: string | null;
 }
 
 export interface ProductReview {

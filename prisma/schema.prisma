@@ -30,6 +30,80 @@ enum BudgetFitStatus {
   UNKNOWN
 }
 
+/// Showroom sales pipeline.
+///
+/// Deliberately a NEW enum rather than extra values on LeadStatus. Existing
+/// code maps the five legacy statuses by hand, so a sixth value would silently
+/// fall through to "Mới". LeadStatus therefore stays exactly as it is, and
+/// `stage` is nullable: a null stage is derived from `status` at read time, so
+/// no production row has to be backfilled.
+enum LeadStage {
+  NEW
+  CONTACTED
+  QUALIFIED
+  QUOTING
+  QUOTE_SENT
+  FOLLOW_UP
+  WON
+  LOST
+}
+
+/// What the customer actually asked LivLab for. Stored as a column, not only
+/// inside contextJson, because the showroom filters and reports on it.
+enum LeadRequestType {
+  QUOTATION
+  SHOWROOM_CONSULTATION
+  TECHNICAL_CHECK
+}
+
+enum QuoteStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+/// Something that already happened, recorded on the timeline.
+enum LeadActivityType {
+  NOTE
+  CALL
+  MESSAGE
+  MEETING
+  QUOTE_SENT
+  FOLLOW_UP
+  TECHNICAL_CHECK
+  STAGE_CHANGE
+}
+
+/// Something still owed to the customer. Kept separate from LeadActivityType
+/// on purpose: a past event and a planned action are different concepts, and
+/// sharing one enum would mean NOTE and STAGE_CHANGE were schedulable.
+enum LeadNextActionType {
+  CALL
+  MESSAGE
+  MEETING
+  SEND_QUOTE
+  FOLLOW_UP
+  TECHNICAL_CHECK
+}
+
+enum QuoteLineType {
+  PRODUCT
+  SERVICE
+}
+
+/// Commercial availability a showroom maintains by hand. Deliberately NOT a
+/// stock level — nothing here is wired to an inventory system, so a count
+/// would be a number nobody can stand behind.
+enum OfferAvailability {
+  AVAILABLE
+  MADE_TO_ORDER
+  OUT_OF_STOCK
+  CONTACT_REQUIRED
+  UNKNOWN
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -43,6 +117,10 @@ model User {
   showroom     Showroom? @relation(fields: [showroomId], references: [id])
 
   @@index([showroomId])
+  assignedLeads    QuoteLead[]    @relation("LeadAssignee")
+  createdQuotes    Quote[]
+  loggedActivities LeadActivity[]
+  updatedOffers    ShowroomProductOffer[]
 }
 
 model Showroom {
@@ -59,6 +137,9 @@ model Showroom {
   products    Product[]
   leads       QuoteLead[]
   users       User[]
+  quotes      Quote[]
+  activities  LeadActivity[]
+  offers      ShowroomProductOffer[]
 }
 
 model Product {
@@ -83,6 +164,8 @@ model Product {
 
   showroom    Showroom?   @relation(fields: [showroomId], references: [id])
   quoteItems  QuoteItem[]
+  quoteLines  QuoteLine[]
+  offers      ShowroomProductOffer[]
 }
 
 model Concept {
@@ -124,9 +207,42 @@ model QuoteLead {
   aiFitScore     Int?
   aiSource       String?
 
+  /// What the customer asked for. Nullable: leads created before this column
+  /// existed have no value, and guessing one from free text would be fiction.
+  requestType    LeadRequestType?
+  /// Pipeline position. Null means "never set" — read logic derives it from
+  /// the legacy `status` instead. See docs/showroom-lead-stage.md.
+  stage          LeadStage?
+  /// DENORMALISED summary of the next outstanding LeadActivity, kept so the
+  /// dashboard can query today's work without joining every activity row.
+  ///
+  /// LeadActivity is the canonical record. These three columns are only ever
+  /// written by leadActivityService, inside the same transaction that writes
+  /// the activity, so the two representations cannot drift. No UI code writes
+  /// them directly.
+  nextActionType LeadNextActionType?
+  nextActionAt   DateTime?
+  nextActionNote String?
+  assignedToId   String?
+  /// First time a human actually reached the customer. Written once, on the
+  /// first real contact activity, and never overwritten — an overwritten value
+  /// would quietly destroy the only basis for response-time reporting.
+  firstContactAt DateTime?
+  /// Versioned LivLab handoff snapshot: { version, source, room, materials,
+  /// budget, products, technicalFindings }. A snapshot, not a normalisation of
+  /// Room Studio — the room is not modelled as relational tables here.
+  contextJson    Json?
+
   showroom       Showroom?   @relation(fields: [showroomId], references: [id])
+  assignedTo     User?       @relation("LeadAssignee", fields: [assignedToId], references: [id])
   items          QuoteItem[]
   aiLogs         AiSuggestionLog[]
+  quotes         Quote[]
+  activities     LeadActivity[]
+
+  @@index([showroomId, stage])
+  @@index([showroomId, nextActionAt])
+  @@index([showroomId, requestType])
 }
 
 model QuoteItem {
@@ -155,4 +271,153 @@ model AiSuggestionLog {
   @@index([quoteLeadId])
   @@index([source])
   @@index([createdAt])
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Showroom Workspace V2
+//
+// Four new tables. Nothing existing is dropped, renamed or retyped. In
+// particular QuoteItem keeps its exact current meaning — what the CUSTOMER
+// asked for on a lead — and QuoteLine below is a different thing: what the
+// SHOWROOM offers back, at its own prices.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// A quotation the showroom issues against a lead.
+model Quote {
+  id         String      @id @default(cuid())
+  /// Human reference shown to staff and customers, e.g. "BG-2026-0007".
+  code       String      @unique
+  /// Nullable, and the FK is SET NULL rather than CASCADE: a quotation is a
+  /// historical commercial document. It must not vanish because the lead it
+  /// grew out of was later deleted.
+  leadId     String?
+  showroomId String
+  status     QuoteStatus @default(DRAFT)
+
+  /// Recipient snapshot, copied from the lead when the quote is created.
+  /// Without it a quote whose lead is gone — or whose lead has since been
+  /// edited — no longer says who it was for.
+  customerNameSnapshot  String
+  customerPhoneSnapshot String?
+  customerEmailSnapshot String?
+
+  /// Whole VND, matching Product.priceMin/priceMax. No currency column: LivLab
+  /// has no conversion anywhere, so it would be a field nobody writes.
+  subtotal   Int @default(0)
+  discount   Int @default(0)
+  total      Int @default(0)
+
+  validUntil DateTime?
+  notes      String?
+  sentAt     DateTime?
+  decidedAt  DateTime?
+
+  createdById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  lead      QuoteLead?  @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  showroom  Showroom    @relation(fields: [showroomId], references: [id])
+  createdBy User?       @relation(fields: [createdById], references: [id])
+  lines     QuoteLine[]
+
+  @@index([showroomId, status])
+  @@index([leadId])
+}
+
+/// One line of a quotation.
+///
+/// Every commercially meaningful value is SNAPSHOTTED rather than read through
+/// the product relation. A quote sent in March must still read correctly in
+/// September, after the catalogue has been repriced, renamed, or the product
+/// withdrawn entirely. productId is kept for linking and analytics only, and is
+/// nullable so a SERVICE line needs no invented Product row.
+model QuoteLine {
+  id        String        @id @default(cuid())
+  quoteId   String
+  type      QuoteLineType @default(PRODUCT)
+  productId String?
+
+  skuSnapshot   String?
+  nameSnapshot  String
+  brandSnapshot String?
+  description   String?
+
+  quantity Int @default(1)
+  /// LivLab's reference price at the time, kept beside the showroom's own
+  /// price so the two can be shown side by side and never conflated.
+  referencePriceSnapshot Int?
+  unitPrice              Int
+  discountAmount         Int @default(0)
+  lineTotal              Int
+
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  quote   Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([quoteId])
+}
+
+/// Timeline entry and follow-up record for a lead.
+///
+/// One table serves both: a completed event is a row with `doneAt` set, and a
+/// scheduled action is a row with `dueAt` set and `doneAt` still null.
+/// Completing an action fills `doneAt` rather than deleting the row, so the
+/// history of what was promised survives.
+model LeadActivity {
+  id         String           @id @default(cuid())
+  leadId     String
+  showroomId String
+  type       LeadActivityType
+  /// Human-readable note text.
+  body       String?
+  /// Structured context for the event, e.g. { from, to } for STAGE_CHANGE or
+  /// { quoteId } for QUOTE_SENT. Deliberately JSON: these shapes differ per
+  /// event type and normalising them would mean a table per event.
+  metadataJson Json?
+  /// Internal by default. Nothing customer-facing reads this table; the flag
+  /// keeps that a stated rule rather than an assumption.
+  isInternal Boolean          @default(true)
+  dueAt      DateTime?
+  doneAt     DateTime?
+
+  createdById String?
+  createdAt   DateTime @default(now())
+
+  lead      QuoteLead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  showroom  Showroom  @relation(fields: [showroomId], references: [id])
+  createdBy User?     @relation(fields: [createdById], references: [id])
+
+  @@index([leadId, createdAt])
+  @@index([showroomId, dueAt])
+}
+
+/// A showroom's commercial overlay on a LivLab master product.
+///
+/// Master identity and specifications stay on Product and belong to LivLab.
+/// Only commercial terms live here, so a showroom can price and offer a product
+/// without being able to edit what the product IS.
+model ShowroomProductOffer {
+  id             String            @id @default(cuid())
+  showroomId     String
+  productId      String
+  isOffered      Boolean           @default(true)
+  showroomPrice  Int?
+  promotionPrice Int?
+  availability   OfferAvailability @default(UNKNOWN)
+  leadTimeDays   Int?
+  note           String?
+
+  updatedById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  showroom  Showroom @relation(fields: [showroomId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  updatedBy User?    @relation(fields: [updatedById], references: [id])
+
+  @@unique([showroomId, productId])
+  @@index([showroomId, isOffered])
 }

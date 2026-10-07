@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { UserRole } from '@prisma/client';
+import { SESSION_COOKIE, verifySession } from '@/lib/auth/sessionToken';
 
 export interface SessionUser {
   id: string;
@@ -11,33 +12,30 @@ export interface SessionUser {
   showroomId: string | null;
 }
 
-// Cookie only stores `id` (and a stale copy of role/etc.) — role and showroomId are
-// re-read from the DB on every call since the cookie lives 1 week and an admin can
-// change a user's role/showroom assignment at any time.
+// The cookie is verified, then used only for its `id`. Role and showroomId are
+// re-read from the DB on every call: the cookie lives a week and an admin can
+// change a user's role or showroom assignment at any point inside it.
+//
+// Verification is what makes the id trustworthy. Before signing existed, any
+// id placed in a cookie was accepted, so this lookup would happily return the
+// admin to a stranger who wrote one.
 export async function getSessionUser(): Promise<SessionUser | null> {
   const cookieStore = await cookies();
-  const sessionCookie = cookieStore.get('livlab_session');
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
 
-  if (!sessionCookie || !sessionCookie.value) {
+  if (!token) {
     return null;
   }
 
-  try {
-    const sessionData = JSON.parse(Buffer.from(sessionCookie.value, 'base64').toString('utf-8'));
-    if (!sessionData?.id) {
-      return null;
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { id: sessionData.id },
-      select: { id: true, email: true, name: true, role: true, showroomId: true },
-    });
-
-    return user;
-  } catch (error) {
-    console.error('Session decode error:', error);
+  const session = await verifySession(token);
+  if (!session) {
     return null;
   }
+
+  return prisma.user.findUnique({
+    where: { id: session.id },
+    select: { id: true, email: true, name: true, role: true, showroomId: true },
+  });
 }
 
 export function hasRole(user: SessionUser | null, ...roles: UserRole[]): boolean {
@@ -56,7 +54,34 @@ export function forbidden(message = 'Bạn không có quyền thực hiện thao
 // ADMIN sees everything. SHOWROOM is scoped to their own showroomId — if they
 // haven't been assigned one yet, scope to a string no real row has so they see
 // zero results instead of silently falling through to "see all".
+//
+// Callers should reject unassigned accounts with showroomUnassigned() BEFORE
+// querying; this sentinel is the last line of defence, not the explanation.
 export function showroomScopeFilter(user: SessionUser): { showroomId?: string } {
   if (user.role === 'ADMIN') return {};
   return { showroomId: user.showroomId ?? '__unassigned__' };
+}
+
+/**
+ * Guards the gap between "is a SHOWROOM" and "administers a showroom".
+ *
+ * Registration can create a SHOWROOM account without assigning a showroom, and
+ * until an admin assigns one every scoped query legitimately matches nothing.
+ * Returning those empty results was indistinguishable from "your showroom has
+ * no leads yet", so the portal looked broken rather than unconfigured — the
+ * actual cause of the showroom login reports.
+ *
+ * 409 rather than 403: the credentials are valid and the role is right. What
+ * is missing is configuration only an admin can supply.
+ */
+export function showroomUnassigned(user: SessionUser): NextResponse | null {
+  if (user.role !== 'SHOWROOM' || user.showroomId) return null;
+  return NextResponse.json(
+    {
+      error:
+        'Tài khoản của bạn chưa được gán showroom. Vui lòng liên hệ LivLab để được cấp quyền truy cập showroom.',
+      code: 'SHOWROOM_UNASSIGNED',
+    },
+    { status: 409 }
+  );
 }

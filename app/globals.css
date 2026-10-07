@@ -135,3 +135,33 @@ body {
   .print-main { overflow: visible !important; height: auto !important; }
   .print-wrapper { background: white !important; }
 }
+
+/* ── LivLab Expert entry ──────────────────────────────────────────────────── */
+
+/* The character rises into place once, then stays still. Deliberately no
+   perpetual float or pulse: the Expert sits beside the room visualisation and
+   anything that keeps moving there competes with the product the customer is
+   actually looking at. */
+@keyframes expert-character-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.expert-character-enter { animation: expert-character-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+@keyframes expert-bubble-in {
+  from { opacity: 0; transform: translateY(6px) scale(0.94); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.expert-bubble-enter {
+  transform-origin: bottom right;
+  animation: expert-bubble-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .expert-character-enter,
+  .expert-bubble-enter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 interface AuthContextValue {
   user: AuthUser | null;
   login: (email: string, pass: string) => Promise<{ error?: string, user?: AuthUser }>;
-  loginDemo: (role: UserRole) => Promise<void>;
+  loginDemo: (role: UserRole) => Promise<{ error?: string; user?: AuthUser }>;
   register: (data: Omit<User, 'id' | 'createdAt' | 'role'> & { role: UserRole, confirmPassword?: string }) => Promise<{ error?: string }>;
   logout: () => Promise<void>;
   loading: boolean;
@@ -68,21 +68,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // Credentials for the seeded demo accounts. The buttons that use them only
+  // render in development (see the login page), but these are still literals
+  // in client source: rotate them and move them to env before any deployment
+  // sets NEXT_PUBLIC_ENABLE_TEST_LOGIN.
+  const DEMO_ACCOUNTS: Record<UserRole, { email: string; password: string }> = {
+    CUSTOMER: { email: 'customer@livlab.vn', password: 'customer123456' },
+    SHOWROOM: { email: 'showroom@livlab.vn', password: 'showroom123456' },
+    ADMIN: { email: 'admin@livlab.vn', password: 'admin123456' },
+  };
+
+  // Returns the result instead of discarding it. It used to swallow failures,
+  // so the caller redirected into a protected route on a login that had not
+  // happened — the proxy then bounced it straight back to /login, which looked
+  // like the session randomly failing rather than like a failed login.
   const loginDemo = async (role: UserRole) => {
-    let email = '';
-    const pass = 'customer123456';
-    let p = pass;
-    if (role === 'CUSTOMER') {
-      email = 'customer@livlab.vn';
-      p = 'customer123456';
-    } else if (role === 'SHOWROOM') {
-      email = 'showroom@livlab.vn';
-      p = 'showroom123456';
-    } else {
-      email = 'admin@livlab.vn';
-      p = 'admin123456';
-    }
-    await login(email, p);
+    const account = DEMO_ACCOUNTS[role];
+    if (!account) return { error: 'Vai trò thử nghiệm không hợp lệ.' };
+    return login(account.email, account.password);
   };
 
   const register = async (data: Omit<User, 'id' | 'createdAt' | 'role'> & { role: UserRole, confirmPassword?: string }) => {

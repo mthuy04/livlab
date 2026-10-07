@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
+import { pickAllowed, isEmptyUpdate, PRODUCT_MUTABLE_FIELDS } from '@/lib/api/mutableFields';
 import { getSessionUser, hasRole, unauthorized, forbidden } from '@/lib/auth/session';
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -10,7 +12,11 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   try {
     const resolvedParams = await params;
     const { id } = resolvedParams;
-    const data = await request.json();
+    // Allow-listed: the payload may not choose which columns to write.
+    const data = pickAllowed<Prisma.ProductUpdateInput, typeof PRODUCT_MUTABLE_FIELDS[number]>(await request.json(), PRODUCT_MUTABLE_FIELDS);
+    if (isEmptyUpdate(data)) {
+      return NextResponse.json({ error: 'Không có trường hợp lệ nào để cập nhật.' }, { status: 400 });
+    }
     
     // Validate if it exists in DB
     const existing = await prisma.product.findUnique({ where: { id } });
