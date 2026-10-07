@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useAuth } from '@/lib/context/AuthContext';
 import { UserRole } from '@/lib/types';
 import { useRouter } from 'next/navigation';
+import type { Route } from 'next';
 import { Store, User, ArrowRight, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 
@@ -27,29 +28,54 @@ export default function LoginPage() {
 
     setLoading(true);
     const result = await login(email, password);
-    setLoading(false);
-    
+
     if (result.error) {
+      // Stays on the page with the reason. Loading is cleared here rather than
+      // in a finally, so a successful login keeps the button disabled until the
+      // redirect commits instead of flashing back to an enabled form.
+      setLoading(false);
       setError(result.error);
-    } else {
-      // AuthContext will update user state, but let's redirect manually based on result.user if we returned it,
-      // or we can just redirect to a protected route and let the guard handle it.
-      // Actually let's assume login() returns the user or we handle it in context.
-      // If we don't have user role here, we might just redirect to /account and let it redirect further.
-      // Wait, let's update AuthContext to return the user. I'll modify AuthContext in a sec.
-      if (result.user?.role === 'ADMIN') router.push('/admin');
-      else if (result.user?.role === 'SHOWROOM') router.push('/showroom');
-      else router.push('/visual-studio');
+      return;
     }
+
+    redirectAfterLogin(result.user?.role);
+  };
+
+  /**
+   * Honours ?next= when the proxy bounced the user here from a protected page,
+   * so a deep link survives the login. Only same-origin paths are accepted —
+   * an absolute URL in a query parameter is an open-redirect waiting to be
+   * mailed to someone.
+   *
+   * Read from location rather than useSearchParams: the value is only needed
+   * inside this handler, and the hook would force the whole page behind a
+   * Suspense boundary for a string that is irrelevant until a click happens.
+   */
+  const redirectAfterLogin = (role?: UserRole) => {
+    const next = new URLSearchParams(window.location.search).get('next');
+    if (next && next.startsWith('/') && !next.startsWith('//')) {
+      router.push(next as Route);
+      return;
+    }
+    if (role === 'ADMIN') router.push('/admin');
+    else if (role === 'SHOWROOM') router.push('/showroom');
+    else router.push('/visual-studio');
   };
 
   const handleDemo = async (demoRole: UserRole) => {
+    setError('');
     setLoading(true);
-    await loginDemo(demoRole);
-    setLoading(false);
-    if (demoRole === 'ADMIN') router.push('/admin');
-    else if (demoRole === 'SHOWROOM') router.push('/showroom');
-    else router.push('/visual-studio');
+    const result = await loginDemo(demoRole);
+
+    // Redirecting regardless of the result was the bug: it navigated into a
+    // protected route on a login that had failed, and the proxy bounced it back.
+    if (result.error) {
+      setLoading(false);
+      setError(result.error);
+      return;
+    }
+
+    redirectAfterLogin(result.user?.role);
   };
 
   const isDev = process.env.NODE_ENV === 'development' || process.env.NEXT_PUBLIC_ENABLE_TEST_LOGIN === 'true';
