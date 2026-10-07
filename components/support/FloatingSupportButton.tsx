@@ -13,11 +13,6 @@ export default function FloatingSupportButton() {
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Hide on admin/showroom
-  if (pathname.startsWith('/admin') || pathname.startsWith('/showroom')) {
-    return null;
-  }
-
   // Close when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -76,6 +71,13 @@ export default function FloatingSupportButton() {
       action: () => window.open(`tel:${hotline}`, '_self')
     }
   ];
+
+  // Hidden in the admin and showroom portals. Must stay below every hook —
+  // see the note in Navbar: an early return above the effects changes this
+  // component's hook count between renders and crashes the page (React #300).
+  if (pathname.startsWith('/admin') || pathname.startsWith('/showroom')) {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-6 right-6 z-[100] flex flex-col items-end" ref={menuRef}>

@@ -37,11 +37,6 @@ export default function Navbar() {
   const dropRef = useRef<HTMLDivElement>(null);
   const accountRef = useRef<HTMLDivElement>(null);
 
-  // Do not render this navbar in admin or showroom pages
-  if (pathname.startsWith('/admin') || pathname.startsWith('/showroom')) {
-    return null;
-  }
-
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -77,6 +72,20 @@ export default function Navbar() {
       document.removeEventListener('keydown', onKeyDown);
     };
   }, []);
+
+  // The admin and showroom portals render their own chrome, so the public
+  // navbar is hidden there.
+  //
+  // This check must stay BELOW every hook. It used to sit above the effects,
+  // which meant navigating from a public page into /showroom re-rendered this
+  // component with three fewer hooks than the render before it — React error
+  // #300, "Rendered fewer hooks than expected", which took down the whole page
+  // and only recovered on a manual reload (a reload mounts the component fresh,
+  // so there is no previous render to disagree with).
+  const hidden = pathname.startsWith('/admin') || pathname.startsWith('/showroom');
+  if (hidden) {
+    return null;
+  }
 
   const solidBg = scrolled || !isHome;
   const textColor = solidBg ? 'text-[#627386]' : 'text-white/80';
