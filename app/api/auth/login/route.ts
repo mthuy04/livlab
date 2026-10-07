@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 import { cookies } from 'next/headers';
+import { SESSION_COOKIE, SESSION_MAX_AGE, signSession } from '@/lib/auth/sessionToken';
 
 export async function POST(req: Request) {
   try {
@@ -22,25 +23,31 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: false, error: 'Email hoặc mật khẩu không đúng.' }, { status: 401 });
     }
 
-    const sessionData = {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      role: user.role
-    };
+    // The cookie carries only what the route gate needs. Email and name are
+    // returned in the response body instead — there is no reason to put a
+    // customer's details in a cookie that travels with every request.
+    const token = await signSession({ id: user.id, role: user.role });
 
     const cookieStore = await cookies();
-    cookieStore.set('livlab_session', Buffer.from(JSON.stringify(sessionData)).toString('base64'), {
+    cookieStore.set(SESSION_COOKIE, token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
-      maxAge: 60 * 60 * 24 * 7 // 1 week
+      maxAge: SESSION_MAX_AGE
     });
 
     return NextResponse.json({
       ok: true,
-      user: sessionData
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        // Lets the portal tell an unassigned showroom account why it is empty
+        // instead of showing a blank dashboard.
+        showroomId: user.showroomId
+      }
     });
   } catch (error: any) {
     console.error('Login error:', error);
