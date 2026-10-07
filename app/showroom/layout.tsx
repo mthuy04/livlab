@@ -6,31 +6,48 @@ import { useAuth } from '@/lib/context/AuthContext';
 import {
   LayoutDashboard,
   FileText,
-  Star,
-  Layers,
+  Inbox,
+  Tags,
   Users,
   BarChart,
   Settings,
   ExternalLink,
   AlertCircle,
-  Download,
-  Printer,
-  RefreshCw
+  LogOut,
 } from 'lucide-react';
 
+/**
+ * One workspace, one vocabulary.
+ *
+ * "Yêu cầu báo giá" and "Khách hàng / Leads" used to be separate entries that
+ * showed overlapping data, so a salesperson had to guess which one held the
+ * request they were looking for — Leads is now the single inbox.
+ *
+ * "Sản phẩm quan tâm" promised customer interest data that does not exist
+ * anywhere; it was really a read-only catalogue, so it is named for what it is
+ * and given the commercial controls that make it useful.
+ *
+ * Concepts is gone from the top level: it had no showroom data behind it.
+ * Concept information still travels with a lead, where it has meaning.
+ */
 const navItems = [
   { href: '/showroom', label: 'Tổng quan', icon: LayoutDashboard, exact: true },
-  { href: '/showroom/leads', label: 'Yêu cầu báo giá', icon: FileText, exact: false },
-  { href: '/showroom/products', label: 'Sản phẩm quan tâm', icon: Star, exact: false },
-  { href: '/showroom/concepts', label: 'Concepts', icon: Layers, exact: false },
-  { href: '/showroom/customers', label: 'Khách hàng / Leads', icon: Users, exact: false },
+  { href: '/showroom/leads', label: 'Leads', icon: Inbox, exact: false },
+  { href: '/showroom/quotes', label: 'Báo giá', icon: FileText, exact: false },
+  { href: '/showroom/catalog', label: 'Danh mục & Giá', icon: Tags, exact: false },
+  { href: '/showroom/customers', label: 'Khách hàng', icon: Users, exact: false },
   { href: '/showroom/reports', label: 'Báo cáo', icon: BarChart, exact: false },
-  { href: '/showroom/settings', label: 'Cài đặt showroom', icon: Settings, exact: false },
+  { href: '/showroom/settings', label: 'Cài đặt', icon: Settings, exact: false },
 ];
 
 export default function ShowroomLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { user, loading, logout } = useAuth();
+
+  const currentPageLabel =
+    [...navItems].reverse().find((item) => isActive(item.href, item.exact))?.label ?? 'Bảng điều khiển';
+  const showroomName = 'Showroom';
+  const initials = (user?.name || user?.email || '?').slice(0, 2).toUpperCase();
 
   function isActive(href: string, exact: boolean) {
     if (exact) return pathname === href;
@@ -101,35 +118,22 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F3F7FA] text-[#0B1623] antialiased print-wrapper">
-        {/* Top bar */}
-        <header className="h-14 bg-white border-b border-[#D8E2EA] flex items-center justify-between px-6 z-30 flex-shrink-0 print-hide">
-          <div className="flex items-center gap-4">
-            <span className="text-lg font-bold text-[#123C5A]">Luxbath Showroom</span>
-            <span className="text-[#D8E2EA]">|</span>
-            <span className="text-sm text-[#627386] font-medium">Bảng điều khiển</span>
+        {/* Top bar: identity and the current page, nothing else. "Xuất CSV"
+            lived here and exported leads regardless of which page you were on,
+            which is a Leads action, not a global one — it now sits on Leads. */}
+        <header className="h-14 bg-white border-b border-[#DCE4EC] flex items-center justify-between px-6 z-30 flex-shrink-0 print-hide">
+          <div className="flex items-center gap-3 min-w-0">
+            <span className="text-[15px] font-bold text-[#123C5A] truncate">{showroomName}</span>
+            <span className="text-[#DCE4EC]">/</span>
+            <span className="text-[14px] text-[#5B6B7C] font-medium truncate">{currentPageLabel}</span>
           </div>
-          <div className="flex items-center gap-3">
-            <button onClick={() => window.location.reload()} className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-[#627386] hover:bg-[#EEF4F7] hover:text-[#0B1623] transition-colors font-medium rounded-lg">
-              <RefreshCw className="w-3.5 h-3.5" />
-              Làm mới
-            </button>
-            <button onClick={() => window.print()} className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-[#627386] hover:bg-[#EEF4F7] hover:text-[#0B1623] transition-colors font-medium rounded-lg">
-              <Printer className="w-3.5 h-3.5" />
-              In báo cáo
-            </button>
-            <a href="/api/showroom/leads/export" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 bg-[#123C5A] text-white text-xs font-medium rounded-lg hover:bg-[#0D2B42] transition-colors">
-              <Download className="w-3.5 h-3.5" />
-              Xuất CSV
-            </a>
-            <span className="text-[#D8E2EA] mx-1">|</span>
-            <Link
-              href="/"
-              className="flex items-center gap-1.5 text-xs text-[#627386] hover:text-[#123C5A] transition-colors font-medium"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              Về trang chính
-            </Link>
-          </div>
+          <Link
+            href="/"
+            className="flex items-center gap-1.5 text-[13px] text-[#5B6B7C] hover:text-[#123C5A] transition-colors font-medium"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            Về trang chính
+          </Link>
         </header>
 
         <div className="flex flex-1 overflow-hidden">
@@ -156,15 +160,25 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
               })}
             </nav>
 
-            {/* Footer */}
-            <div className="px-5 py-4 border-t border-[#D8E2EA] flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-[#123C5A] text-white flex items-center justify-center font-bold text-xs">
-                LX
+            <div className="px-4 py-3 border-t border-[#E8EDF2]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#123C5A] text-white flex items-center justify-center font-bold text-[12px] shrink-0">
+                  {initials}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[13px] font-semibold text-[#0B1623] truncate">{user.name || user.email}</p>
+                  <p className="text-[11px] text-[#7A8795] truncate">
+                    {user.role === 'ADMIN' ? 'Quản trị LivLab' : 'Showroom Partner'}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-xs font-semibold text-[#0B1623]">{user.name}</p>
-                <p className="text-[10px] text-[#627386]">Showroom Partner</p>
-              </div>
+              <button
+                onClick={logout}
+                className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#DCE4EC] py-2 text-[12px] font-semibold text-[#5B6B7C] transition-colors hover:border-[#B9C9D8] hover:text-[#0B1623]"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                Đăng xuất
+              </button>
             </div>
           </aside>
 
