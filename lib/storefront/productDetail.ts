@@ -1,7 +1,7 @@
 import 'server-only';
 
 import { getCatalog } from './catalog';
-import { manufacturerRecords, type ManufacturerRecord } from './manufacturerData';
+import { manufacturerRecords, technologyFacts, type ManufacturerRecord } from './manufacturerData';
 import { registryFor } from './manufacturerRegistry';
 import { MANUFACTURER_TOOLS } from './manufacturerTools';
 import { AVAILABILITY_LABEL, opticalScale, type CatalogProduct } from './catalogTypes';
@@ -11,6 +11,7 @@ import type {
   ProductDetailViewModel,
   ProductDocument,
   ProductMediaItem,
+  ProductTechnology,
   RelatedProductRef,
   SimulatorRef,
   SpecGroup,
@@ -140,7 +141,7 @@ const dimensionText = (p: CatalogProduct): string | null => {
  * identity group is common to everything because brand, SKU and category are
  * what a specifier copies.
  */
-function buildSpecifications(p: CatalogProduct): SpecGroup[] {
+function buildSpecifications(p: CatalogProduct, bareTechnologies: string[]): SpecGroup[] {
   const identity = compact([
     row('Thương hiệu', p.brand),
     row('Mã sản phẩm', p.sku),
@@ -177,7 +178,6 @@ function buildSpecifications(p: CatalogProduct): SpecGroup[] {
     specific = [row('Nguồn điện', p.flushVolume)];
   }
 
-  const technologies = buildTechnologies(p);
   const warranty = compact([row('Bảo hành', p.warranty)]);
 
   const groups: SpecGroup[] = [
@@ -187,10 +187,9 @@ function buildSpecifications(p: CatalogProduct): SpecGroup[] {
       rows: compact([
         ...common,
         ...specific,
-        // A single named technology is stated here, because one name under a
-        // section heading is padding. Two or more get the section below
-        // instead, and are not repeated in the table.
-        row('Công nghệ', technologies.length === 1 ? technologies[0] : null),
+        // Technologies the brand names but does not explain. Stated as the
+        // facts they are, rather than padding out a section with bare names.
+        row('Công nghệ', bareTechnologies.join(' · ') || null),
       ]),
     },
   ];
@@ -479,7 +478,24 @@ export async function getProductDetail(
 
   const records = await manufacturerRecords();
   const record: ManufacturerRecord | undefined = records.get(product.id);
-  const technologies = buildTechnologies(product);
+
+  // Split by whether the brand publishes an explanation. Described ones carry
+  // the editorial section; the rest are facts, and facts belong in the
+  // specification table rather than under a heading with nothing beneath it.
+  const facts = await technologyFacts();
+  const technologyNames = buildTechnologies(product);
+  const described: ProductTechnology[] = [];
+  const bare: string[] = [];
+  for (const name of technologyNames) {
+    const fact = facts.get(name.toUpperCase());
+    // Brand-matched, not name-matched. "Rimless" is a word several
+    // manufacturers use, and TOTO's description of their rimless design is
+    // not INAX's claim about theirs — printing it under an INAX product with
+    // "theo tài liệu INAX công bố" beneath it would be a fabricated citation.
+    const sameBrand = fact?.brand.toUpperCase() === product.brand.toUpperCase();
+    if (fact && sameBrand) described.push({ name, description: fact.description, sourceUrl: fact.sourceUrl });
+    else bare.push(name);
+  }
 
   const drawing = product.technicalDrawing?.trim() || null;
   const gallery = buildGallery(product, drawing);
@@ -565,7 +581,7 @@ export async function getProductDetail(
 
     summary: buildSummary(product),
     overviewFacts: buildOverviewFacts(product),
-    specifications: buildSpecifications(product),
+    specifications: buildSpecifications(product, bare),
     dimensions: product.dimensions
       ? {
           rows: [
@@ -579,9 +595,7 @@ export async function getProductDetail(
           raw: product.dimensionsRaw,
         }
       : null,
-    // Two or more, or none: a lone technology name is already stated as a
-    // specification row, and a section heading over one line is padding.
-    technologies: technologies.length > 1 ? technologies : [],
+    technologies: described,
     compatibility: buildCompatibility(product, presentable),
     documents: buildDocuments(product),
     manufacturerSimulator: buildSimulator(product),

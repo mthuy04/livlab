@@ -125,3 +125,42 @@ export type ImageSource = 'MANUFACTURER' | 'SHOWROOM' | 'RETAILER' | 'PLACEHOLDE
  * server-only.
  */
 export { normalizeSku } from './catalogTypes';
+
+/* ── Technology descriptions ──────────────────────────────────────────── */
+
+export interface TechnologyFact {
+  brand: string;
+  description: string;
+  sourceUrl: string;
+}
+
+let technologyCache: Map<string, TechnologyFact> | null = null;
+
+/**
+ * What a named technology actually does, in the manufacturer's own words.
+ *
+ * The product enrichment records which technologies a brand claims for a SKU
+ * but no explanation of any of them, and "CEFIONTECT" under a section heading
+ * tells a customer nothing. `scripts/enrich_technologies.py` reads the prose
+ * off each brand's own technology page — the pages TOTO links from its product
+ * pages — so nothing here is written from general knowledge.
+ *
+ * A technology whose brand publishes no readable description simply has none.
+ * INAX's Aqua Ceramic page is a soft 404 with no prose on it, so Aqua Ceramic
+ * keeps its name and is stated as a specification rather than given a section
+ * it has nothing to fill.
+ */
+export async function technologyFacts(): Promise<Map<string, TechnologyFact>> {
+  if (technologyCache) return technologyCache;
+  technologyCache = new Map();
+  try {
+    const raw = await readFile(join(process.cwd(), 'data', 'demo', 'manufacturer-technologies.json'), 'utf8');
+    const file = JSON.parse(raw) as { technologies: Record<string, TechnologyFact> };
+    for (const [name, fact] of Object.entries(file.technologies ?? {})) {
+      if (fact?.description) technologyCache.set(name.toUpperCase(), fact);
+    }
+  } catch {
+    // No technology enrichment: names are still shown as specifications.
+  }
+  return technologyCache;
+}

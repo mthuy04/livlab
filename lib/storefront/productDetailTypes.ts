@@ -112,6 +112,19 @@ export interface SpecRow {
   value: string;
 }
 
+/**
+ * A technology the manufacturer states for this SKU.
+ *
+ * `description` is the brand's own copy, read from the brand's own technology
+ * page. A technology without one is never given invented copy: it is listed
+ * as a specification instead and never reaches the editorial section.
+ */
+export interface ProductTechnology {
+  name: string;
+  description: string;
+  sourceUrl: string;
+}
+
 export interface SpecGroup {
   title: string;
   rows: SpecRow[];
@@ -205,7 +218,7 @@ export interface ProductDetailViewModel {
   overviewFacts: SpecRow[];
   specifications: SpecGroup[];
   dimensions: ProductDimensions | null;
-  technologies: string[];
+  technologies: ProductTechnology[];
   compatibility: RelatedProductRef[];
   documents: ProductDocument[];
   manufacturerSimulator: SimulatorRef | null;
