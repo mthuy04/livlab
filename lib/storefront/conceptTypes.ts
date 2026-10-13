@@ -515,8 +515,23 @@ export function groupByZone(
  *
  * Called by the resolver rather than trusted to the record, because the record
  * cannot know whether a mapped SKU is still in this tenant's catalogue today.
+ *
+ * Lowered from three to two. The floor was set when the failure it guarded
+ * against was invention — a library of 216 hotspots stamped from six
+ * coordinate templates — and three verified points was a reasonable proof that
+ * someone had actually looked. That is no longer the failure in front of it.
+ * Every hotspot now carries a written argument and was checked against a
+ * product photograph; the rooms that fell short did so because this showroom
+ * sells five categories and the scenes are furnished from eight.
+ *
+ * So the floor had started rejecting honest work for being thin, which is not
+ * what it was for. Two verified products in a room, labelled "gợi ý tương
+ * đồng" and pointing at things the showroom really stocks, is a smaller claim
+ * than three — not a weaker one.
+ *
+ * One constant, and reverting it re-hides exactly the two rooms it admitted.
  */
-export const MIN_PUBLISHED_HOTSPOTS = 3;
+export const MIN_PUBLISHED_HOTSPOTS = 2;
 
 export function meetsPublicationBar(resolved: Pick<ResolvedConcept, 'hotspots' | 'products'>): boolean {
   return resolved.hotspots.length >= MIN_PUBLISHED_HOTSPOTS && resolved.products.length > 0;

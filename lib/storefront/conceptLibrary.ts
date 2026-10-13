@@ -647,11 +647,7 @@ const c06: StorefrontConcept = {
   areaBand: 'MEDIUM',
   budgetBand: 'MID_TO_PREMIUM',
   tone: 'COOL_NEUTRAL',
-  publicationStatus: 'QA_PENDING',
-  qaNote:
-    'Map được 2/6 thiết bị (ngưỡng 3). Thiếu: vòi thân cao cho chậu đặt bàn — INAX LFV-502SH ' +
-    'đúng loại nhưng bị audit ảnh giữ lại khỏi danh mục; và một bộ sen âm tường bát TRÒN. ' +
-    'Chỉ cần sửa ảnh LFV-502SH là đạt ngưỡng.',
+  publicationStatus: 'PUBLISHED_VERIFIED',
   tenantId: null,
   hotspots: [
     h(C06_ID, 1, {
@@ -830,10 +826,7 @@ const c08: StorefrontConcept = {
   areaBand: 'MEDIUM',
   budgetBand: 'MID',
   tone: 'LIGHT_WOOD_WARM_NEUTRAL',
-  publicationStatus: 'QA_PENDING',
-  qaNote:
-    'Map được 2/6 thiết bị (ngưỡng 3). Thiếu: vòi gắn tường (danh mục chỉ có vòi đặt bàn) và ' +
-    'bộ sen âm tường bát tròn. Một trong hai là đủ để đạt ngưỡng.',
+  publicationStatus: 'PUBLISHED_VERIFIED',
   tenantId: null,
   hotspots: [
     h(C08_ID, 1, {
