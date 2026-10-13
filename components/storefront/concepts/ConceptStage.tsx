@@ -72,6 +72,18 @@ export default function ConceptStage({ image, imageAlt, hotspots }: Props) {
 
   const open = hotspots.find((h) => h.id === openId) ?? null;
 
+  /**
+   * A double vanity puts two hotspots on two basins, and "Xem sản phẩm tại vị
+   * trí lavabo" twice is two identical stops for anyone moving through the
+   * stage by keyboard. Repeated fixtures get numbered; a fixture that appears
+   * once is left alone, because "bồn tắm 1" of one is noise.
+   */
+  const label = (h: ConceptHotspotView) => {
+    const sameType = hotspots.filter((o) => o.targetType === h.targetType);
+    const base = `Xem sản phẩm tại vị trí ${TARGET_LABEL[h.targetType]}`;
+    return sameType.length > 1 ? `${base} ${sameType.indexOf(h) + 1}/${sameType.length}` : base;
+  };
+
   return (
     <div>
       <div className="concept-stage" ref={stageRef}>
@@ -92,7 +104,7 @@ export default function ConceptStage({ image, imageAlt, hotspots }: Props) {
                 type="button"
                 className="concept-hotspot"
                 aria-expanded={openId === h.id}
-                aria-label={`Xem sản phẩm tại vị trí ${TARGET_LABEL[h.targetType]}`}
+                aria-label={label(h)}
                 style={{ left: `${h.xPct}%`, top: `${h.yPct}%` }}
                 onClick={() => setOpenId(openId === h.id ? null : h.id)}
               />
@@ -123,7 +135,7 @@ export default function ConceptStage({ image, imageAlt, hotspots }: Props) {
           className="concept-hotspot-sheet"
           role="dialog"
           aria-modal="true"
-          aria-label={`Sản phẩm tại vị trí ${TARGET_LABEL[open.targetType]}`}
+          aria-label={label(open)}
           data-hotspot-ui
         >
           <div className="concept-hotspot-sheet-panel">
