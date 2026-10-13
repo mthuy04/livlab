@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { Route } from 'next';
-import { Menu, Search, Bookmark, X } from 'lucide-react';
+import { ChevronDown, Menu, Search, Bookmark, X } from 'lucide-react';
 import { useQuote } from '@/lib/context/QuoteContext';
 import type { TenantStorefrontConfig } from '@/lib/storefront/tenantConfig';
 import { Container } from './primitives';
@@ -28,6 +28,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
    * no way for the drawer to survive a navigation and cover the new page.
    */
   const [menuOpenAt, setMenuOpenAt] = useState<string | null>(null);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
   const menuOpen = menuOpenAt === pathname;
   const setMenuOpen = (open: boolean) => setMenuOpenAt(open ? pathname : null);
   const { count, toggleDrawer } = useQuote();
@@ -83,20 +84,71 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
 
             <nav aria-label="Điều hướng chính" className="hidden lg:block">
               <ul className="flex items-center gap-9">
-                {tenant.navigation.map((item) => (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href as Route}
-                      className="text-[15px] transition-colors"
-                      style={{
-                        color: isActive(item.href) ? 'var(--sf-text)' : 'var(--sf-text-secondary)',
-                        fontWeight: isActive(item.href) ? 500 : 400,
-                      }}
+                {tenant.navigation.map((item) => {
+                  const active = isActive(item.href) || item.children?.some((c) => isActive(c.href));
+                  const linkStyle = {
+                    color: active ? 'var(--sf-text)' : 'var(--sf-text-secondary)',
+                    fontWeight: active ? 500 : 400,
+                  };
+
+                  if (!item.children?.length) {
+                    return (
+                      <li key={item.label}>
+                        <Link href={item.href as Route} className="text-[15px] transition-colors" style={linkStyle}>
+                          {item.label}
+                        </Link>
+                      </li>
+                    );
+                  }
+
+                  const isOpen = openGroup === item.label;
+                  return (
+                    <li
+                      key={item.label}
+                      className="relative"
+                      // Hover opens it for a mouse; the button below keeps it
+                      // reachable by keyboard, which hover alone never is.
+                      onMouseEnter={() => setOpenGroup(item.label)}
+                      onMouseLeave={() => setOpenGroup(null)}
                     >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
+                      <button
+                        type="button"
+                        aria-expanded={isOpen}
+                        aria-haspopup="true"
+                        onClick={() => setOpenGroup(isOpen ? null : item.label)}
+                        className="flex items-center gap-1 py-2 text-[15px] transition-colors"
+                        style={linkStyle}
+                      >
+                        {item.label}
+                        <ChevronDown className="h-3.5 w-3.5" strokeWidth={1.8} />
+                      </button>
+
+                      {isOpen && (
+                        <div
+                          className="absolute left-0 top-full z-50 min-w-[220px] py-2"
+                          style={{
+                            backgroundColor: 'var(--sf-surface)',
+                            border: '1px solid var(--sf-border)',
+                            borderRadius: 'var(--sf-radius)',
+                            boxShadow: '0 8px 28px rgba(26,26,24,0.08)',
+                          }}
+                        >
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.href}
+                              href={child.href as Route}
+                              onClick={() => setOpenGroup(null)}
+                              className="block px-4 py-2.5 text-[14px] transition-colors hover:bg-[color:var(--sf-surface-muted)]"
+                              style={{ color: isActive(child.href) ? 'var(--sf-text)' : 'var(--sf-text-secondary)' }}
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </nav>
 
@@ -156,10 +208,27 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
             <nav aria-label="Điều hướng chính" className="mt-6">
               <ul>
                 {tenant.navigation.map((item) => (
-                  <li key={item.href} style={{ borderBottom: '1px solid var(--sf-border)' }}>
-                    <Link href={item.href as Route} className="block py-5 text-[22px] font-medium tracking-tight">
-                      {item.label}
-                    </Link>
+                  <li key={item.label} style={{ borderBottom: '1px solid var(--sf-border)' }}>
+                    {item.children?.length ? (
+                      <div className="py-4">
+                        <p className="sf-caption uppercase" style={{ color: 'var(--sf-text-muted)', letterSpacing: '0.1em' }}>
+                          {item.label}
+                        </p>
+                        <ul className="mt-1">
+                          {item.children.map((child) => (
+                            <li key={child.href}>
+                              <Link href={child.href as Route} className="block py-2.5 text-[19px] font-medium tracking-tight">
+                                {child.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : (
+                      <Link href={item.href as Route} className="block py-5 text-[22px] font-medium tracking-tight">
+                        {item.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
                 <li style={{ borderBottom: '1px solid var(--sf-border)' }}>

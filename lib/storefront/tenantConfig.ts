@@ -35,6 +35,14 @@ export interface TenantBrand {
 export interface TenantNavItem {
   href: string;
   label: string;
+  /**
+   * Sub-entries shown in a dropdown on desktop and nested in the mobile
+   * drawer. Grouping is what lets the header stay short WITHOUT putting any
+   * feature out of reach — the first cut of this nav dropped to four flat
+   * links and quietly made Combo, Visual Studio, Gợi ý AI and Cẩm nang
+   * unreachable from the header even though all four pages still worked.
+   */
+  children?: { href: string; label: string }[];
 }
 
 export interface TenantContact {
@@ -84,22 +92,51 @@ export interface TenantStorefrontConfig {
 }
 
 /**
- * Navigation shared by both tenants in this phase.
+ * Storefront navigation.
  *
- * Four entries, down from ten. "Gợi ý AI" is gone: naming the technology is
- * exactly the startup signal this redesign is meant to remove, and the feature
- * is still reachable from its own page. "Visual Studio" and "Room Studio" were
- * two doors to the same job, so the storefront offers one. "Về LivLab" is a
- * LivLab sales page and has no place inside a showroom's own storefront.
+ * Four top-level entries so the header reads calmly, with everything the
+ * previous ten-link header offered still one hover or tap away. The old header
+ * put Concept, Combo, Gợi ý AI, Visual Studio, Room Studio, Cẩm nang, Trang
+ * chủ, Về LivLab and Tra cứu báo giá on one row; the problem was the flat list,
+ * not the destinations.
+ *
+ * `isDefaultTenant` controls the LivLab-specific entries: "Về LivLab" is
+ * LivLab's own sales page, and a showroom's storefront should not carry it.
  */
-function baseNavigation(features: TenantFeatureFlags): TenantNavItem[] {
-  const items: TenantNavItem[] = [
-    { href: '/concepts', label: 'Không gian' },
-    { href: '/products', label: 'Sản phẩm' },
+function baseNavigation(
+  features: TenantFeatureFlags,
+  { isDefaultTenant }: { isDefaultTenant: boolean }
+): TenantNavItem[] {
+  const design: { href: string; label: string }[] = [];
+  if (features.roomStudio) design.push({ href: '/room-studio', label: 'Room Studio' });
+  design.push({ href: '/visual-studio', label: 'Visual Studio' });
+  if (features.expert) design.push({ href: '/ai-suggestion', label: 'Gợi ý thiết kế' });
+
+  const advice: { href: string; label: string }[] = [
+    { href: '/contact', label: 'Liên hệ tư vấn' },
   ];
-  if (features.roomStudio) items.push({ href: '/room-studio', label: 'Room Studio' });
-  if (features.consultation) items.push({ href: '/contact', label: 'Tư vấn' });
-  return items;
+  if (features.quotations) {
+    advice.push(
+      { href: '/track-quote', label: 'Tra cứu báo giá' },
+      { href: '/quote-process', label: 'Quy trình báo giá' }
+    );
+  }
+  if (isDefaultTenant) advice.push({ href: '/about', label: 'Về LivLab' });
+
+  return [
+    {
+      href: '/concepts',
+      label: 'Không gian',
+      children: [
+        { href: '/concepts', label: 'Concept phòng tắm' },
+        { href: '/small-bathroom-combo', label: 'Combo phòng tắm' },
+        { href: '/blog', label: 'Cẩm nang' },
+      ],
+    },
+    { href: '/products', label: 'Sản phẩm' },
+    { href: design[0]?.href ?? '/room-studio', label: 'Thiết kế', children: design },
+    { href: '/contact', label: 'Tư vấn', children: advice },
+  ];
 }
 
 const LIVLAB_FEATURES: TenantFeatureFlags = {
@@ -125,7 +162,7 @@ export const LIVLAB_TENANT: TenantStorefrontConfig = {
     accentHover: '#0D2B42',
     accentContrast: '#FFFFFF',
   },
-  navigation: baseNavigation(LIVLAB_FEATURES),
+  navigation: baseNavigation(LIVLAB_FEATURES, { isDefaultTenant: true }),
   contact: {},
   catalogScope: { showroomId: null, categories: [] },
   features: LIVLAB_FEATURES,
@@ -166,7 +203,7 @@ export const DEMO_SHOWROOM_TENANT: TenantStorefrontConfig = {
     accentHover: '#152824',
     accentContrast: '#FFFFFF',
   },
-  navigation: baseNavigation(DEMO_FEATURES),
+  navigation: baseNavigation(DEMO_FEATURES, { isDefaultTenant: false }),
   // Left empty on purpose. Real contact details are read from the Showroom
   // record at resolution time; inventing a phone number for a showroom that
   // has not agreed to anything would be worse than showing none.

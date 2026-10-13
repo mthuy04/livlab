@@ -13,11 +13,24 @@ import { Container } from './primitives';
  * placeholder.
  */
 
-const SUPPORT_LINKS: { href: string; label: string }[] = [
-  { href: '/track-quote', label: 'Tra cứu báo giá' },
-  { href: '/quote-process', label: 'Quy trình báo giá' },
-  { href: '/contact', label: 'Liên hệ' },
-];
+/**
+ * The footer lists every destination the header groups, flattened.
+ *
+ * A dropdown is fine for a mouse, but the footer is where people look when
+ * they cannot find something — so nothing lives only behind a hover.
+ */
+function flattenNavigation(navigation: TenantStorefrontConfig['navigation']) {
+  const seen = new Set<string>();
+  const out: { href: string; label: string }[] = [];
+  for (const item of navigation) {
+    for (const entry of item.children?.length ? item.children : [item]) {
+      if (seen.has(entry.href)) continue;
+      seen.add(entry.href);
+      out.push({ href: entry.href, label: entry.label });
+    }
+  }
+  return out;
+}
 
 const LEGAL_LINKS: { href: string; label: string }[] = [
   { href: '/privacy', label: 'Chính sách bảo mật' },
@@ -27,6 +40,10 @@ const LEGAL_LINKS: { href: string; label: string }[] = [
 export default function TenantFooter({ tenant }: { tenant: TenantStorefrontConfig }) {
   const { brand, contact, navigation } = tenant;
   const hasContact = Boolean(contact?.phone || contact?.email || contact?.address);
+
+  const allLinks = flattenNavigation(navigation);
+  const half = Math.ceil(allLinks.length / 2);
+  const [exploreLinks, supportLinks] = [allLinks.slice(0, half), allLinks.slice(half)];
 
   return (
     <footer style={{ borderTop: '1px solid var(--sf-border)', backgroundColor: 'var(--sf-surface)' }}>
@@ -46,7 +63,7 @@ export default function TenantFooter({ tenant }: { tenant: TenantStorefrontConfi
               Khám phá
             </h2>
             <ul className="space-y-2.5">
-              {navigation.map((item) => (
+              {exploreLinks.map((item) => (
                 <li key={item.href}>
                   <Link href={item.href as Route} className="text-[14px] transition-opacity hover:opacity-60" style={{ color: 'var(--sf-text-secondary)' }}>
                     {item.label}
@@ -61,7 +78,7 @@ export default function TenantFooter({ tenant }: { tenant: TenantStorefrontConfi
               Hỗ trợ
             </h2>
             <ul className="space-y-2.5">
-              {SUPPORT_LINKS.map((item) => (
+              {supportLinks.map((item) => (
                 <li key={item.href}>
                   <Link href={item.href as Route} className="text-[14px] transition-opacity hover:opacity-60" style={{ color: 'var(--sf-text-secondary)' }}>
                     {item.label}
