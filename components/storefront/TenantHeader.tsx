@@ -76,7 +76,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
               <ul className="flex items-center gap-9">
                 {tenant.navigation.map((item) => {
                   const active = isActive(item.href) || item.children?.some((c) => isActive(c.href));
-                  const linkStyle = { color: active ? '#141412' : '#4A4844', fontWeight: 600 };
+                  const linkStyle = { color: active ? '#252525' : '#555555', fontWeight: 500 };
 
                   if (!item.children?.length) {
                     return (
@@ -154,10 +154,10 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
               {tenant.features.quotations && (
                 <button
                   onClick={toggleDrawer}
-                  className="ml-2 hidden items-center gap-2 text-[14px] font-semibold transition-opacity hover:opacity-90 lg:inline-flex"
+                  className="ml-2 hidden items-center gap-2 text-[14px] font-medium transition-opacity hover:opacity-90 lg:inline-flex"
                   style={{
-                    height: 44,
-                    padding: '0 22px',
+                    height: 42,
+                    padding: '0 20px',
                     backgroundColor: 'var(--tenant-accent)',
                     color: 'var(--tenant-accent-contrast)',
                     borderRadius: 2,

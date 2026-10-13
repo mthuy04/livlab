@@ -9,37 +9,15 @@ import ShoppableSpace from '@/components/storefront/home/ShoppableSpace';
 /**
  * The storefront homepage.
  *
- * Photography runs edge to edge and type carries the hierarchy: one weight for
- * the headline, one for the body, and a small letterspaced label above each
- * section so you always know where you are. No cards, no shadows on content,
- * no gradient except the one scrim the hero text needs to stay legible.
+ * Images and type compose the page; there is no card, no shadow on content, no
+ * gradient except the one scrim the hero text needs to stay legible. Section
+ * content sits directly on the canvas rather than inside rounded containers.
  */
 
-const INK = '#141412';
-const BODY = '#4A4844';
-const MUTED = '#86837C';
-const LINE = '#DEDCD7';
-const SURFACE = '#F4F3F1';
-
-/** One headline scale for the whole page, so sections read as siblings. */
-const H2 = {
-  fontSize: 'clamp(30px, 1.9rem + 1.7vw, 50px)',
-  lineHeight: 1.08,
-  fontWeight: 700,
-  letterSpacing: '-0.026em',
-  color: INK,
-} as const;
-
-const EYEBROW = {
-  fontSize: 12,
-  fontWeight: 600,
-  letterSpacing: '0.16em',
-  color: MUTED,
-} as const;
-
-function Eyebrow({ children }: { children: string }) {
-  return <p style={EYEBROW}>{children.toUpperCase()}</p>;
-}
+const INK = '#252525';
+const MUTED = '#666666';
+const LINE = '#DDDDDD';
+const SURFACE = '#F5F5F3';
 
 export default async function HomePage() {
   const tenant = await resolveTenant();
@@ -66,46 +44,37 @@ export default async function HomePage() {
         {/* The only gradient on the page, and only where type sits on photo. */}
         <div
           className="absolute inset-0 lg:hidden"
-          style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.66) 0%, rgba(0,0,0,0.32) 48%, rgba(0,0,0,0) 100%)' }}
+          style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.30) 48%, rgba(0,0,0,0) 100%)' }}
         />
         <div
           className="absolute inset-0 hidden lg:block"
-          style={{ background: 'linear-gradient(90deg, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.20) 42%, rgba(0,0,0,0) 70%)' }}
+          style={{ background: 'linear-gradient(90deg, rgba(0,0,0,0.46) 0%, rgba(0,0,0,0.18) 40%, rgba(0,0,0,0) 68%)' }}
         />
 
         <Container>
-          <div className="relative max-w-[560px] pb-10 sm:pb-16 lg:max-w-[760px] lg:pb-[92px]">
+          <div className="relative max-w-[560px] pb-9 sm:pb-16 lg:pb-[88px]">
             <h1
               className="text-white"
-              style={{
-                fontSize: 'clamp(38px, 2.1rem + 2.6vw, 68px)',
-                lineHeight: 1.03,
-                fontWeight: 700,
-                letterSpacing: '-0.032em',
-              }}
+              style={{ fontSize: 'clamp(34px, 2rem + 1.8vw, 56px)', lineHeight: 1.1, fontWeight: 600, letterSpacing: '-0.02em' }}
             >
-              Nhìn thấy phòng tắm<br className="hidden lg:inline" /> trước khi bạn chọn
+              Nhìn thấy phòng tắm trước khi bạn chọn
             </h1>
             <p
-              className="mt-6 max-w-[460px]"
-              style={{ fontSize: 18, lineHeight: 1.6, color: 'rgba(255,255,255,0.88)' }}
+              className="mt-5 max-w-[480px]"
+              style={{ fontSize: 17, lineHeight: 1.6, color: 'rgba(255,255,255,0.84)' }}
             >
               Sản phẩm thật từ showroom, phối thử trong đúng kích thước phòng bạn.
             </p>
-            <div className="mt-9 flex flex-wrap items-center gap-7">
+            <div className="mt-8 flex flex-wrap items-center gap-7">
               <Link
                 href="/concepts"
                 className="inline-flex items-center transition-opacity hover:opacity-90"
-                style={{ height: 52, padding: '0 28px', backgroundColor: '#FFFFFF', color: INK, fontSize: 15, fontWeight: 700, letterSpacing: '0.01em' }}
+                style={{ height: 46, padding: '0 22px', backgroundColor: '#FFFFFF', color: INK, fontSize: 15, fontWeight: 600, borderRadius: 2 }}
               >
                 Khám phá không gian
               </Link>
               {tenant.features.roomStudio && (
-                <Link
-                  href="/room-studio"
-                  className="text-[15px] text-white transition-opacity hover:opacity-75"
-                  style={{ fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.45)', paddingBottom: 3 }}
-                >
+                <Link href="/room-studio" className="text-[15px] text-white transition-opacity hover:opacity-75" style={{ fontWeight: 500 }}>
                   Thiết kế phòng của tôi →
                 </Link>
               )}
@@ -116,28 +85,28 @@ export default async function HomePage() {
 
       {/* ── 2. Product categories ───────────────────────────────────────── */}
       {categories.length > 0 && (
-        <section style={{ paddingBlock: 'clamp(72px, 8vw, 116px)' }}>
+        <section style={{ paddingBlock: 'clamp(64px, 8vw, 108px)' }}>
           <Container>
-            <Eyebrow>Danh mục</Eyebrow>
-            <h2 className="mt-4" style={H2}>Khám phá sản phẩm</h2>
-
-            <div className="mt-12 grid grid-cols-2 gap-x-5 gap-y-10 lg:mt-16 lg:grid-cols-4 lg:gap-x-8">
+            <h2 style={{ fontSize: 'clamp(28px, 2rem + 0.8vw, 38px)', fontWeight: 600, color: INK, letterSpacing: '-0.018em' }}>
+              Khám phá sản phẩm
+            </h2>
+            <div className="mt-10 grid grid-cols-2 gap-x-5 gap-y-9 lg:mt-12 lg:grid-cols-4 lg:gap-x-7">
               {categories.map((category) => (
                 <Link key={category.name} href={category.href as Route} className="group block">
-                  <div className="overflow-hidden" style={{ backgroundColor: SURFACE }}>
+                  <div className="overflow-hidden" style={{ backgroundColor: SURFACE, borderRadius: 2 }}>
                     <Image
                       src={category.image}
                       alt={category.name}
                       width={640}
-                      height={640}
+                      height={480}
                       sizes="(max-width: 1024px) 50vw, 25vw"
-                      className="aspect-square w-full object-contain p-8 transition-transform duration-500 group-hover:scale-[1.03]"
+                      className="aspect-[4/3] w-full object-contain p-6 transition-transform duration-500 group-hover:scale-[1.02]"
                     />
                   </div>
-                  <p className="mt-5 text-[19px]" style={{ color: INK, fontWeight: 600, letterSpacing: '-0.01em' }}>
-                    {category.name} <span style={{ color: MUTED, fontWeight: 400 }}>→</span>
+                  <p className="mt-4 text-[17px]" style={{ color: INK, fontWeight: 500 }}>
+                    {category.name} <span style={{ color: MUTED }}>→</span>
                   </p>
-                  <p className="mt-1 text-[13px]" style={{ color: MUTED }}>
+                  <p className="mt-0.5 text-[13px]" style={{ color: MUTED }}>
                     {category.count} sản phẩm
                   </p>
                 </Link>
@@ -147,36 +116,29 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── 3. Shoppable space — full-bleed photograph ──────────────────── */}
+      {/* ── 3. Shoppable space ──────────────────────────────────────────── */}
       {featured && featured.hotspots.length > 0 && (
-        <section style={{ paddingTop: 'clamp(72px, 8vw, 116px)', paddingBottom: 'clamp(72px, 8vw, 116px)', backgroundColor: SURFACE }}>
+        <section style={{ paddingBlock: 'clamp(64px, 8vw, 108px)', backgroundColor: SURFACE }}>
           <Container>
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <Eyebrow>Không gian</Eyebrow>
-                <h2 className="mt-4" style={H2}>Khám phá theo không gian</h2>
-              </div>
-              <p className="max-w-sm text-[16px] lg:text-right" style={{ color: BODY, lineHeight: 1.65 }}>
-                Chạm vào điểm đánh dấu trên ảnh để mở thẳng sản phẩm trong phòng.
-              </p>
+            <h2 style={{ fontSize: 'clamp(28px, 2rem + 0.8vw, 38px)', fontWeight: 600, color: INK, letterSpacing: '-0.018em' }}>
+              Khám phá theo không gian
+            </h2>
+            <p className="mt-3 max-w-xl text-[17px]" style={{ color: MUTED, lineHeight: 1.6 }}>
+              Chạm vào điểm đánh dấu để xem sản phẩm trong phòng.
+            </p>
+
+            <div className="mt-10 lg:mt-12">
+              <ShoppableSpace room={featured} />
             </div>
-          </Container>
 
-          <div className="mt-12 lg:mt-16">
-            <ShoppableSpace room={featured} />
-          </div>
-
-          <Container>
-            <div className="mt-10 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-              <div className="max-w-lg">
-                <p style={{ fontSize: 'clamp(22px, 1.4rem + 0.7vw, 30px)', color: INK, fontWeight: 600, letterSpacing: '-0.018em', lineHeight: 1.2 }}>
-                  {featured.title}
-                </p>
+            <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+              <div className="max-w-md">
+                <p className="text-[19px]" style={{ color: INK, fontWeight: 500 }}>{featured.title}</p>
                 {featured.description && (
-                  <p className="mt-3 text-[16px]" style={{ color: BODY, lineHeight: 1.65 }}>{featured.description}</p>
+                  <p className="mt-1.5 text-[15px]" style={{ color: MUTED, lineHeight: 1.6 }}>{featured.description}</p>
                 )}
               </div>
-              <div className="shrink-0 sm:text-right">
+              <div className="sm:text-right">
                 <p className="text-[14px]" style={{ color: MUTED }}>
                   {featured.products.length} sản phẩm
                   {featured.priceTo ? ` · khoảng ${money(featured.priceTo)}` : ''}
@@ -184,9 +146,9 @@ export default async function HomePage() {
                 <Link
                   href={`/concepts/${featured.slug}` as Route}
                   className="mt-2 inline-block text-[15px] transition-opacity hover:opacity-70"
-                  style={{ color: INK, fontWeight: 700, borderBottom: `2px solid ${INK}`, paddingBottom: 3 }}
+                  style={{ color: 'var(--tenant-accent)', fontWeight: 500 }}
                 >
-                  Dùng không gian này làm điểm bắt đầu
+                  Dùng không gian này làm điểm bắt đầu →
                 </Link>
               </div>
             </div>
@@ -194,99 +156,94 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── 4. Collections — full-bleed photograph, caption beneath ─────── */}
+      {/* ── 4. Collections ──────────────────────────────────────────────── */}
       {collections.length > 0 && (
-        <section style={{ paddingBlock: 'clamp(72px, 8vw, 116px)' }}>
+        <section style={{ paddingBlock: 'clamp(64px, 8vw, 108px)' }}>
           <Container>
-            <Eyebrow>Bộ sưu tập</Eyebrow>
-            <h2 className="mt-4" style={H2}>Chọn phong cách của bạn</h2>
-          </Container>
+            <h2 style={{ fontSize: 'clamp(28px, 2rem + 0.8vw, 38px)', fontWeight: 600, color: INK, letterSpacing: '-0.018em' }}>
+              Chọn phong cách của bạn
+            </h2>
 
-          <div className="mt-12 lg:mt-16">
-            {collections.slice(0, 3).map((item, index) => (
-              <article key={item.slug} style={index > 0 ? { marginTop: 'clamp(56px, 6vw, 88px)' } : undefined}>
-                <Link href={`/concepts/${item.slug}` as Route} className="group block overflow-hidden">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    width={2400}
-                    height={1200}
-                    sizes="100vw"
-                    className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.02] sm:aspect-[21/9]"
-                  />
-                </Link>
-                <Container>
-                  <div className="mt-7 grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start lg:gap-16">
-                    <h3
-                      style={{
-                        fontSize: 'clamp(26px, 1.7rem + 1.2vw, 40px)',
-                        fontWeight: 700,
-                        color: INK,
-                        letterSpacing: '-0.026em',
-                        lineHeight: 1.1,
-                      }}
-                    >
+            <div className="mt-10 space-y-14 lg:mt-14 lg:space-y-20">
+              {collections.slice(0, 3).map((item, index) => (
+                <article key={item.slug} className="grid items-center gap-7 lg:grid-cols-[65fr_35fr] lg:gap-14">
+                  <Link
+                    href={`/concepts/${item.slug}` as Route}
+                    className={`block overflow-hidden ${index % 2 === 1 ? 'lg:order-2' : ''}`}
+                    style={{ borderRadius: 2 }}
+                  >
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      width={1672}
+                      height={941}
+                      sizes="(max-width: 1024px) 100vw, 65vw"
+                      className="aspect-[16/10] w-full object-cover transition-transform duration-500 hover:scale-[1.02]"
+                    />
+                  </Link>
+                  <div>
+                    <h3 style={{ fontSize: 'clamp(24px, 1.6rem + 0.6vw, 30px)', fontWeight: 500, color: INK, letterSpacing: '-0.015em' }}>
                       {item.title}
                     </h3>
-                    <div>
-                      {item.description && (
-                        <p className="text-[17px]" style={{ color: BODY, lineHeight: 1.65 }}>{item.description}</p>
-                      )}
-                      <Link
-                        href={`/concepts/${item.slug}` as Route}
-                        className="mt-5 inline-block text-[15px] transition-opacity hover:opacity-70"
-                        style={{ color: INK, fontWeight: 700, borderBottom: `2px solid ${INK}`, paddingBottom: 3 }}
-                      >
-                        Khám phá không gian
-                      </Link>
-                    </div>
+                    {item.description && (
+                      <p className="mt-3 text-[16px]" style={{ color: MUTED, lineHeight: 1.6 }}>{item.description}</p>
+                    )}
+                    <Link
+                      href={`/concepts/${item.slug}` as Route}
+                      className="mt-5 inline-block text-[15px] transition-opacity hover:opacity-70"
+                      style={{ color: 'var(--tenant-accent)', fontWeight: 500 }}
+                    >
+                      Khám phá không gian →
+                    </Link>
                   </div>
-                </Container>
-              </article>
-            ))}
-          </div>
+                </article>
+              ))}
+            </div>
+          </Container>
         </section>
       )}
 
       {/* ── 5. Room Studio ──────────────────────────────────────────────── */}
       {tenant.features.roomStudio && (
-        <section style={{ paddingBlock: 'clamp(72px, 8vw, 116px)', backgroundColor: SURFACE }}>
+        <section style={{ paddingBlock: 'clamp(64px, 8vw, 108px)', backgroundColor: SURFACE }}>
           <Container>
-            <div className="grid items-center gap-10 lg:grid-cols-[58fr_42fr] lg:gap-20">
+            <div className="grid items-center gap-9 lg:grid-cols-[64fr_36fr] lg:gap-16">
               <Image
                 src={ROOM_STUDIO_IMAGE}
                 alt="Giao diện Room Studio của LivLab"
                 width={1672}
-                height={1254}
-                sizes="(max-width: 1024px) 100vw, 58vw"
-                className="aspect-[4/3] w-full object-cover"
+                height={941}
+                sizes="(max-width: 1024px) 100vw, 64vw"
+                className="aspect-[16/10] w-full object-cover"
+                style={{ borderRadius: 2 }}
               />
               <div>
-                <Eyebrow>Room Studio</Eyebrow>
-                <h2 className="mt-4" style={H2}>Thử trong không gian của bạn</h2>
-                <p className="mt-5 text-[17px]" style={{ color: BODY, lineHeight: 1.65 }}>
+                <h2 style={{ fontSize: 'clamp(28px, 2rem + 0.8vw, 38px)', fontWeight: 600, color: INK, letterSpacing: '-0.018em' }}>
+                  Thử trong không gian của bạn
+                </h2>
+                <p className="mt-4 text-[17px]" style={{ color: MUTED, lineHeight: 1.6 }}>
                   Nhập kích thước phòng, chọn vật liệu sàn và tường, rồi đặt thiết bị thật vào đúng tỉ lệ.
                 </p>
 
-                <dl className="mt-9">
+                <dl className="mt-8">
                   {[
                     ['Kích thước thực', 'Dài × rộng × cao theo phòng của bạn'],
                     ['Sản phẩm thực', 'Thiết bị trong danh mục, đúng kích thước'],
                     ['Ngân sách tham khảo', 'Cộng dồn theo giá niêm yết'],
                   ].map(([term, detail]) => (
-                    <div key={term} className="flex gap-6 py-4" style={{ borderTop: `1px solid ${LINE}` }}>
-                      <dt className="w-[150px] shrink-0 text-[15px]" style={{ color: INK, fontWeight: 600 }}>{term}</dt>
-                      <dd className="text-[15px]" style={{ color: BODY }}>{detail}</dd>
+                    <div key={term} className="flex gap-5 py-3" style={{ borderTop: `1px solid ${LINE}` }}>
+                      <dt className="w-[146px] shrink-0 text-[15px]" style={{ color: INK, fontWeight: 500 }}>{term}</dt>
+                      <dd className="text-[15px]" style={{ color: MUTED }}>{detail}</dd>
                     </div>
                   ))}
                 </dl>
 
                 <Link
                   href="/room-studio"
-                  className="mt-8 inline-block text-[15px] transition-opacity hover:opacity-70"
-                  style={{ color: INK, fontWeight: 700, borderBottom: `2px solid ${INK}`, paddingBottom: 3 }}
+                  className="mt-7 inline-block text-[15px] transition-opacity hover:opacity-70"
+                  style={{ color: 'var(--tenant-accent)', fontWeight: 500 }}
                 >
-                  Mở Room Studio
+                  Mở Room Studio →
                 </Link>
               </div>
             </div>
@@ -295,18 +252,17 @@ export default async function HomePage() {
       )}
 
       {/* ── 6. Consultation ─────────────────────────────────────────────── */}
-      <section className="flex items-center" style={{ backgroundColor: '#1F1F1D', minHeight: 380 }}>
+      <section className="flex items-center" style={{ backgroundColor: '#292929', minHeight: 360 }}>
         <Container>
-          <div className="grid gap-10 py-20 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-20 lg:py-0">
+          <div className="grid gap-9 py-16 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-16 lg:py-0">
             <div className="max-w-xl">
-              <p style={{ ...EYEBROW, color: 'rgba(255,255,255,0.5)' }}>TƯ VẤN SHOWROOM</p>
-              <h2
-                className="mt-4 text-white"
-                style={{ fontSize: 'clamp(28px, 1.8rem + 1.4vw, 44px)', fontWeight: 700, letterSpacing: '-0.026em', lineHeight: 1.1 }}
-              >
+              <p className="text-[13px] uppercase" style={{ color: 'rgba(255,255,255,0.55)', letterSpacing: '0.1em' }}>
+                Tư vấn showroom
+              </p>
+              <h2 className="mt-3 text-white" style={{ fontSize: 'clamp(26px, 1.9rem + 0.8vw, 36px)', fontWeight: 600, letterSpacing: '-0.018em', lineHeight: 1.18 }}>
                 Cần thêm một góc nhìn trước khi quyết định?
               </h2>
-              <p className="mt-5 text-[17px]" style={{ color: 'rgba(255,255,255,0.7)', lineHeight: 1.65 }}>
+              <p className="mt-4 text-[16px]" style={{ color: 'rgba(255,255,255,0.72)', lineHeight: 1.6 }}>
                 Nhân viên showroom tiếp tục từ chính sản phẩm và không gian bạn đã chọn.
               </p>
             </div>
@@ -314,16 +270,12 @@ export default async function HomePage() {
               <Link
                 href="/contact"
                 className="inline-flex items-center transition-opacity hover:opacity-90"
-                style={{ height: 52, padding: '0 28px', backgroundColor: '#FFFFFF', color: INK, fontSize: 15, fontWeight: 700, letterSpacing: '0.01em' }}
+                style={{ height: 46, padding: '0 22px', backgroundColor: '#FFFFFF', color: INK, fontSize: 15, fontWeight: 600, borderRadius: 2 }}
               >
                 Nhờ showroom tư vấn
               </Link>
               {tenant.features.quotations && (
-                <Link
-                  href="/quote"
-                  className="text-[15px] text-white transition-opacity hover:opacity-75"
-                  style={{ fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.45)', paddingBottom: 3 }}
-                >
+                <Link href="/quote" className="text-[15px] text-white transition-opacity hover:opacity-75" style={{ fontWeight: 500 }}>
                   Yêu cầu báo giá →
                 </Link>
               )}

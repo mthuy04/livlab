@@ -66,14 +66,8 @@ const TITLE_IMAGES: { match: RegExp; image: string }[] = [
   { match: /nhỏ|compact|4m/i, image: '/images/concept-compact-bathroom.png' },
 ];
 
-/**
- * Which concept becomes the shoppable room, in order. Titles rather than the
- * `style` field, for the reason given above.
- */
-const FEATURED_PREFERENCE = [/master cao cấp/i, /luxury/i, /khách sạn/i, /japandi/i];
-
 /** Held back from the collections row so the page never repeats a render. */
-export const ROOM_STUDIO_IMAGE = '/images/concept-hotel-gray-bathroom.png';
+export const ROOM_STUDIO_IMAGE = '/images/concept-luxury-master-bathroom.png';
 
 function imageForTitle(title: string): string | null {
   return TITLE_IMAGES.find((entry) => entry.match.test(title))?.image ?? null;
@@ -132,16 +126,7 @@ export async function getHomepageData(): Promise<HomepageData> {
   // homepage does not shuffle between deploys.
   // The shoppable room must be a concept that has BOTH hotspots and products
   // the catalogue can resolve.
-  const shoppable = concepts.filter(
-    (c) => (c.hotspots?.length ?? 0) > 0 && (c.productIds?.length ?? 0) > 0 && imageForTitle(c.title)
-  );
-  // Preference order, most considered room first. The shoppable section is the
-  // one place a customer looks closely at a room, so it gets the best render
-  // LivLab has rather than whichever concept happens to be first in the seed.
-  const candidate =
-    FEATURED_PREFERENCE.map((pattern) => shoppable.find((c) => pattern.test(c.title))).find(Boolean) ??
-    shoppable[0] ??
-    concepts.find((c) => (c.hotspots?.length ?? 0) > 0 && (c.productIds?.length ?? 0) > 0);
+  const candidate = concepts.find((c) => (c.hotspots?.length ?? 0) > 0 && (c.productIds?.length ?? 0) > 0);
 
   let featured: FeaturedRoom | null = null;
 
@@ -180,9 +165,9 @@ export async function getHomepageData(): Promise<HomepageData> {
       slug: candidate.slug,
       title: candidate.title,
       description: candidate.shortDescription ?? '',
-      // LivLab's own render where there is one. The seed's stock photograph is
-      // the fallback, asked for at editorial width.
-      image: imageForTitle(candidate.title) ?? candidate.image.replace(/([?&])w=\d+/, '$1w=2000'),
+      // Asked for at editorial width. Unsplash serves the same photograph at
+      // any size, so this is a larger render of the asset already in use.
+      image: candidate.image.replace(/([?&])w=\d+/, '$1w=2000'),
       products: rows,
       hotspots,
       priceFrom: prices.length ? Math.min(...prices) : null,
@@ -195,7 +180,7 @@ export async function getHomepageData(): Promise<HomepageData> {
   // Deduped by IMAGE, so the row shows distinct rooms rather than the same
   // render under several headlines. The Room Studio section holds one render
   // back for itself.
-  const seen = new Set<string>([ROOM_STUDIO_IMAGE, featured?.image ?? '']);
+  const seen = new Set<string>([ROOM_STUDIO_IMAGE]);
   const collections: CollectionItem[] = [];
   for (const concept of concepts) {
     const image = imageForTitle(concept.title);

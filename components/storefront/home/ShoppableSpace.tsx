@@ -1,131 +1,144 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Route } from 'next';
 import type { FeaturedRoom } from '@/lib/storefront/homepageData';
-import { Container } from '@/components/storefront/primitives';
 
 /**
- * A room photograph with product markers.
+ * A room photograph with product markers, after the INAX S600 interaction.
  *
- * A marker is a link, not a toggle: clicking it opens that product. The old
- * popup made you click twice to reach the same page and covered the room while
- * you did it. The room's products are also listed under the photograph, so the
- * same products are reachable on a phone, where there is no hover.
- *
- * Server component — there is no state left to hold.
+ * The popup floats beside the marker rather than taking over the screen —
+ * the point of a shoppable room is that you keep seeing the room. On a phone
+ * it becomes a sheet below the image instead, because a 300px card floating
+ * over a 390px screen is a modal with extra steps.
  */
 export default function ShoppableSpace({ room }: { room: FeaturedRoom }) {
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const active = room.hotspots.find((h) => h.id === activeId) ?? null;
+
   const money = (v: number) =>
     v >= 1_000_000 ? `${(v / 1_000_000).toFixed(1).replace(/\.0$/, '')} triệu` : `${v.toLocaleString('vi-VN')}đ`;
 
-  // The detail page resolves a product by slug OR by id, and most catalogue
-  // rows carry no slug, so the id is the working link for them.
-  const hrefFor = (p: { slug: string | null; id: string }) => `/products/${p.slug ?? p.id}` as Route;
-
   return (
-    <div>
-      <div className="relative">
+    <div className="relative">
+      <div className="relative overflow-hidden">
         <Image
           src={room.image}
           alt={room.title}
-          width={2400}
-          height={1350}
+          width={2000}
+          height={1125}
           sizes="100vw"
-          priority={false}
-          className="aspect-[4/5] w-full object-cover sm:aspect-[16/9]"
+          className="aspect-[4/3] w-full object-cover sm:aspect-[16/9]"
         />
 
         {room.hotspots.map((hotspot) => {
-          // The label opens away from the nearer edge so it never clips.
-          const flip = hotspot.xPercent > 58;
+          const isActive = hotspot.id === activeId;
           return (
-            <Link
+            <button
               key={hotspot.id}
-              href={hrefFor(hotspot)}
+              onClick={() => setActiveId(isActive ? null : hotspot.id)}
               aria-label={`${hotspot.label}: ${hotspot.name}`}
-              className="group absolute hidden -translate-x-1/2 -translate-y-1/2 sm:block"
-              style={{ left: `${hotspot.xPercent}%`, top: `${hotspot.yPercent}%` }}
+              aria-expanded={isActive}
+              className="absolute grid -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full transition-transform duration-200 hover:scale-105"
+              style={{
+                left: `${hotspot.xPercent}%`,
+                top: `${hotspot.yPercent}%`,
+                width: 32,
+                height: 32,
+                backgroundColor: 'var(--tenant-accent)',
+                color: 'var(--tenant-accent-contrast)',
+                border: '1.5px solid rgba(255,255,255,0.9)',
+                boxShadow: '0 1px 6px rgba(0,0,0,0.25)',
+                fontSize: 20,
+                fontWeight: 300,
+                lineHeight: 1,
+              }}
             >
-              <span
-                aria-hidden="true"
-                className="grid place-items-center rounded-full transition-transform duration-200 group-hover:scale-110"
-                style={{
-                  width: 34,
-                  height: 34,
-                  backgroundColor: 'rgba(255,255,255,0.94)',
-                  color: '#141412',
-                  boxShadow: '0 2px 10px rgba(0,0,0,0.28)',
-                  fontSize: 21,
-                  fontWeight: 400,
-                  lineHeight: 1,
-                  paddingBottom: 2,
-                }}
-              >
-                +
+              <span aria-hidden="true" style={{ marginTop: -2 }}>
+                {isActive ? '×' : '+'}
               </span>
-
-              {/* Reveals on hover and on keyboard focus; never a click target. */}
-              <span
-                className="pointer-events-none absolute top-1/2 hidden -translate-y-1/2 whitespace-nowrap opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 lg:block"
-                style={{
-                  [flip ? 'right' : 'left']: 44,
-                  backgroundColor: '#141412',
-                  color: '#FFFFFF',
-                  padding: '9px 14px',
-                  fontSize: 13,
-                  lineHeight: 1.45,
-                } as React.CSSProperties}
-              >
-                <span style={{ letterSpacing: '0.06em', opacity: 0.6 }}>{hotspot.label.toUpperCase()}</span>
-                <br />
-                <span style={{ fontWeight: 600 }}>{hotspot.name}</span>
-              </span>
-            </Link>
+            </button>
           );
         })}
+
+        {active && (
+          <div
+            className="absolute z-10 hidden w-[300px] sm:block"
+            style={{
+              left: `clamp(16px, ${active.xPercent}% + 28px, calc(100% - 316px))`,
+              top: `clamp(16px, ${active.yPercent}% - 36px, calc(100% - 210px))`,
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #E3E3E3',
+              // The one shadow on the page: it floats over a photograph and
+              // needs separating from it.
+              boxShadow: '0 8px 28px rgba(0,0,0,0.12)',
+              borderRadius: 2,
+            }}
+          >
+            <PopupBody product={active} money={money} />
+          </div>
+        )}
       </div>
 
-      {/* The same products as text, which is how they are reached on a phone. */}
-      {room.products.length > 0 && (
-        <Container className="mt-10 lg:mt-12">
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ borderTop: '1px solid #DEDCD7' }}>
-            {room.products.map((product) => (
-              <li key={product.id}>
-                <Link
-                  href={hrefFor(product)}
-                  className="flex h-full items-center gap-5 py-6 pr-6 transition-opacity hover:opacity-60"
-                >
-                  {product.imageUrl && (
-                    <Image
-                      src={product.imageUrl}
-                      alt=""
-                      width={120}
-                      height={120}
-                      className="h-[64px] w-[64px] shrink-0 object-contain"
-                    />
-                  )}
-                  <span className="min-w-0">
-                    {product.brand && (
-                      <span className="block text-[11px]" style={{ color: '#86837C', letterSpacing: '0.12em', fontWeight: 600 }}>
-                        {product.brand.toUpperCase()}
-                      </span>
-                    )}
-                    <span className="mt-1 block text-[15px] leading-snug" style={{ color: '#141412', fontWeight: 600 }}>
-                      {product.name}
-                    </span>
-                    {/* Omitted when the catalogue holds no price for this row. */}
-                    {product.priceMin ? (
-                      <span className="mt-1 block text-[14px]" style={{ color: '#4A4844' }}>
-                        {money(product.priceMin)}
-                      </span>
-                    ) : null}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Container>
+      {active && (
+        <div
+          className="mt-px sm:hidden"
+          style={{ backgroundColor: '#FFFFFF', border: '1px solid #E3E3E3', borderRadius: 2 }}
+        >
+          <PopupBody product={active} money={money} />
+        </div>
       )}
+    </div>
+  );
+}
+
+function PopupBody({
+  product,
+  money,
+}: {
+  product: FeaturedRoom['hotspots'][number];
+  money: (v: number) => string;
+}) {
+  return (
+    <div className="p-4">
+      <div className="flex gap-3">
+        {product.imageUrl && (
+          <Image
+            src={product.imageUrl}
+            alt=""
+            width={64}
+            height={64}
+            className="h-16 w-16 shrink-0 object-contain"
+            style={{ backgroundColor: '#F6F6F5' }}
+          />
+        )}
+        <div className="min-w-0">
+          {product.brand && (
+            <p className="text-[12px]" style={{ color: '#666666' }}>
+              {product.brand}
+            </p>
+          )}
+          <p className="text-[15px] leading-snug" style={{ color: '#252525' }}>
+            {product.name}
+          </p>
+          {/* Omitted when the catalogue holds no price for this row. */}
+          {product.priceMin ? (
+            <p className="mt-1 text-[15px] font-medium" style={{ color: '#252525' }}>
+              {money(product.priceMin)}
+            </p>
+          ) : null}
+        </div>
+      </div>
+
+      <Link
+        href={(product.slug ? `/products/${product.slug}` : '/products') as Route}
+        className="mt-3 inline-block text-[13px] transition-opacity hover:opacity-60"
+        style={{ color: 'var(--tenant-accent)' }}
+      >
+        Xem chi tiết →
+      </Link>
     </div>
   );
 }
