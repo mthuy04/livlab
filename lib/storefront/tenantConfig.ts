@@ -231,7 +231,40 @@ export const DEMO_SHOWROOM_TENANT: TenantStorefrontConfig = {
   },
 };
 
+/**
+ * An internal demo storefront built on publicly visible sanitaryware data from
+ * a showroom that has NOT signed with LivLab.
+ *
+ * Nothing here claims a relationship: no "đối tác chính thức", no co-branding,
+ * no logo. The brand name is deliberately neutral, the credit line is off, and
+ * the catalogue is served from a fixture so the demo can never write to, or
+ * read from, another tenant's data.
+ */
+export const DEMO_TUNGDANG_TENANT: TenantStorefrontConfig = {
+  id: 'tungdang',
+  slug: 'tungdang',
+  brand: {
+    name: 'Showroom Demo',
+    tagline: 'Danh mục thiết bị phòng tắm dùng cho demo nội bộ.',
+    accent: '#123F5D',
+    accentHover: '#0D2B42',
+    accentContrast: '#FFFFFF',
+  },
+  navigation: baseNavigation(DEMO_FEATURES, { isDefaultTenant: false }),
+  catalogScope: {
+    showroomId: null,
+    categories: ['Bồn cầu', 'Lavabo', 'Vòi lavabo', 'Sen tắm', 'Bồn tắm', 'Gương & phụ kiện'],
+  },
+  features: DEMO_FEATURES,
+  poweredByLivLab: false,
+  seo: {
+    title: 'Showroom Demo — Thiết bị phòng tắm',
+    description: 'Danh mục thiết bị phòng tắm dùng cho demo nội bộ của LivLab.',
+  },
+};
+
 export const TENANTS: Record<string, TenantStorefrontConfig> = {
   [LIVLAB_TENANT.slug]: LIVLAB_TENANT,
   [DEMO_SHOWROOM_TENANT.slug]: DEMO_SHOWROOM_TENANT,
+  [DEMO_TUNGDANG_TENANT.slug]: DEMO_TUNGDANG_TENANT,
 };
