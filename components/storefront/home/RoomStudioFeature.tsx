@@ -21,13 +21,15 @@ export default function RoomStudioFeature() {
   return (
     <section style={{ paddingBlock: SECTION_PAD, backgroundColor: '#F5F5F3' }}>
       <Container>
-        <div className="grid gap-9 lg:grid-cols-[62fr_38fr] lg:items-center lg:gap-[60px]">
+        {/* 70/30 rather than 62/38: the screenshot has to read as a real
+            interface, and at 62% its controls rendered too small. */}
+        <div className="grid gap-9 lg:grid-cols-[70fr_30fr] lg:items-center lg:gap-[48px]">
           <Image
             src={ROOM_STUDIO_SCREENSHOT}
             alt="Giao diện Room Studio: nhập kích thước phòng, chọn vật liệu và thư viện sản phẩm"
-            width={1700}
+            width={1640}
             height={1240}
-            sizes="(max-width: 1024px) 100vw, 62vw"
+            sizes="(max-width: 1024px) 100vw, 70vw"
             className="w-full"
             style={{ border: `1px solid ${DIVIDER}` }}
           />

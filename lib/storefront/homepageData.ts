@@ -85,7 +85,7 @@ const FEATURED_PREFERENCE = [/master cao cấp/i, /luxury/i, /khách sạn/i, /j
  * Room Studio section shows a screenshot of the application, not a render, so
  * only the hero and the shoppable room reserve one.
  */
-const HERO_IMAGE = '/images/concept-japandi-bathroom.png';
+const HERO_IMAGE = '/images/hero-bathroom-luxury.png';
 
 function imageForTitle(title: string): string | null {
   return TITLE_IMAGES.find((entry) => entry.match.test(title))?.image ?? null;
@@ -114,21 +114,24 @@ export interface HomepageData {
  * The product stage.
  *
  * The catalogue's shots are square with white margin baked in, but how much
- * margin varies enormously: a toilet fills 97% of its frame's height and a
- * basin 75%, so `object-contain` alone renders one huge and the next tiny.
- * Each scale below was measured off the asset — content height as a fraction
- * of the file — and solved so the product lands at ~74% of the stage height.
- * Swapping an image means re-measuring it.
+ * margin varies enormously, so `object-contain` alone renders one product huge
+ * and the next tiny. Each scale below was measured off the asset — the comment
+ * gives its content box as width × height percent of the file — and solved so
+ * the product's LARGER side lands at ~74% of the stage.
+ *
+ * Normalising on height alone was the earlier mistake: a wide object like the
+ * TX109LD mixer then grew until it filled the stage sideways. Swapping an
+ * image means re-measuring it.
  */
 const STAGE_SCALE: Record<string, number> = {
-  'llv-toi-toto-cs818dt2': 0.76,   // 97% of frame
-  'llv-toi-toto-cs838dt8': 0.76,   // 97%
-  'llv-lav-toto-lt1705-xw': 0.98,  // 75%
-  'llv-lav-toto-lht328c': 0.89,    // 83%
-  'llv-sho-inax-bfv915s': 0.77,    // 96%
-  'llv-sho-inax-bfv655t8c': 0.82,  // 90%
-  'llv-fau-toto-tx109ld': 1.37,    // 54%
-  'llv-mir-karat-em0240250': 0.78, // 95%
+  'llv-toi-toto-cs818dt2': 0.76,   // 79 × 97
+  'llv-toi-toto-cs838dt8': 0.76,   // 65 × 97
+  'llv-lav-toto-lt1705-xw': 0.81,  // 91 × 75
+  'llv-lav-toto-lht328c': 0.81,    // 92 × 83
+  'llv-sho-inax-bfv915s': 0.77,    // 30 × 96
+  'llv-sho-inax-bfv655t8c': 0.82,  // 48 × 90
+  'llv-fau-toto-tx109ld': 1.07,    // 69 × 54 — wide, so height alone misleads
+  'llv-mir-karat-em0240250': 0.78, // 56 × 95
 };
 
 const stageScale = (id: string) => STAGE_SCALE[id] ?? 0.82;

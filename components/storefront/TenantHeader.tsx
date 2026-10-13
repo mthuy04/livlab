@@ -80,7 +80,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                 <img
                   src={tenant.brand.logo}
                   alt={tenant.brand.logoAlt ?? tenant.brand.name}
-                  className="h-9 w-auto lg:h-[42px]"
+                  className="h-10 w-auto lg:h-[47px]"
                   onError={() => setLogoFailed(true)}
                 />
               ) : (

@@ -32,8 +32,12 @@ export const BODY_STYLE = {
   color: TEXT_MUTED,
 } as const;
 
-/** Section rhythm: 104px desktop, 68px mobile. */
-export const SECTION_PAD = 'clamp(68px, 5vw + 2rem, 104px)';
+/**
+ * Half of the gap between sections, applied to each side, so two neighbours
+ * add up to the real rhythm: ~98px on a 1536 desktop, 68px on a phone. Giving
+ * every section a full 104px top AND bottom was what opened the 200px holes.
+ */
+export const SECTION_PAD = 'clamp(34px, 3.2vw, 52px)';
 
 /** A text link with an arrow. Most actions on this page are one of these. */
 export function ArrowLink({

@@ -67,11 +67,11 @@ export default function ShoppableSpace({ room }: { room: FeaturedRoom }) {
 
         {active && (
           <div
-            className="absolute z-10 hidden w-[300px] sm:block"
+            className="absolute z-10 hidden w-[272px] sm:block"
             style={{
-              left: `clamp(16px, ${active.xPercent}% + 30px, calc(100% - 316px))`,
-              // 372px is the panel's own height, so it never spills past the photo.
-              top: `clamp(16px, ${active.yPercent}% - 60px, calc(100% - 372px))`,
+              left: `clamp(16px, ${active.xPercent}% + 30px, calc(100% - 288px))`,
+              // 318px is the panel's own height, so it never spills past the photo.
+              top: `clamp(16px, ${active.yPercent}% - 60px, calc(100% - 318px))`,
             }}
           >
             <QuickView product={active} />
@@ -109,9 +109,9 @@ function QuickView({ product }: { product: RoomHotspot }) {
           src={product.imageUrl}
           alt=""
           width={600}
-          height={420}
-          sizes="300px"
-          className="aspect-[4/3] w-full object-contain"
+          height={360}
+          sizes="272px"
+          className="aspect-[16/9] w-full object-contain"
           style={{ backgroundColor: '#F6F6F5' }}
         />
       )}

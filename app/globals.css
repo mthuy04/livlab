@@ -228,6 +228,28 @@ body {
   .storefront { --sf-gutter: 40px; }
 }
 
+/* The storefront header is sticky and two-tier (30px utility + 74px main), so
+   anything a link can jump to needs that much clearance or it lands underneath
+   it. 116px covers both tiers plus a little breathing room. */
+.storefront section,
+.storefront h1,
+.storefront h2,
+.storefront h3,
+.storefront [id] {
+  scroll-margin-top: 116px;
+}
+
+@media (max-width: 1023px) {
+  /* The utility bar is hidden below lg, so the header is 64px there. */
+  .storefront section,
+  .storefront h1,
+  .storefront h2,
+  .storefront h3,
+  .storefront [id] {
+    scroll-margin-top: 84px;
+  }
+}
+
 /* Editorial type scale. Clamped so a headline is large on a desktop without
    overflowing a 390px phone, which is where most Vietnamese traffic is. */
 .sf-display { font-size: clamp(2.25rem, 1.2rem + 4.4vw, 4.25rem); line-height: 1.04; letter-spacing: -0.025em; font-weight: 600; }

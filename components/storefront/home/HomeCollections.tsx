@@ -5,7 +5,13 @@ import type { CollectionItem } from '@/lib/storefront/homepageData';
 import { Container } from '@/components/storefront/primitives';
 import { SectionHeader, ArrowLink, AccentRule, SECTION_PAD, TEXT, BODY_STYLE } from './editorial';
 
-/** Three alternating editorial rows: image 64%, text 36%, sides swapped. */
+/**
+ * Three alternating editorial rows: media 62%, copy 38%.
+ *
+ * The sides swap by flipping the grid template, not by `order`. Ordering the
+ * image second left it in the 38% column, so the middle row rendered its
+ * photograph at little over half the width of its neighbours.
+ */
 export default function HomeCollections({ collections }: { collections: CollectionItem[] }) {
   if (collections.length === 0) return null;
 
@@ -20,8 +26,10 @@ export default function HomeCollections({ collections }: { collections: Collecti
             return (
               <article
                 key={item.slug}
-                className="grid gap-7 lg:grid-cols-[64fr_36fr] lg:items-center lg:gap-[60px]"
-                style={index > 0 ? { marginTop: 'clamp(48px, 4vw, 72px)' } : undefined}
+                className={`grid gap-7 lg:items-center lg:gap-[56px] ${
+                  imageRight ? 'lg:grid-cols-[38fr_62fr]' : 'lg:grid-cols-[62fr_38fr]'
+                }`}
+                style={index > 0 ? { marginTop: 'clamp(40px, 3vw, 56px)' } : undefined}
               >
                 <Link
                   href={`/concepts/${item.slug}` as Route}
@@ -32,7 +40,7 @@ export default function HomeCollections({ collections }: { collections: Collecti
                     alt={item.title}
                     width={1672}
                     height={941}
-                    sizes="(max-width: 1024px) 100vw, 64vw"
+                    sizes="(max-width: 1024px) 100vw, 62vw"
                     className="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
                   />
                 </Link>
