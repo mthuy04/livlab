@@ -81,7 +81,7 @@ export default async function ProductDetailPage({ params }: Props) {
   return (
     <>
       <section id="tong-quan">
-        <div className="home-container" style={{ paddingTop: 30, paddingBottom: 'clamp(48px, 5vw, 76px)' }}>
+        <div className="home-container" style={{ paddingTop: 26, paddingBottom: 'clamp(44px, 4.4vw, 68px)' }}>
           <nav aria-label="Breadcrumb">
             <ol
               className="flex flex-wrap items-center gap-x-2 gap-y-1"
@@ -110,7 +110,7 @@ export default async function ProductDetailPage({ params }: Props) {
             </ol>
           </nav>
 
-          <div className="mt-8 grid gap-10 lg:grid-cols-[1.48fr_1fr] lg:gap-[60px]">
+          <div className="mt-7 grid gap-10 lg:grid-cols-[1.35fr_1fr] lg:gap-[56px]">
             <ProductGallery
               media={media}
               brand={identity.brand}
@@ -124,11 +124,11 @@ export default async function ProductDetailPage({ params }: Props) {
               </p>
 
               <h1
-                className="mt-3 line-clamp-3"
+                className="mt-2.5 line-clamp-3"
                 style={{
-                  fontSize: 'clamp(26px, 1.3rem + 1.2vw, 37px)',
+                  fontSize: 'clamp(26px, 1.25rem + 1.05vw, 35px)',
                   fontWeight: 500,
-                  lineHeight: 1.14,
+                  lineHeight: 1.12,
                   letterSpacing: '-0.01em',
                   color: TEXT,
                 }}
@@ -137,7 +137,7 @@ export default async function ProductDetailPage({ params }: Props) {
               </h1>
 
               {identity.sku && (
-                <p className="mt-3" style={{ fontSize: 13, color: TEXT_MUTED }}>
+                <p className="mt-2.5" style={{ fontSize: 13, color: TEXT_MUTED }}>
                   Mã sản phẩm: {identity.sku}
                 </p>
               )}
@@ -147,7 +147,7 @@ export default async function ProductDetailPage({ params }: Props) {
               </p>
 
               {/* ── Price ─────────────────────────────────────────────── */}
-              <div className="mt-8">
+              <div className="mt-6">
                 <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.12em', color: TEXT_MUTED }}>
                   {pricing.displayPriceLabel}
                 </p>
@@ -188,26 +188,26 @@ export default async function ProductDetailPage({ params }: Props) {
                 )}
 
                 {pricing.note && (
-                  <p className="mt-3 max-w-[480px]" style={{ fontSize: 13, lineHeight: 1.55, color: TEXT_MUTED }}>
+                  <p className="mt-2.5 max-w-[480px]" style={{ fontSize: 13, lineHeight: 1.55, color: TEXT_MUTED }}>
                     {pricing.note}
                   </p>
                 )}
               </div>
 
               {vm.summary && (
-                <p className="mt-7 max-w-[500px]" style={{ fontSize: 15.5, lineHeight: 1.6, color: '#4A4A4A' }}>
+                <p className="mt-6 max-w-[500px]" style={{ fontSize: 15.5, lineHeight: 1.6, color: '#4A4A4A' }}>
                   {vm.summary}
                 </p>
               )}
 
               {/* ── The facts that decide ─────────────────────────────── */}
               {vm.overviewFacts.length > 0 && (
-                <dl className="mt-7 max-w-[500px]">
+                <dl className="mt-6 max-w-[500px]">
                   {vm.overviewFacts.map((fact) => (
                     <div
                       key={fact.label}
                       className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1"
-                      style={{ borderBottom: `1px solid ${DIVIDER}`, minHeight: 49, paddingBlock: 13 }}
+                      style={{ borderBottom: `1px solid ${DIVIDER}`, minHeight: 46, paddingBlock: 11 }}
                     >
                       <dt style={{ fontSize: 13, color: '#737373' }}>{fact.label}</dt>
                       <dd className="text-right" style={{ fontSize: 14, color: TEXT }}>
@@ -247,7 +247,7 @@ export default async function ProductDetailPage({ params }: Props) {
           reachable rather than permanently half-covered. */}
       {/* Safe space under the fixed product bar, so the closing section is
           never the thing it covers. */}
-      <div aria-hidden="true" style={{ height: 64 }} className="max-lg:h-16" />
+      <div aria-hidden="true" style={{ height: 58 }} className="max-lg:h-16" />
     </>
   );
 }

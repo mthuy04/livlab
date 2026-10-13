@@ -166,7 +166,7 @@ function StickyBar({ vm, price }: { vm: ProductDetailViewModel; price: number | 
       {/* Desktop: identity on the left, the decision on the right. */}
       <div
         className="fixed bottom-0 left-0 right-0 z-40 max-lg:hidden"
-        style={{ height: 64, backgroundColor: '#FFFFFF', borderTop: '1px solid #E5E5E2' }}
+        style={{ height: 58, backgroundColor: '#FFFFFF', borderTop: '1px solid #E5E5E2' }}
       >
         <div className="home-container flex h-full items-center justify-between gap-8">
           <div className="flex min-w-0 items-center gap-4">

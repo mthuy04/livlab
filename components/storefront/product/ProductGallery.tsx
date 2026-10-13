@@ -19,6 +19,21 @@ import type { ProductMedia, ProductMediaItem } from '@/lib/storefront/productDet
  * A broken image on a product page is worse than no drawing, so anything that
  * fails to load is dropped from the rail and from the stage.
  */
+/**
+ * The stage's height is set by the viewport, not by the column's width.
+ *
+ * It used to be `aspect-ratio: 1 / 1`, which made the stage as tall as the
+ * media column is wide: 776px at a 1536px viewport, so the product's own
+ * photograph ran to y=959 of a 960px screen and the thumbnail rail beneath it
+ * was never on screen at all. A customer had to scroll to finish looking at
+ * the product before they could begin reading about it.
+ *
+ * Height is now viewport-aware and clamped at both ends, so a tall display
+ * gets a larger stage while a 900px laptop keeps the whole overview — image,
+ * price, facts and the quote button — in one view.
+ */
+const STAGE_HEIGHT = 'h-[clamp(340px,50vh,430px)] lg:h-[clamp(500px,58vh,590px)]';
+
 export default function ProductGallery({
   media,
   brand,
@@ -77,7 +92,7 @@ export default function ProductGallery({
 
   if (!media.presentable || !active) {
     return (
-      <div style={{ aspectRatio: '1 / 1', border: `1px solid ${DIVIDER}` }}>
+      <div className={STAGE_HEIGHT} style={{ border: `1px solid ${DIVIDER}` }}>
         <ProductImagePlaceholder brand={brand} sku={sku} />
       </div>
     );
@@ -92,8 +107,8 @@ export default function ProductGallery({
           type="button"
           onClick={() => setZoomed(true)}
           aria-label={`Phóng to ảnh ${name}`}
-          className="block w-full cursor-zoom-in overflow-hidden"
-          style={{ aspectRatio: '1 / 1', border: '1px solid #ECECE8', backgroundColor: '#FFFFFF' }}
+          className={`block w-full cursor-zoom-in overflow-hidden ${STAGE_HEIGHT}`}
+          style={{ border: '1px solid #ECECE8', backgroundColor: '#FFFFFF' }}
         >
           <StageImage
             src={active.url}

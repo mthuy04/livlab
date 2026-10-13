@@ -33,7 +33,7 @@ export default function DimensionsBlock({
   const showDrawing = Boolean(drawing) && !drawingFailed;
 
   return (
-    <div className={`mt-10 grid gap-12 ${showDrawing ? 'lg:grid-cols-[1.55fr_1fr] lg:gap-16' : ''}`}>
+    <div className={`mt-8 grid gap-10 ${showDrawing ? 'lg:grid-cols-[1.38fr_1fr] lg:gap-14' : ''}`}>
       {drawing && !drawingFailed && (
         <figure>
           <a
@@ -51,8 +51,12 @@ export default function DimensionsBlock({
               loading="lazy"
               decoding="async"
               onError={() => setDrawingFailed(true)}
+              // Height is capped independently of width. A drawing rendered
+              // at its natural size made this section taller than the screen
+              // to show labels the original PDF shows better; the full-size
+              // view and the source document are one click away.
               className="w-full object-contain"
-              style={{ maxHeight: 620, padding: '2%' }}
+              style={{ height: 'clamp(300px, 46vh, 520px)', padding: '1.5%' }}
             />
           </a>
           <figcaption className="mt-3 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">

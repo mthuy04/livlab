@@ -69,7 +69,7 @@ export function Section({
     ? 'clamp(60px, 6.4vw, 100px)'
     : compact
       ? 'clamp(40px, 4vw, 64px)'
-      : 'clamp(48px, 5.2vw, 84px)';
+      : 'clamp(44px, 4.6vw, 72px)';
   return (
     <section id={id} style={muted ? { backgroundColor: '#F7F7F5' } : undefined}>
       <div className="home-container" style={{ paddingBlock }}>
@@ -91,7 +91,7 @@ export function Specifications({ groups }: { groups: SpecGroup[] }) {
 
       {/* Constrained so a short spec list does not drift across a 1360px
           canvas, while the heading stays on the container's own left edge. */}
-      <div className="mt-9 flex max-w-[1160px] flex-col gap-10">
+      <div className="mt-7 flex max-w-[1160px] flex-col gap-8">
         {filled.map((group) => (
           <div key={group.title}>
             <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.12em', color: TEXT_FAINT }}>
@@ -99,12 +99,12 @@ export function Specifications({ groups }: { groups: SpecGroup[] }) {
             </p>
             {/* Two columns on a desktop, one on a phone. No cards: the rule
                 between rows is the structure. */}
-            <dl className="mt-4 grid gap-x-20 md:grid-cols-2">
+            <dl className="mt-3 grid gap-x-20 md:grid-cols-2">
               {group.rows.map((row) => (
                 <div
                   key={row.label}
                   className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1"
-                  style={{ borderBottom: `1px solid ${ROW_BORDER}`, minHeight: 50, paddingBlock: 14 }}
+                  style={{ borderBottom: `1px solid ${ROW_BORDER}`, minHeight: 46, paddingBlock: 12 }}
                 >
                   <dt style={{ fontSize: 13, color: '#737373' }}>{row.label}</dt>
                   <dd className="text-right" style={{ fontSize: 14.5, fontWeight: 500, color: TEXT }}>
@@ -135,7 +135,7 @@ export function DimensionsAndDrawing({ vm }: { vm: ProductDetailViewModel }) {
     null;
 
   return (
-    <Section id="ban-ve" tall>
+    <Section id="ban-ve">
       <SectionHeading>KÍCH THƯỚC &amp; BẢN VẼ KỸ THUẬT</SectionHeading>
       <DimensionsBlock
         drawing={drawing}
@@ -171,11 +171,11 @@ export function Technologies({ vm }: { vm: ProductDetailViewModel }) {
     <Section id="cong-nghe">
       <SectionHeading>CÔNG NGHỆ &amp; TÍNH NĂNG</SectionHeading>
 
-      <div className="mt-9 max-w-[960px]">
+      <div className="mt-7 max-w-[960px]">
         {vm.technologies.map((technology, index) => (
           <article
             key={technology.name}
-            className="grid gap-x-12 gap-y-3 py-7 md:grid-cols-[216px_1fr]"
+            className="grid gap-x-12 gap-y-3 py-6 md:grid-cols-[216px_1fr]"
             style={index === 0 ? undefined : { borderTop: `1px solid ${ROW_BORDER}` }}
           >
             <h3
@@ -226,7 +226,7 @@ export function Documents({ vm }: { vm: ProductDetailViewModel }) {
 
       {/* Fixed format and action columns: four short rows stretched across a
           1360px canvas is what made this read as an empty section. */}
-      <ul className="mt-9 max-w-[1000px]">
+      <ul className="mt-7 max-w-[1000px]">
         {vm.documents.map((doc) => (
           <li key={doc.url} style={{ borderBottom: `1px solid ${ROW_BORDER}` }}>
             <a
@@ -347,7 +347,11 @@ export function Simulation({ vm }: { vm: ProductDetailViewModel }) {
 function ProductTile({ item }: { item: RelatedProductRef }) {
   return (
     <article className="flex flex-col">
-      <Link href={item.href as Route} className="block overflow-hidden" style={{ aspectRatio: '1 / 1', border: `1px solid #ECECE8` }}>
+      <Link
+        href={item.href as Route}
+        className="block overflow-hidden h-[clamp(170px,38vw,230px)] md:h-[clamp(230px,19.6vw,300px)]"
+        style={{ border: `1px solid #ECECE8` }}
+      >
         {item.image && item.presentable ? (
           <StageImage src={item.image} alt={item.name} occupancy={item.occupancy} normalized={false} sizes="25vw" />
         ) : (
