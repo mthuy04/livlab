@@ -11,7 +11,8 @@
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "inspect:glb-materials": "node scripts/inspectGlbMaterials.mjs",
-    "test:technical": "npx tsx scripts/testTechnicalAdvisor.mts"
+    "test:technical": "npx tsx scripts/testTechnicalAdvisor.mts",
+    "test:room-studio": "npx tsx scripts/testRoomStudioCapability.mts"
   },
   "dependencies": {
     "@google/genai": "^2.8.0",

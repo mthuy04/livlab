@@ -341,6 +341,30 @@ export function hasReadyAssetForKeys(
   return false;
 }
 
+/**
+ * The asset behind any of the keys the storefront holds — ready or not.
+ *
+ * `hasReadyAssetForKeys` answers "may this be placed"; this answers "what do we
+ * actually have", which is a different question and the one the product card
+ * needs. A SOURCE_VERIFIED record is a real fact about the product (the
+ * manufacturer published a file, and its official dimensions are recorded) and
+ * the UI is allowed to say so — it is just not allowed to call it a 3D model.
+ */
+export function findProduct3DAssetForKeys(
+  ...keys: Array<string | null | undefined>
+): Product3DAsset | null {
+  for (const key of keys) {
+    if (!key) continue;
+    const byId = REGISTRY[key];
+    if (byId) return byId;
+    const bySku = BY_NORMALIZED_SKU[key];
+    // Ambiguous across brands is no answer at all; `findSkuIndexCollisions`
+    // reports the clash rather than this silently picking one.
+    if (bySku?.length === 1) return bySku[0];
+  }
+  return null;
+}
+
 /** Every registered asset, for the audit script and the dev review page. */
 export function allProduct3DAssets(): Product3DAsset[] {
   return Object.values(REGISTRY);

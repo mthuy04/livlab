@@ -164,8 +164,14 @@ export default function RoomStudioClient() {
 
   const handleAddProduct = useCallback(
     (product: RoomStudioProduct) => {
-      studio.addProduct(product);
-      showToast(`Đã đưa ${product.name} vào phòng.`);
+      // `addProduct` refuses a product it cannot size. Reporting success anyway
+      // would leave the customer looking for an object that was never placed.
+      const placed = studio.addProduct(product);
+      showToast(
+        placed
+          ? `Đã đưa ${product.name} vào phòng.`
+          : `${product.name} chưa có kích thước thật nên chưa đặt được vào phòng.`
+      );
     },
     [studio, showToast]
   );
@@ -175,8 +181,12 @@ export default function RoomStudioClient() {
     (productId: string, point: Vec3) => {
       const product = studio.products.find((p) => p.id === productId);
       if (!product) return;
-      studio.addProduct(product, point);
-      showToast(`Đã đưa ${product.name} vào phòng.`);
+      const placed = studio.addProduct(product, point);
+      showToast(
+        placed
+          ? `Đã đưa ${product.name} vào phòng.`
+          : `${product.name} chưa có kích thước thật nên chưa đặt được vào phòng.`
+      );
     },
     [studio, showToast]
   );

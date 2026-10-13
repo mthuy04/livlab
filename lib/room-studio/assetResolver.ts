@@ -13,9 +13,14 @@ export interface RealWorldSize {
   width: number;
   height: number;
   depth: number;
-  /** true when these came from the catalogue, false when they are a category
-   *  assumption. The UI uses this to avoid presenting a guess as a spec. */
+  /** true when at least one axis came from the catalogue. */
   fromCatalogue: boolean;
+  /**
+   * true only when all three axes are the product's own. Anything less means
+   * at least one side of this volume is a category average, and the scene
+   * cannot show the customer which one — so nothing may call it exact.
+   */
+  exact: boolean;
 }
 
 /**
@@ -26,12 +31,14 @@ export interface RealWorldSize {
 export function getRealWorldSize(product: RoomStudioProduct): RealWorldSize {
   const fallback = getCategoryFallbackSize(product.normalizedCategory);
   const hasAny = product.width !== undefined || product.depth !== undefined || product.height !== undefined;
+  const hasAll = product.width !== undefined && product.depth !== undefined && product.height !== undefined;
 
   return {
     width: product.width ?? fallback.width,
     depth: product.depth ?? fallback.depth,
     height: product.height ?? fallback.height,
     fromCatalogue: hasAny,
+    exact: hasAll,
   };
 }
 

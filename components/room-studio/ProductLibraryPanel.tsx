@@ -1,8 +1,14 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Box, Plus, Search } from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
 import type { RoomStudioProduct } from '@/lib/room-studio/productAdapter';
+import {
+  CAPABILITY_BADGE,
+  NO_DIMENSIONS_REASON,
+  isPlaceable,
+  isSurfaceMaterial,
+} from '@/lib/room-studio/productCapability';
 
 interface ProductLibraryPanelProps {
   products: RoomStudioProduct[];
@@ -27,6 +33,12 @@ const CATEGORY_TABS: { id: string; label: string }[] = [
   { id: 'accessory', label: 'Phụ kiện' },
 ];
 
+const CAPABILITY_ORDER: Record<string, number> = {
+  VERIFIED_3D: 2,
+  EXACT_DIMENSIONS: 1,
+  NO_DIMENSIONS: 0,
+};
+
 export default function ProductLibraryPanel({
   products,
   isLoading,
@@ -41,10 +53,16 @@ export default function ProductLibraryPanel({
     return products
       .filter((p) => activeTab === 'all' || p.normalizedCategory === activeTab)
       .filter((p) => !needle || p.name.toLowerCase().includes(needle) || (p.brand ?? '').toLowerCase().includes(needle))
-      // Products with a real 3D asset first, then ones with a photo.
+      // Tiles configure surfaces in VẬT LIỆU; they are not placeable objects.
+      .filter((p) => !isSurfaceMaterial(p.normalizedCategory))
+      // Placeable products first, then by what can be shown of them. A product
+      // with no usable dimensions stays visible — the showroom needs to see
+      // which rows are missing data — but it sinks to the bottom.
       .sort((a, b) => {
-        const byModel = (b.model3dUrl ? 1 : 0) - (a.model3dUrl ? 1 : 0);
-        if (byModel !== 0) return byModel;
+        const byPlaceable = (isPlaceable(b.capability) ? 1 : 0) - (isPlaceable(a.capability) ? 1 : 0);
+        if (byPlaceable !== 0) return byPlaceable;
+        const byCapability = CAPABILITY_ORDER[b.capability] - CAPABILITY_ORDER[a.capability];
+        if (byCapability !== 0) return byCapability;
         return (b.imageUrl ? 1 : 0) - (a.imageUrl ? 1 : 0);
       });
   }, [products, activeTab, query]);
@@ -94,15 +112,25 @@ export default function ProductLibraryPanel({
 
         {visible.map((product) => {
           const isPlaced = placedProductIds.has(product.id);
+          const placeable = isPlaceable(product.capability);
+          const badge = CAPABILITY_BADGE[product.capability];
           return (
             <div
               key={product.id}
-              draggable
+              draggable={placeable}
               onDragStart={(e) => {
+                if (!placeable) {
+                  e.preventDefault();
+                  return;
+                }
                 e.dataTransfer.setData('application/livlab-product', product.id);
                 e.dataTransfer.effectAllowed = 'copy';
               }}
-              className="group flex cursor-grab gap-3 rounded-2xl border border-[#D8E2EA] p-2.5 transition-colors hover:border-[#C8A96A]/70 active:cursor-grabbing"
+              className={`group flex gap-3 rounded-2xl border p-2.5 transition-colors ${
+                placeable
+                  ? 'cursor-grab border-[#D8E2EA] hover:border-[#C8A96A]/70 active:cursor-grabbing'
+                  : 'border-[#E8EEF2] bg-[#FAFCFD]'
+              }`}
             >
               <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[#D8E2EA]/60 bg-[#EEF4F7]">
                 {product.imageUrl ? (
@@ -132,27 +160,48 @@ export default function ProductLibraryPanel({
                 </h4>
                 <div className="mt-0.5 flex items-center gap-1.5">
                   <p className="truncate text-[11px] font-bold text-[#C8A96A]">{product.priceRange || 'Liên hệ'}</p>
-                  {product.model3dUrl && (
+                  {/* The only 3D-capability claim in Room Studio. `3D VERIFIED`
+                      requires a READY registry asset that passed every QA
+                      check; a dimension volume gets ĐÚNG KÍCH THƯỚC and never
+                      the word 3D. */}
+                  {badge && (
                     <span
-                      title="Có model 3D"
-                      className="flex shrink-0 items-center gap-0.5 rounded bg-[#DCEBF5] px-1 py-0.5 text-[8px] font-bold text-[#123C5A]"
+                      title={badge.title}
+                      className={`shrink-0 whitespace-nowrap rounded px-1.5 py-0.5 text-[11px] font-bold ${
+                        product.capability === 'VERIFIED_3D'
+                          ? 'bg-[#123C5A] text-white'
+                          : 'bg-[#EEF4F7] text-[#4A6275]'
+                      }`}
                     >
-                      <Box className="h-2.5 w-2.5" /> 3D
+                      {badge.label}
                     </span>
                   )}
                 </div>
-                {product.dimensionsLabel && (
-                  <p className="mt-0.5 truncate text-[10px] text-[#9AA9B6]">{product.dimensionsLabel}</p>
+                {placeable ? (
+                  product.dimensionsLabel && (
+                    <p className="mt-0.5 truncate text-[11px] text-[#7C8C9A]">{product.dimensionsLabel}</p>
+                  )
+                ) : (
+                  <p className="mt-0.5 truncate text-[11px] text-[#9AA9B6]">{NO_DIMENSIONS_REASON}</p>
                 )}
               </div>
 
               <button
                 type="button"
                 onClick={() => onAddProduct(product)}
-                title="Đưa vào phòng"
-                aria-label={`Đưa ${product.name} vào phòng`}
+                disabled={!placeable}
+                title={placeable ? 'Đưa vào phòng' : `${NO_DIMENSIONS_REASON} — chưa đặt được vào phòng`}
+                aria-label={
+                  placeable
+                    ? `Đưa ${product.name} vào phòng`
+                    : `${product.name}: ${NO_DIMENSIONS_REASON}, chưa đặt được vào phòng`
+                }
                 className={`flex h-9 w-9 shrink-0 items-center justify-center self-center rounded-xl transition-colors ${
-                  isPlaced ? 'bg-[#DCEBF5] text-[#123C5A]' : 'bg-[#0B3A55] text-white hover:bg-[#082B40]'
+                  !placeable
+                    ? 'cursor-not-allowed bg-[#EEF1F4] text-[#B4C0C9]'
+                    : isPlaced
+                      ? 'bg-[#DCEBF5] text-[#123C5A]'
+                      : 'bg-[#0B3A55] text-white hover:bg-[#082B40]'
                 }`}
               >
                 <Plus className="h-4 w-4" />

@@ -13,6 +13,7 @@ import type { RoomDimensions } from './roomGeometry';
 import type { SurfaceId, SurfaceStyle } from './materials';
 import type { RoomStudioProduct } from './productAdapter';
 import { loadRoomStudioProducts } from './productAdapter';
+import { isPlaceable } from './productCapability';
 import { roomStateRepository } from './roomStateRepository';
 import { calculateRoomBudget, type BudgetEstimate } from './budgetCalculator';
 import { getRealWorldSize } from './assetResolver';
@@ -127,7 +128,18 @@ export function useRoomStudio() {
   }, []);
 
   /** Adds a product and returns the id of the instance that was created. */
+  /**
+   * Places a product, or refuses to.
+   *
+   * The gate is here and not only in the library panel because three callers
+   * reach this: the add button, a drop onto the canvas, and the Expert's
+   * suggestions. A product without complete dimensions can only be drawn by
+   * filling the missing axis from a category average, and a volume that is
+   * partly measured and partly assumed looks exactly like one that is not.
+   * Returning null is the honest outcome; the caller tells the customer why.
+   */
   const addProduct = useCallback((product: RoomStudioProduct, atPoint?: Vec3) => {
+    if (!isPlaceable(product.capability)) return null;
     const instanceId = ops.createInstanceId(product.id);
     setState((prev) => ops.addProduct(prev, product, { instanceId, atPoint }));
     setSelectedInstanceId(instanceId);
