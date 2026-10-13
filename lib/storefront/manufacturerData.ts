@@ -19,9 +19,54 @@ import { join } from 'node:path';
 
 export type MatchType = 'EXACT_SKU' | 'NORMALIZED_SKU' | 'MANUAL_CONFIRMED' | 'NO_MATCH';
 
+/**
+ * The canonical document classes the enrichment emits.
+ *
+ * Decided from the file itself — extension, then filename, then the visible
+ * anchor label — rather than from the heading a link happens to sit under.
+ * The parser used to take the type from whichever label it had matched last,
+ * which filed TOTO's user manual and its company-wide origin-data spreadsheet
+ * as `CAD`.
+ */
+export type ManufacturerDocumentType =
+  | 'TECHNICAL_SPEC'
+  | 'TECHNICAL_DRAWING'
+  | 'INSTALLATION'
+  | 'USER_MANUAL'
+  | 'CAD'
+  | 'BIM'
+  | 'THREE_D'
+  | 'CATALOG'
+  | 'CERTIFICATE'
+  | 'OTHER';
+
 export interface ManufacturerDocument {
-  type: 'CAD' | 'INSTALLATION' | 'THREE_D' | 'SPEC';
+  type: ManufacturerDocumentType;
   sourceUrl: string;
+  /** The link's visible text, where the page gave one. */
+  label?: string | null;
+  /** The heading the link sits under, kept for provenance. */
+  sourceSection?: string;
+  /** Which signal decided the type: EXTENSION, FILENAME, ANCHOR_LABEL, SECTION. */
+  typeEvidence?: string;
+  specificityEvidence?: string;
+}
+
+/** One image considered for a product's gallery, and what was decided about it. */
+export interface GalleryCandidate {
+  url: string;
+  sourceSection: string;
+  relation:
+    | 'CURRENT_PRODUCT'
+    | 'LIFESTYLE_CURRENT_PRODUCT'
+    | 'TECHNICAL_DRAWING'
+    | 'RELATED_PRODUCT'
+    | 'COMPATIBLE_PRODUCT'
+    | 'PROMOTIONAL'
+    | 'UNKNOWN';
+  accepted: boolean;
+  foreignSku?: string[];
+  reason?: string;
 }
 
 export interface ManufacturerRecord {
@@ -37,6 +82,16 @@ export interface ManufacturerRecord {
   technicalSpecs?: Record<string, string>;
   technologies?: string[];
   files?: ManufacturerDocument[];
+  /** The manufacturer's own dimensioned drawing for this SKU. */
+  technicalDrawing?: string | null;
+  /**
+   * Files the manufacturer links from this product's page that are not about
+   * this product — company paperwork and all-product spreadsheets. Kept as
+   * provenance so the enrichment stays auditable; never shown as a product
+   * document.
+   */
+  companyDocuments?: string[];
+  galleryAudit?: GalleryCandidate[];
   manufacturerReferencePrice?: number | null;
   technicalSourceUrl?: string;
   imageSourceUrl?: string | null;

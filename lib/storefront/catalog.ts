@@ -354,7 +354,11 @@ function withManufacturer(product: CatalogProduct, record: ManufacturerRecord | 
     documents: record.files ?? [],
     galleryImages: record.galleryImages ?? [],
     compatibleSkus: record.compatibleSkus ?? [],
-    technicalDrawing: product.technicalDrawing,
+    // The manufacturer's own drawing wins over the retailer's. The retailer
+    // copies are re-hosted and some have since 404'd — INAX AC-900VRN-2's is
+    // one — while the enrichment verified this URL on the brand's own page
+    // under a heading naming this SKU.
+    technicalDrawing: record.technicalDrawing ?? product.technicalDrawing,
   };
 }
 

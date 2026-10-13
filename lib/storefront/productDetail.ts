@@ -239,24 +239,16 @@ function buildSummary(p: CatalogProduct): string | null {
 /* ── Documents ────────────────────────────────────────────────────────── */
 
 const DOC_LABEL: Record<string, string> = {
-  CAD: 'Tệp CAD',
+  TECHNICAL_SPEC: 'Bản thông số kỹ thuật',
+  TECHNICAL_DRAWING: 'Bản vẽ kỹ thuật',
   INSTALLATION: 'Hướng dẫn lắp đặt',
-  SPEC: 'Bản thông số kỹ thuật',
+  USER_MANUAL: 'Hướng dẫn sử dụng',
+  CAD: 'Tệp CAD',
+  BIM: 'Tệp BIM',
   THREE_D: 'Tệp 3D từ hãng',
+  CATALOG: 'Catalogue',
+  CERTIFICATE: 'Chứng nhận',
 };
-
-/**
- * Vietnamese manufacturers name their files by document class, and that
- * naming is more reliable than the enrichment's `type` — TOTO's record types
- * a user manual and an origin-data spreadsheet as `CAD`. Where the filename
- * declares the class, it wins.
- */
-const FILENAME_CLASS: [RegExp, string][] = [
-  [/(^|[^a-z])tskt/i, 'Bản thông số kỹ thuật'],
-  [/(^|[^a-z])hdld/i, 'Hướng dẫn lắp đặt'],
-  [/(^|[^a-z])hdsd/i, 'Hướng dẫn sử dụng'],
-  [/(^|[^a-z])cad/i, 'Tệp CAD'],
-];
 
 const FORMAT_BY_EXTENSION: Record<string, string> = {
   pdf: 'PDF',
@@ -275,20 +267,21 @@ function documentFormat(url: string): string {
 }
 
 /**
- * Manufacturer documents, filtered to the ones that are actually about this
- * product.
+ * Manufacturer documents, labelled for a Vietnamese customer.
  *
- * A document is kept when its filename carries the product's normalised SKU,
- * or when it belongs to a recognised document class. That removes TOTO's
- * company-wide origin-data spreadsheet — which the enrichment attaches to
- * every TOTO SKU as a `CAD` file — without hard-coding its name.
+ * The filtering this used to do is gone, because the enrichment no longer
+ * needs correcting here. `scripts/enrich_manufacturer_assets.py` now types
+ * each file from the file itself and keeps company-wide paperwork out of
+ * `files` entirely, so a document that reaches this function is already known
+ * to be this product's. Classifying twice, in two places, by two different
+ * rules, is how the two copies drift apart.
  *
  * URLs are validated for shape only. Fetching every document on every render
  * would make the page as slow and as flaky as the slowest manufacturer CDN;
  * what the page can promise is that it links what the enrichment verified,
  * labelled honestly, and never invents a file that is not in the data.
  */
-function buildDocuments(product: CatalogProduct, normalizedSku: string): ProductDocument[] {
+function buildDocuments(product: CatalogProduct): ProductDocument[] {
   const seen = new Set<string>();
   const documents: ProductDocument[] = [];
 
@@ -296,16 +289,9 @@ function buildDocuments(product: CatalogProduct, normalizedSku: string): Product
     const url = file.sourceUrl?.trim();
     if (!url || !/^https?:\/\//i.test(url) || seen.has(url)) continue;
 
-    const filename = url.split('/').pop() ?? '';
-    const classified = FILENAME_CLASS.find(([pattern]) => pattern.test(filename))?.[1] ?? null;
-    const mentionsSku =
-      normalizedSku.length >= 4 &&
-      filename.toUpperCase().replace(/[^A-Z0-9]/g, '').includes(normalizedSku);
-
-    const label = classified ?? DOC_LABEL[file.type] ?? null;
-    // Neither a recognised class nor this product's code: not a product document.
-    if (!label || (!classified && !mentionsSku && !DOC_LABEL[file.type])) continue;
-    if (!classified && !mentionsSku && file.type === 'CAD') continue;
+    const label = DOC_LABEL[file.type] ?? null;
+    // OTHER is a file the parser could not place; it is not shown as one.
+    if (!label) continue;
 
     seen.add(url);
     const format = documentFormat(url);
@@ -597,7 +583,7 @@ export async function getProductDetail(
     // specification row, and a section heading over one line is padding.
     technologies: technologies.length > 1 ? technologies : [],
     compatibility: buildCompatibility(product, presentable),
-    documents: buildDocuments(product, product.normalizedSku),
+    documents: buildDocuments(product),
     manufacturerSimulator: buildSimulator(product),
     roomStudio: {
       ready: product.roomStudioReady,
