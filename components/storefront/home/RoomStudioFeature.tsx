@@ -21,23 +21,28 @@ export default function RoomStudioFeature() {
   return (
     <section style={{ paddingBlock: SECTION_PAD, backgroundColor: '#F5F5F3' }}>
       <Container>
-        {/* 70/30 rather than 62/38: the screenshot has to read as a real
-            interface, and at 62% its controls rendered too small. */}
-        <div className="grid gap-9 lg:grid-cols-[70fr_30fr] lg:items-center lg:gap-[48px]">
+        <div className="grid gap-9 lg:grid-cols-[64fr_36fr] lg:items-center lg:gap-[48px]">
           <Image
             src={ROOM_STUDIO_SCREENSHOT}
             alt="Giao diện Room Studio: nhập kích thước phòng, chọn vật liệu và thư viện sản phẩm"
             width={1640}
             height={1240}
-            sizes="(max-width: 1024px) 100vw, 70vw"
+            sizes="(max-width: 1024px) 100vw, 64vw"
             className="w-full"
             style={{ border: `1px solid ${DIVIDER}` }}
           />
 
           <div>
-            <p style={{ fontSize: 13, fontWeight: 500, letterSpacing: '.12em', color: TEXT_MUTED }}>ROOM STUDIO</p>
-            <h2 className="mt-4" style={H2_STYLE}>Thử trước trong phòng của bạn</h2>
-            <p className="mt-5" style={BODY_STYLE}>
+            <p style={{ fontSize: 12, fontWeight: 500, letterSpacing: '.12em', color: TEXT_MUTED }}>ROOM STUDIO</p>
+            {/* A sentence heading, so it carries a touch more size than the
+                one-word section titles and no tracking. */}
+            <h2
+              className="mt-4"
+              style={{ ...H2_STYLE, fontSize: 'clamp(28px, 1.3rem + 1.2vw, 38px)', letterSpacing: '0' }}
+            >
+              Thử trước trong phòng của bạn
+            </h2>
+            <p className="mt-5" style={{ ...BODY_STYLE, fontSize: 16 }}>
               Nhập kích thước phòng, chọn vật liệu và đặt thiết bị thật vào đúng tỷ lệ trước khi quyết định.
             </p>
 

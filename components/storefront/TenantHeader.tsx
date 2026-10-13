@@ -63,7 +63,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                     key={link.href}
                     href={link.href as Route}
                     className="transition-opacity hover:opacity-60"
-                    style={{ fontSize: 12, fontWeight: 500, letterSpacing: '.1em', color: '#555555' }}
+                    style={{ fontSize: 12, fontWeight: 500, letterSpacing: '.08em', color: '#555555' }}
                   >
                     {link.label}
                   </Link>
@@ -109,7 +109,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                       <li key={item.label}>
                         <Link
                           href={item.href as Route}
-                          className="inline-block py-1 text-[14px] transition-colors"
+                          className="inline-block py-1 text-[14px] outline-none transition-colors focus-visible:[border-bottom-color:var(--tenant-accent)]"
                           style={{ ...linkStyle, borderBottom: active ? '2px solid var(--tenant-accent)' : '2px solid transparent' }}
                         >
                           {item.label}
@@ -133,7 +133,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                         aria-expanded={isOpen}
                         aria-haspopup="true"
                         onClick={() => setOpenGroup(isOpen ? null : item.label)}
-                        className="flex items-center gap-1.5 py-1 text-[14px] transition-colors"
+                        className="flex items-center gap-1.5 py-1 text-[14px] outline-none transition-colors focus-visible:[border-bottom-color:var(--tenant-accent)]"
                         style={{ ...linkStyle, borderBottom: active ? '2px solid var(--tenant-accent)' : '2px solid transparent' }}
                       >
                         {item.label}
@@ -179,15 +179,15 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
               {tenant.features.quotations && (
                 <button
                   onClick={toggleDrawer}
-                  className="ml-2 hidden items-center gap-2 transition-opacity hover:opacity-80 lg:inline-flex"
+                  className="ml-2 hidden items-center gap-2 text-[13px] transition-opacity hover:opacity-80 lg:inline-flex"
                   style={{
-                    height: 42,
-                    padding: '0 20px',
+                    height: 41,
+                    paddingInline: 18,
                     borderRadius: 2,
                     backgroundColor: 'var(--tenant-accent)',
                     color: 'var(--tenant-accent-contrast)',
-                    fontSize: 14,
-                    fontWeight: 500,
+                    fontSize: 13,
+                    fontWeight: 600,
                     letterSpacing: '.08em',
                   }}
                 >

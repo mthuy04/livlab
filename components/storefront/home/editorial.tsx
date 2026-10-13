@@ -17,12 +17,12 @@ export const DIVIDER = '#E5E5E5';
 export const TEXT = '#262626';
 export const TEXT_MUTED = '#666666';
 
-/** 38/500/.03em desktop, 30px on a phone. One scale for every section. */
+/** 36/500/.025em desktop, 28px on a phone. One scale for every section. */
 export const H2_STYLE = {
-  fontSize: 'clamp(30px, 1.5rem + 1vw, 38px)',
+  fontSize: 'clamp(28px, 1.4rem + 1vw, 36px)',
   fontWeight: 500,
   lineHeight: 1.15,
-  letterSpacing: '.03em',
+  letterSpacing: '.025em',
   color: TEXT,
 } as const;
 
@@ -54,8 +54,8 @@ export function ArrowLink({
       href={href as Route}
       className="group inline-flex shrink-0 items-center gap-2 transition-opacity hover:opacity-60"
       style={{
-        fontSize: 14,
-        fontWeight: 500,
+        fontSize: 13,
+        fontWeight: 600,
         letterSpacing: '.08em',
         color: tone === 'light' ? '#FFFFFF' : TEXT,
       }}

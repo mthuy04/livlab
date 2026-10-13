@@ -29,7 +29,7 @@ export default function HomeCollections({ collections }: { collections: Collecti
                 className={`grid gap-7 lg:items-center lg:gap-[56px] ${
                   imageRight ? 'lg:grid-cols-[38fr_62fr]' : 'lg:grid-cols-[62fr_38fr]'
                 }`}
-                style={index > 0 ? { marginTop: 'clamp(40px, 3vw, 56px)' } : undefined}
+                style={index > 0 ? { marginTop: 'clamp(56px, 5.5vw, 88px)' } : undefined}
               >
                 <Link
                   href={`/concepts/${item.slug}` as Route}
@@ -49,12 +49,12 @@ export default function HomeCollections({ collections }: { collections: Collecti
                   <AccentRule />
                   <h3
                     className="mt-5"
-                    style={{ fontSize: 'clamp(22px, 1.2rem + 0.5vw, 26px)', fontWeight: 500, lineHeight: 1.25, color: TEXT }}
+                    style={{ fontSize: 'clamp(20px, 1.1rem + 0.35vw, 24px)', fontWeight: 500, lineHeight: 1.25, letterSpacing: '.02em', color: TEXT }}
                   >
                     {item.title.toUpperCase()}
                   </h3>
                   {item.description && (
-                    <p className="mt-4 max-w-[380px]" style={BODY_STYLE}>
+                    <p className="mt-4 max-w-[420px]" style={BODY_STYLE}>
                       {item.description}
                     </p>
                   )}

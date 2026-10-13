@@ -13,7 +13,7 @@ export default function HomeCategories({ categories }: { categories: CategoryEnt
       <Container>
         <SectionHeader title="SẢN PHẨM" href={'/products' as Route} />
 
-        <div className="mt-10 grid grid-cols-2 gap-x-5 gap-y-10 lg:mt-14 lg:grid-cols-4 lg:gap-x-8">
+        <div className="mt-8 grid grid-cols-2 gap-x-5 gap-y-10 lg:mt-10 lg:grid-cols-4 lg:gap-x-8">
           {categories.map((category) => (
             <Link key={category.name} href={category.href as Route} className="group block">
               <ProductStage
@@ -22,7 +22,7 @@ export default function HomeCategories({ categories }: { categories: CategoryEnt
                 scale={category.imageScale}
                 sizes="(max-width: 1024px) 50vw, 25vw"
               />
-              <p className="mt-5" style={{ fontSize: 15, fontWeight: 500, letterSpacing: '.08em', color: TEXT }}>
+              <p className="mt-5" style={{ fontSize: 14, fontWeight: 500, letterSpacing: '.08em', color: TEXT }}>
                 {category.name.toUpperCase()}
               </p>
             </Link>

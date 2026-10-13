@@ -26,12 +26,15 @@ export default function ShowroomConsultation({ quotations }: { quotations: boole
             <p style={{ fontSize: 13, fontWeight: 500, letterSpacing: '.12em', color: 'rgba(255,255,255,0.66)' }}>
               TƯ VẤN SHOWROOM
             </p>
-            <h2 className="mt-4" style={{ ...H2_STYLE, color: '#FFFFFF' }}>
+            <h2
+              className="mt-4"
+              style={{ ...H2_STYLE, fontSize: 'clamp(28px, 1.3rem + 1.3vw, 40px)', letterSpacing: '0', color: '#FFFFFF' }}
+            >
               Tiếp tục với người hiểu sản phẩm.
             </h2>
             <p
               className="mt-5"
-              style={{ fontSize: 'clamp(15px, 0.9rem + 0.2vw, 16px)', lineHeight: 1.65, color: 'rgba(255,255,255,0.8)' }}
+              style={{ fontSize: 16, lineHeight: 1.65, color: 'rgba(255,255,255,0.8)' }}
             >
               Gửi không gian, sản phẩm và ngân sách bạn đã chọn. Nhân viên showroom nhận đầy đủ bối cảnh
               để tư vấn tiếp và lập báo giá.
@@ -43,13 +46,13 @@ export default function ShowroomConsultation({ quotations }: { quotations: boole
               href={'/contact' as Route}
               className="inline-flex items-center transition-opacity hover:opacity-85"
               style={{
-                height: 46,
-                padding: '0 26px',
+                height: 42,
+                paddingInline: 18,
                 borderRadius: 2,
                 backgroundColor: '#FFFFFF',
                 color: 'var(--tenant-accent)',
-                fontSize: 14,
-                fontWeight: 500,
+                fontSize: 13,
+                fontWeight: 600,
                 letterSpacing: '.08em',
               }}
             >

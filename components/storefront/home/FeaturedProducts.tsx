@@ -35,11 +35,11 @@ export default function FeaturedProducts({ products }: { products: FeaturedProdu
                   sizes="(max-width: 1024px) 50vw, 25vw"
                 />
                 {product.brand && (
-                  <p className="mt-5" style={{ fontSize: 11, fontWeight: 500, letterSpacing: '.1em', color: TEXT_MUTED }}>
+                  <p className="mt-5" style={{ fontSize: 12, fontWeight: 500, letterSpacing: '.1em', color: TEXT_MUTED }}>
                     {product.brand.toUpperCase()}
                   </p>
                 )}
-                <p className="mt-2" style={{ fontSize: 15, lineHeight: 1.45, fontWeight: 500, color: TEXT }}>
+                <p className="mt-2" style={{ fontSize: 15, lineHeight: 1.5, fontWeight: 500, color: TEXT }}>
                   {product.name}
                 </p>
                 {price && (

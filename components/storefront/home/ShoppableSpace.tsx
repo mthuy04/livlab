@@ -67,11 +67,11 @@ export default function ShoppableSpace({ room }: { room: FeaturedRoom }) {
 
         {active && (
           <div
-            className="absolute z-10 hidden w-[272px] sm:block"
+            className="absolute z-10 hidden w-[278px] sm:block"
             style={{
-              left: `clamp(16px, ${active.xPercent}% + 30px, calc(100% - 288px))`,
-              // 318px is the panel's own height, so it never spills past the photo.
-              top: `clamp(16px, ${active.yPercent}% - 60px, calc(100% - 318px))`,
+              left: `clamp(16px, ${active.xPercent}% + 30px, calc(100% - 294px))`,
+              // 300px is the panel's own height, so it never spills past the photo.
+              top: `clamp(16px, ${active.yPercent}% - 60px, calc(100% - 300px))`,
             }}
           >
             <QuickView product={active} />
@@ -108,14 +108,14 @@ function QuickView({ product }: { product: RoomHotspot }) {
         <Image
           src={product.imageUrl}
           alt=""
-          width={600}
-          height={360}
-          sizes="272px"
-          className="aspect-[16/9] w-full object-contain"
-          style={{ backgroundColor: '#F6F6F5' }}
+          width={560}
+          height={312}
+          sizes="278px"
+          className="w-full object-contain"
+          style={{ height: 156, backgroundColor: '#F6F6F5' }}
         />
       )}
-      <div className="p-4">
+      <div className="px-4 pb-4 pt-3.5">
         {product.brand && (
           <p style={{ fontSize: 11, fontWeight: 500, letterSpacing: '.1em', color: TEXT_MUTED }}>
             {product.brand.toUpperCase()}
@@ -131,7 +131,7 @@ function QuickView({ product }: { product: RoomHotspot }) {
           </p>
         )}
 
-        <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+        <div className="mt-3.5 flex flex-wrap items-center gap-x-5 gap-y-2.5">
           <Link
             href={`/products/${product.slug ?? product.id}` as Route}
             className="transition-opacity hover:opacity-60"
