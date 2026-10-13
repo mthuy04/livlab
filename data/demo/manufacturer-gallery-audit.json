@@ -1,0 +1,5798 @@
+{
+ "checkedAt": "2026-10-13T09:30:52Z",
+ "candidates": {
+  "INAX": [
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-vn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/global.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-cn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-ph.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-tw.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-us-canada.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-id.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-th.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-sg.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-my.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-hk.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://youcanbook.me/resources/pics/ycbm-button.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/SP_VT.png",
+    "sourceSection": "breadcrumb-navpill d-none d-lg-block sticky-top",
+    "relation": "PROMOTIONAL",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://inax-vn.s3.ap-southeast-1.amazonaws.com/sanitary/color/white.png",
+    "sourceSection": "AC-23PVN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/06/AC-23PVN-1.png",
+    "sourceSection": "AC-23PVN",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/06/AC-23PVN-2.png",
+    "sourceSection": "Bản vẽ lắp đặt bồn cầu treo tường AC-23PVN",
+    "relation": "TECHNICAL_DRAWING",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/PC_VT_Shower-Toilet.png",
+    "sourceSection": "Thông số kỹ thuật bồn cầu treo tường AC-23PVN",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-23pvn",
+    "url": "https://www.inax.com.vn/wp-content/themes/inax/assets/images/Icon_of_Zalo.png",
+    "sourceSection": "Thông số kỹ thuật bồn cầu treo tường AC-23PVN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://inax-vn.s3-ap-southeast-1.amazonaws.com/sanitary/products/AC-912VN.png",
+    "sourceSection": "INAX S3 product photo",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-vn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/global.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-cn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-ph.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-tw.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-us-canada.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-id.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-th.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-sg.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-my.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-hk.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://youcanbook.me/resources/pics/ycbm-button.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/SP_VT.png",
+    "sourceSection": "breadcrumb-navpill d-none d-lg-block sticky-top",
+    "relation": "PROMOTIONAL",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://inax-vn.s3.ap-southeast-1.amazonaws.com/sanitary/color/white.png",
+    "sourceSection": "AC-912VN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2025/10/Bon-cau-1-khoi-INAX-AC-912VN-1.png",
+    "sourceSection": "AC-912VN",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/09/AC-912VN.png",
+    "sourceSection": "Bản vẽ bồn cầu 1 khối AC-912VN",
+    "relation": "TECHNICAL_DRAWING",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2025/10/Bon-cau-1-khoi-INAX-AC-912VN-3.png",
+    "sourceSection": "Hướng dẫn lắp đặt bồn cầu 1 khối AC-912VN",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/PC_VT_Shower-Toilet.png",
+    "sourceSection": "Thông số kỹ thuật",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-912vn",
+    "url": "https://www.inax.com.vn/wp-content/themes/inax/assets/images/Icon_of_Zalo.png",
+    "sourceSection": "Thông số kỹ thuật",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://inax-vn.s3-ap-southeast-1.amazonaws.com/sanitary/products/AC-900VRN-2.png",
+    "sourceSection": "INAX S3 product photo",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-vn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://www.inax.com.vn/wp-content/uploads/global.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-cn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-ph.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-tw.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-us-canada.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-id.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-th.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-sg.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-my.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-hk.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://youcanbook.me/resources/pics/ycbm-button.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/SP_VT.png",
+    "sourceSection": "breadcrumb-navpill d-none d-lg-block sticky-top",
+    "relation": "PROMOTIONAL",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://inax-vn.s3.ap-southeast-1.amazonaws.com/sanitary/color/white.png",
+    "sourceSection": "AC-900VRN-2",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2025/10/AC-900VRN-2-1.png",
+    "sourceSection": "AC-900VRN-2",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/09/AC-900VRN-2.png",
+    "sourceSection": "Bản vẽ lắp đặt bồn cầu 1 khối AC-900VRN-2",
+    "relation": "TECHNICAL_DRAWING",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/PC_VT_Shower-Toilet.png",
+    "sourceSection": "Thông số kỹ thuật",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-900vrn-2",
+    "url": "https://www.inax.com.vn/wp-content/themes/inax/assets/images/Icon_of_Zalo.png",
+    "sourceSection": "Thông số kỹ thuật",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-vn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/global.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-cn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-ph.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-tw.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-us-canada.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-id.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-th.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-sg.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-my.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-hk.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://youcanbook.me/resources/pics/ycbm-button.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/SP_VT.png",
+    "sourceSection": "breadcrumb-navpill d-none d-lg-block sticky-top",
+    "relation": "PROMOTIONAL",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://inax-vn.s3.ap-southeast-1.amazonaws.com/sanitary/color/white.png",
+    "sourceSection": "AC-1008VRN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/06/AC-1008VRN-1.png",
+    "sourceSection": "AC-1008VRN",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/09/AC-1008VRN.png",
+    "sourceSection": "Bản vẽ lắp đặt bồn cầu 1 khối AC-1008VRN",
+    "relation": "TECHNICAL_DRAWING",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/PC_VT_Shower-Toilet.png",
+    "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1008VRN",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1008vrn",
+    "url": "https://www.inax.com.vn/wp-content/themes/inax/assets/images/Icon_of_Zalo.png",
+    "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1008VRN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-vn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/global.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-cn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-ph.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-tw.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-us-canada.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-id.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-th.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-sg.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-my.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-hk.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://youcanbook.me/resources/pics/ycbm-button.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/SP_VT.png",
+    "sourceSection": "breadcrumb-navpill d-none d-lg-block sticky-top",
+    "relation": "PROMOTIONAL",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://inax-vn.s3.ap-southeast-1.amazonaws.com/sanitary/color/white.png",
+    "sourceSection": "AC-4005VN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/06/AC-4005VN-1.png",
+    "sourceSection": "AC-4005VN",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/09/AC-4005VN.png",
+    "sourceSection": "Bản vẽ lắp đặt bồn cầu 1 khối AC-4005VN",
+    "relation": "TECHNICAL_DRAWING",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/PC_VT_Shower-Toilet.png",
+    "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-4005VN",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-4005vn",
+    "url": "https://www.inax.com.vn/wp-content/themes/inax/assets/images/Icon_of_Zalo.png",
+    "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-4005VN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-vn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/global.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-cn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-ph.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-tw.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-us-canada.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-id.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-th.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-sg.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-my.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-hk.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://youcanbook.me/resources/pics/ycbm-button.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/SP_VT.png",
+    "sourceSection": "breadcrumb-navpill d-none d-lg-block sticky-top",
+    "relation": "PROMOTIONAL",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://inax-vn.s3.ap-southeast-1.amazonaws.com/sanitary/color/white.png",
+    "sourceSection": "AC-2700VN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/06/AC-2700VN-1.png",
+    "sourceSection": "AC-2700VN",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/09/AC-2700VN.png",
+    "sourceSection": "Bản vẽ lắp đặt bồn cầu 1 khối AC-2700VN",
+    "relation": "TECHNICAL_DRAWING",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/PC_VT_Shower-Toilet.png",
+    "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-2700VN",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-2700vn",
+    "url": "https://www.inax.com.vn/wp-content/themes/inax/assets/images/Icon_of_Zalo.png",
+    "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-2700VN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-vn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/global.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-cn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-ph.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-tw.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-us-canada.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-id.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-th.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-sg.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-my.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-hk.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://youcanbook.me/resources/pics/ycbm-button.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/SP_VT.png",
+    "sourceSection": "breadcrumb-navpill d-none d-lg-block sticky-top",
+    "relation": "PROMOTIONAL",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://inax-vn.s3.ap-southeast-1.amazonaws.com/sanitary/color/white.png",
+    "sourceSection": "AC-1135VN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/06/AC-1135VN-1.png",
+    "sourceSection": "AC-1135VN",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/09/AC-1135VN.png",
+    "sourceSection": "Bản vẽ lắp đặt bồn cầu 1 khối AC-1135VN",
+    "relation": "TECHNICAL_DRAWING",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/PC_VT_Shower-Toilet.png",
+    "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1135VN",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1135vn",
+    "url": "https://www.inax.com.vn/wp-content/themes/inax/assets/images/Icon_of_Zalo.png",
+    "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1135VN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://inax-vn.s3-ap-southeast-1.amazonaws.com/sanitary/products/AC-1035VN.png",
+    "sourceSection": "INAX S3 product photo",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-vn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/global.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-cn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-ph.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-tw.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-us-canada.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-id.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-th.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-sg.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-my.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-hk.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://youcanbook.me/resources/pics/ycbm-button.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/SP_VT.png",
+    "sourceSection": "breadcrumb-navpill d-none d-lg-block sticky-top",
+    "relation": "PROMOTIONAL",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://inax-vn.s3.ap-southeast-1.amazonaws.com/sanitary/color/white.png",
+    "sourceSection": "AC-1035VN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/06/AC-1035VN-1.png",
+    "sourceSection": "AC-1035VN",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/09/Ac-1035VN.png",
+    "sourceSection": "Bản vẽ lắp đặt bồn cầu 1 khối AC-1035VN",
+    "relation": "TECHNICAL_DRAWING",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/PC_VT_Shower-Toilet.png",
+    "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1035VN",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1035vn",
+    "url": "https://www.inax.com.vn/wp-content/themes/inax/assets/images/Icon_of_Zalo.png",
+    "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1035VN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://inax-vn.s3-ap-southeast-1.amazonaws.com/sanitary/products/AC-1032VN.png",
+    "sourceSection": "INAX S3 product photo",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-vn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/global.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-cn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-ph.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-tw.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-us-canada.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-id.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-th.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-sg.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-my.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-hk.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://youcanbook.me/resources/pics/ycbm-button.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/SP_VT.png",
+    "sourceSection": "breadcrumb-navpill d-none d-lg-block sticky-top",
+    "relation": "PROMOTIONAL",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://inax-vn.s3.ap-southeast-1.amazonaws.com/sanitary/color/white.png",
+    "sourceSection": "AC-1032VN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/06/AC-1032VN-1.png",
+    "sourceSection": "AC-1032VN",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/06/AC-1032VN-3.png",
+    "sourceSection": "Công nghệ xả xoáy vượt trội",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/09/AC-1032VN.png",
+    "sourceSection": "Bản vẽ lắp đặt bồn cầu 1 khối AC-1032VN",
+    "relation": "TECHNICAL_DRAWING",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/PC_VT_Shower-Toilet.png",
+    "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1032VN",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1032vn",
+    "url": "https://www.inax.com.vn/wp-content/themes/inax/assets/images/Icon_of_Zalo.png",
+    "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1032VN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-vn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/global.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-cn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-ph.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-tw.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-us-canada.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-id.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-th.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-sg.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-my.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-hk.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://youcanbook.me/resources/pics/ycbm-button.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/SP_VT.png",
+    "sourceSection": "breadcrumb-navpill d-none d-lg-block sticky-top",
+    "relation": "PROMOTIONAL",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://inax-vn.s3.ap-southeast-1.amazonaws.com/sanitary/color/white.png",
+    "sourceSection": "AC-1017VRN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/06/AC-1017VRN-1.png",
+    "sourceSection": "AC-1017VRN",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/09/AC-1017VRN.png",
+    "sourceSection": "Bản vẽ lắp đặt bồn cầu 1 khối AC-1017VRN",
+    "relation": "TECHNICAL_DRAWING",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2026/04/PC_VT_Shower-Toilet.png",
+    "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1017VRN",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-ac-1017vrn",
+    "url": "https://www.inax.com.vn/wp-content/themes/inax/assets/images/Icon_of_Zalo.png",
+    "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1017VRN",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://inax-vn.s3-ap-southeast-1.amazonaws.com/sanitary/products/LFV-502SH.png",
+    "sourceSection": "INAX S3 product photo",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-vn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/global.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-cn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-ph.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-tw.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-us-canada.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-id.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-th.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-sg.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-my.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-hk.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://youcanbook.me/resources/pics/ycbm-button.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://inax-vn.s3.ap-southeast-1.amazonaws.com/sanitary/color/white.png",
+    "sourceSection": "LFV-502SH",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2025/10/LFV-502SH-1.png",
+    "sourceSection": "LFV-502SH",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2025/10/LFV-502SH-2.png",
+    "sourceSection": "Bản vẽ sen vòi đơn LFV-502SH",
+    "relation": "TECHNICAL_DRAWING",
+    "accepted": false
+   },
+   {
+    "product": "inax-lfv-502sh",
+    "url": "https://www.inax.com.vn/wp-content/themes/inax/assets/images/Icon_of_Zalo.png",
+    "sourceSection": "Thông số kỹ thuật",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://inax-vn.s3-ap-southeast-1.amazonaws.com/sanitary/products/LFV-112SH.png",
+    "sourceSection": "INAX S3 product photo",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-vn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/global.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-cn.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-ph.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-tw.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-us-canada.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-id.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-th.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-sg.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-my.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/flag-hk.png",
+    "sourceSection": "document head",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://youcanbook.me/resources/pics/ycbm-button.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://inax-vn.s3.ap-southeast-1.amazonaws.com/sanitary/color/white.png",
+    "sourceSection": "LFV-112SH",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2025/11/sen-voi-don-lfv-112sh-1.jpg",
+    "sourceSection": "LFV-112SH",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://www.inax.com.vn/wp-content/uploads/2025/11/sen-voi-don-lfv-112sh-2.jpg",
+    "sourceSection": "Bản vẽ sen vòi đơn LFV-112SH",
+    "relation": "TECHNICAL_DRAWING",
+    "accepted": false
+   },
+   {
+    "product": "inax-lfv-112sh",
+    "url": "https://www.inax.com.vn/wp-content/themes/inax/assets/images/Icon_of_Zalo.png",
+    "sourceSection": "Thông số kỹ thuật",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   }
+  ],
+  "JOMOO": [
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://product.hstatic.net/200000913817/product/zd8920-sa-cjm305_20414c6f8223477caa2e3e2cb1248dd0_635a7ccedf194c208daacbae2628d802.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/dieu_khien_bang_cu_chi.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/men_dat_hiem_khang_khuan.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/cam_bien_da_chan.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/be_ngoi_lam_am.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/bot_ma_thuat.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/den_ban_dem_thong_minh.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/dieu_khien_tu_xa.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/nhiet_do_be_ngoi_tu_dong_dieu_chinh.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/say_kho_bang_khi_am.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/tu_dong_xa_khi_dung_len.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/xa_khi_mat_dien.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/xa_trang_long_bau_truoc.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/num_dieu_khien_thong_minh.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/tu_dong_mo_nap.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/rua_tri_tao_bon.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/man_hinh_ky_thuat_so_thong_minh.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/khu_trung_tia_uv.png",
+    "sourceSection": "Smart toilet ZD8920-SA-CJM305",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-zd8920-sa-cjm305",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://product.hstatic.net/200000913817/product/11416-2-2_31k-i011_0189057e352744dd92a0ec4291fc546a.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://file.hstatic.net/200000913817/file/be_ngoi_va_nap_uf_dong_em.png",
+    "sourceSection": "Bàn cầu một khối 11416-2-2/31K-I011",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://file.hstatic.net/200000913817/file/men_dat_hiem_khang_khuan.png",
+    "sourceSection": "Bàn cầu một khối 11416-2-2/31K-I011",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://file.hstatic.net/200000913817/file/van_xa_lon_3_inch.png",
+    "sourceSection": "Bàn cầu một khối 11416-2-2/31K-I011",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://file.hstatic.net/200000913817/file/xa_xoay_kep.png",
+    "sourceSection": "Bàn cầu một khối 11416-2-2/31K-I011",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://file.hstatic.net/200000913817/file/tiet_kiem_nuoc.png",
+    "sourceSection": "Bàn cầu một khối 11416-2-2/31K-I011",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-11416-2-231k",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-12661-1-01k",
+    "url": "https://product.hstatic.net/200000913817/product/12661-1_6295a076a9e54925af00bb3150666eda.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-12661-1-01k",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12661-1-01k",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12661-1-01k",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12661-1-01k",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12661-1-01k",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12661-1-01k",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12661-1-01k",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12661-1-01k",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12661-1-01k",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12661-1-01k",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12661-1-01k",
+    "url": "https://file.hstatic.net/200000913817/file/men_dat_hiem_khang_khuan.png",
+    "sourceSection": "Chậu rửa đặt bàn 12661-1/01K-I011",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12661-1-01k",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-p12679-1-11z",
+    "url": "https://product.hstatic.net/200000913817/product/p12679-1_6b8889a17f394126a8fdf89a4f062325.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-p12679-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12679-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12679-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12679-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12679-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12679-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12679-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12679-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12679-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12679-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12679-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/men_de_dang_lam_sach.png",
+    "sourceSection": "Chậu rửa đặt bàn P12679-1/11Z-1",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12679-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-12138-1-01z",
+    "url": "https://product.hstatic.net/200000913817/product/12138-1_df88b650866a4e45892ba8af459d7cd2_3be2bf7926a84a888c314db0177618ed.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-12138-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12138-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12138-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12138-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12138-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12138-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12138-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12138-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12138-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12138-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12138-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/men_de_dang_lam_sach.png",
+    "sourceSection": "Above-counter sink 12138-1/01Z-I011",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12138-1-01z",
+    "url": "https://product.hstatic.net/200000913817/product/12138-1_df88b650866a4e45892ba8af459d7cd2_3be2bf7926a84a888c314db0177618ed_large.png",
+    "sourceSection": "Above-counter sink 12138-1/01Z-I011",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12138-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-12497-1-11z",
+    "url": "https://product.hstatic.net/200000913817/product/12497-1_464b6ff8c2bc4f20b6b754301b05161f.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-12497-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12497-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12497-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12497-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12497-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12497-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12497-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12497-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12497-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12497-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12497-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/men_de_dang_lam_sach.png",
+    "sourceSection": "Chậu rửa dương vành 12497-1/11Z-I011",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12497-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-12409-1-11z",
+    "url": "https://product.hstatic.net/200000913817/product/12409-1_5387e67d65a84f5a8ccd1ae966e78a17.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-12409-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12409-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12409-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12409-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12409-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12409-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12409-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12409-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12409-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12409-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12409-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/men_de_dang_lam_sach.png",
+    "sourceSection": "Chậu rửa dương vành 12409-1/11Z-I011",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12409-1-11z",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-p12663-1-01z-1",
+    "url": "https://product.hstatic.net/200000913817/product/p12663-1_e877205e58e14a138f18eea440874acb.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-p12663-1-01z-1",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12663-1-01z-1",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12663-1-01z-1",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12663-1-01z-1",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12663-1-01z-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12663-1-01z-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12663-1-01z-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12663-1-01z-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12663-1-01z-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12663-1-01z-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12663-1-01z-1",
+    "url": "https://file.hstatic.net/200000913817/file/men_de_dang_lam_sach.png",
+    "sourceSection": "Chậu rửa dương vành P12663-1/01Z-1",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12663-1-01z-1",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-p12748-1-11p-1",
+    "url": "https://product.hstatic.net/200000913817/product/p12748-1_f09becc8f66f40d0946b91ba308fe850_f6727b705c5949b9a6079b749c073e82.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-p12748-1-11p-1",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12748-1-11p-1",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12748-1-11p-1",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12748-1-11p-1",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12748-1-11p-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12748-1-11p-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12748-1-11p-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12748-1-11p-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12748-1-11p-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12748-1-11p-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12748-1-11p-1",
+    "url": "https://file.hstatic.net/200000913817/file/men_de_dang_lam_sach.png",
+    "sourceSection": "Wall-mounted sink P12748-1/11P-1",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p12748-1-11p-1",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-12683-1-01k-i011",
+    "url": "https://product.hstatic.net/200000913817/product/12683-1_a5a08efa5b224ed28b58c29ec67ea9b2.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-12683-1-01k-i011",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12683-1-01k-i011",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12683-1-01k-i011",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12683-1-01k-i011",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12683-1-01k-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12683-1-01k-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12683-1-01k-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12683-1-01k-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12683-1-01k-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12683-1-01k-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12683-1-01k-i011",
+    "url": "https://file.hstatic.net/200000913817/file/men_dat_hiem_khang_khuan.png",
+    "sourceSection": "Chậu rửa âm bàn 12683-1/01K-I011",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12683-1-01k-i011",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-12161-1-01p",
+    "url": "https://product.hstatic.net/200000913817/product/12161-1_96625ade518f48e591a4dbbed5a0d103.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-12161-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12161-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12161-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12161-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12161-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12161-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12161-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12161-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12161-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12161-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12161-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/men_de_dang_lam_sach.png",
+    "sourceSection": "Chậu rửa đặt bàn 12161-1/01P-I011",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12161-1-01p",
+    "url": "https://cdn.hstatic.net/files/200000913817/file/25.png",
+    "sourceSection": "slider-feature owl-carousel",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12161-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-12703-1-01p",
+    "url": "https://product.hstatic.net/200000913817/product/_12703-1_95d79d1ed4af4acdb4b6042ea54a6a0e.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-12703-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12703-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12703-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12703-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12703-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12703-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12703-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12703-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12703-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12703-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12703-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/men_dat_hiem_khang_khuan.png",
+    "sourceSection": "Chậu rửa đặt bàn 12703-1/01P-I011",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12703-1-01p",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-12132-1-01z",
+    "url": "https://product.hstatic.net/200000913817/product/12132_88bbb6a030e646a896cd6f78138386bb.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-12132-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12132-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12132-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12132-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12132-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12132-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12132-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12132-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12132-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12132-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12132-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/men_de_dang_lam_sach.png",
+    "sourceSection": "Chậu rửa đặt bàn 12132-1/01Z-I011",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-12132-1-01z",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://product.hstatic.net/200000913817/product/36473-463_hbs-1_a4c9179bcbd04072bda1d752ec920ad2.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/tu_dong_tay_can.png",
+    "sourceSection": "Sen cây tự động tẩy cặn kèm vòi xịt 36473-463/HBS-1",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/tay_can_bang_1_nut.png",
+    "sourceSection": "Sen cây tự động tẩy cặn kèm vòi xịt 36473-463/HBS-1",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/tich_hop_ke.png",
+    "sourceSection": "Sen cây tự động tẩy cặn kèm vòi xịt 36473-463/HBS-1",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://cdn.hstatic.net/files/200000913817/file/49.png",
+    "sourceSection": "slider-feature owl-carousel",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://cdn.hstatic.net/files/200000913817/file/tu_dong_tay_can__1_.png",
+    "sourceSection": "slider-feature owl-carousel",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://cdn.hstatic.net/files/200000913817/file/ke_de_do.png",
+    "sourceSection": "slider-feature owl-carousel",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36473-463-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-35279-477-1b-i011",
+    "url": "https://product.hstatic.net/200000913817/product/35279-477_1b-i011_942f1a6a02924e7687ca023aa2569ae8.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-35279-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-35279-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-35279-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-35279-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-35279-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-35279-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-35279-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-35279-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-35279-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-35279-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-35279-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-p36411-484-1b-1",
+    "url": "https://product.hstatic.net/200000913817/product/p36411-484_1b-1_2395584758cf4a0a874e956813be4699.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-p36411-484-1b-1",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p36411-484-1b-1",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p36411-484-1b-1",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p36411-484-1b-1",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p36411-484-1b-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p36411-484-1b-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p36411-484-1b-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p36411-484-1b-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p36411-484-1b-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p36411-484-1b-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-p36411-484-1b-1",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-36437-477-1b-i011",
+    "url": "https://cdn.hstatic.net/products/200000913817/36437_cc4d1a315ef846febe9cc2240ea95e86.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-36437-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36437-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36437-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36437-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36437-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36437-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36437-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36437-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36437-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36437-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36437-477-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-36457-592-hbs-1",
+    "url": "https://cdn.hstatic.net/products/200000913817/36457_3ef9401ff58d49eb98a3588e28a8e272.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-36457-592-hbs-1",
+    "url": "https://product.hstatic.net/200000913817/product/36457-592_hbs-1_59111da01fb84ede925357bea50f2355.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-36457-592-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36457-592-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36457-592-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36457-592-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36457-592-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36457-592-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36457-592-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36457-592-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36457-592-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36457-592-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36457-592-hbs-1",
+    "url": "https://cdn.hstatic.net/files/200000913817/file/voi_xoay_360_do.png",
+    "sourceSection": "slider-feature owl-carousel",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36457-592-hbs-1",
+    "url": "https://cdn.hstatic.net/files/200000913817/file/silicon_-_an_nut_tay_can.png",
+    "sourceSection": "slider-feature owl-carousel",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-36457-592-hbs-1",
+    "url": "https://cdn.hstatic.net/files/200000913817/file/58.png",
+    "sourceSection": "slider-feature owl-carousel",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-36457-592-hbs-1",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://product.hstatic.net/200000913817/product/26163-644_1b-i011_3943416449ee49a9afb2ba5cc19761ca.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://cdn.hstatic.net/products/200000913817/_______-___53f3be761c614a8f9f716cefbe7bf82e.jpg",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://cdn.hstatic.net/products/200000913817/_______-______1__8edf8d7ca34b4128a7d353aac00b1412.jpg",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://cdn.hstatic.net/products/200000913817/___fd1ff7d9dc8a4950bfbe60726fb1f7c2.jpg",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://cdn.hstatic.net/products/200000913817/___d140567a083f433ebf07efea7060a805.jpg",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/tu_dong_tay_can.png",
+    "sourceSection": "Sen cây ổn nhiệt tự động tẩy cặn kèm vòi xịt 26163-644/1B-I0",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/tay_can_bang_1_nut.png",
+    "sourceSection": "Sen cây ổn nhiệt tự động tẩy cặn kèm vòi xịt 26163-644/1B-I0",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://cdn.hstatic.net/files/200000913817/file/49.png",
+    "sourceSection": "slider-feature owl-carousel",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://cdn.hstatic.net/files/200000913817/file/hien_thi_nhiet_do.png",
+    "sourceSection": "slider-feature owl-carousel",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://cdn.hstatic.net/files/200000913817/file/dieu_chinh_nhiet_do_e0f1b568bdb84bfd89deca9debddfb93.png",
+    "sourceSection": "slider-feature owl-carousel",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://cdn.hstatic.net/files/200000913817/file/tu_dong_tay_can__2_.png",
+    "sourceSection": "slider-feature owl-carousel",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26163-644-1b-i011",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "jomoo-26161-624-hb-1",
+    "url": "https://product.hstatic.net/200000913817/product/26161-624_hb-1_cebc593a780940038dc6a9f8786b11af.png",
+    "sourceSection": "Haravan product record",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "jomoo-26161-624-hb-1",
+    "url": "https://file.hstatic.net/200000913817/file/item2.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26161-624-hb-1",
+    "url": "https://file.hstatic.net/200000913817/file/item1.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26161-624-hb-1",
+    "url": "https://file.hstatic.net/200000913817/file/item4.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26161-624-hb-1",
+    "url": "https://file.hstatic.net/200000913817/file/item3.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26161-624-hb-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_congnghe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26161-624-hb-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_vejomoo_8a71c01bce324cbbbae2fa7abd2a2964.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26161-624-hb-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_duan.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26161-624-hb-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_baohanh.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26161-624-hb-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_tintuc.jpg",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26161-624-hb-1",
+    "url": "https://file.hstatic.net/200000913817/file/megamenu_lienhe.png",
+    "sourceSection": "document head",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26161-624-hb-1",
+    "url": "https://file.hstatic.net/200000913817/file/kiem_soat_nhiet_do_thong_minh.png",
+    "sourceSection": "Sen cây ổn nhiệt 26161-624/HB-1",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26161-624-hb-1",
+    "url": "https://file.hstatic.net/200000913817/file/tich_hop_ke.png",
+    "sourceSection": "Sen cây ổn nhiệt 26161-624/HB-1",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26161-624-hb-1",
+    "url": "https://file.hstatic.net/200000913817/file/man_hinh_ky_thuat_so_thong_minh.png",
+    "sourceSection": "Sen cây ổn nhiệt 26161-624/HB-1",
+    "relation": "UNKNOWN",
+    "accepted": false
+   },
+   {
+    "product": "jomoo-26161-624-hb-1",
+    "url": "https://file.hstatic.net/200000913817/file/logo.png",
+    "sourceSection": "logo-footer",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   }
+  ],
+  "TOTO": [
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/cs838t10.png",
+    "sourceSection": "document head",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/cefiontect_logo.png",
+    "sourceSection": "CS838DT10",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/01/rimless_logo.png",
+    "sourceSection": "CS838DT10",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/tornado_flush_logo.png",
+    "sourceSection": "CS838DT10",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/water_saving_logo.png",
+    "sourceSection": "CS838DT10",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/xgreen-good-design-award-2018.webp",
+    "sourceSection": "CS838DT10",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/pdf.jpg",
+    "sourceSection": "Tải xuống PDF",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/CS302DW26.jpg",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/heat_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/premist_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/deodorizer_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/07/CS326DW26.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "CS326DW26"
+    ]
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/warm_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/RPRW_01_Mwhite.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/ewater_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/auto_open_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/RPRW_01_Mblack.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/03/ewater_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/04/cw812.s2.2.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/02/G5A-CW878BA-TCF76311GAA.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/white-arrow.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/detail-plus.jpg",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/detail-close.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/trash.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/menu-icon.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/03/network-icon1.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/03/catalogue-icon1.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs838dt10",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/close-icon.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/cs769drt8.png",
+    "sourceSection": "document head",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/cefiontect_logo.png",
+    "sourceSection": "CS769DRT8",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/01/rimless_logo.png",
+    "sourceSection": "CS769DRT8",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/tornado_flush_logo.png",
+    "sourceSection": "CS769DRT8",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/water_saving_logo.png",
+    "sourceSection": "CS769DRT8",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/xgreen-good-design-award-2018.webp",
+    "sourceSection": "CS769DRT8",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/contents/wp-content/uploads/2022/07/be-ve-sinh-hai-khoi-nap-dong-em-tc600vs.jpeg",
+    "sourceSection": "Mô tả bàn cầu vệ sinh hai khối CS769DRT8 nắp đóng êm TOTO",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "TC600VS"
+    ]
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/contents/wp-content/uploads/2022/08/anh-2d-be-ve-sinh-hai-khoi-nap-dong-em-tc600vs.jpeg",
+    "sourceSection": "Bản vẽ kỹ thuật",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/pdf.jpg",
+    "sourceSection": "Tải xuống PDF",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/CS769DRW26-1.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/heat_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/premist_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/CS767RW26.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "CS767RW26"
+    ]
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/deodorizer_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/CS302DW26.jpg",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/07/CS326DW26.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "CS326DW26"
+    ]
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/warm_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/12/CS769DRW24.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "CS769DRW24"
+    ]
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/ewater_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/12/CS767RW24.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "CS767RW24"
+    ]
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/06/CS769DRW18-scaled.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "CS769DRW18SCAL"
+    ]
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/06/CS767RW18-scaled.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "CS767RW18SCALE"
+    ]
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/white-arrow.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/detail-plus.jpg",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/detail-close.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/trash.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/menu-icon.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/03/network-icon1.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/03/catalogue-icon1.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-cs769drt8",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/close-icon.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/ms636dt8.png",
+    "sourceSection": "document head",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/cefiontect_logo.png",
+    "sourceSection": "MS636DT8",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/01/rimless_logo.png",
+    "sourceSection": "MS636DT8",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/tornado_flush_logo.png",
+    "sourceSection": "MS636DT8",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/water_saving_logo.png",
+    "sourceSection": "MS636DT8",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/xgreen-good-design-award-2018.webp",
+    "sourceSection": "MS636DT8",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/contents/wp-content/uploads/2022/07/be-ve-sinh-mot-khoi-nap-dong-em-nhe-tc600vs.jpeg",
+    "sourceSection": "Mô tả bàn cầu vệ sinh một khối TOTO MS636DT8 kèm nắp đóng êm",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "TC600VS"
+    ]
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/contents/wp-content/uploads/2022/08/hinh-anh-be-ve-sinh-mot-khoi-nap-dong-em-nhe-tc600vs.jpeg",
+    "sourceSection": "Bản vẽ kỹ thuật",
+    "relation": "TECHNICAL_DRAWING",
+    "accepted": false,
+    "foreignSku": [
+     "TC600VS"
+    ]
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/pdf.jpg",
+    "sourceSection": "Tải xuống PDF",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/MS857CDW26.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS857CDW26"
+    ]
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/premist_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/heat_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/deodorizer_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/MS857DW26.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS857DW26"
+    ]
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/12/MS889DRW25.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS889DRW25"
+    ]
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/ewater_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/warm_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/12/MS887RW25-1.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS887RW251"
+    ]
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/12/MS857DW25.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS857DW25"
+    ]
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/12/MS857CDW25.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS857CDW25"
+    ]
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/11/MS885CDW25.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS885CDW25"
+    ]
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/12/MS885DW25.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS885DW25"
+    ]
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/white-arrow.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/detail-plus.jpg",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/detail-close.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/trash.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/menu-icon.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/03/network-icon1.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/03/catalogue-icon1.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms636dt8",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/close-icon.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/ms889t8.png",
+    "sourceSection": "document head",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/cefiontect_logo.png",
+    "sourceSection": "MS889DRT8",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/01/rimless_logo.png",
+    "sourceSection": "MS889DRT8",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/tornado_flush_logo.png",
+    "sourceSection": "MS889DRT8",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/water_saving_logo.png",
+    "sourceSection": "MS889DRT8",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/xgreen-good-design-award-2018.webp",
+    "sourceSection": "MS889DRT8",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/contents/wp-content/uploads/2022/07/ban-cau-ve-sinh-mot-khoi-nap-dong-em-tc600vs.jpeg",
+    "sourceSection": "Mô tả bàn cầu vệ sinh một khối MS889DRT8 cùng nắp đóng êm TO",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "TC600VS"
+    ]
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/contents/wp-content/uploads/2022/08/anh-2d-ban-cau-ve-sinh-mot-khoi-nap-dong-em-tc600vs.jpeg",
+    "sourceSection": "Bản vẽ kỹ thuật",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/pdf.jpg",
+    "sourceSection": "Tải xuống PDF",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/MS857CDW26.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS857CDW26"
+    ]
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/premist_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/heat_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/deodorizer_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/MS857DW26.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS857DW26"
+    ]
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/12/MS889DRW25.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS889DRW25"
+    ]
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/ewater_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/warm_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/12/MS887RW25-1.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS887RW251"
+    ]
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/12/MS857DW25.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS857DW25"
+    ]
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/12/MS857CDW25.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS857CDW25"
+    ]
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/11/MS885CDW25.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS885CDW25"
+    ]
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/12/MS885DW25.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS885DW25"
+    ]
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/white-arrow.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/detail-plus.jpg",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/detail-close.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/trash.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/menu-icon.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/03/network-icon1.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/03/catalogue-icon1.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-ms889drt8",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/close-icon.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/pay1725vc-tvbf411.jpg",
+    "sourceSection": "document head",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/pdf.jpg",
+    "sourceSection": "Tải xuống PDF",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/2_GB_GROSS_RD_02.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/recline_comfort_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/4_GB_GROSS_SQ_02.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/8_GB_GROSS_SQ_01.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/1_ZERO-DIMENTION.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/hydrohands_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/zero_dimension_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/11/MS625CDW25.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS625CDW25"
+    ]
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/cefiontect_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/deodorizer_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/ewater_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/heat_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/premist_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/01/rimless_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/tornado_flush_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/water_saving_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/warm_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/11/MS625DW24-1.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS625DW241"
+    ]
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/11/MS625DW24.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS625DW24"
+    ]
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/tbv01104b-tbn01103b_1.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "TBV01104BTBN01103"
+    ]
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/white-arrow.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/detail-plus.jpg",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/detail-close.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/trash.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/menu-icon.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/03/network-icon1.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/03/catalogue-icon1.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1725vc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/close-icon.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/pay1720hv-tvbf411.jpg",
+    "sourceSection": "document head",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/pdf.jpg",
+    "sourceSection": "Tải xuống PDF",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/2_GB_GROSS_RD_02.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/recline_comfort_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/4_GB_GROSS_SQ_02.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/8_GB_GROSS_SQ_01.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/1_ZERO-DIMENTION.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/hydrohands_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/zero_dimension_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/11/MS625CDW25.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS625CDW25"
+    ]
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/cefiontect_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/deodorizer_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/ewater_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/heat_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/premist_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/01/rimless_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/tornado_flush_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/water_saving_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/warm_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/11/MS625DW24-1.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS625DW241"
+    ]
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/11/MS625DW24.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS625DW24"
+    ]
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/tbv01104b-tbn01103b_1.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "TBV01104BTBN01103"
+    ]
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/white-arrow.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/detail-plus.jpg",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/detail-close.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/trash.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/menu-icon.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/03/network-icon1.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/03/catalogue-icon1.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1720hv-tvbf411",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/close-icon.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/pay1735hvc-tvbf411.jpg",
+    "sourceSection": "document head",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/pdf.jpg",
+    "sourceSection": "Tải xuống PDF",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/2_GB_GROSS_RD_02.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/recline_comfort_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/4_GB_GROSS_SQ_02.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/8_GB_GROSS_SQ_01.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/1_ZERO-DIMENTION.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/hydrohands_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/zero_dimension_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/11/MS625CDW25.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS625CDW25"
+    ]
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/cefiontect_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/deodorizer_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/ewater_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/heat_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/premist_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/01/rimless_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/tornado_flush_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/water_saving_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/warm_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/11/MS625DW24-1.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS625DW241"
+    ]
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/11/MS625DW24.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS625DW24"
+    ]
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/tbv01104b-tbn01103b_1.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "TBV01104BTBN01103"
+    ]
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/white-arrow.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/detail-plus.jpg",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/detail-close.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/trash.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/menu-icon.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/03/network-icon1.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/03/catalogue-icon1.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pay1735hvc-tvbf411",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/close-icon.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/11/pjyd2200pwe_gw.jpg",
+    "sourceSection": "document head",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/hydrohands_logo.png",
+    "sourceSection": "PJYD2200PWE#GW",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/zero_dimension_logo.png",
+    "sourceSection": "PJYD2200PWE#GW",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/xreddot-award-2020.webp",
+    "sourceSection": "PJYD2200PWE#GW",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/contents/wp-content/uploads/2022/07/PJYD2200PWEGW.jpeg",
+    "sourceSection": "Tính năng nổi bật",
+    "relation": "CURRENT_PRODUCT",
+    "accepted": true
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/contents/wp-content/uploads/2022/07/anh-2d-cua-bon-tam-noi-khong-gian-pjyd2200pwegw.jpeg",
+    "sourceSection": "Thông số kỹ thuật",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/themes/toto/assets/img/pdf.jpg",
+    "sourceSection": "Tải xuống PDF",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/2_GB_GROSS_RD_02.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/recline_comfort_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/4_GB_GROSS_SQ_02.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/8_GB_GROSS_SQ_01.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2026/08/1_ZERO-DIMENTION.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/11/MS625CDW25.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS625CDW25"
+    ]
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/cefiontect_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/deodorizer_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/ewater_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/heat_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/premist_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/01/rimless_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2023/09/tornado_flush_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/water_saving_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/warm_logo.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/11/MS625DW24-1.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS625DW241"
+    ]
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/11/MS625DW24.png",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "MS625DW24"
+    ]
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2024/02/tbv01104b-tbn01103b_1.jpg",
+    "sourceSection": "list-filter",
+    "relation": "RELATED_PRODUCT",
+    "accepted": false,
+    "foreignSku": [
+     "TBV01104BTBN01103"
+    ]
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/white-arrow.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/detail-plus.jpg",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/detail-close.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/trash.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/menu-icon.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/03/network-icon1.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/uploads/2025/03/catalogue-icon1.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   },
+   {
+    "product": "toto-pjyd2200pwe-gw",
+    "url": "https://vn.toto.com/wp-content/webp-express/webp-images/themes/toto/assets/img/close-icon.png",
+    "sourceSection": "list-filter",
+    "relation": "PROMOTIONAL",
+    "accepted": false,
+    "reason": "NON_PRODUCT_ASSET"
+   }
+  ]
+ }
+}
