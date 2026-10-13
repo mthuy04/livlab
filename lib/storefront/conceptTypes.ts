@@ -264,9 +264,27 @@ export interface StorefrontConcept {
 
   title: string;
   titleVi: string;
-  description: string;
-  /** Two or three design observations. Never a claim about a product. */
-  whyItWorks: string[];
+
+  /**
+   * Three lengths, each written for one place, rather than one paragraph
+   * stretched or truncated to fit three.
+   *
+   * A card that carries the full story stops being a card, and a detail page
+   * that carries only the card's line has nothing to say once the reader has
+   * decided to look. The rule for all three is the same: say why the room is
+   * like this — light, circulation, how the materials sit together — not what
+   * objects are in it. The photograph already lists the objects.
+   *
+   * None of it may claim a product capability. What a fixture *does* is the
+   * catalogue's to state, from data; what a room *feels* like is this copy's.
+   */
+
+  /** ~20–30 words. The grid, under the title. */
+  shortDescription: string;
+  /** ~90–140 words. The editorial section under the stage. */
+  conceptStory: string;
+  /** Exactly three. Spatial observations, never product claims. */
+  designPrinciples: [string, string, string];
 
   canonicalImage: string;
   imageAlt: string;
@@ -335,6 +353,7 @@ export interface ResolvedConcept {
 export interface ConceptCardModel {
   slug: string;
   titleVi: string;
+  shortDescription: string;
   image: string;
   imageAlt: string;
   styleFacet: StyleFacet;
@@ -351,6 +370,7 @@ export function toCardModel(resolved: ResolvedConcept): ConceptCardModel {
   return {
     slug: concept.slug,
     titleVi: concept.titleVi,
+    shortDescription: concept.shortDescription,
     image: concept.canonicalImage,
     imageAlt: concept.imageAlt,
     styleFacet: STYLE_FACET_OF[concept.style],

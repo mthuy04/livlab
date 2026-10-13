@@ -47,11 +47,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { concept } = resolved;
   return {
     title: `${concept.titleVi} | ${tenant.brand.name}`,
-    description: concept.description,
+    description: concept.shortDescription,
     alternates: { canonical: `/concepts/${concept.slug}` },
     openGraph: {
       title: `${concept.titleVi} | ${tenant.brand.name}`,
-      description: concept.description,
+      description: concept.shortDescription,
       images: [{ url: concept.canonicalImage, width: 1448, height: 1086, alt: concept.imageAlt }],
     },
   };
@@ -115,7 +115,7 @@ export default async function ConceptDetailPage({ params }: Props) {
         </h1>
 
         <p className="max-w-[680px]" style={{ marginTop: 14, fontSize: 15, lineHeight: 1.68, color: TEXT_MUTED }}>
-          {concept.description}
+          {concept.shortDescription}
         </p>
       </div>
 
@@ -123,23 +123,70 @@ export default async function ConceptDetailPage({ params }: Props) {
         <ConceptStage image={concept.canonicalImage} imageAlt={concept.imageAlt} hotspots={hotspots} />
       </div>
 
-      <div className="home-container" style={{ paddingTop: 44, paddingBottom: 10 }}>
+      {/*
+        The design idea, after the room rather than before it.
+
+        A reader who has just looked at the photograph and opened a hotspot or
+        two is ready to be told why the room is like this; the same paragraphs
+        above the image would be text standing between them and the thing they
+        came to see.
+
+        Two columns, no cards: the story at a readable measure on the left and
+        the three principles as a short list on the right, separated by a rule
+        rather than by a surface.
+      */}
+      <section className="home-container" style={{ paddingTop: 44 }}>
         <div style={{ borderTop: `1px solid ${DIVIDER}`, paddingTop: 40 }}>
-          <h2 style={{ fontSize: 'clamp(22px, 1.2rem + .6vw, 31px)', fontWeight: 500, lineHeight: 1.12, color: TEXT }}>
-            VÌ SAO KHÔNG GIAN NÀY HOẠT ĐỘNG
+          <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.12em', color: TEXT_FAINT }}>
+            Ý TƯỞNG THIẾT KẾ
+          </p>
+
+          <h2
+            style={{
+              marginTop: 12,
+              fontSize: 'clamp(22px, 1.2rem + .6vw, 31px)',
+              fontWeight: 500,
+              lineHeight: 1.14,
+              letterSpacing: '.008em',
+              color: TEXT,
+            }}
+          >
+            {concept.titleVi}
           </h2>
-          <ul className="mt-7 grid gap-6 md:grid-cols-3" style={{ maxWidth: 1100 }}>
-            {concept.whyItWorks.slice(0, 3).map((point, i) => (
-              <li key={point} style={{ fontSize: 14.5, lineHeight: 1.68, color: TEXT_MUTED }}>
-                <span style={{ display: 'block', marginBottom: 8, fontSize: 11, fontWeight: 600, letterSpacing: '.1em', color: TEXT_FAINT }}>
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                {point}
-              </li>
-            ))}
-          </ul>
+
+          <div className="concept-story">
+            <div className="concept-story-body">
+              {concept.conceptStory.split('\n\n').map((para) => (
+                <p key={para.slice(0, 24)} style={{ fontSize: 15.5, lineHeight: 1.78, color: TEXT_MUTED }}>
+                  {para}
+                </p>
+              ))}
+            </div>
+
+            <aside className="concept-story-principles">
+              <ul>
+                {concept.designPrinciples.map((point, i) => (
+                  <li key={point}>
+                    <span
+                      style={{
+                        display: 'block',
+                        marginBottom: 7,
+                        fontSize: 11,
+                        fontWeight: 600,
+                        letterSpacing: '.1em',
+                        color: TEXT_FAINT,
+                      }}
+                    >
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span style={{ fontSize: 14.5, lineHeight: 1.62, color: TEXT }}>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          </div>
         </div>
-      </div>
+      </section>
 
       <ConceptProductList zones={zones} exactCount={exactCount} />
 

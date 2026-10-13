@@ -91,13 +91,21 @@ const c01: StorefrontConcept = {
   slug: 'urban-light-spa',
   title: 'Urban Light Spa',
   titleVi: 'Phòng tắm sáng & gọn cho căn hộ hiện đại',
-  description:
-    'Phòng tắm căn hộ nhỏ gọn với bề mặt trung tính sáng, vách kính trong suốt và điểm nhấn gỗ ấm, ' +
-    'bố trí theo tuyến thẳng để lối đi không bị cắt ngang.',
-  whyItWorks: [
-    'Bề mặt sáng đồng tông làm căn phòng hẹp bớt cảm giác bị chia nhỏ.',
-    'Vách kính trong giữ tầm nhìn liền mạch tới cửa sổ thay vì chặn lại ở khu tắm.',
-    'Gỗ ấm ở tủ lavabo làm dịu nền đá xám, tránh cảm giác lạnh của phòng toàn sứ trắng.',
+  shortDescription:
+    'Không gian sáng, gọn và dễ ứng dụng, cân bằng giữa thiết bị thiết yếu, ánh sáng tự nhiên ' +
+    'và vật liệu trung tính cho nhịp sống đô thị.',
+  conceptStory:
+    'Urban Light Spa được phát triển cho những phòng tắm căn hộ cần tối ưu diện tích mà vẫn giữ ' +
+    'cảm giác thoáng và thư giãn. Bảng màu trắng – xám sáng giúp mở rộng cảm nhận thị giác, ' +
+    'trong khi bề mặt gỗ sáng bổ sung độ ấm để không gian không trở nên lạnh hoặc quá kỹ thuật.\n\n' +
+    'Khu lavabo, bồn cầu và khu tắm được phân chia rõ ràng nhưng vẫn duy trì sự liên tục nhờ vách ' +
+    'kính trong suốt. Các thiết bị có hình khối gọn, đường nét đơn giản và hoàn thiện chrome giúp ' +
+    'tổng thể dễ phối, dễ sử dụng và phù hợp với nhu cầu sinh hoạt hàng ngày. Đây là concept hướng ' +
+    'tới sự đơn giản, hiệu quả và thoải mái trong một diện tích vừa đủ.',
+  designPrinciples: [
+    'Tối ưu diện tích nhưng không tạo cảm giác chật.',
+    'Bảng màu sáng giúp không gian nhẹ và liền mạch.',
+    'Kính trong duy trì sự phân khu mà không chia cắt thị giác.',
   ],
   canonicalImage: '/concepts/modern-spa-like-bathroom-interior.webp',
   imageAlt:
@@ -186,13 +194,22 @@ const c02: StorefrontConcept = {
   slug: 'soft-scandinavian-bath',
   title: 'Soft Scandinavian Bath',
   titleVi: 'Phòng tắm Scandinavian ấm sáng',
-  description:
-    'Phòng tắm tông Scandinavian với gỗ sáng, đá trung tính ấm, phụ kiện chrome đơn giản ' +
-    'và ánh sáng tự nhiên được giữ cân bằng.',
-  whyItWorks: [
-    'Gỗ sáng và đá ấm cùng độ bão hoà thấp nên không có bề mặt nào tranh phần nhìn.',
-    'Mặt bàn dài liền khối cho chỗ để đồ hằng ngày mà không cần thêm kệ nổi.',
-    'Cửa sổ đặt giữa trục bồn cầu và khu tắm, chia ánh sáng cho cả hai khu.',
+  shortDescription:
+    'Gỗ sáng, bề mặt trung tính và ánh sáng mềm tạo nên một phòng tắm giản dị, ấm áp ' +
+    'và thân thiện với nhịp sống gia đình.',
+  conceptStory:
+    'Soft Scandinavian Bath tập trung vào cảm giác gần gũi và dễ sống thay vì sự phô trương. ' +
+    'Gỗ sáng đóng vai trò làm ấm không gian, kết hợp cùng các bề mặt đá và sứ màu trung tính để ' +
+    'tạo nên một bảng vật liệu nhẹ nhàng, sạch và bền về thị giác.\n\n' +
+    'Các thiết bị được sắp xếp theo trật tự rõ ràng, ưu tiên khoảng lưu thông và khả năng sử dụng ' +
+    'hàng ngày. Ánh sáng tự nhiên cùng chiếu sáng gián tiếp quanh gương giúp khu lavabo trở thành ' +
+    'điểm cân bằng của căn phòng, trong khi khu tắm được tách bằng kính để giữ không gian mở. ' +
+    'Concept phù hợp với người dùng tìm kiếm một phòng tắm tối giản nhưng không lạnh, hiện đại ' +
+    'nhưng vẫn có cảm giác nhà.',
+  designPrinciples: [
+    'Gỗ sáng cân bằng độ lạnh của sứ và đá.',
+    'Thiết bị có hình khối đơn giản, dễ kết hợp.',
+    'Ánh sáng mềm tạo cảm giác bình tĩnh và thân thiện.',
   ],
   canonicalImage: '/concepts/scandinavian-bathroom-with-warm-accents.webp',
   imageAlt:
@@ -260,13 +277,21 @@ const c03: StorefrontConcept = {
   slug: 'warm-smart-retreat',
   title: 'Warm Smart Retreat',
   titleVi: 'Phòng tắm smart ấm áp cho gia đình trẻ',
-  description:
-    'Hướng phòng tắm thông minh tông ấm: bồn cầu điện tử không két, chậu đặt bàn, ' +
-    'gương hắt sáng và khu tắm kính tách riêng.',
-  whyItWorks: [
-    'Bồn cầu không két giải phóng mảng tường phía sau, phòng đọc gọn hơn thực tế.',
-    'Ánh sáng hắt sau gương và trong hốc tường thay cho đèn trần, nên không có bóng đổ gắt trên mặt.',
-    'Đá tông ấm và gỗ sáng giữ nhiệt độ màu đồng nhất với ánh sáng vàng.',
+  shortDescription:
+    'Một không gian hiện đại kết hợp thiết bị thông minh với vật liệu ấm, giúp công nghệ hòa vào ' +
+    'trải nghiệm thay vì trở thành điểm phô diễn.',
+  conceptStory:
+    'Warm Smart Retreat được xây dựng từ ý tưởng rằng một phòng tắm thông minh không nhất thiết ' +
+    'phải trông lạnh hoặc mang cảm giác công nghệ. Những thiết bị hiện đại được đặt trong nền vật ' +
+    'liệu đá ấm, gỗ nhẹ và ánh sáng gián tiếp để tạo ra một trải nghiệm mềm mại và thư giãn hơn.\n\n' +
+    'Bồn cầu thông minh, gương có chiếu sáng tích hợp và khu tắm được tổ chức thành những điểm chức ' +
+    'năng rõ ràng, trong khi lavabo đặt bàn trở thành điểm nhấn thị giác ở khu rửa mặt. Công nghệ ' +
+    'xuất hiện vừa đủ để tăng tiện nghi nhưng không phá vỡ sự yên tĩnh của không gian. Concept phù ' +
+    'hợp với gia đình trẻ muốn nâng cấp trải nghiệm hằng ngày mà vẫn giữ sự ấm áp, tinh gọn và dễ sử dụng.',
+  designPrinciples: [
+    'Công nghệ được tích hợp kín đáo vào không gian.',
+    'Ánh sáng đóng vai trò tạo cảm giác thư giãn.',
+    'Tương phản giữa sứ trắng và vật liệu ấm tạo chiều sâu.',
   ],
   canonicalImage: '/concepts/warm-luxury-spa-bathroom.webp',
   imageAlt:
@@ -344,13 +369,21 @@ const c04: StorefrontConcept = {
   slug: 'serene-premium-suite',
   title: 'Serene Premium Suite',
   titleVi: 'Phòng tắm nghỉ dưỡng thanh lịch',
-  description:
-    'Phòng tắm cao cấp tông đá ấm, ánh sáng được tiết chế, buồng tắm kính và ' +
-    'không khí gần với phòng tắm khách sạn.',
-  whyItWorks: [
-    'Một loại đá duy nhất chạy từ sàn lên tường, nên mắt không bị cắt bởi đường chuyển vật liệu.',
-    'Ánh sáng hắt trong hốc tường và sau gương thay cho đèn chiếu thẳng.',
-    'Khu tắm không bậc, cùng cốt sàn với phần còn lại, giữ mặt sàn liền một mảng.',
+  shortDescription:
+    'Vật liệu đá ấm, kính trong và ánh sáng được kiểm soát tạo nên trải nghiệm phòng tắm mang ' +
+    'tinh thần khách sạn cao cấp nhưng vẫn nhẹ nhàng.',
+  conceptStory:
+    'Serene Premium Suite lấy cảm hứng từ cảm giác yên tĩnh của những phòng tắm khách sạn cao cấp, ' +
+    'nơi mỗi chi tiết được tổ chức để giảm bớt sự nhiễu thị giác. Bảng màu đá ấm và các bề mặt lớn ' +
+    'tạo nền thống nhất, trong khi kính trong giữ sự kết nối giữa khu tắm và phần còn lại của căn phòng.\n\n' +
+    'Thiết bị được lựa chọn theo hướng hình khối tinh gọn và tỷ lệ cân bằng, để chúng trở thành một ' +
+    'phần của kiến trúc thay vì những vật thể đứng riêng lẻ. Ánh sáng gián tiếp được sử dụng để làm ' +
+    'mềm bề mặt vật liệu và tạo chiều sâu vào buổi tối. Tổng thể hướng tới một phòng tắm thanh lịch, ' +
+    'ổn định và có cảm giác nghỉ dưỡng dài lâu, thay vì chỉ tạo ấn tượng trong lần nhìn đầu tiên.',
+  designPrinciples: [
+    'Vật liệu lớn và ít đường chia giúp không gian sang hơn.',
+    'Kính trong duy trì cảm giác mở và liền mạch.',
+    'Ánh sáng gián tiếp làm nổi vật liệu thay vì trang trí quá mức.',
   ],
   canonicalImage: '/concepts/serene-luxury-spa-bathroom.webp',
   imageAlt:
@@ -417,13 +450,22 @@ const c05: StorefrontConcept = {
   slug: 'master-spa-retreat',
   title: 'Master Spa Retreat',
   titleVi: 'Master bathroom phong cách spa tại nhà',
-  description:
-    'Phòng tắm master rộng, tổ chức quanh bồn tắm đặt sàn, mặt bàn đôi, ' +
-    'khu tắm tách riêng và bảng vật liệu tông ấm tự nhiên.',
-  whyItWorks: [
-    'Bồn tắm đặt tự do trước cửa sổ, nên khung nhìn là phần kết của trục đi chính.',
-    'Mặt bàn đôi tách hai khu dùng buổi sáng mà không cần thêm vách ngăn.',
-    'Khu tắm và khu vệ sinh dồn về một phía, để phần sàn còn lại liền mạch.',
+  shortDescription:
+    'Một phòng tắm master rộng rãi với bồn tắm độc lập, khu tắm riêng và kết nối ánh sáng – ' +
+    'thiên nhiên để tạo trải nghiệm nghỉ dưỡng tại nhà.',
+  conceptStory:
+    'Master Spa Retreat xem phòng tắm master như một không gian phục hồi năng lượng, không chỉ là ' +
+    'nơi hoàn thành các chức năng vệ sinh hằng ngày. Bồn tắm độc lập được đặt ở vị trí trung tâm ' +
+    'của trải nghiệm, hướng về nguồn sáng tự nhiên và khoảng nhìn rộng để tạo cảm giác mở và thư thái.\n\n' +
+    'Khu tắm được tách riêng bằng kính trong, trong khi mặt bàn dài tạo một trục ngang ổn định cho ' +
+    'toàn bộ bố cục. Gỗ, đá sáng và các chi tiết kim loại trung tính giữ cho không gian sang nhưng ' +
+    'không nặng nề. Thay vì lấp đầy căn phòng bằng nhiều chi tiết trang trí, concept ưu tiên tỷ lệ, ' +
+    'khoảng trống và ánh sáng — những yếu tố giúp phòng tắm mang tinh thần spa tại nhà, yên tĩnh và ' +
+    'có chiều sâu.',
+  designPrinciples: [
+    'Bồn tắm là điểm nhìn chính, không phải bồn cầu.',
+    'Kết nối ánh sáng tự nhiên làm tăng cảm giác nghỉ dưỡng.',
+    'Khoảng trống và tỷ lệ quan trọng hơn số lượng đồ trang trí.',
   ],
   canonicalImage: '/concepts/luxury-smart-bathroom-retreat.webp',
   imageAlt:

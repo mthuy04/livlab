@@ -81,11 +81,18 @@ export default function ConceptCard({
         </Link>
       </h2>
 
-      <p style={{ marginTop: 12, fontSize: 14, lineHeight: 1.6, color: TEXT_MUTED }}>
+      {/* The card's share of the editorial copy: one sentence on why the room
+          is like this. The full story belongs on the detail page — a card that
+          carries it stops being a card. */}
+      <p className="max-w-[46ch]" style={{ marginTop: 11, fontSize: 14.5, lineHeight: 1.62, color: TEXT_MUTED }}>
+        {concept.shortDescription}
+      </p>
+
+      <p style={{ marginTop: 14, fontSize: 13.5, lineHeight: 1.6, color: TEXT_FAINT }}>
         {concept.productCount} sản phẩm phù hợp
         {estimate.kind === 'RANGE' && (
           <>
-            <br />
+            {' · '}
             Khoảng {Math.round(estimate.min / 1_000_000)}–{Math.round(estimate.max / 1_000_000)} triệu
           </>
         )}

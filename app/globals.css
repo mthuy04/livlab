@@ -556,3 +556,37 @@ body {
   background: #ffffff;
   padding: 18px 20px 26px;
 }
+
+/* The design-idea section: story at a readable measure, principles beside it.
+   A rule separates the two columns rather than a card around either — the
+   premium cue here is the measure and the whitespace, not a container. */
+.concept-story {
+  display: grid;
+  gap: 32px;
+  margin-top: 26px;
+}
+
+.concept-story-body {
+  max-width: 740px;
+}
+
+.concept-story-body p + p {
+  margin-top: 18px;
+}
+
+.concept-story-principles ul {
+  display: grid;
+  gap: 22px;
+}
+
+@media (min-width: 900px) {
+  .concept-story {
+    grid-template-columns: minmax(0, 740px) 340px;
+    gap: 64px;
+  }
+
+  .concept-story-principles {
+    padding-left: 40px;
+    border-left: 1px solid #e5e5e2;
+  }
+}
