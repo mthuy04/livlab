@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import type { Route } from 'next';
 import type { CatalogProduct } from '@/lib/storefront/catalogTypes';
-import { TEXT, TEXT_FAINT, STAGE } from '@/components/storefront/home/editorial';
+import {TEXT, TEXT_FAINT } from '@/components/storefront/home/editorial';
 import ProductImage from './ProductImage';
 
 /**
@@ -48,9 +48,9 @@ export default function CatalogProductCard({
           className="block w-full overflow-hidden"
           // Square, but capped so a three-up row at 1536 does not hand each
           // product a 430px stage.
-          style={{ aspectRatio: '1 / 1', maxHeight: 320 }}
+          style={{ aspectRatio: '1 / 1', maxHeight: 320, border: '1px solid #F0F0EE' }}
         >
-          <ProductImage product={product} stage={STAGE} eager={eager} />
+          <ProductImage product={product} variant="GRID" eager={eager} />
         </button>
 
         <button

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type { Route } from 'next';
 import type { CatalogProduct } from '@/lib/storefront/catalogTypes';
 import { formatVnd } from './CatalogProductCard';
-import { TEXT, DIVIDER, STAGE } from '@/components/storefront/home/editorial';
+import {TEXT, DIVIDER } from '@/components/storefront/home/editorial';
 import ProductImage from './ProductImage';
 
 /** A short look at one product. Full specs live on the detail page. */
@@ -50,7 +50,7 @@ export default function QuickView({
 
         <div className="grid gap-8 px-6 pb-8 md:grid-cols-2 md:px-10 md:pb-10">
           <div className="aspect-square w-full">
-            <ProductImage product={product} stage={STAGE} eager />
+            <ProductImage product={product} variant="DETAIL" eager />
           </div>
 
           <div>

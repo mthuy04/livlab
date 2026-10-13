@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import type { Route } from 'next';
 import type { CatalogProduct } from '@/lib/storefront/catalogTypes';
-import { TEXT, TEXT_FAINT, STAGE } from '@/components/storefront/home/editorial';
+import {TEXT, TEXT_FAINT } from '@/components/storefront/home/editorial';
 import ProductImage from './ProductImage';
 
 /**
@@ -42,7 +42,7 @@ export default function CompareTray({
               style={{ borderLeft: index > 0 ? '1px solid #ECECEA' : undefined }}
             >
               <span className="block shrink-0" style={{ width: 38, height: 38 }}>
-                <ProductImage product={p} stage={STAGE} />
+                <ProductImage product={p} variant="THUMBNAIL" />
               </span>
               <span className="truncate" style={{ maxWidth: 136, fontSize: 13, color: TEXT }}>
                 {p.name}

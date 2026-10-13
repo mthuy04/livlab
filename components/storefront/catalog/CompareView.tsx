@@ -7,7 +7,7 @@ import type { CatalogProduct } from '@/lib/storefront/catalogTypes';
 import { AVAILABILITY_LABEL } from '@/lib/storefront/catalogTypes';
 import { formatVnd } from './CatalogProductCard';
 import ProductImage from './ProductImage';
-import { TEXT, TEXT_MUTED, TEXT_FAINT, STAGE } from '@/components/storefront/home/editorial';
+import {TEXT, TEXT_MUTED, TEXT_FAINT } from '@/components/storefront/home/editorial';
 
 /**
  * Side-by-side comparison, grouped rather than one endless table.
@@ -215,7 +215,7 @@ export default function CompareView({ products }: { products: CatalogProduct[] }
             {products.map((p) => (
               <div key={p.id} className="flex items-center gap-3 px-6 py-3" style={{ borderLeft: `1px solid ${BORDER}` }}>
                 <span className="block shrink-0" style={{ width: 48, height: 48 }}>
-                  <ProductImage product={p} stage={STAGE} eager />
+                  <ProductImage product={p} variant="THUMBNAIL" eager />
                 </span>
                 <span className="min-w-0">
                   <span className="block truncate" style={{ fontSize: 13, fontWeight: 500, color: TEXT }}>{p.name}</span>
@@ -241,7 +241,7 @@ export default function CompareView({ products }: { products: CatalogProduct[] }
               {products.map((p) => (
                 <div key={p.id} className="px-6 pb-5 pt-2" style={{ borderBottom: `1px solid ${BORDER}`, borderLeft: `1px solid ${BORDER}` }}>
                   <div style={{ height: 178 }}>
-                    <ProductImage product={p} stage="#F8F8F6" eager />
+                    <ProductImage product={p} variant="COMPARE" eager />
                   </div>
                   <p className="mt-4" style={{ fontSize: 10, fontWeight: 600, letterSpacing: '.10em', color: '#808080' }}>
                     {p.brand.toUpperCase()}

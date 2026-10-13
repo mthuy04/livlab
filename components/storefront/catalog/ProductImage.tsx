@@ -4,14 +4,29 @@ import type { CatalogProduct } from '@/lib/storefront/catalogTypes';
 import { opticalScale } from '@/lib/storefront/catalogTypes';
 import { TEXT, TEXT_FAINT } from '@/components/storefront/home/editorial';
 
+/** Where the image is being rendered. Each surface wants a different frame. */
+export type ImageVariant = 'GRID' | 'COMPARE' | 'THUMBNAIL' | 'DETAIL';
+
+/** How tightly the product sits to the frame, per surface. */
+const VARIANT_TIGHTNESS: Record<ImageVariant, number> = {
+  GRID: 1,
+  COMPARE: 0.96,
+  THUMBNAIL: 0.88,
+  DETAIL: 1,
+};
+
 /**
  * A product on its stage.
  *
- * One component for the grid, the quick view and the comparison table, so a
- * product is never cropped two different ways on two pages. The stage is a
- * plain square; inside it the product is scaled to a per-category optical
- * size, because source photography frames a toilet and a towel rail nothing
- * alike and a single scale leaves one of them a speck.
+ * One component for the grid, the quick view, the comparison table, the tray
+ * and later the quote summary, so a product is never framed two different
+ * ways on two pages.
+ *
+ * The stage is a single white square. It used to be cream, which turned every
+ * white-background manufacturer JPEG into a cream rectangle holding a white
+ * rectangle holding a small product — three nested frames. The imagery is now
+ * trimmed of its empty margin before it ever reaches here, so one canvas
+ * holds one product, scaled to a per-category optical size.
  *
  * When the image audit rejected the asset — a dealer's phone number, a QR
  * code, a bouquet, another showroom's URL — nothing is painted out. The
@@ -20,19 +35,23 @@ import { TEXT, TEXT_FAINT } from '@/components/storefront/home/editorial';
  */
 export default function ProductImage({
   product,
-  stage,
+  stage = '#FFFFFF',
+  variant = 'GRID',
   eager = false,
 }: {
   product: CatalogProduct;
-  /** The stage background. Compare uses a slightly lighter plate. */
-  stage: string;
+  /** Almost always white: the trimmed asset provides its own breathing room. */
+  stage?: string;
+  variant?: ImageVariant;
   eager?: boolean;
 }) {
   if (!product.imagePresentable || !product.image) {
     return <ProductImagePlaceholder product={product} />;
   }
 
-  const scale = opticalScale(product.category, product.name);
+  const occupancy = opticalScale(product.category, product.name) * VARIANT_TIGHTNESS[variant];
+  // The padding is what is left over once the product has its share.
+  const padding = Math.max(0, Math.round((1 - occupancy) * 50));
 
   return (
     // eslint-disable-next-line @next/next/no-img-element
@@ -42,7 +61,7 @@ export default function ProductImage({
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"
       className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
-      style={{ backgroundColor: stage, padding: `${Math.round((1 - scale) * 50)}%` }}
+      style={{ backgroundColor: stage, padding: `${padding}%` }}
     />
   );
 }

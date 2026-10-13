@@ -18,7 +18,12 @@ import TenantFooter from './TenantFooter';
  * wrapping them in storefront typography would restyle every table in them.
  */
 
-const NON_STOREFRONT_PREFIXES = ['/showroom', '/admin'];
+/**
+ * `/pub/tool` is a manufacturer simulator wrapper: it carries its own minimal
+ * header and gives the rest of the viewport to the tool, so the storefront
+ * chrome would be a second header stacked on a first.
+ */
+const NON_STOREFRONT_PREFIXES = ['/showroom', '/admin', '/pub/tool'];
 
 export default function StorefrontShell({
   tenant,
