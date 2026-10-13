@@ -25,6 +25,18 @@ import TenantFooter from './TenantFooter';
  */
 const NON_STOREFRONT_PREFIXES = ['/showroom', '/admin', '/pub/tool'];
 
+/**
+ * Storefront chrome, application behaviour.
+ *
+ * Room Studio keeps the showroom's header — the customer is still shopping —
+ * but it is an editor, not a document: the viewport is the working surface, and
+ * a marketing footer under it turns the whole page into something to scroll
+ * past the tools. These routes get exactly the viewport and no page scroll, so
+ * the 3D canvas and the panels divide a known height between them instead of
+ * each guessing.
+ */
+const APP_SURFACE_PREFIXES = ['/room-studio'];
+
 export default function StorefrontShell({
   tenant,
   children,
@@ -38,9 +50,13 @@ export default function StorefrontShell({
     return <>{children}</>;
   }
 
+  const isAppSurface = APP_SURFACE_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+
   return (
     <div
-      className="storefront flex min-h-screen flex-col"
+      className={`storefront flex flex-col ${
+        isAppSurface ? 'h-[100svh] overflow-hidden' : 'min-h-screen'
+      }`}
       data-tenant={tenant.slug}
       style={
         {
@@ -51,8 +67,10 @@ export default function StorefrontShell({
       }
     >
       <TenantHeader tenant={tenant} />
-      <main className="flex-1">{children}</main>
-      <TenantFooter tenant={tenant} />
+      {/* `min-h-0` lets an app surface's `h-full` resolve to the leftover space
+          rather than to the content's own height. */}
+      <main className={isAppSurface ? 'min-h-0 flex-1' : 'flex-1'}>{children}</main>
+      {!isAppSurface && <TenantFooter tenant={tenant} />}
     </div>
   );
 }

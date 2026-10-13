@@ -69,12 +69,20 @@ export function useRoomStudio() {
 
   // Persist through the repository, debounced so dragging a product does not
   // write to storage on every pointer move.
+  //
+  // `isSaved` is reported rather than a Save button offered: the room is
+  // written on its own, so a button would either duplicate this or do nothing,
+  // and a Save that does nothing is worse than no Save at all.
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // The snapshot that reached storage, so "saved" is a comparison rather than a
+  // flag that something has to remember to clear on every edit.
+  const [savedState, setSavedState] = useState<RoomState | null>(null);
+  const isSaved = savedState === state;
   useEffect(() => {
     if (!isHydrated) return;
     if (saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(() => {
-      void roomStateRepository.save(state);
+      void roomStateRepository.save(state).then(() => setSavedState(state));
     }, SAVE_DEBOUNCE_MS);
     return () => {
       if (saveTimer.current) clearTimeout(saveTimer.current);
@@ -224,6 +232,7 @@ export function useRoomStudio() {
     budget,
     isLoadingProducts,
     isHydrated,
+    isSaved,
     loadError,
     setSelectedInstanceId,
     setDimensions,

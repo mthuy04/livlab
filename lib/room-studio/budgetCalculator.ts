@@ -48,6 +48,23 @@ export function formatVnd(value: number): string {
   return `${new Intl.NumberFormat('vi-VN').format(Math.round(value))}đ`;
 }
 
+/**
+ * One product's reference price, compactly.
+ *
+ * Always derived from the numbers rather than from the catalogue's pre-rendered
+ * `priceRange` string, so Room Studio cannot end up showing `4.350.000đ` in one
+ * place and `4.350.000 VNĐ` in another. "Từ" is doing real work: where a range
+ * exists, the low end alone is not the price, and saying so is cheaper than
+ * printing both in a 300px column.
+ */
+export function formatProductPrice(product: { priceMin?: number; priceMax?: number }): string {
+  const lo = product.priceMin ?? 0;
+  const hi = product.priceMax ?? lo;
+  if (lo <= 0 && hi <= 0) return 'Liên hệ';
+  if (hi > lo) return `Từ ${formatVnd(lo)}`;
+  return formatVnd(lo);
+}
+
 export function formatBudgetRange(estimate: BudgetEstimate): string {
   if (estimate.min <= 0 && estimate.max <= 0) return 'Liên hệ';
   if (estimate.min === estimate.max) return formatVnd(estimate.min);

@@ -95,6 +95,54 @@ function ProductPlaceholder({ product, selected }: { product: RoomStudioProduct;
   );
 }
 
+/**
+ * The in-scene label.
+ *
+ * Hovering gives the name. Selecting also gives the brand, the SKU and the
+ * measured size, and — where there is no runtime model — says in words that the
+ * volume is a size and not a shape. That sentence is the whole reason the label
+ * grew: a grey cuboid standing where a toilet should be is read as the product
+ * unless something says otherwise, and the scene is where the customer is
+ * looking, not the panel.
+ */
+function ProductLabel({ product, detailed }: { product: RoomStudioProduct; detailed: boolean }) {
+  const size = getRealWorldSize(product);
+  const mm = (metres: number) => Math.round(metres * 1000);
+  const isPlaceholder = !product.model3dUrl;
+
+  return (
+    // No `distanceFactor`: the label is chrome, not geometry, so it keeps one
+    // readable size instead of growing as the camera pulls back. With a scale
+    // factor it reached half the height of the room when the viewport became
+    // the dominant column, which is the opposite of a subtle annotation.
+    <Html
+      position={[0, size.height / 2 + 0.08, 0]}
+      center
+      pointerEvents="none"
+      zIndexRange={[20, 0]}
+    >
+      <div className="pointer-events-none w-max max-w-[200px] rounded bg-[#0B1623]/92 px-2 py-1 text-center text-white shadow-md">
+        {detailed && (product.brand || product.sku) && (
+          <p className="text-[10px] uppercase tracking-[0.08em] text-white/60">
+            {[product.brand, product.sku].filter(Boolean).join(' · ')}
+          </p>
+        )}
+        <p className="text-[11px] font-medium leading-snug">
+          {product.name.length > 34 ? `${product.name.slice(0, 34)}…` : product.name}
+        </p>
+        {detailed && (
+          <p className="mt-0.5 text-[10px] tabular-nums text-white/70">
+            {mm(size.width)} × {mm(size.depth)} × {mm(size.height)} mm
+          </p>
+        )}
+        {detailed && isPlaceholder && (
+          <p className="mt-0.5 text-[10px] text-[#E2C98B]">Mô hình 3D đang cập nhật</p>
+        )}
+      </div>
+    </Html>
+  );
+}
+
 /** Shown while a GLB downloads, at the size the product will end up occupying. */
 function LoadingVolume({ product }: { product: RoomStudioProduct }) {
   const size = getRealWorldSize(product);
@@ -177,19 +225,7 @@ export default function PlacedProductNode({
         <ProductPlaceholder product={product} selected={selected} />
       )}
 
-      {showLabel && (
-        <Html
-          position={[0, getRealWorldSize(product).height / 2 + 0.12, 0]}
-          center
-          distanceFactor={4}
-          pointerEvents="none"
-          zIndexRange={[20, 0]}
-        >
-          <div className="pointer-events-none whitespace-nowrap rounded-lg bg-[#0B1623]/90 px-2 py-1 text-[10px] font-bold text-white shadow-lg">
-            {product.name.length > 34 ? `${product.name.slice(0, 34)}…` : product.name}
-          </div>
-        </Html>
-      )}
+      {showLabel && <ProductLabel product={product} detailed={selected} />}
     </group>
   );
 }

@@ -25,6 +25,10 @@ import { availableProductModels } from '../lib/livlabProductModels';
 import type { Product3DAsset } from '../lib/room-studio/product3dAsset';
 import type { Product } from '../lib/types';
 
+/** Every QA flag set the same way, so a test states only what it varies. */
+const qaFlags = (value: boolean): Product3DAsset['qa'] =>
+  Object.fromEntries(QA_CHECKS.map((c) => [c, value])) as unknown as Product3DAsset['qa'];
+
 let passed = 0;
 let failed = 0;
 
@@ -74,6 +78,7 @@ console.log('\nquy tắc nhãn năng lực');
     source: {
       type: 'MANUFACTURER_OFFICIAL',
       url: 'https://example.test/y',
+      originalFileName: 'y.glb',
       originalFormat: 'GLB',
       checkedAt: '2026-01-01T00:00:00Z',
       rightsStatus: 'MANUFACTURER_PUBLIC',
@@ -83,7 +88,7 @@ console.log('\nquy tắc nhãn năng lực');
     placement: { type: 'FLOOR_TOILET', pivot: 'BACK_CENTER_FLOOR', defaultRotation: [0, 0, 0] },
     runtime: {},
     status: 'SOURCE_VERIFIED',
-    qa: Object.fromEntries(QA_CHECKS.map((c) => [c, false])) as Product3DAsset['qa'],
+    qa: qaFlags(false),
     assetVersion: 1,
   };
 
@@ -104,7 +109,7 @@ console.log('\nquy tắc nhãn năng lực');
   const qaNoReady = {
     ...base,
     runtime: { glbUrl: '/a.glb' },
-    qa: Object.fromEntries(QA_CHECKS.map((c) => [c, true])) as Product3DAsset['qa'],
+    qa: qaFlags(true),
   };
   check('đủ QA nhưng chưa READY -> không phải 3D VERIFIED', deriveCapability(qaNoReady, full) !== 'VERIFIED_3D');
 

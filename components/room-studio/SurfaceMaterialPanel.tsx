@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Layers, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import {
   describeSurfaceStyle,
   getColorsForMaterial,
@@ -17,8 +17,6 @@ interface SurfaceMaterialPanelProps {
   surfaceStyles: Record<SurfaceId, SurfaceStyle>;
   /** Patches ONE axis at a time; the state layer re-normalises the rest. */
   onStyleChange: (surface: SurfaceId, patch: Partial<SurfaceStyle>) => void;
-  showCeiling: boolean;
-  onToggleCeiling: (value: boolean) => void;
 }
 
 const SURFACES: { id: SurfaceId; label: string }[] = [
@@ -84,6 +82,11 @@ function patternBackground(material: Pick<MaterialOption, 'pattern' | 'realWorld
 /**
  * Surface -> Material -> Colour -> Finish.
  *
+ * Rendered as the VẬT LIỆU tab's content, so it carries no card of its own.
+ * The ceiling toggle moved to PHÒNG, where it belongs: it is a view setting for
+ * the room, and it had been sitting between the colour swatches and the budget
+ * field, belonging to neither.
+ *
  * The customer first says which surface they are finishing, then makes three
  * independent decisions in the order a showroom asks them: what the surface is
  * made of, what colour it is, and how it is finished. Those were previously one
@@ -92,8 +95,6 @@ function patternBackground(material: Pick<MaterialOption, 'pattern' | 'realWorld
 export default function SurfaceMaterialPanel({
   surfaceStyles,
   onStyleChange,
-  showCeiling,
-  onToggleCeiling,
 }: SurfaceMaterialPanelProps) {
   const [activeSurface, setActiveSurface] = useState<SurfaceId>('floor');
   const [showAllMaterials, setShowAllMaterials] = useState(false);
@@ -118,21 +119,16 @@ export default function SurfaceMaterialPanel({
   };
 
   return (
-    <div className="rounded-3xl border border-[#D8E2EA] bg-white p-5">
-      <div className="mb-4 flex items-center gap-2">
-        <Layers className="h-4 w-4 text-[#C8A96A]" />
-        <h3 className="text-xs font-bold uppercase tracking-wider text-[#0B1623]">Bề mặt &amp; vật liệu</h3>
-      </div>
-
+    <div>
       {/* 1 — Surface target */}
-      <div className="flex gap-1 rounded-xl bg-[#F3F7FA] p-1">
+      <div className="flex gap-1 rounded bg-[#F3F7FA] p-1">
         {SURFACES.map((surface) => (
           <button
             key={surface.id}
             type="button"
             onClick={() => selectSurface(surface.id)}
             aria-pressed={activeSurface === surface.id}
-            className={`flex-1 rounded-lg py-2 text-xs font-bold transition-colors ${
+            className={`flex-1 rounded py-2 text-[13px] font-semibold transition-colors ${
               activeSurface === surface.id ? 'bg-white text-[#0B1623] shadow-sm' : 'text-[#627386] hover:text-[#0B1623]'
             }`}
           >
@@ -142,14 +138,14 @@ export default function SurfaceMaterialPanel({
       </div>
 
       {/* Display-only summary of the three choices below. */}
-      <div className="mt-3 flex items-center gap-2.5 rounded-xl border border-[#E6EDF2] bg-[#FAFCFD] px-3 py-2.5">
+      <div className="mt-3 flex items-center gap-2.5 rounded border border-[#E6EDF2] bg-[#FAFCFD] px-3 py-2.5">
         <span
           className="h-8 w-8 shrink-0 rounded-lg border border-[#D8E2EA]"
           style={{ background: patternBackground(resolved, resolved.baseColor, resolved.accentColor) }}
         />
         <div className="min-w-0">
-          <p className="truncate text-[11px] font-bold text-[#0B1623]">{describeSurfaceStyle(style)}</p>
-          <p className="text-[9px] uppercase tracking-wider text-[#8C9BAB]">
+          <p className="truncate text-[13px] font-semibold text-[#0B1623]">{describeSurfaceStyle(style)}</p>
+          <p className="text-[12px] text-[#8C9BAB]">
             {activeSurface === 'floor' ? 'Bề mặt sàn' : 'Bề mặt tường'}
           </p>
         </div>
@@ -175,7 +171,7 @@ export default function SurfaceMaterialPanel({
                 onClick={() => onStyleChange(activeSurface, { material: material.id })}
                 title={material.description}
                 aria-pressed={isActive}
-                className={`flex items-center gap-2 rounded-xl border-2 p-1.5 text-left transition-all ${
+                className={`flex items-center gap-2 rounded border p-2 text-left transition-colors ${
                   isActive
                     ? 'border-[#0F3D5C] bg-[#F3F7FA] shadow-sm'
                     : 'border-[#E6EDF2] bg-white hover:border-[#C8A96A]/70'
@@ -186,7 +182,7 @@ export default function SurfaceMaterialPanel({
                   style={{ background: patternBackground(material, preview.baseColor, preview.accentColor) }}
                 />
                 <span
-                  className={`line-clamp-2 text-[10px] font-semibold leading-tight ${
+                  className={`line-clamp-2 text-[12px] font-medium leading-tight ${
                     isActive ? 'text-[#0B1623]' : 'text-[#627386]'
                   }`}
                 >
@@ -244,7 +240,7 @@ export default function SurfaceMaterialPanel({
                 onClick={() => onStyleChange(activeSurface, { finish: finish.id })}
                 aria-pressed={isActive}
                 title={antiSlip ? 'Bề mặt nhám — tăng độ chống trơn cho sàn ướt' : finish.name}
-                className={`rounded-full border px-3 py-1.5 text-[10px] font-semibold transition-all ${
+                className={`rounded border px-3 py-1.5 text-[12px] font-medium transition-colors ${
                   isActive
                     ? 'border-[#0F3D5C] bg-[#0F3D5C] text-white'
                     : 'border-[#E6EDF2] bg-white text-[#627386] hover:border-[#C8A96A]'
@@ -258,15 +254,6 @@ export default function SurfaceMaterialPanel({
         </div>
       </Section>
 
-      <label className="mt-4 flex cursor-pointer items-center justify-between rounded-xl bg-[#F3F7FA] px-3 py-2.5">
-        <span className="text-[11px] font-medium text-[#627386]">Hiện trần phòng</span>
-        <input
-          type="checkbox"
-          checked={showCeiling}
-          onChange={(e) => onToggleCeiling(e.target.checked)}
-          className="h-4 w-4 accent-[#0F3D5C]"
-        />
-      </label>
     </div>
   );
 }
@@ -288,8 +275,8 @@ function Section({ label, hint, children }: { label: string; hint?: string; chil
   return (
     <div className="mt-4">
       <div className="mb-2 flex items-baseline justify-between gap-2">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-[#8C9BAB]">{label}</span>
-        {hint && <span className="truncate text-[10px] font-medium text-[#627386]">{hint}</span>}
+        <span className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#8C9BAB]">{label}</span>
+        {hint && <span className="truncate text-[12px] text-[#5B6B7A]">{hint}</span>}
       </div>
       {children}
     </div>
@@ -301,9 +288,9 @@ function MoreButton({ onClick, children }: { onClick: () => void; children: Reac
     <button
       type="button"
       onClick={onClick}
-      className="mt-2 inline-flex items-center gap-1 text-[10px] font-semibold text-[#0F3D5C] hover:text-[#C8A96A]"
+      className="mt-2.5 inline-flex items-center gap-1 text-[13px] font-medium text-[#0F3D5C] underline decoration-[#C8D5DE] underline-offset-4 transition-colors hover:decoration-[#0F3D5C]"
     >
-      <Plus className="h-3 w-3" />
+      <Plus className="h-3.5 w-3.5" aria-hidden />
       {children}
     </button>
   );

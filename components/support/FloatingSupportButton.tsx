@@ -94,6 +94,9 @@ export default function FloatingSupportButton() {
     pathname.startsWith('/products/') ||
     pathname === '/concepts' ||
     pathname.startsWith('/concepts/') ||
+    // Room Studio fills the viewport and ends in a command bar; a bubble
+    // parked over the primary CTA is a button on top of a button.
+    pathname.startsWith('/room-studio') ||
     pathname.startsWith('/admin') ||
     pathname.startsWith('/showroom') ||
     pathname.startsWith('/pub/tool')
