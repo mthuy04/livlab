@@ -56,7 +56,7 @@ export function stagePadding(occupancy: number, normalized: boolean): number {
  */
 export default function ProductImage({
   product,
-  stage = '#FFFFFF',
+  stage = STAGE_BACKGROUND,
   variant = 'GRID',
   eager = false,
 }: {
@@ -91,12 +91,23 @@ export default function ProductImage({
  * Detail and its related-product row carry a view model, not a catalogue row,
  * and should not have to fabricate one to reuse the framing rules.
  */
+/**
+ * The media stage colour.
+ *
+ * Not pure white: a white ceramic product on a white stage has no edge and
+ * reads as a cut-out floating in the frame. The product assets are repainted
+ * to this exact value by `scripts/match_stage_background.py`, so the asset
+ * and the stage it sits on are one surface — tinting only the stage would
+ * have shown each photograph as a bright rectangle inside a neutral frame.
+ */
+export const STAGE_BACKGROUND = '#F8F8F7';
+
 export function StageImage({
   src,
   alt,
   occupancy,
   normalized = false,
-  stage = '#FFFFFF',
+  stage = STAGE_BACKGROUND,
   eager = false,
   sizes,
   className = '',
