@@ -5,6 +5,7 @@ import { prisma } from '@/lib/prisma';
 import type { TenantStorefrontConfig } from './tenantConfig';
 import { imageVerdicts, isRejected, type ImageStatus } from './imageQuality';
 import { manufacturerRecords, type ImageSource, type ManufacturerRecord } from './manufacturerData';
+import { imageAssets } from './imageAssets';
 import {
   isRoomStudioReady,
   isSanitaryware,
@@ -143,6 +144,7 @@ async function fromFixture(tenant: TenantStorefrontConfig, file: string): Promis
         documents: [],
         galleryImages: [],
         compatibleSkus: [],
+        imageProvenance: null,
         additionalImages: p.additionalImages ?? [],
         technicalDrawing: p.technicalDrawing,
         showroomPrice: p.showroomPrice,
@@ -249,6 +251,7 @@ async function fromDatabase(tenant: TenantStorefrontConfig): Promise<Catalog> {
         documents: [],
         galleryImages: [],
         compatibleSkus: [],
+        imageProvenance: null,
         additionalImages: [],
         technicalDrawing: null,
         showroomPrice,
@@ -356,9 +359,26 @@ export async function getCatalog(
   // Manufacturer data is merged before anything is filtered, so a product
   // rescued by an official photograph is judged on that photograph.
   const records = await manufacturerRecords();
+  const assets = await imageAssets();
   catalog = {
     ...catalog,
-    products: catalog.products.map((p) => withManufacturer(p, records.get(p.id))),
+    products: catalog.products.map((p) => {
+      const enriched = withManufacturer(p, records.get(p.id));
+      // The trimmed local copy is what the grid shows; the original stays in
+      // provenance so the asset can be traced and swapped later.
+      const asset = assets.get(p.id);
+      if (!asset?.localPath) return enriched;
+      return {
+        ...enriched,
+        image: asset.localPath,
+        imageProvenance: {
+          sourceUrl: asset.provenance?.imageSourceUrl ?? enriched.image,
+          assetOwner: asset.provenance?.assetOwner ?? enriched.brand,
+          sourceType: asset.provenance?.sourceType ?? enriched.imageSource,
+          processing: asset.processing ?? [],
+        },
+      };
+    }),
   };
 
   if (includeUnpresentable) return catalog;

@@ -17,6 +17,14 @@ export const AVAILABILITY_LABEL: Record<Availability, string> = {
   UNKNOWN: 'Liên hệ xác nhận',
 };
 
+/** Where a normalised asset came from, and what was done to it. */
+export interface ImageProvenance {
+  sourceUrl: string;
+  assetOwner: string;
+  sourceType: string;
+  processing: string[];
+}
+
 export interface CatalogDimensions {
   length: number;
   width: number;
@@ -86,31 +94,34 @@ export interface CatalogProduct {
   galleryImages: string[];
   /** Only where the manufacturer states it. Compatibility is never inferred. */
   compatibleSkus: string[];
+  /** Set when the normalised local copy is being served. */
+  imageProvenance: ImageProvenance | null;
 }
 
 /**
  * How much of its stage each kind of product should fill.
  *
- * Source photography frames a toilet, a basin and a towel rail completely
- * differently, so one scale across the grid leaves an accessory looking like
- * a speck beside a close-cropped toilet. These are presentation values tuned
- * against screenshots, not facts about the product.
+ * These are optical targets, not facts about the product: a toilet and a
+ * towel rail photographed to the same brief still need different scales to
+ * carry the same visual weight in a grid. Now that imagery is trimmed of its
+ * empty margin, the product itself can sit close to the frame.
  */
 export const CATEGORY_OPTICAL_SCALE: Record<string, number> = {
-  'Bồn cầu': 0.78,
-  Lavabo: 0.72,
-  'Vòi lavabo': 0.68,
-  'Sen tắm': 0.72,
-  'Bồn tắm': 0.78,
-  'Gương & phụ kiện': 0.72,
+  'Bồn cầu': 0.86,
+  Lavabo: 0.82,
+  'Vòi lavabo': 0.77,
+  'Sen tắm': 0.82,
+  'Bồn tắm': 0.86,
+  'Gương & phụ kiện': 0.84,
 };
 
-/** Small hardware reads as a speck at a category scale meant for a bathtub. */
+/** Small hardware reads as a speck at a scale meant for a bathtub. */
 const SMALL_ACCESSORY = /(lô giấy|móc|thanh (vắt )?khăn|kệ|vòi xịt|thoát sàn|phụ kiện)/i;
+const MIRROR = /gương/i;
 
 export function opticalScale(category: string, name: string): number {
-  if (SMALL_ACCESSORY.test(name)) return 0.62;
-  return CATEGORY_OPTICAL_SCALE[category] ?? 0.72;
+  if (SMALL_ACCESSORY.test(name) && !MIRROR.test(name)) return 0.72;
+  return CATEGORY_OPTICAL_SCALE[category] ?? 0.80;
 }
 
 export interface Catalog {

@@ -84,13 +84,18 @@ def measure(raw):
     step = max(1, min(w, h) // 240)
     ring = 0.12
     minx, miny, maxx, maxy = w, h, 0, 0
+    sampled = 0
     ring_total = ring_white = ring_sat = ring_dark = 0
+    # Shading. A photograph of white ceramic is full of soft mid greys; a
+    # line drawing is white or black with almost nothing between.
+    mid_tone = ink = 0
     # Model-code captions and dealer strips live along the bottom edge.
     foot_total = foot_ink = 0
 
     for y in range(0, h, step):
         for x in range(0, w, step):
             r, g, b = px[x, y]
+            sampled += 1
             mx, mn = max(r, g, b), min(r, g, b)
             if r < NEAR_WHITE or g < NEAR_WHITE or b < NEAR_WHITE:
                 minx, maxx = min(minx, x), max(maxx, x)
@@ -98,6 +103,10 @@ def measure(raw):
             in_ring = (
                 x < w * ring or x > w * (1 - ring) or y < h * ring or y > h * (1 - ring)
             )
+            if mx < 236:
+                ink += 1
+                if 120 < mx < 236:
+                    mid_tone += 1
             if y > h * 0.86:
                 foot_total += 1
                 if mx < 150 or (mx > 60 and (mx - mn) / mx > 0.20):
@@ -126,6 +135,8 @@ def measure(raw):
         'ringSaturated': round(ring_sat / t, 4),
         'ringDark': round(ring_dark / t, 4),
         'footInk': round(foot_ink / max(1, foot_total), 4),
+        'inkFraction': round(ink / max(1, sampled), 4),
+        'midToneFraction': round(mid_tone / max(1, sampled), 4),
     }
 
 
@@ -145,6 +156,13 @@ def classify(m, url, tenant_id):
         return 'WRONG_TENANT_BRANDING'
     if dressed:
         return 'WATERMARKED' if m['ringSaturated'] <= 0.012 else 'PROMOTIONAL'
+    # A dimension diagram, a CAD preview or a spec plate is line art: nearly
+    # all of its ink is black-on-white with no shading between. A photograph
+    # of white ceramic is the opposite — almost every non-white pixel is a
+    # mid grey. Measured across this catalogue, line art sits at 0.19–0.58 and
+    # photographs at 0.96 and up.
+    if m['inkFraction'] > 0.004 and m['midToneFraction'] / max(m['inkFraction'], 1e-6) < 0.72:
+        return 'NEEDS_REPLACEMENT'
     if not isolated:
         # A room, a warehouse floor or an advert background. Fine on a detail
         # gallery, wrong as the one image in a catalogue grid.
@@ -202,26 +220,34 @@ def main():
         counts = Counter()
 
         for i, p in enumerate(products, 1):
+            # Judge the SOURCE, not the presentation copy. A normalised asset
+            # has had its empty margin trimmed, so the product now touches the
+            # frame and every "isolated on a clean plate" test would fail — but
+            # what the audit is looking for (dealer marks, promo graphics, line
+            # art) lives in the original.
+            provenance = p.get('imageProvenance') or {}
+            audited = provenance.get('sourceUrl') or p['image']
             row = {
                 'id': p['id'],
                 'brand': p['brand'],
                 'sku': p['sku'],
                 'category': p['category'],
-                'image': p['image'],
+                'image': audited,
+                'renderedImage': p['image'],
             }
-            if not p['image']:
+            if not audited:
                 row['status'] = 'MISSING'
             else:
                 try:
-                    row.update(measure(fetch(p['image'])))
-                    row['status'] = classify(row, p['image'], data['tenantId'])
+                    row.update(measure(fetch(audited)))
+                    row['status'] = classify(row, audited, data['tenantId'])
                 except Exception as exc:  # noqa: BLE001 — a broken asset is a result
                     row['status'] = 'MISSING'
                     row['error'] = str(exc)[:90]
             # A failing primary may have a clean sibling already captured.
             if row['status'] in REJECTED:
                 for alt in alternatives.get(p['id'], []):
-                    if alt == p['image']:
+                    if alt == audited:
                         continue
                     try:
                         alt_m = measure(fetch(alt))
