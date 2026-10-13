@@ -67,13 +67,28 @@ def first_paragraphs(html, want=2):
     return out
 
 
-def whole_sentences(text, limit=400):
-    """Trim to a sentence boundary: a description cut mid-word reads as broken."""
+def whole_sentences(text, limit=300):
+    """The first few sentences, never cut mid-word.
+
+    A product page wants the claim, not the brochure: two or three sentences
+    a customer actually reads. Full manufacturer marketing copy ran past 400
+    characters and turned the section back into a wall of text. The cut lands
+    on a sentence boundary, so what is shown is the manufacturer's own
+    sentences rather than an abridged paraphrase.
+    """
+    text = text.strip()
     if len(text) <= limit:
         return text
-    cut = text[:limit]
-    stop = max(cut.rfind('. '), cut.rfind('.'), cut.rfind('! '), cut.rfind('? '))
-    return (cut[:stop + 1] if stop > 120 else cut.rsplit(' ', 1)[0]).strip()
+    sentences = re.split(r'(?<=[.!?])\s+', text)
+    out = ''
+    for sentence in sentences:
+        candidate = f'{out} {sentence}'.strip()
+        if out and len(candidate) > limit:
+            break
+        out = candidate
+    if not out:
+        out = text[:limit].rsplit(' ', 1)[0]
+    return out.strip()
 
 
 def main():

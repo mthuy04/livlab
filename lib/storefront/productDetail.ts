@@ -2,6 +2,7 @@ import 'server-only';
 
 import { getCatalog } from './catalog';
 import { manufacturerRecords, technologyFacts, type ManufacturerRecord } from './manufacturerData';
+import { formatMeasurement, productDisplayName } from './presentation';
 import { registryFor } from './manufacturerRegistry';
 import { MANUFACTURER_TOOLS } from './manufacturerTools';
 import { AVAILABILITY_LABEL, opticalScale, type CatalogProduct } from './catalogTypes';
@@ -99,10 +100,13 @@ function isOfficialHost(brand: string, url: string | null | undefined): boolean 
  */
 function buildGallery(product: CatalogProduct, drawing: string | null): ProductMediaItem[] {
   const items: ProductMediaItem[] = [];
+  // Alt text is read aloud, so it gets the same sentence case as the heading
+  // rather than the catalogue's listing-title spelling.
+  const name = productDisplayName(product.name, product.brand);
   if (product.imagePresentable && product.image) {
     items.push({
       url: product.image,
-      alt: product.name,
+      alt: name,
       kind: 'PRIMARY',
       source: product.imageSource as MediaSource,
     });
@@ -110,7 +114,7 @@ function buildGallery(product: CatalogProduct, drawing: string | null): ProductM
   if (drawing) {
     items.push({
       url: drawing,
-      alt: `Bản vẽ kỹ thuật ${product.name}`,
+      alt: `Bản vẽ kỹ thuật ${name}`,
       kind: 'DRAWING',
       source: isOfficialHost(product.brand, drawing) ? 'MANUFACTURER' : 'RETAILER',
     });
@@ -120,8 +124,12 @@ function buildGallery(product: CatalogProduct, drawing: string | null): ProductM
 
 /* ── Specifications ───────────────────────────────────────────────────── */
 
-const row = (label: string, value: string | null | undefined): SpecRow | null =>
-  value && value.trim() ? { label, value: value.trim() } : null;
+// One formatter for every row, so "305mm" and "305 mm" cannot both appear on
+// the same page depending on which field they came from.
+const row = (label: string, value: string | null | undefined): SpecRow | null => {
+  const formatted = formatMeasurement(value);
+  return formatted ? { label, value: formatted } : null;
+};
 
 const compact = (rows: (SpecRow | null)[]): SpecRow[] => rows.filter((r): r is SpecRow => r !== null);
 
@@ -230,8 +238,10 @@ function buildOverviewFacts(p: CatalogProduct): SpecRow[] {
  * where it exists, and otherwise assembled from the same facts.
  */
 function buildSummary(p: CatalogProduct): string | null {
-  if (p.shortDescription?.trim()) return p.shortDescription.trim();
-  const parts = [p.subcategory, p.color, dimensionText(p)].filter(Boolean);
+  if (p.shortDescription?.trim()) return formatMeasurement(p.shortDescription);
+  const parts = [p.subcategory, p.color, dimensionText(p)]
+    .map((part) => formatMeasurement(part))
+    .filter(Boolean);
   return parts.length ? `${parts.join(', ')}.` : null;
 }
 
@@ -345,7 +355,7 @@ const toRef = (p: CatalogProduct, referenceOnly = false): RelatedProductRef => (
   catalogProductId: p.catalogProductId,
   id: p.id,
   href: p.href,
-  name: p.name,
+  name: productDisplayName(p.name, p.brand),
   brand: p.brand,
   sku: p.sku,
   category: p.category,
@@ -524,7 +534,7 @@ export async function getProductDetail(
       id: product.id,
       slug: segmentOf(product),
       brand: product.brand,
-      name: product.name,
+      name: productDisplayName(product.name, product.brand),
       sku: product.sku,
       normalizedSku: product.normalizedSku,
       category: product.category,
