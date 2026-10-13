@@ -64,8 +64,9 @@ export async function manufacturerRecords(): Promise<Map<string, ManufacturerRec
 export type ImageSource = 'MANUFACTURER' | 'SHOWROOM' | 'RETAILER' | 'PLACEHOLDER';
 
 /**
- * `AC-989VN` and `AC989VN` are the same product; `#` and `/` carry meaning in
- * the original and are preserved there, but drop out of the comparison token.
+ * Re-exported so server callers that already depend on this module keep one
+ * import. The definition lives in `catalogTypes` because the canonical
+ * identity it feeds is needed on the client too, and this module is
+ * server-only.
  */
-export const normalizeSku = (sku: string | null): string =>
-  (sku ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+export { normalizeSku } from './catalogTypes';

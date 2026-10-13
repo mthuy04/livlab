@@ -69,7 +69,9 @@ export default function QuoteSummary() {
               </div>
               {/* Qty */}
               <div className="flex items-center justify-between">
-                <p className="text-[10px] text-[#627386]">Có sẵn tại: <span className="text-[#0B1623] font-medium">{item.showroomName}</span></p>
+                {item.showroomName ? (
+                  <p className="text-[10px] text-[#627386]">Có sẵn tại: <span className="text-[#0B1623] font-medium">{item.showroomName}</span></p>
+                ) : <span />}
                 <div className="flex items-center gap-1.5">
                   <button onClick={() => decrease(item.productId)} className="w-5 h-5 rounded-full bg-white border border-[#D8E2EA] flex items-center justify-center hover:bg-[#EEF4F7]">
                     <Minus className="w-2.5 h-2.5 text-[#0B1623]" />

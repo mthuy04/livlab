@@ -39,6 +39,23 @@ export interface ModelMetadata {
 export const SKU_MODEL_OVERRIDES: Record<string, ModelMetadata> = {};
 
 /**
+ * Whether a LivLab master 3D asset exists for this specific product.
+ *
+ * The storefront asks this before offering "thử trong Room Studio". It is
+ * deliberately NOT satisfied by the category stand-ins in
+ * `lib/livlabProductModels` — those are representative models, and placing a
+ * generic basin while naming a customer's chosen SKU is a false claim. Nor is
+ * it satisfied by a manufacturer CAD, 3DS MAX file or technical drawing:
+ * those are source material, not a converted, reviewed LivLab asset.
+ *
+ * Empty registry today, so this is false for every product and the CTA is
+ * hidden. Registering a SKU above turns it on for that product alone.
+ */
+export function hasSkuMasterModel(...keys: (string | null | undefined)[]): boolean {
+  return keys.some((key) => Boolean(key) && SKU_MODEL_OVERRIDES[key as string] !== undefined);
+}
+
+/**
  * Representative model per normalised category, used until per-SKU assets exist.
  * Only categories flagged available in lib/livlabProductModels resolve to a file.
  */

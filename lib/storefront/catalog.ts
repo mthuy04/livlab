@@ -7,9 +7,11 @@ import { imageVerdicts, isRejected, type ImageStatus } from './imageQuality';
 import { manufacturerRecords, type ImageSource, type ManufacturerRecord } from './manufacturerData';
 import { imageAssets } from './imageAssets';
 import {
+  catalogIdentity,
   isRoomStudioReady,
   isSanitaryware,
   normaliseBrand,
+  normalizeSku,
   safeWarranty,
   type Availability,
   type CatalogDimensions,
@@ -125,12 +127,25 @@ async function fromFixture(tenant: TenantStorefrontConfig, file: string): Promis
       const id = fixtureId(p.brand, p.sku, p.name);
       const verdict = verdicts.get(id);
       const status = (verdict?.status ?? 'ACCEPTABLE') as ImageStatus;
+      const brand = normaliseBrand(p.brand) as string;
+      const normalizedSku = normalizeSku(p.sku);
       return {
         id,
+        catalogProductId: catalogIdentity({
+          sourceType: 'DEMO_FIXTURE',
+          sourceRecordId: id,
+          tenantId: tenant.id,
+          brand,
+          sku: p.sku,
+          name: p.name,
+        }),
+        sourceType: 'DEMO_FIXTURE' as const,
+        sourceRecordId: id,
+        normalizedSku,
         href: `/products/${id}`,
         sku: p.sku,
         name: p.name,
-        brand: normaliseBrand(p.brand) as string,
+        brand,
         category: p.category,
         subcategory: p.subcategory,
         // The audit may have found a cleaner sibling than the one the
@@ -170,7 +185,7 @@ async function fromFixture(tenant: TenantStorefrontConfig, file: string): Promis
         // The fixture carries no commercial state, and inventing one would be
         // the exact thing this catalogue must not do.
         availability: null,
-        roomStudioReady: isRoomStudioReady(p.category),
+        roomStudioReady: isRoomStudioReady({ id, sku: p.sku, normalizedSku }),
         sourceUrl: p.sourceUrl,
         sourceCheckedAt: p.sourceCheckedAt,
       };
@@ -233,13 +248,28 @@ async function fromDatabase(tenant: TenantStorefrontConfig): Promise<Catalog> {
       const showroomPrice = offer?.promotionPrice ?? offer?.showroomPrice ?? p.priceMin ?? null;
       const reference = offer?.promotionPrice ? (offer.showroomPrice ?? p.priceMax) : p.priceMax;
 
+      // The Product model has no sku column; the slug carries the code.
+      const sku = p.slug ?? null;
+      const normalizedSku = normalizeSku(sku);
+      const brand = normaliseBrand(p.brand) as string;
+
       return {
         id: p.id,
+        catalogProductId: catalogIdentity({
+          sourceType: 'DATABASE',
+          sourceRecordId: p.id,
+          tenantId: tenant.id,
+          brand,
+          sku,
+          name: p.name,
+        }),
+        sourceType: 'DATABASE' as const,
+        sourceRecordId: p.id,
+        normalizedSku,
         href: `/products/${p.slug ?? p.id}`,
-        // The Product model has no sku column; the id is the stable code.
-        sku: p.slug ?? null,
+        sku,
         name: p.name,
-        brand: normaliseBrand(p.brand) as string,
+        brand,
         category: normaliseCategory(p.category) as string,
         subcategory: null,
         image: verdict?.replacementImage ?? (p.imageUrl as string),
@@ -271,7 +301,7 @@ async function fromDatabase(tenant: TenantStorefrontConfig): Promise<Catalog> {
         technologies: [],
         shortDescription: null,
         availability: offer ? (offer.availability as Availability) : null,
-        roomStudioReady: isRoomStudioReady(normaliseCategory(p.category) ?? ''),
+        roomStudioReady: isRoomStudioReady({ id: p.id, sku, normalizedSku }),
         sourceUrl: p.sourceUrl,
         sourceCheckedAt: null,
       };

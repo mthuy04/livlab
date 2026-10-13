@@ -81,9 +81,14 @@ export default function FloatingSupportButton() {
   // The storefront's own pages carry their own consultation routes, and a
   // generic chat bubble floating over a catalogue reads as a startup widget.
   // Expert stays on every other route, Room Studio included.
-  const HIDDEN = ['/', '/products', '/compare'];
+  // `/products` covers the catalogue and every product detail page: both
+  // carry their own consultation handoff, and detail also carries a sticky
+  // action bar the bubble would sit on top of.
+  const HIDDEN = ['/', '/compare'];
   if (
     HIDDEN.includes(pathname) ||
+    pathname === '/products' ||
+    pathname.startsWith('/products/') ||
     pathname.startsWith('/admin') ||
     pathname.startsWith('/showroom') ||
     pathname.startsWith('/pub/tool')

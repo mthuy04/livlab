@@ -1,15 +1,67 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient, BudgetFitStatus, LeadRequestType, Prisma } from '@prisma/client';
 import { getBudgetFit } from '@/lib/budget/getBudgetFit';
+import { resolveTenant } from '@/lib/storefront/resolveTenant';
 
 const prisma = new PrismaClient();
+
+/**
+ * The lead's context blob.
+ *
+ * Carries whatever the caller sent, plus the storefront the request came
+ * through and the canonical identity of every catalogue line. Lines that
+ * cannot be joined to a Product row — demo fixture products — would otherwise
+ * arrive as a name and nothing else.
+ */
+interface IncomingLine {
+  catalogProductId?: string;
+  sourceType?: string;
+  sku?: string;
+  priceSnapshot?: number | null;
+  sourceContext?: string;
+  quantity?: number;
+}
+
+function buildContext(
+  body: { items?: IncomingLine[]; context?: unknown },
+  tenantId: string
+): Prisma.InputJsonValue | null {
+  const lines = (body.items || [])
+    .filter((item) => item?.catalogProductId)
+    .map((item) => ({
+      catalogProductId: item.catalogProductId,
+      sourceType: item.sourceType ?? null,
+      sku: item.sku ?? null,
+      priceSnapshot: item.priceSnapshot ?? null,
+      sourceContext: item.sourceContext ?? null,
+      quantity: item.quantity ?? 1,
+    }));
+
+  if (!body.context && lines.length === 0) return null;
+  return {
+    ...(body.context && typeof body.context === 'object' ? body.context : {}),
+    tenantId,
+    ...(lines.length > 0 ? { catalogLines: lines } : {}),
+  } as Prisma.InputJsonValue;
+}
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     
-    // Create lead
-    const showroom = await prisma.showroom.findFirst(); // In real app, might find closest showroom
+    // Who owns this lead is decided here, from the storefront the request
+    // came through — never from the payload. A client that could name its own
+    // showroom could route another showroom's customer to itself.
+    // A tenant with no showroom of its own is an internal demo configuration.
+    // It used to fall through to `findFirst()`, which attached every demo lead
+    // to whichever showroom happened to be first in the table — a real
+    // showroom receiving a request from a storefront that is not theirs. The
+    // lead is kept unassigned instead, with the storefront recorded in its
+    // context.
+    const tenant = await resolveTenant();
+    const showroom = tenant.catalogScope.showroomId
+      ? await prisma.showroom.findUnique({ where: { id: tenant.catalogScope.showroomId } })
+      : null;
     
     // Fetch real products from DB to calculate real price
     const productIds = (body.items || []).map((item: any) => item.productId || item.id).filter(Boolean);
@@ -31,7 +83,12 @@ export async function POST(request: Request) {
       realEstimatedValue += realPriceMin * quantity; // Or average, using Min for estimation
 
       return {
-        productId: pid || null,
+        // QuoteItem.productId is a foreign key onto Product. A demo-fixture
+        // product has no Product row, and sending its catalogue id here fails
+        // the insert and loses the whole request — so the column is only
+        // filled when the row really exists, and the line keeps its identity
+        // through the name and the lead's context payload.
+        productId: dbProd ? pid : null,
         productName: dbProd?.name || item.name || 'Sản phẩm',
         quantity: quantity,
         priceMin: realPriceMin,
@@ -76,7 +133,7 @@ export async function POST(request: Request) {
         requestType,
         // Stored as sent. Old leads keep a null context; nothing is backfilled,
         // and the prose in `notes` is never parsed into this column.
-        contextJson: body.context ? (body.context as Prisma.InputJsonValue) : Prisma.DbNull,
+        contextJson: buildContext(body, tenant.id) ?? Prisma.DbNull,
         items: {
           create: itemsData
         }

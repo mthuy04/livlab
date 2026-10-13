@@ -12,6 +12,7 @@ interface QuoteContextValue {
   closeDrawer: () => void;
   toggleDrawer: () => void;
   addItem: (product: Product, conceptId?: string) => void;
+  addCatalogItem: (entry: CatalogQuoteEntry) => void;
   removeItem: (productId: string) => void;
   updateQty: (productId: string, qty: number) => void;
   increase: (productId: string) => void;
@@ -21,6 +22,31 @@ interface QuoteContextValue {
   setItems: (items: QuoteItem[]) => void;
   totalMin: number;
   totalMax: number;
+}
+
+/**
+ * What the storefront catalogue hands the basket.
+ *
+ * The legacy `addItem` takes a `Product`, which is the shape of a Prisma row
+ * plus the fields the old localStorage catalogue carried. A storefront
+ * catalogue product is not that shape and must not be bent into one — the
+ * detail page would have to invent `priceMin`, `availability` and a showroom
+ * name to satisfy it. So the basket gains a second door onto the same flow
+ * rather than a second flow.
+ */
+export interface CatalogQuoteEntry {
+  catalogProductId: string;
+  productId: string;
+  sourceType: 'DATABASE' | 'DEMO_FIXTURE';
+  tenantId: string;
+  name: string;
+  brand: string;
+  category: string;
+  sku: string | null;
+  image: string | null;
+  showroomPrice: number | null;
+  referencePrice: number | null;
+  sourceContext: string;
 }
 
 const QuoteContext = createContext<QuoteContextValue | null>(null);
@@ -54,6 +80,43 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
       addedAt: new Date().toISOString()
     };
     console.log(`[Quote] Adding item: ${product.name}`);
+    const updated = addQuoteItem(quoteItem);
+    setItemsState(updated);
+    setIsDrawerOpen(true);
+  }, []);
+
+  /**
+   * Adds a storefront catalogue product.
+   *
+   * Price travels as a snapshot of what the showroom was asking, not as a
+   * range: the catalogue holds one asking price and one reference price, and
+   * widening that into a min/max would invent a spread nobody quoted. The
+   * showroom is left to the server, which resolves it from the tenant — a
+   * client-supplied showroom name is not evidence of who owns the lead.
+   */
+  const addCatalogItem = useCallback((entry: CatalogQuoteEntry) => {
+    const price = entry.showroomPrice ?? 0;
+    const quoteItem: QuoteItem = {
+      productId: entry.productId,
+      catalogProductId: entry.catalogProductId,
+      sourceType: entry.sourceType,
+      tenantId: entry.tenantId,
+      sourceContext: entry.sourceContext,
+      priceSnapshot: entry.showroomPrice,
+      name: entry.name,
+      category: entry.category,
+      brand: entry.brand,
+      sku: entry.sku ?? entry.productId,
+      priceMin: price,
+      priceMax: entry.referencePrice ?? price,
+      priceRange: entry.showroomPrice ? `${entry.showroomPrice.toLocaleString('vi-VN')}đ` : 'Liên hệ',
+      quantity: 1,
+      image: entry.image,
+      // Resolved server-side from the tenant; the client does not assert it.
+      showroomName: '',
+      showroomLocation: '',
+      addedAt: new Date().toISOString(),
+    };
     const updated = addQuoteItem(quoteItem);
     setItemsState(updated);
     setIsDrawerOpen(true);
@@ -109,7 +172,7 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
       items,
       count: items.reduce((s, i) => s + i.quantity, 0),
       isDrawerOpen, openDrawer, closeDrawer, toggleDrawer,
-      addItem, removeItem, updateQty, increase, decrease, clearAll, hasItem, setItems,
+      addItem, addCatalogItem, removeItem, updateQty, increase, decrease, clearAll, hasItem, setItems,
       totalMin, totalMax
     }}>
       {children}

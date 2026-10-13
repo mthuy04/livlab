@@ -6,9 +6,42 @@
  * compare table all need these types and labels in the browser.
  */
 
-import { availableProductModels } from '@/lib/livlabProductModels';
+import { hasSkuMasterModel } from '@/lib/room-studio/modelMetadata';
 
 export type Availability = 'AVAILABLE' | 'TO_ORDER' | 'OUT_OF_STOCK' | 'UNKNOWN';
+
+/**
+ * `AC-989VN` and `AC989VN` are the same product; `#` and `/` carry meaning in
+ * the original and are preserved there, but drop out of the comparison token.
+ *
+ * Defined here rather than in `manufacturerData` because that module is
+ * server-only and the canonical identity is needed on both sides.
+ */
+export const normalizeSku = (sku: string | null | undefined): string =>
+  (sku ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+/**
+ * The canonical identity for a catalogue row.
+ *
+ * One function, two adapters. A fixture row has no database primary key, so
+ * it gets a deterministic identity from what does identify it — the tenant it
+ * is demonstrated under, the brand and the normalised SKU — rather than an
+ * array index or a hash that moves when the fixture is re-sorted.
+ */
+export function catalogIdentity(input: {
+  sourceType: ProductSourceType;
+  sourceRecordId: string;
+  tenantId: string;
+  brand: string;
+  sku: string | null;
+  name: string;
+}): string {
+  const token = normalizeSku(input.sku);
+  if (input.sourceType === 'DATABASE') return `db:${input.sourceRecordId}`;
+  // Without a SKU the name is the only thing left that identifies the row.
+  const tail = token || normalizeSku(input.name).slice(0, 32);
+  return `demo:${input.tenantId}:${input.brand.toUpperCase()}:${tail}`;
+}
 
 export const AVAILABILITY_LABEL: Record<Availability, string> = {
   AVAILABLE: 'Có thể cung ứng',
@@ -32,9 +65,34 @@ export interface CatalogDimensions {
   unit: string;
 }
 
+/** Which adapter produced a row. The page never branches on it; dedupe does. */
+export type ProductSourceType = 'DATABASE' | 'DEMO_FIXTURE';
+
 export interface CatalogProduct {
+  /**
+   * The storefront key: route segment, save/compare id, quote line id.
+   * Deterministic in both adapters — the Prisma id for a database row, and
+   * `brand-sku` for a fixture row — so it is stable across deploys.
+   */
   id: string;
-  /** Route segment for the existing detail page, which resolves slug or id. */
+
+  /**
+   * The canonical cross-source identity.
+   *
+   * `id` is stable per source; this is stable per *product*. A SKU that the
+   * database holds and the demo fixture also holds is one product, and must
+   * not appear twice in a related-products row or a comparison because two
+   * adapters named it differently. Built in one place — `catalogIdentity()` —
+   * so no component ever assembles an id of its own.
+   */
+  catalogProductId: string;
+  sourceType: ProductSourceType;
+  /** The primary key in the backing source, kept for traceability. */
+  sourceRecordId: string;
+  /** `AC-989VN` and `AC989VN` compare equal through this. */
+  normalizedSku: string;
+
+  /** Route segment for the detail page, which resolves slug or id. */
   href: string;
   sku: string | null;
   name: string;
@@ -200,25 +258,26 @@ export const normaliseBrand = (raw: string | null): string | null => {
 };
 
 /**
- * Whether Room Studio can actually place a product.
+ * Whether Room Studio can actually place THIS product.
  *
- * Readiness is per 3D category, not per SKU: `availableProductModels` marks
- * which categories have a usable .glb, and today only lavabo does. Flagging a
- * product as placeable on anything looser would put customers in an empty
- * room — so the filter is driven by that table and hidden when it matches
- * nothing in the current catalogue.
+ * Readiness used to be read off `availableProductModels`, which is a table of
+ * *categories* that have a representative .glb — today only lavabo, and that
+ * file is a generic basin. Offering "thử trong phòng" on the strength of it
+ * told a customer they were seeing their SKU in a room while showing them a
+ * different object, which is the same falsehood the detail page's old 3D
+ * viewer made.
+ *
+ * So readiness is now per SKU: a product is placeable when a LivLab master
+ * asset has been authored and registered for it. `SKU_MODEL_OVERRIDES` is
+ * empty today, so this returns false everywhere and the CTA is hidden —
+ * correctly — and turns itself on per product as assets land. A manufacturer
+ * CAD, 3DS MAX or technical drawing is NOT a LivLab-ready asset and is
+ * deliberately not consulted here.
  */
-function roomStudioCategory(category: string): string {
-  const c = category.toLowerCase();
-  if (c.includes('lavabo') && !c.includes('vòi')) return 'lavabo';
-  if (c.includes('vòi')) return 'faucet';
-  if (c.includes('bồn cầu')) return 'toilet';
-  if (c.includes('sen')) return 'shower';
-  if (c.includes('gương')) return 'mirror';
-  return 'unknown';
-}
-
-export function isRoomStudioReady(category: string): boolean {
-  const key = roomStudioCategory(category) as keyof typeof availableProductModels;
-  return availableProductModels[key] === true;
+export function isRoomStudioReady(keys: {
+  id?: string | null;
+  sku?: string | null;
+  normalizedSku?: string | null;
+}): boolean {
+  return hasSkuMasterModel(keys.sku, keys.normalizedSku, keys.id);
 }

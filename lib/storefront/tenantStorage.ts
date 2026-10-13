@@ -86,6 +86,39 @@ export function writeIds(tenantId: string, name: StoreName, ids: string[]): void
 
 export const MAX_COMPARE = 3;
 
+/**
+ * The category the current comparison is locked to.
+ *
+ * The rule — all three products from one category — needs to know what the
+ * products already in the list are. On the catalogue page that is free: the
+ * grid holds every product and can look any id up. A product detail page
+ * holds one product and cannot, so the category is recorded here when the
+ * comparison starts and read back when a lookup comes up empty.
+ *
+ * Stored beside the ids rather than inside them so the ids remain a plain
+ * array and `/compare` keeps reading them unchanged.
+ */
+const CATEGORY_KEY = (tenantId: string) => `livlab:${tenantId}:compare-category:${VERSION}`;
+
+function readCompareCategory(tenantId: string): string | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    return window.localStorage.getItem(CATEGORY_KEY(tenantId));
+  } catch {
+    return null;
+  }
+}
+
+function writeCompareCategory(tenantId: string, category: string | null): void {
+  if (typeof window === 'undefined') return;
+  try {
+    if (category) window.localStorage.setItem(CATEGORY_KEY(tenantId), category);
+    else window.localStorage.removeItem(CATEGORY_KEY(tenantId));
+  } catch {
+    // Private mode. The list still works; only the category lock is lost.
+  }
+}
+
 export type ToggleResult = { ids: string[]; error?: string };
 
 /**
@@ -106,6 +139,7 @@ export function toggleCompare(
   if (ids.includes(id)) {
     const next = ids.filter((existing) => existing !== id);
     writeIds(tenantId, 'compare', next);
+    if (next.length === 0) writeCompareCategory(tenantId, null);
     return { ids: next };
   }
 
@@ -113,13 +147,16 @@ export function toggleCompare(
     return { ids, error: `Bạn chỉ có thể so sánh tối đa ${MAX_COMPARE} sản phẩm.` };
   }
 
-  const current = ids.map(categoryOf).find(Boolean) ?? null;
+  // Whichever the caller can resolve. A detail page resolves none of them and
+  // falls back to the category recorded when the comparison started.
+  const current = ids.map(categoryOf).find(Boolean) ?? (ids.length > 0 ? readCompareCategory(tenantId) : null);
   if (current && category && current !== category) {
     return { ids, error: 'Chỉ có thể so sánh các sản phẩm cùng danh mục.' };
   }
 
   const next = [...ids, id];
   writeIds(tenantId, 'compare', next);
+  if (next.length === 1) writeCompareCategory(tenantId, category);
   return { ids: next };
 }
 
