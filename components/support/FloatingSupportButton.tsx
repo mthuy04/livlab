@@ -84,11 +84,16 @@ export default function FloatingSupportButton() {
   // `/products` covers the catalogue and every product detail page: both
   // carry their own consultation handoff, and detail also carries a sticky
   // action bar the bubble would sit on top of.
+  // `/concepts` likewise: the concept pages carry their own quote handoff,
+  // and the bubble offers a "Hotline tư vấn — Chưa cập nhật" row that reads as
+  // an unfinished storefront sitting over a page built to look finished.
   const HIDDEN = ['/', '/compare'];
   if (
     HIDDEN.includes(pathname) ||
     pathname === '/products' ||
     pathname.startsWith('/products/') ||
+    pathname === '/concepts' ||
+    pathname.startsWith('/concepts/') ||
     pathname.startsWith('/admin') ||
     pathname.startsWith('/showroom') ||
     pathname.startsWith('/pub/tool')
