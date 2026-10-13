@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 import type { Route } from 'next';
 import type { CatalogProduct } from '@/lib/storefront/catalogTypes';
@@ -14,6 +15,8 @@ import {
 import { toggleCompare, toggleSaved, useTenantIds } from '@/lib/storefront/tenantStorage';
 import { TEXT, DIVIDER, STAGE } from '@/components/storefront/home/editorial';
 import CatalogProductCard from './CatalogProductCard';
+import { AllIcon, iconFor } from './CategoryIcons';
+import { BRAND_LOGOS } from './brandLogos';
 import CatalogFilterPanel from './CatalogFilterPanel';
 import CompareTray from './CompareTray';
 import QuickView from './QuickView';
@@ -174,57 +177,56 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
     <>
       {/* ── Category rail ───────────────────────────────────────────────── */}
       {!loading && categoryRail.length > 1 && (
-        <div className="home-container" style={{ borderBottom: `1px solid ${DIVIDER}` }}>
-          <div className="-mx-5 flex gap-7 overflow-x-auto px-5 pb-6 md:mx-0 md:px-0">
-            {categoryRail.map((c) => {
-              const selected = filters.category === c.name;
-              return (
-                <button
-                  key={c.name}
-                  type="button"
-                  onClick={() => update({ category: selected ? null : c.name, subcategories: [] })}
-                  aria-pressed={selected}
-                  className="group shrink-0 pb-3 text-left"
-                  style={{
-                    width: 178,
-                    borderBottom: selected ? '2px solid var(--tenant-accent)' : '2px solid transparent',
-                  }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={c.image}
-                    alt=""
-                    className="h-[160px] w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
-                    style={{ backgroundColor: STAGE, transform: `scale(${scaleFor(c.name)})` }}
-                  />
-                  <span
-                    className="mt-3 block"
-                    style={{ fontSize: 13, fontWeight: 600, letterSpacing: '.07em', color: TEXT }}
+        <div className="home-container relative" style={{ borderBottom: `1px solid ${DIVIDER}` }}>
+          <RailFade />
+          <div className="no-scrollbar -mx-5 flex gap-1 overflow-x-auto px-5 md:mx-0 md:px-0">
+            {[{ name: 'TẤT CẢ', key: null as string | null }, ...categoryRail.map((c) => ({ name: c.name, key: c.name }))].map(
+              (entry) => {
+                const selected = filters.category === entry.key;
+                const Icon = entry.key ? iconFor(entry.key) : AllIcon;
+                return (
+                  <button
+                    key={entry.name}
+                    type="button"
+                    onClick={() => update({ category: selected ? null : entry.key, subcategories: [] })}
+                    aria-pressed={selected}
+                    className="flex shrink-0 flex-col items-center justify-center gap-3 pb-4 pt-5 transition-colors"
+                    style={{
+                      width: 122,
+                      color: selected ? 'var(--tenant-accent)' : '#282828',
+                      borderBottom: selected ? '2px solid var(--tenant-accent)' : '2px solid transparent',
+                    }}
                   >
-                    {c.name.toUpperCase()}
-                  </span>
-                </button>
-              );
-            })}
+                    <Icon style={{ width: 30, height: 30 }} />
+                    <span
+                      className="text-center"
+                      style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.05em', color: selected ? 'var(--tenant-accent)' : '#282828' }}
+                    >
+                      {entry.name.toUpperCase()}
+                    </span>
+                  </button>
+                );
+              }
+            )}
           </div>
         </div>
       )}
 
       {/* ── Brand rail ──────────────────────────────────────────────────── */}
       {!loading && brandRail.length > 1 && (
-        <div className="home-container py-7" style={{ borderBottom: `1px solid ${DIVIDER}` }}>
-          <p className="mb-4" style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.12em', color: '#777777' }}>
-            THƯƠNG HIỆU
-          </p>
-          <div className="-mx-5 flex gap-3 overflow-x-auto px-5 md:mx-0 md:px-0">
+        <div className="home-container relative py-5" style={{ borderBottom: `1px solid ${DIVIDER}` }}>
+          <RailFade />
+          <div className="no-scrollbar -mx-5 flex gap-2.5 overflow-x-auto px-5 md:mx-0 md:px-0">
             {[{ name: 'TẤT CẢ', count: products.length }, ...brandRail].map((b) => {
               const isAll = b.name === 'TẤT CẢ';
               const selected = isAll ? filters.brands.length === 0 : filters.brands.includes(b.name);
+              const logo = isAll ? null : BRAND_LOGOS[b.name];
               return (
                 <button
                   key={b.name}
                   type="button"
                   aria-pressed={selected}
+                  aria-label={isAll ? 'Tất cả thương hiệu' : b.name}
                   onClick={() =>
                     update({
                       brands: isAll
@@ -234,19 +236,30 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
                           : [...filters.brands, b.name],
                     })
                   }
-                  className="flex shrink-0 items-center justify-center bg-white transition-opacity hover:opacity-70"
+                  className="flex shrink-0 items-center justify-center transition-colors"
                   style={{
-                    width: 140,
-                    height: 68,
-                    border: `1px solid ${DIVIDER}`,
-                    borderBottom: selected ? '2px solid var(--tenant-accent)' : `1px solid ${DIVIDER}`,
-                    fontSize: 13,
-                    fontWeight: 600,
-                    letterSpacing: '.06em',
-                    color: TEXT,
+                    width: 150,
+                    height: 76,
+                    padding: '18px 20px',
+                    backgroundColor: selected ? '#FFFFFF' : '#F7F7F6',
+                    border: '1px solid #ECECEA',
+                    borderBottom: selected ? '3px solid var(--tenant-accent)' : '1px solid #ECECEA',
                   }}
                 >
-                  {b.name}
+                  {logo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={logo}
+                      alt={b.name}
+                      className="h-full w-full object-contain"
+                      style={{ maxHeight: 36, maxWidth: 112 }}
+                    />
+                  ) : (
+                    // No logo asset for this brand, so its wordmark stands in.
+                    <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: '.06em', color: TEXT }}>
+                      {b.name.toUpperCase()}
+                    </span>
+                  )}
                 </button>
               );
             })}
@@ -255,31 +268,53 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
       )}
 
       {/* ── Toolbar + results ───────────────────────────────────────────── */}
-      <div className="home-container pb-24 pt-8">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-4">
-            <p style={{ fontSize: 15, color: TEXT }}>
-              {loading ? 'Đang tải…' : `${sorted.length} sản phẩm`}
-            </p>
-            <button
-              type="button"
-              onClick={() => setDrawerOpen(true)}
-              className="xl:hidden"
-              style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.08em', color: TEXT, border: `1px solid ${DIVIDER}`, padding: '9px 14px' }}
-            >
-              LỌC{activeCount > 0 ? ` · ${activeCount}` : ''}
-            </button>
+      <div className="home-container pb-24 pt-7">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 md:flex-nowrap" style={{ minHeight: 48 }}>
+          <p className="shrink-0" style={{ fontSize: 14, color: TEXT }}>
+            {loading ? 'Đang tải…' : `${sorted.length} sản phẩm`}
+          </p>
+
+          <div className="order-last w-full md:order-none md:mx-auto md:w-auto">
+            <input
+              type="search"
+              value={searchDraft}
+              onChange={(e) => setSearchDraft(e.target.value)}
+              placeholder="Tìm theo tên, SKU hoặc thương hiệu…"
+              aria-label="Tìm trong danh mục"
+              className="w-full px-3.5 md:w-[370px]"
+              style={{ height: 40, border: '1px solid #DDDDDD', fontSize: 14 }}
+            />
           </div>
 
-          <div className="flex items-center gap-5">
-            <span style={{ fontSize: 13, color: '#777777' }}>So sánh ({compareIds.length})</span>
-            <label className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setDrawerOpen(true)}
+            className="shrink-0 xl:hidden"
+            style={{ height: 40, fontSize: 12, fontWeight: 600, letterSpacing: '.08em', color: TEXT, border: `1px solid ${DIVIDER}`, paddingInline: 14 }}
+          >
+            LỌC{activeCount > 0 ? ` · ${activeCount}` : ''}
+          </button>
+
+          <div className="ml-auto flex shrink-0 items-center gap-5 md:ml-0">
+            {compareIds.length > 0 ? (
+              <Link
+                href={`/compare?ids=${compareIds.join(',')}` as Route}
+                style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.08em', color: 'var(--tenant-accent)' }}
+              >
+                SO SÁNH ({compareIds.length})
+              </Link>
+            ) : (
+              <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: '.08em', color: '#999999' }}>
+                SO SÁNH (0)
+              </span>
+            )}
+            <label>
               <span className="sr-only">Sắp xếp</span>
               <select
                 value={filters.sort}
                 onChange={(e) => update({ sort: e.target.value as CatalogFilters['sort'] })}
-                className="bg-white px-3 py-2"
-                style={{ border: `1px solid ${DIVIDER}`, fontSize: 13, color: TEXT }}
+                className="bg-white px-3"
+                style={{ height: 40, width: 162, border: '1px solid #DDDDDD', fontSize: 13, color: TEXT }}
               >
                 {SORT_OPTIONS.map((o) => (
                   <option key={o.value} value={o.value}>{o.label}</option>
@@ -289,22 +324,9 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
           </div>
         </div>
 
-        {/* Search */}
-        <div className="mt-5">
-          <input
-            type="search"
-            value={searchDraft}
-            onChange={(e) => setSearchDraft(e.target.value)}
-            placeholder="Tìm theo tên, mã sản phẩm hoặc thương hiệu"
-            aria-label="Tìm trong danh mục"
-            className="w-full max-w-[420px] px-3.5 py-2.5"
-            style={{ border: `1px solid ${DIVIDER}`, fontSize: 14 }}
-          />
-        </div>
-
         {/* Active filters */}
         {activeCount > 0 && (
-          <div className="mt-5 flex flex-wrap items-center gap-2.5">
+          <div className="mt-4 flex flex-wrap items-center gap-2">
             {filters.category && (
               <Chip label={filters.category} onRemove={() => update({ category: null, subcategories: [] })} />
             )}
@@ -349,7 +371,7 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
           <p role="status" className="mt-4" style={{ fontSize: 13, color: '#A33A3A' }}>{compareError}</p>
         )}
 
-        <div className="mt-8 grid gap-10 xl:grid-cols-[260px_minmax(0,1fr)] xl:gap-14">
+        <div className="mt-7 grid gap-10 xl:grid-cols-[244px_minmax(0,1fr)] xl:gap-[38px]">
           <aside className="hidden xl:block">
             <div className="sticky top-[92px]">
               {!loading && <CatalogFilterPanel filters={filters} facets={facets} onChange={update} />}
@@ -448,6 +470,20 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
         onClear={() => setCompareIds([])}
       />
     </>
+  );
+}
+
+/**
+ * The scrollbar under a rail is hidden, so a short fade at the right edge is
+ * what tells you there is more to scroll to.
+ */
+function RailFade() {
+  return (
+    <span
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12"
+      style={{ background: 'linear-gradient(90deg, rgba(255,255,255,0) 0%, #FFFFFF 85%)' }}
+    />
   );
 }
 

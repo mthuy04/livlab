@@ -5,7 +5,9 @@ import { prisma } from '@/lib/prisma';
 import type { TenantStorefrontConfig } from './tenantConfig';
 import {
   isRoomStudioReady,
+  isSanitaryware,
   normaliseBrand,
+  safeWarranty,
   type Availability,
   type CatalogDimensions,
   type CatalogProduct,
@@ -111,7 +113,7 @@ async function fromFixture(tenant: TenantStorefrontConfig, file: string): Promis
 
   const products: CatalogProduct[] = fixture.products
     // §39: a card needs a name, a brand, a category and an image.
-    .filter((p) => p.name && p.brand && p.category && p.primaryImage)
+    .filter((p) => p.name && p.brand && p.category && p.primaryImage && isSanitaryware(p.category))
     .map((p) => {
       const id = fixtureId(p.brand, p.sku, p.name);
       return {
@@ -137,7 +139,7 @@ async function fromFixture(tenant: TenantStorefrontConfig, file: string): Promis
         finish: p.finish,
         material: p.material,
         origin: p.origin,
-        warranty: p.warranty,
+        warranty: safeWarranty(p.warranty),
         installationType: p.installationType,
         seatType: p.seatType,
         flushType: p.flushType,
@@ -198,7 +200,10 @@ async function fromDatabase(tenant: TenantStorefrontConfig): Promise<Catalog> {
   });
 
   const products: CatalogProduct[] = rows
-    .filter((p) => p.name && p.brand && p.category && p.imageUrl)
+    .filter(
+      (p) =>
+        p.name && p.brand && p.category && p.imageUrl && isSanitaryware(normaliseCategory(p.category) ?? '')
+    )
     .map((p) => {
       const offer = offerByProduct.get(p.id);
       const showroomPrice = offer?.promotionPrice ?? offer?.showroomPrice ?? p.priceMin ?? null;
@@ -224,7 +229,7 @@ async function fromDatabase(tenant: TenantStorefrontConfig): Promise<Catalog> {
         finish: p.finish,
         material: p.material,
         origin: null,
-        warranty: p.warranty,
+        warranty: safeWarranty(p.warranty),
         installationType: null,
         seatType: null,
         flushType: null,

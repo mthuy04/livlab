@@ -44,14 +44,16 @@ export default function CatalogProductCard({
           onClick={() => onQuickView(product)}
           aria-label={`Xem nhanh ${product.name}`}
           className="block w-full overflow-hidden"
-          style={{ backgroundColor: STAGE, aspectRatio: '1 / 1' }}
+          // Square, but capped so a three-up row at 1536 does not hand each
+          // product a 430px stage.
+          style={{ backgroundColor: STAGE, aspectRatio: '1 / 1', maxHeight: 340 }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={product.image}
             alt={product.name}
             loading="lazy"
-            className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+            className="h-full w-full object-contain p-[13%] transition-transform duration-500 group-hover:scale-[1.02]"
             style={{ transform: `scale(${scale})` }}
           />
         </button>
@@ -106,38 +108,40 @@ export default function CatalogProductCard({
         )}
       </div>
 
-      <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-2.5 pt-4">
-        <Link
-          href={product.href as Route}
-          className="transition-opacity hover:opacity-60"
-          style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.07em', color: TEXT }}
+      <div className="mt-auto flex flex-wrap items-center justify-between gap-x-5 gap-y-2.5 pt-4">
+        <label
+          className="inline-flex cursor-pointer items-center gap-2"
+          style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.08em', color: '#555555' }}
         >
-          XEM CHI TIẾT →
-        </Link>
-        {product.roomStudioReady && (
-          <Link
-            href={'/room-studio' as Route}
-            className="transition-opacity hover:opacity-60"
-            style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.07em', color: 'var(--tenant-accent)' }}
-          >
-            THỬ TRONG PHÒNG
-          </Link>
-        )}
-      </div>
+          <input
+            type="checkbox"
+            checked={comparing}
+            onChange={() => onToggleCompare(product)}
+            className="h-[15px] w-[15px] accent-[color:var(--tenant-accent)]"
+            aria-label={`So sánh ${product.name}`}
+          />
+          SO SÁNH
+        </label>
 
-      <label
-        className="mt-3 inline-flex cursor-pointer items-center gap-2 self-start"
-        style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.08em', color: '#555555' }}
-      >
-        <input
-          type="checkbox"
-          checked={comparing}
-          onChange={() => onToggleCompare(product)}
-          className="h-[14px] w-[14px] accent-[color:var(--tenant-accent)]"
-          aria-label={`So sánh ${product.name}`}
-        />
-        SO SÁNH
-      </label>
+        <div className="flex items-center gap-4">
+          {product.roomStudioReady && (
+            <Link
+              href={'/room-studio' as Route}
+              className="transition-opacity hover:opacity-60"
+              style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.07em', color: 'var(--tenant-accent)' }}
+            >
+              THỬ TRONG PHÒNG
+            </Link>
+          )}
+          <Link
+            href={product.href as Route}
+            className="transition-opacity group-hover:opacity-100 hover:opacity-60"
+            style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.07em', color: TEXT }}
+          >
+            XEM CHI TIẾT →
+          </Link>
+        </div>
+      </div>
     </article>
   );
 }

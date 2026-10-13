@@ -33,7 +33,7 @@ function Group({
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         className="flex w-full items-center justify-between py-4 text-left"
-        style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.10em', color: TEXT }}
+        style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.08em', color: TEXT }}
       >
         <span>
           {title}
@@ -63,7 +63,7 @@ function CheckRow({
         type="checkbox"
         checked={checked}
         onChange={onChange}
-        className="h-[14px] w-[14px] shrink-0 accent-[color:var(--tenant-accent)]"
+        className="h-[15px] w-[15px] shrink-0 accent-[color:var(--tenant-accent)]"
       />
       <span className="flex-1">{label}</span>
       {count !== undefined && <span style={{ fontSize: 12, color: '#999999' }}>{count}</span>}
@@ -199,6 +199,16 @@ export default function CatalogFilterPanel({
         </Group>
       )}
 
+      {facets.roomStudio > 0 && (
+        <Group title="ROOM STUDIO">
+          <CheckRow
+            label="Thử được trong Room Studio"
+            count={facets.roomStudio}
+            checked={filters.roomStudio}
+            onChange={() => onChange({ roomStudio: !filters.roomStudio })}
+          />
+        </Group>
+      )}
       {/* Rendered only when the tenant actually has offer rows behind it. */}
       {facets.availability.length > 0 && (
         <Group title="TÌNH TRẠNG THƯƠNG MẠI">
@@ -214,16 +224,6 @@ export default function CatalogFilterPanel({
         </Group>
       )}
 
-      {facets.roomStudio > 0 && (
-        <Group title="ROOM STUDIO">
-          <CheckRow
-            label="Thử được trong Room Studio"
-            count={facets.roomStudio}
-            checked={filters.roomStudio}
-            onChange={() => onChange({ roomStudio: !filters.roomStudio })}
-          />
-        </Group>
-      )}
     </div>
   );
 }

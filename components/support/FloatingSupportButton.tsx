@@ -78,7 +78,11 @@ export default function FloatingSupportButton() {
   // The storefront homepage carries its own consultation block, and a generic
   // chat bubble floating over it reads as a startup widget. Expert stays on
   // every other route, Room Studio included.
-  if (pathname === '/' || pathname.startsWith('/admin') || pathname.startsWith('/showroom')) {
+  // The storefront's own pages carry their own consultation routes, and a
+  // generic chat bubble floating over a catalogue reads as a startup widget.
+  // Expert stays on every other route, Room Studio included.
+  const HIDDEN = ['/', '/products', '/compare'];
+  if (HIDDEN.includes(pathname) || pathname.startsWith('/admin') || pathname.startsWith('/showroom')) {
     return null;
   }
 

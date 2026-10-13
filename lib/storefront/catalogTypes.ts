@@ -75,15 +75,41 @@ export interface Catalog {
   demoNotice: string | null;
 }
 
-/** Display order. Categories outside it sort alphabetically after. */
-export const CATEGORY_ORDER = [
+/**
+ * The storefront sells bathrooms, and only these six categories.
+ *
+ * LivLab's own catalogue also holds lights and wall tile, which are real
+ * master data but not sanitaryware — they are excluded from the storefront
+ * scope here rather than deleted anywhere.
+ */
+export const SANITARYWARE_CATEGORIES = [
   'Bồn cầu',
   'Lavabo',
   'Vòi lavabo',
   'Sen tắm',
   'Bồn tắm',
   'Gương & phụ kiện',
-];
+] as const;
+
+/** Display order. Categories outside it sort alphabetically after. */
+export const CATEGORY_ORDER: readonly string[] = SANITARYWARE_CATEGORIES;
+
+export const isSanitaryware = (category: string): boolean =>
+  (SANITARYWARE_CATEGORIES as readonly string[]).includes(category);
+
+/**
+ * A warranty line must not name a showroom LivLab has no agreement with.
+ * Factual manufacturer terms pass through; anything naming a seller is
+ * reduced to the manufacturer's own policy.
+ */
+export function safeWarranty(raw: string | null): string | null {
+  if (!raw) return null;
+  const trimmed = raw.trim();
+  if (/showroom|đại lý|cửa hàng|luxbath|tùng đăng|tung dang/i.test(trimmed)) {
+    return 'Theo chính sách hãng';
+  }
+  return trimmed;
+}
 
 export function sortCategories(names: string[]): string[] {
   return [...names].sort((a, b) => {

@@ -336,3 +336,14 @@ body {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: none; }
 }
+
+/* A rail that scrolls horizontally without the browser's scrollbar sitting
+   under it. Touch and wheel scrolling are untouched. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
