@@ -115,13 +115,14 @@ function ProductLabel({ product, detailed }: { product: RoomStudioProduct; detai
     // readable size instead of growing as the camera pulls back. With a scale
     // factor it reached half the height of the room when the viewport became
     // the dominant column, which is the opposite of a subtle annotation.
-    <Html
-      position={[0, size.height / 2 + 0.08, 0]}
-      center
-      pointerEvents="none"
-      zIndexRange={[20, 0]}
-    >
-      <div className="pointer-events-none w-max max-w-[200px] rounded bg-[#0B1623]/92 px-2 py-1 text-center text-white shadow-md">
+    //
+    // Anchored by its bottom edge rather than `center`, because a label the
+    // size of a basin, centred on a point just above a basin, covers the basin.
+    <Html position={[0, size.height / 2 + 0.06, 0]} pointerEvents="none" zIndexRange={[20, 0]}>
+      <div
+        style={{ transform: 'translate(-50%, -100%)' }}
+        className="pointer-events-none w-max max-w-[200px] rounded bg-[#0B1623]/92 px-2 py-1 text-center text-white shadow-md"
+      >
         {detailed && (product.brand || product.sku) && (
           <p className="text-[10px] uppercase tracking-[0.08em] text-white/60">
             {[product.brand, product.sku].filter(Boolean).join(' · ')}

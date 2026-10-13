@@ -509,10 +509,13 @@ export default function RoomStudioClient() {
         onAddProductToQuote={(product) => addItem(product.source)}
       />
 
+      {/* Top-right, clear of both bars. At the bottom it landed on the
+          selected-product toolbar, which is exactly where the customer is
+          looking after adding something. */}
       {toast && (
         <div
           role="status"
-          className="fixed bottom-24 left-1/2 z-[80] flex -translate-x-1/2 items-center gap-2 rounded bg-[#123C5A] px-4 py-2.5 text-white shadow-xl md:bottom-20"
+          className="fixed right-4 top-28 z-[80] flex items-center gap-2 rounded bg-[#123C5A] px-4 py-2.5 text-white shadow-xl"
         >
           <CheckCircle className="h-4 w-4 text-[#DCEBF5]" aria-hidden />
           <span className="text-[13px] font-medium">{toast}</span>
