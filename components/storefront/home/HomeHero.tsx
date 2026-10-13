@@ -1,90 +1,48 @@
-import Link from 'next/link';
 import Image from 'next/image';
-import { Container } from '@/components/storefront/primitives';
+import { ArrowLink, SolidLink } from './editorial';
 
 /**
- * The hero: one dark bathroom photograph, a compact block of text on the left.
+ * The hero: one dark bathroom photograph with a compact block of text on it.
  *
- * The photograph is the subject. The type sits inside 480px against a 1536px
- * stage, and the scrim is fully transparent by 68% so the stone, the joinery
- * and both basins stay readable.
+ * The scrim is localized to the left and fully transparent by 70%, so the
+ * stone, the joinery and both basins stay the subject.
  */
 export const HERO_IMAGE = '/images/hero-bathroom-luxury.png';
 
 export default function HomeHero({ roomStudio }: { roomStudio: boolean }) {
   return (
-    <section className="relative flex items-center" style={{ height: 'clamp(520px, 68svh, 660px)' }}>
+    <section className="relative h-[650px] overflow-hidden max-md:h-[72svh] max-md:min-h-[580px]">
       <Image
         src={HERO_IMAGE}
         alt="Phòng tắm tông tối với bàn đá, hai chậu rửa và vòi gắn tường"
         fill
         priority
         sizes="100vw"
-        className="object-cover object-center lg:object-[62%_center]"
+        className="object-cover object-center"
       />
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            'linear-gradient(90deg, rgba(0,0,0,.58) 0%, rgba(0,0,0,.42) 24%, rgba(0,0,0,.20) 45%, rgba(0,0,0,0) 68%)',
-        }}
-      />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,.62)_0%,rgba(0,0,0,.44)_25%,rgba(0,0,0,.16)_48%,rgba(0,0,0,0)_70%)]" />
 
-      <Container>
-        {/* The offset settles the block's centre at ~55% of the hero height. */}
-        <div className="relative max-w-[480px] mt-[7svh]">
+      <div className="home-container relative flex h-full items-center max-md:items-end max-md:pb-14">
+        <div className="w-full max-w-[475px] text-white">
           <h1
-            style={{
-              // 43px at 1536, 42 at 1440, 38 at 1024, 34 on a phone.
-              //
-              // The brief asked for 46px inside a 480px block, but "Thấy trước
-              // không gian." needs ~505px at that size, so it broke to three
-              // lines. Two lines inside 480px is the constraint that matters,
-              // and 43px is the largest size that holds it.
-              fontSize: 'clamp(34px, 28px + 0.977vw, 43px)',
-              fontWeight: 500,
-              lineHeight: 1.12,
-              letterSpacing: '-0.015em',
-              color: '#FFFFFF',
-            }}
+            className="text-[40px] leading-[1.1] md:text-[44px]"
+            style={{ fontWeight: 500, letterSpacing: '-0.025em' }}
           >
-            Thấy trước không gian.<br />Chọn đúng thiết bị.
+            Thấy trước không gian.
+            <br />
+            Chọn đúng thiết bị.
           </h1>
-          <p
-            className="max-w-[470px]"
-            style={{ marginTop: 22, fontSize: 16, fontWeight: 400, lineHeight: 1.65, color: 'rgba(255,255,255,0.88)' }}
-          >
+
+          <p className="mt-6 max-w-[460px] text-[16px] leading-[1.7] text-white/85">
             Khám phá thiết bị thật trong từng không gian và thử trực tiếp với kích thước phòng của bạn.
           </p>
-          <div className="flex flex-wrap items-center gap-y-4" style={{ marginTop: 30, columnGap: 30 }}>
-            <Link
-              href="/concepts"
-              className="inline-flex items-center transition-opacity hover:opacity-85"
-              style={{
-                height: 42,
-                paddingInline: 18,
-                borderRadius: 2,
-                backgroundColor: '#FFFFFF',
-                color: 'var(--tenant-accent)',
-                fontSize: 13,
-                fontWeight: 600,
-                letterSpacing: '0.08em',
-              }}
-            >
-              KHÁM PHÁ KHÔNG GIAN
-            </Link>
-            {roomStudio && (
-              <Link
-                href="/room-studio"
-                className="inline-flex items-center gap-2 transition-opacity hover:opacity-70"
-                style={{ fontSize: 13, fontWeight: 500, letterSpacing: '0.08em', color: '#FFFFFF' }}
-              >
-                MỞ ROOM STUDIO <span aria-hidden="true">→</span>
-              </Link>
-            )}
+
+          <div className="mt-8 flex items-center gap-8 max-sm:flex-col max-sm:items-start max-sm:gap-5">
+            <SolidLink href="/concepts" tone="white">KHÁM PHÁ KHÔNG GIAN</SolidLink>
+            {roomStudio && <ArrowLink href="/room-studio" tone="light">MỞ ROOM STUDIO</ArrowLink>}
           </div>
         </div>
-      </Container>
+      </div>
     </section>
   );
 }

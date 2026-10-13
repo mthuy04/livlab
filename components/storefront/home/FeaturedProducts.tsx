@@ -1,8 +1,7 @@
 import Link from 'next/link';
 import type { Route } from 'next';
 import type { FeaturedProduct } from '@/lib/storefront/homepageData';
-import { Container } from '@/components/storefront/primitives';
-import { SectionHeader, ProductStage, SECTION_PAD, TEXT, TEXT_MUTED } from './editorial';
+import { SectionHeader, ProductStage, TEXT } from './editorial';
 
 /**
  * Four real catalogue products. Availability is not shown because the
@@ -13,11 +12,11 @@ export default function FeaturedProducts({ products }: { products: FeaturedProdu
   if (products.length === 0) return null;
 
   return (
-    <section style={{ paddingBlock: SECTION_PAD, backgroundColor: '#FFFFFF' }}>
-      <Container>
+    <section className="home-section">
+      <div className="home-container">
         <SectionHeader title="SẢN PHẨM NỔI BẬT" href={'/products' as Route} />
 
-        <div className="mt-10 grid grid-cols-2 gap-x-5 gap-y-10 lg:mt-14 lg:grid-cols-4 lg:gap-x-8">
+        <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-4 md:gap-7">
           {products.map((product) => {
             const price =
               product.priceRange ??
@@ -32,18 +31,23 @@ export default function FeaturedProducts({ products }: { products: FeaturedProdu
                   src={product.imageUrl ?? ''}
                   alt={product.name}
                   scale={product.imageScale}
-                  sizes="(max-width: 1024px) 50vw, 25vw"
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  ratio="1 / 1"
+                  inset="10%"
                 />
                 {product.brand && (
-                  <p className="mt-5" style={{ fontSize: 12, fontWeight: 500, letterSpacing: '.1em', color: TEXT_MUTED }}>
+                  <p className="mt-5" style={{ fontSize: 10, fontWeight: 600, letterSpacing: '.12em', color: '#777777' }}>
                     {product.brand.toUpperCase()}
                   </p>
                 )}
-                <p className="mt-2" style={{ fontSize: 15, lineHeight: 1.5, fontWeight: 500, color: TEXT }}>
+                <h3
+                  className="mt-2 min-h-[42px]"
+                  style={{ fontSize: 15, fontWeight: 500, lineHeight: 1.45, color: TEXT }}
+                >
                   {product.name}
-                </p>
+                </h3>
                 {price && (
-                  <p className="mt-2" style={{ fontSize: 14, color: TEXT_MUTED }}>
+                  <p className="mt-2" style={{ fontSize: 13, lineHeight: 1.5, color: '#707070' }}>
                     Giá tham khảo {price}
                   </p>
                 )}
@@ -51,7 +55,7 @@ export default function FeaturedProducts({ products }: { products: FeaturedProdu
             );
           })}
         </div>
-      </Container>
+      </div>
     </section>
   );
 }

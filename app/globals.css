@@ -228,26 +228,52 @@ body {
   .storefront { --sf-gutter: 40px; }
 }
 
-/* The storefront header is sticky and two-tier (30px utility + 74px main), so
-   anything a link can jump to needs that much clearance or it lands underneath
-   it. 116px covers both tiers plus a little breathing room. */
+/* Only the 74px main header is sticky — the utility bar scrolls away — so
+   anything a link can jump to needs that much clearance plus a little air. */
 .storefront section,
 .storefront h1,
 .storefront h2,
 .storefront h3,
 .storefront [id] {
-  scroll-margin-top: 116px;
+  scroll-margin-top: 92px;
 }
 
 @media (max-width: 1023px) {
-  /* The utility bar is hidden below lg, so the header is 64px there. */
   .storefront section,
   .storefront h1,
   .storefront h2,
   .storefront h3,
   .storefront [id] {
-    scroll-margin-top: 84px;
+    scroll-margin-top: 80px;
   }
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Homepage layout helpers.
+
+   One container and one section rhythm, so no section states its own gutters
+   or padding and they cannot drift apart.
+   ─────────────────────────────────────────────────────────────────────────── */
+.home-container {
+  max-width: 1360px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+.home-section {
+  padding-block: 64px;
+}
+
+@media (min-width: 768px) {
+  .home-container { padding-inline: 40px; }
+  .home-section { padding-block: 104px; }
+}
+
+.home-nav {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
 }
 
 /* Editorial type scale. Clamped so a headline is large on a desktop without

@@ -49,30 +49,29 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
 
   return (
     <>
+      {/* Only real destinations; never an invented phone number or address. */}
+      {utility.length > 0 && (
+        <div className="hidden md:block" style={{ height: 30, backgroundColor: '#F4F4F2' }}>
+          <div className="home-container flex h-[30px] items-center justify-end gap-8">
+            {utility.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href as Route}
+                className="transition-opacity hover:opacity-60"
+                style={{ fontSize: 11, fontWeight: 500, letterSpacing: '.12em', color: '#555555' }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
       <header
         className="sticky top-0 z-50"
         style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #E5E5E5' }}
       >
-        {/* Only real destinations; never an invented phone number or address. */}
-        {utility.length > 0 && (
-          <div className="hidden lg:block" style={{ height: 30, backgroundColor: '#F5F5F5' }}>
-            <Container>
-              <div className="flex h-[30px] items-center justify-end gap-7">
-                {utility.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href as Route}
-                    className="transition-opacity hover:opacity-60"
-                    style={{ fontSize: 12, fontWeight: 500, letterSpacing: '.08em', color: '#555555' }}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </Container>
-          </div>
-        )}
-        <Container>
+        <div className="home-container">
           <div className="flex h-16 items-center justify-between gap-6 lg:h-[74px]">
             <Link href="/" className="flex shrink-0 items-center gap-2.5" aria-label={tenant.brand.name}>
               {tenant.brand.logo && !logoFailed ? (
@@ -80,7 +79,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                 <img
                   src={tenant.brand.logo}
                   alt={tenant.brand.logoAlt ?? tenant.brand.name}
-                  className="h-10 w-auto lg:h-[47px]"
+                  className="h-9 w-auto lg:h-[40px]"
                   onError={() => setLogoFailed(true)}
                 />
               ) : (
@@ -94,11 +93,11 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
             </Link>
 
             <nav aria-label="Điều hướng chính" className="hidden lg:block">
-              <ul className="flex items-center gap-8">
+              <ul className="flex items-center gap-11">
                 {tenant.navigation.map((item) => {
                   const active = isActive(item.href) || item.children?.some((c) => isActive(c.href));
                   const linkStyle = {
-                    color: active ? '#262626' : '#262626',
+                    color: '#262626',
                     fontWeight: 500,
                     letterSpacing: '.10em',
                     textTransform: 'uppercase' as const,
@@ -179,16 +178,15 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
               {tenant.features.quotations && (
                 <button
                   onClick={toggleDrawer}
-                  className="ml-2 hidden items-center gap-2 text-[13px] transition-opacity hover:opacity-80 lg:inline-flex"
+                  className="ml-2 hidden items-center gap-2 text-[12px] transition-opacity hover:opacity-80 lg:inline-flex"
                   style={{
-                    height: 41,
-                    paddingInline: 18,
-                    borderRadius: 2,
+                    height: 42,
+                    paddingInline: 20,
                     backgroundColor: 'var(--tenant-accent)',
                     color: 'var(--tenant-accent-contrast)',
-                    fontSize: 13,
+                    fontSize: 12,
                     fontWeight: 600,
-                    letterSpacing: '.08em',
+                    letterSpacing: '.10em',
                   }}
                 >
                   YÊU CẦU BÁO GIÁ
@@ -206,7 +204,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
               </button>
             </div>
           </div>
-        </Container>
+        </div>
       </header>
 
       {menuOpen && (

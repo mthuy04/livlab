@@ -3,43 +3,47 @@ import type { Route } from 'next';
 import type { ReactNode } from 'react';
 
 /**
- * The homepage's design tokens and its two shared pieces.
+ * The homepage's design tokens and its shared pieces.
  *
- * Everything here is the locked system: a bright neutral canvas, one accent
- * used sparingly, no shadow on content, no radius above 2px. Sections import
- * these rather than restating colours and sizes.
+ * Bright neutral canvas, one accent used sparingly, no shadow on content, no
+ * radius. Sections import these rather than restating colours and sizes.
  */
 
-export const BG = '#FFFFFF';
-export const BG_SOFT = '#F5F5F3';
-export const STAGE = '#F6F6F5';
+export const BG_SOFT = '#F7F7F5';
+export const STAGE = '#F6F6F4';
 export const DIVIDER = '#E5E5E5';
 export const TEXT = '#262626';
 export const TEXT_MUTED = '#666666';
 
-/** 36/500/.025em desktop, 28px on a phone. One scale for every section. */
-export const H2_STYLE = {
-  fontSize: 'clamp(28px, 1.4rem + 1vw, 36px)',
-  fontWeight: 500,
-  lineHeight: 1.15,
-  letterSpacing: '.025em',
-  color: TEXT,
-} as const;
+/** Section title on the left, "xem tất cả" on the right. */
+export function SectionHeader({ title, href }: { title: string; href?: Route | string }) {
+  return (
+    <div className="mb-8 flex flex-wrap items-end justify-between gap-x-8 gap-y-4 md:mb-12">
+      <h2
+        style={{
+          fontSize: 'clamp(30px, 1.4rem + 1vw, 36px)',
+          fontWeight: 500,
+          lineHeight: 1.05,
+          letterSpacing: '.015em',
+          color: TEXT,
+        }}
+      >
+        {title}
+      </h2>
+      {href && (
+        <Link
+          href={href as Route}
+          className="shrink-0 transition-opacity hover:opacity-60"
+          style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.10em', color: '#333333' }}
+        >
+          XEM TẤT CẢ →
+        </Link>
+      )}
+    </div>
+  );
+}
 
-export const BODY_STYLE = {
-  fontSize: 'clamp(15px, 0.9rem + 0.2vw, 16px)',
-  lineHeight: 1.65,
-  color: TEXT_MUTED,
-} as const;
-
-/**
- * Half of the gap between sections, applied to each side, so two neighbours
- * add up to the real rhythm: ~98px on a 1536 desktop, 68px on a phone. Giving
- * every section a full 104px top AND bottom was what opened the 200px holes.
- */
-export const SECTION_PAD = 'clamp(34px, 3.2vw, 52px)';
-
-/** A text link with an arrow. Most actions on this page are one of these. */
+/** A small uppercase text link with an arrow. Most actions are one of these. */
 export function ArrowLink({
   href,
   children,
@@ -52,46 +56,46 @@ export function ArrowLink({
   return (
     <Link
       href={href as Route}
-      className="group inline-flex shrink-0 items-center gap-2 transition-opacity hover:opacity-60"
+      className="inline-block shrink-0 transition-opacity hover:opacity-60"
       style={{
-        fontSize: 13,
+        fontSize: 12,
         fontWeight: 600,
         letterSpacing: '.08em',
         color: tone === 'light' ? '#FFFFFF' : TEXT,
       }}
     >
-      <span className="border-b border-transparent group-hover:border-current">{children}</span>
-      <span aria-hidden="true">→</span>
+      {children} <span aria-hidden="true">→</span>
     </Link>
   );
 }
 
-/** Section title on the left, "xem tất cả" on the right. */
-export function SectionHeader({
-  title,
+/** The filled action. There are three on the page and no more. */
+export function SolidLink({
   href,
-  action = 'XEM TẤT CẢ',
+  children,
+  tone = 'accent',
 }: {
-  title: string;
-  href?: Route | string;
-  action?: string;
+  href: Route | string;
+  children: ReactNode;
+  tone?: 'accent' | 'white';
 }) {
+  const onWhite = tone === 'white';
   return (
-    <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
-      <h2 style={H2_STYLE}>{title}</h2>
-      {href && <ArrowLink href={href}>{action}</ArrowLink>}
-    </div>
-  );
-}
-
-/** 32×6px accent rule. The only place the tenant colour appears in a section. */
-export function AccentRule() {
-  return (
-    <span
-      aria-hidden="true"
-      className="block"
-      style={{ width: 32, height: 6, backgroundColor: 'var(--tenant-accent)' }}
-    />
+    <Link
+      href={href as Route}
+      className="inline-flex items-center transition-opacity hover:opacity-85"
+      style={{
+        height: 43,
+        paddingInline: 20,
+        backgroundColor: onWhite ? '#FFFFFF' : 'var(--tenant-accent)',
+        color: onWhite ? 'var(--tenant-accent)' : 'var(--tenant-accent-contrast)',
+        fontSize: 12,
+        fontWeight: 600,
+        letterSpacing: '.09em',
+      }}
+    >
+      {children}
+    </Link>
   );
 }
 
@@ -105,25 +109,29 @@ export function ProductStage({
   alt,
   scale,
   sizes,
-  priority = false,
+  ratio = '1 / 1.04',
+  inset = '12%',
 }: {
   src: string;
   alt: string;
   scale: number;
   sizes: string;
-  priority?: boolean;
+  ratio?: string;
+  inset?: string;
 }) {
   return (
-    <div className="relative overflow-hidden" style={{ backgroundColor: STAGE, aspectRatio: '1 / 1.05' }}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={src}
-        alt={alt}
-        loading={priority ? 'eager' : 'lazy'}
-        sizes={sizes}
-        className="absolute inset-0 h-full w-full object-contain transition-transform duration-700 group-hover:scale-[1.03]"
-        style={{ transform: `scale(${scale})` }}
-      />
+    <div className="relative overflow-hidden" style={{ backgroundColor: STAGE, aspectRatio: ratio }}>
+      <div className="absolute" style={{ inset }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          sizes={sizes}
+          className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.025]"
+          style={{ transform: `scale(${scale})` }}
+        />
+      </div>
     </div>
   );
 }

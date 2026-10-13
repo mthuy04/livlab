@@ -1,6 +1,6 @@
+import type { Route } from 'next';
 import { resolveTenant } from '@/lib/storefront/resolveTenant';
 import { getHomepageData } from '@/lib/storefront/homepageData';
-import { Container } from '@/components/storefront/primitives';
 import HomeHero from '@/components/storefront/home/HomeHero';
 import HomeCategories from '@/components/storefront/home/HomeCategories';
 import ShoppableSpace from '@/components/storefront/home/ShoppableSpace';
@@ -8,8 +8,7 @@ import HomeCollections from '@/components/storefront/home/HomeCollections';
 import FeaturedProducts from '@/components/storefront/home/FeaturedProducts';
 import RoomStudioFeature from '@/components/storefront/home/RoomStudioFeature';
 import ShowroomConsultation from '@/components/storefront/home/ShowroomConsultation';
-import { SectionHeader, ArrowLink, SECTION_PAD, TEXT, TEXT_MUTED, BODY_STYLE } from '@/components/storefront/home/editorial';
-import type { Route } from 'next';
+import { SectionHeader, ArrowLink, TEXT, TEXT_MUTED } from '@/components/storefront/home/editorial';
 
 /**
  * The storefront homepage: hero, products, space, collections, featured
@@ -31,24 +30,23 @@ export default async function HomePage() {
 
       {/* ── Không gian ──────────────────────────────────────────────────── */}
       {featured && featured.hotspots.length > 0 && (
-        <section style={{ paddingBlock: SECTION_PAD, backgroundColor: '#FFFFFF' }}>
-          <Container>
+        <section className="home-section pt-0">
+          <div className="home-container">
             <SectionHeader title="KHÔNG GIAN" href={'/concepts' as Route} />
 
-            <div className="mt-10 lg:mt-14">
-              <ShoppableSpace room={featured} />
-            </div>
+            <ShoppableSpace room={featured} />
 
-            <div className="mt-8 grid gap-7 lg:grid-cols-[64fr_36fr] lg:gap-[60px]">
+            <div className="grid gap-6 pt-7 md:grid-cols-[1fr_auto]">
               <div>
-                <p style={{ fontSize: 'clamp(20px, 1.1rem + 0.5vw, 24px)', fontWeight: 500, color: TEXT, letterSpacing: '.02em' }}>
+                <h3 style={{ fontSize: 23, fontWeight: 500, letterSpacing: '.01em', color: TEXT }}>
                   {featured.title.toUpperCase()}
-                </p>
-                <p className="mt-4 max-w-[520px]" style={BODY_STYLE}>
+                </h3>
+                <p className="mt-3 max-w-[620px]" style={{ fontSize: 15, lineHeight: 1.7, color: TEXT_MUTED }}>
                   Khám phá từng thiết bị trong không gian và dùng concept này làm điểm bắt đầu cho phòng của bạn.
                 </p>
               </div>
-              <div className="lg:pt-1">
+
+              <div className="md:text-right">
                 <p style={{ fontSize: 14, color: TEXT_MUTED }}>
                   {featured.products.length} sản phẩm
                   {/* Only when the catalogue actually prices every item. */}
@@ -59,7 +57,7 @@ export default async function HomePage() {
                 </div>
               </div>
             </div>
-          </Container>
+          </div>
         </section>
       )}
 

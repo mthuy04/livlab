@@ -1,6 +1,5 @@
 import Image from 'next/image';
-import { Container } from '@/components/storefront/primitives';
-import { ArrowLink, SECTION_PAD, H2_STYLE, BODY_STYLE, TEXT, TEXT_MUTED, DIVIDER } from './editorial';
+import { ArrowLink, TEXT, TEXT_MUTED } from './editorial';
 
 /**
  * The Room Studio teaser.
@@ -19,51 +18,62 @@ const ROWS = [
 
 export default function RoomStudioFeature() {
   return (
-    <section style={{ paddingBlock: SECTION_PAD, backgroundColor: '#F5F5F3' }}>
-      <Container>
-        <div className="grid gap-9 lg:grid-cols-[64fr_36fr] lg:items-center lg:gap-[48px]">
+    <section className="py-16 md:py-[104px]" style={{ backgroundColor: '#F4F4F1' }}>
+      <div className="home-container grid items-center gap-14 md:grid-cols-[1.7fr_1fr] md:gap-20">
+        <div
+          className="relative aspect-[16/11] overflow-hidden bg-white"
+          style={{ border: '1px solid #E4E4E2' }}
+        >
           <Image
             src={ROOM_STUDIO_SCREENSHOT}
             alt="Giao diện Room Studio: nhập kích thước phòng, chọn vật liệu và thư viện sản phẩm"
-            width={1640}
-            height={1240}
-            sizes="(max-width: 1024px) 100vw, 64vw"
-            className="w-full"
-            style={{ border: `1px solid ${DIVIDER}` }}
+            fill
+            sizes="(max-width: 768px) 100vw, 65vw"
+            className="object-cover object-left-top"
           />
+        </div>
 
-          <div>
-            <p style={{ fontSize: 12, fontWeight: 500, letterSpacing: '.12em', color: TEXT_MUTED }}>ROOM STUDIO</p>
-            {/* A sentence heading, so it carries a touch more size than the
-                one-word section titles and no tracking. */}
-            <h2
-              className="mt-4"
-              style={{ ...H2_STYLE, fontSize: 'clamp(28px, 1.3rem + 1.2vw, 38px)', letterSpacing: '0' }}
-            >
-              Thử trước trong phòng của bạn
-            </h2>
-            <p className="mt-5" style={{ ...BODY_STYLE, fontSize: 16 }}>
-              Nhập kích thước phòng, chọn vật liệu và đặt thiết bị thật vào đúng tỷ lệ trước khi quyết định.
-            </p>
+        <div>
+          <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.15em', color: TEXT_MUTED }}>
+            ROOM STUDIO
+          </p>
+          <h2
+            className="mt-5 text-[30px] md:text-[38px]"
+            style={{ fontWeight: 500, lineHeight: 1.15, letterSpacing: '-0.015em', color: TEXT }}
+          >
+            Thử trước trong
+            <br />
+            phòng của bạn
+          </h2>
+          <p className="mt-6 max-w-[430px]" style={{ fontSize: 16, lineHeight: 1.7, color: TEXT_MUTED }}>
+            Nhập kích thước phòng, chọn vật liệu và đặt thiết bị thật vào đúng tỷ lệ trước khi quyết định.
+          </p>
 
-            <div className="mt-8">
-              {ROWS.map((row) => (
-                <p key={row} className="py-3.5" style={{ fontSize: 15, color: TEXT, borderTop: `1px solid ${DIVIDER}` }}>
-                  {row}
-                </p>
-              ))}
-            </div>
+          <div className="mt-8" style={{ borderBlock: '1px solid #DEDEDC' }}>
+            {ROWS.map((text, index) => (
+              <p
+                key={text}
+                className="py-4"
+                style={{
+                  fontSize: 14,
+                  color: TEXT,
+                  borderBottom: index < ROWS.length - 1 ? '1px solid #DEDEDC' : undefined,
+                }}
+              >
+                {text}
+              </p>
+            ))}
+          </div>
 
-            <p className="mt-6" style={{ ...BODY_STYLE, fontSize: 14 }}>
-              LivLab Expert hỗ trợ lựa chọn khi bạn cần thêm gợi ý.
-            </p>
+          <p className="mt-7" style={{ fontSize: 13, color: '#777777' }}>
+            LivLab Expert hỗ trợ lựa chọn khi bạn cần thêm gợi ý.
+          </p>
 
-            <div className="mt-7">
-              <ArrowLink href="/room-studio">MỞ ROOM STUDIO</ArrowLink>
-            </div>
+          <div className="mt-8">
+            <ArrowLink href="/room-studio">MỞ ROOM STUDIO</ArrowLink>
           </div>
         </div>
-      </Container>
+      </div>
     </section>
   );
 }
