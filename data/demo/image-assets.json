@@ -1,1644 +1,1649 @@
 {
- "assets": {
-  "llv-acc-bancoot-lk2513a": {
-   "localPath": "/demo/manufacturers/bancoot/llv-acc-bancoot-lk2513a-primary.webp",
-   "width": 451,
-   "height": 451,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/upload_images/images/2022/10/19/bancoot-lk-2513a.webp",
-    "assetOwner": "Bancoot",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "WEBP",
-    "originalWidth": 500,
-    "originalHeight": 226,
-    "checkedAt": "2026-10-13T08:00:23Z"
-   }
-  },
-  "llv-acc-bancoot-lk8813": {
-   "localPath": "/demo/manufacturers/bancoot/llv-acc-bancoot-lk8813-primary.webp",
-   "width": 418,
-   "height": 418,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/upload_images/images/2022/10/20/bancoot-lk-8813.webp",
-    "assetOwner": "Bancoot",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "WEBP",
-    "originalWidth": 451,
-    "originalHeight": 226,
-    "checkedAt": "2026-10-13T08:00:23Z"
-   }
-  },
-  "llv-mir-karat-em0240250": {
-   "localPath": "/demo/manufacturers/karat/llv-mir-karat-em0240250-primary.webp",
-   "width": 859,
-   "height": 859,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/images/products/2026/03/14/large/karat-em-02-402-50_1773469364.jpg",
-    "assetOwner": "Karat",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 800,
-    "originalHeight": 800,
-    "checkedAt": "2026-10-13T08:00:23Z"
-   }
-  },
-  "llv-acc-bancoot-lk528p": {
-   "localPath": "/demo/manufacturers/bancoot/llv-acc-bancoot-lk528p-primary.webp",
-   "width": 406,
-   "height": 406,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/upload_images/images/2021/12/06/lo-giay-ve-sinh-kin-inox-304-bancoot-lk528-p.webp",
-    "assetOwner": "Bancoot",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "WEBP",
-    "originalWidth": 500,
-    "originalHeight": 500,
-    "checkedAt": "2026-10-13T08:00:23Z"
-   }
-  },
-  "llv-acc-cotto-ct0062hm": {
-   "localPath": "/demo/manufacturers/cotto/llv-acc-cotto-ct0062hm-primary.webp",
-   "width": 658,
-   "height": 658,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/upload_images/images/2022/03/25/ke-kinh-duoi-guong-cotto-ct0062-hm-.webp",
-    "assetOwner": "COTTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "WEBP",
-    "originalWidth": 600,
-    "originalHeight": 102,
-    "checkedAt": "2026-10-13T08:00:23Z"
-   }
-  },
-  "llv-sho-inax-bfv915s": {
-   "localPath": "/demo/manufacturers/inax/llv-sho-inax-bfv915s-primary.webp",
-   "width": 969,
-   "height": 969,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/images/products/2025/10/27/large/sen-tam-dung-inax-bfv-915s_1761533716.jpg",
-    "assetOwner": "INAX",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 900,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:23Z"
-   }
-  },
-  "llv-sho-inax-bfv655t8c": {
-   "localPath": "/demo/manufacturers/inax/llv-sho-inax-bfv655t8c-primary.webp",
-   "width": 908,
-   "height": 908,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/images/products/2025/10/25/large/sen-tam-cay-bfv-655t-8c_1761387323.jpg",
-    "assetOwner": "INAX",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 900,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:23Z"
-   }
-  },
-  "llv-sho-inax-bfv615s3c": {
-   "localPath": "/demo/manufacturers/inax/llv-sho-inax-bfv615s3c-primary.webp",
-   "width": 949,
-   "height": 949,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/images/products/2025/10/25/large/sen-tam-cay-bfv-615s-3c_1761387222.jpg",
-    "assetOwner": "INAX",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 900,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:23Z"
-   }
-  },
-  "llv-sho-inax-bfv615s8c": {
-   "localPath": "/demo/manufacturers/inax/llv-sho-inax-bfv615s8c-primary.webp",
-   "width": 908,
-   "height": 908,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/images/products/2025/10/26/large/sen-cay-inax-bfv-615s-8c_1761497272.jpg",
-    "assetOwner": "INAX",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 900,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:23Z"
-   }
-  },
-  "llv-toi-toto-cs818dt2": {
-   "localPath": "/demo/manufacturers/toto/llv-toi-toto-cs818dt2-primary.webp",
-   "width": 983,
-   "height": 983,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/18/large/ban-cau-2-khoi-xa-nhan-nap-em-toto-cs818dt2_1763437364.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 900,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:24Z"
-   }
-  },
-  "llv-toi-toto-cs838dt8": {
-   "localPath": "/demo/manufacturers/toto/llv-toi-toto-cs838dt8-primary.webp",
-   "width": 992,
-   "height": 992,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/17/large/bon-cau-2-khoi-nap-em-toto-cs838dt8_1763368156.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 900,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:24Z"
-   }
-  },
-  "llv-fau-toto-tx109ld": {
-   "localPath": "/demo/manufacturers/toto/llv-fau-toto-tx109ld-primary.webp",
-   "width": 696,
-   "height": 696,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/27/large/voi-lavabo-lanh-toto-tx109ld_1764235119.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 900,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:24Z"
-   }
-  },
-  "llv-lav-toto-sk322": {
-   "localPath": "/demo/manufacturers/toto/llv-lav-toto-sk322-primary.webp",
-   "width": 855,
-   "height": 855,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/19/large/chau-dich-vu-da-nang-toto-sk322-sk322f-w-treo-tuong_1763538419.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 900,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:24Z"
-   }
-  },
-  "llv-lav-toto-lht328c": {
-   "localPath": "/demo/manufacturers/toto/llv-lav-toto-lht328c-primary.webp",
-   "width": 927,
-   "height": 927,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/19/large/chau-rua-mat-treo-tuong-chan-lung-toto-lht328c_1763533573.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 900,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:24Z"
-   }
-  },
-  "llv-lav-toto-lht300cm": {
-   "localPath": "/demo/manufacturers/toto/llv-lav-toto-lht300cm-primary.webp",
-   "width": 772,
-   "height": 772,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/19/large/chau-rua-mat-treo-tuong-toto-lht300cm_1763538542.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 900,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:24Z"
-   }
-  },
-  "llv-lav-toto-lt300c": {
-   "localPath": "/demo/manufacturers/toto/llv-lav-toto-lt300c-primary.webp",
-   "width": 953,
-   "height": 953,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/19/large/chau-rua-mat-treo-tuong-toto-lt300c_1763538632.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 900,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:24Z"
-   }
-  },
-  "llv-lav-toto-lw1233b": {
-   "localPath": "/demo/manufacturers/toto/llv-lav-toto-lw1233b-primary.webp",
-   "width": 808,
-   "height": 808,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/19/large/chau-lavabo-toto-lw1233b-goc-treo-tuong_1763538136.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 900,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:24Z"
-   }
-  },
-  "llv-lav-toto-lw573jwf": {
-   "localPath": "/demo/manufacturers/toto/llv-lav-toto-lw573jwf-primary.webp",
-   "width": 815,
-   "height": 815,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/19/large/chau-lavabo-duong-ban-da-toto-lw573jw-f-w-nhap-khau-indonesia_1763538069.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 900,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:25Z"
-   }
-  },
-  "llv-lav-toto-lt1735-xw": {
-   "localPath": "/demo/manufacturers/toto/llv-lav-toto-lt1735-xw-primary.webp",
-   "width": 847,
-   "height": 847,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/19/large/chau-lavabo-toto-lt1735-dat-ban_1763538195.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 900,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:25Z"
-   }
-  },
-  "llv-lav-toto-lt1705-xw": {
-   "localPath": "/demo/manufacturers/toto/llv-lav-toto-lt1705-xw-primary.webp",
-   "width": 926,
-   "height": 926,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/19/large/chau-lavabo-toto-lt1705-xw-dat-ban_1763538255.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 900,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:25Z"
-   }
-  },
-  "jomoo-zd7202-so-cjm305": {
-   "localPath": "/demo/manufacturers/jomoo/zd7202-so-cjm305-primary.webp",
-   "width": 784,
-   "height": 784,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/bon-cau-thong-minh-jomoo-zd7202-S0-cjm305.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 700,
-    "originalHeight": 649,
-    "checkedAt": "2026-10-13T08:00:25Z"
-   }
-  },
-  "jomoo-zd6310-sa-ido305": {
-   "localPath": "/demo/manufacturers/jomoo/zd6310-sa-ido305-primary.webp",
-   "width": 543,
-   "height": 543,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/bon-cau-thong-minh-jomoo-zd6310-sa-cjm305.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 550,
-    "originalHeight": 550,
-    "checkedAt": "2026-10-13T08:00:26Z"
-   }
-  },
-  "jomoo-zd7300-s2-ido305": {
-   "localPath": "/demo/manufacturers/jomoo/zd7300-s2-ido305-primary.webp",
-   "width": 896,
-   "height": 896,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Bon-cau-JOMOO-ZD7300-S2-IDO305.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 800,
-    "originalHeight": 800,
-    "checkedAt": "2026-10-13T08:00:26Z"
-   }
-  },
-  "jomoo-zd8610-sa-ido305": {
-   "localPath": "/demo/manufacturers/jomoo/zd8610-sa-ido305-primary.webp",
-   "width": 896,
-   "height": 896,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "ALPHA",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Bon-cau-Jomoo-ZD8610-SA-IDO305.png",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "PNG",
-    "originalWidth": 800,
-    "originalHeight": 800,
-    "checkedAt": "2026-10-13T08:00:27Z"
-   }
-  },
-  "jomoo-zd8920-sa-cjm305": {
-   "localPath": "/demo/manufacturers/jomoo/zd8920-sa-cjm305-primary.webp",
-   "width": 649,
-   "height": 649,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://product.hstatic.net/200000913817/product/zd8920-sa-cjm305_20414c6f8223477caa2e3e2cb1248dd0_635a7ccedf194c208daacbae2628d802.png",
-    "assetOwner": "JOMOO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1440,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:28Z"
-   }
-  },
-  "jomoo-11369-2-231ka": {
-   "localPath": "/demo/manufacturers/jomoo/11369-2-231ka-primary.webp",
-   "width": 460,
-   "height": 460,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/1JOMOO-11369-2-2_31Z-1.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 523,
-    "originalHeight": 523,
-    "checkedAt": "2026-10-13T08:00:28Z"
-   }
-  },
-  "jomoo-11416-2-231k": {
-   "localPath": "/demo/manufacturers/jomoo/11416-2-231k-primary.webp",
-   "width": 701,
-   "height": 701,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://product.hstatic.net/200000913817/product/11416-2-2_31k-i011_0189057e352744dd92a0ec4291fc546a.png",
-    "assetOwner": "JOMOO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1440,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:29Z"
-   }
-  },
-  "jomoo-11411-2-231k-1": {
-   "localPath": "/demo/manufacturers/jomoo/11411-2-231k-1-primary.webp",
-   "width": 500,
-   "height": 500,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Bon-cau-JOMOO-JOMOO-11411-2-2_31K-1.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 543,
-    "originalHeight": 543,
-    "checkedAt": "2026-10-13T08:00:29Z"
-   }
-  },
-  "jomoo-11246-2-231z": {
-   "localPath": "/demo/manufacturers/jomoo/11246-2-231z-primary.webp",
-   "width": 450,
-   "height": 450,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Bon-cau-JOMOO-11246-2-2.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 474,
-    "originalHeight": 474,
-    "checkedAt": "2026-10-13T08:00:29Z"
-   }
-  },
-  "jomoo-11413-2-211k": {
-   "localPath": "/demo/manufacturers/jomoo/11413-2-211k-primary.webp",
-   "width": 321,
-   "height": 321,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Bon-cau-JOMOO-11413-2-2.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 362,
-    "originalHeight": 361,
-    "checkedAt": "2026-10-13T08:00:29Z"
-   }
-  },
-  "jomoo-11213-2-1-31z-i011": {
-   "localPath": "/demo/manufacturers/jomoo/11213-2-1-31z-i011-primary.webp",
-   "width": 348,
-   "height": 348,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Bon-cau-Jomoo-11213-2-1_31Z-I011.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 336,
-    "originalHeight": 341,
-    "checkedAt": "2026-10-13T08:00:30Z"
-   }
-  },
-  "toto-ms855cdw12": {
-   "localPath": "/demo/manufacturers/toto/ms855cdw12-primary.webp",
-   "width": 590,
-   "height": 590,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/02/ban-cau-toto-ms855cdw12-545x545-1.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 545,
-    "originalHeight": 545,
-    "checkedAt": "2026-10-13T08:00:30Z"
-   }
-  },
-  "toto-cs838dt10": {
-   "localPath": "/demo/manufacturers/toto/cs838dt10-primary.webp",
-   "width": 1200,
-   "height": 1200,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "ALPHA",
-   "provenance": {
-    "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/cs838t10.png",
-    "assetOwner": "TOTO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 3000,
-    "originalHeight": 3000,
-    "checkedAt": "2026-10-13T08:00:33Z"
-   }
-  },
-  "toto-ms855dw7": {
-   "localPath": "/demo/manufacturers/toto/ms855dw7-primary.webp",
-   "width": 586,
-   "height": 586,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/02/bon-cau-toto-ms855dw7-545x545-1.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 545,
-    "originalHeight": 545,
-    "checkedAt": "2026-10-13T08:00:33Z"
-   }
-  },
-  "toto-cs769drt8": {
-   "localPath": "/demo/manufacturers/toto/cs769drt8-primary.webp",
-   "width": 672,
-   "height": 672,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "ALPHA",
-   "provenance": {
-    "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/cs769drt8.png",
-    "assetOwner": "TOTO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 600,
-    "originalHeight": 600,
-    "checkedAt": "2026-10-13T08:00:34Z"
-   }
-  },
-  "toto-ms636dt8": {
-   "localPath": "/demo/manufacturers/toto/ms636dt8-primary.webp",
-   "width": 672,
-   "height": 672,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "ALPHA",
-   "provenance": {
-    "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/ms636dt8.png",
-    "assetOwner": "TOTO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 600,
-    "originalHeight": 600,
-    "checkedAt": "2026-10-13T08:00:35Z"
-   }
-  },
-  "toto-ms889drt8": {
-   "localPath": "/demo/manufacturers/toto/ms889drt8-primary.webp",
-   "width": 672,
-   "height": 672,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "ALPHA",
-   "provenance": {
-    "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/ms889t8.png",
-    "assetOwner": "TOTO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 600,
-    "originalHeight": 600,
-    "checkedAt": "2026-10-13T08:00:36Z"
-   }
-  },
-  "inax-ac-918vrn": {
-   "localPath": "/demo/manufacturers/inax/ac-918vrn-primary.webp",
-   "width": 385,
-   "height": 385,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/ac-918vrn-1038-1218.jpg",
-    "assetOwner": "INAX",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 650,
-    "originalHeight": 416,
-    "checkedAt": "2026-10-13T08:00:36Z"
-   }
-  },
-  "inax-ac-912vn": {
-   "localPath": "/demo/manufacturers/inax/ac-912vn-primary.webp",
-   "width": 944,
-   "height": 944,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "ALPHA",
-   "provenance": {
-    "imageSourceUrl": "https://inax-vn.s3-ap-southeast-1.amazonaws.com/sanitary/products/AC-912VN.png",
-    "assetOwner": "INAX",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1300,
-    "originalHeight": 1300,
-    "checkedAt": "2026-10-13T08:00:40Z"
-   }
-  },
-  "inax-ac-909vrn-1": {
-   "localPath": "/demo/manufacturers/inax/ac-909vrn-1-primary.webp",
-   "width": 532,
-   "height": 532,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/bon-cau-inax-ac-909vrn-1-khoi-1-667x500-1.jpg",
-    "assetOwner": "INAX",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 667,
-    "originalHeight": 500,
-    "checkedAt": "2026-10-13T08:00:40Z"
-   }
-  },
-  "inax-ac-909vrn": {
-   "localPath": "/demo/manufacturers/inax/ac-909vrn-primary.webp",
-   "width": 686,
-   "height": 686,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/AC-909VRN1.jpg",
-    "assetOwner": "INAX",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 621,
-    "originalHeight": 621,
-    "checkedAt": "2026-10-13T08:00:41Z"
-   }
-  },
-  "inax-ac-900vrn-2": {
-   "localPath": "/demo/manufacturers/inax/ac-900vrn-2-primary.webp",
-   "width": 823,
-   "height": 823,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "ALPHA",
-   "provenance": {
-    "imageSourceUrl": "https://inax-vn.s3-ap-southeast-1.amazonaws.com/sanitary/products/AC-900VRN-2.png",
-    "assetOwner": "INAX",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1300,
-    "originalHeight": 1300,
-    "checkedAt": "2026-10-13T08:00:43Z"
-   }
-  },
-  "inax-ac-1008vrn": {
-   "localPath": "/demo/manufacturers/inax/ac-1008vrn-primary.webp",
-   "width": 635,
-   "height": 635,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/bon-cau-Inax-AC-1008VRN-800x800-1.jpg",
-    "assetOwner": "INAX",
-    "sourceType": "RETAILER",
-    "originalFormat": "JPEG",
-    "originalWidth": 800,
-    "originalHeight": 800,
-    "checkedAt": "2026-10-13T08:00:44Z"
-   }
-  },
-  "inax-ac-4005vn": {
-   "localPath": "/demo/manufacturers/inax/ac-4005vn-primary.webp",
-   "width": 568,
-   "height": 568,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/bon-cau-inax-ac-4005vn_1.jpg",
-    "assetOwner": "INAX",
-    "sourceType": "RETAILER",
-    "originalFormat": "JPEG",
-    "originalWidth": 600,
-    "originalHeight": 600,
-    "checkedAt": "2026-10-13T08:00:44Z"
-   }
-  },
-  "inax-ac-2700vn": {
-   "localPath": "/demo/manufacturers/inax/ac-2700vn-primary.webp",
-   "width": 334,
-   "height": 334,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/AC-2700VN.jpg",
-    "assetOwner": "INAX",
-    "sourceType": "RETAILER",
-    "originalFormat": "JPEG",
-    "originalWidth": 650,
-    "originalHeight": 416,
-    "checkedAt": "2026-10-13T08:00:44Z"
-   }
-  },
-  "inax-ac-1135vn": {
-   "localPath": "/demo/manufacturers/inax/ac-1135vn-primary.webp",
-   "width": 336,
-   "height": 336,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/ac-1135vn-1032-1212.jpg",
-    "assetOwner": "INAX",
-    "sourceType": "RETAILER",
-    "originalFormat": "JPEG",
-    "originalWidth": 650,
-    "originalHeight": 416,
-    "checkedAt": "2026-10-13T08:00:45Z"
-   }
-  },
-  "inax-ac-1035vn": {
-   "localPath": "/demo/manufacturers/inax/ac-1035vn-primary.webp",
-   "width": 405,
-   "height": 405,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/AC-1035VN.jpg",
-    "assetOwner": "INAX",
-    "sourceType": "RETAILER",
-    "originalFormat": "JPEG",
-    "originalWidth": 510,
-    "originalHeight": 510,
-    "checkedAt": "2026-10-13T08:00:45Z"
-   }
-  },
-  "inax-ac-1017vrn": {
-   "localPath": "/demo/manufacturers/inax/ac-1017vrn-primary.webp",
-   "width": 659,
-   "height": 659,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/44_bon-cau-1-khoi-inax-ac-1017vrn.jpg",
-    "assetOwner": "INAX",
-    "sourceType": "RETAILER",
-    "originalFormat": "JPEG",
-    "originalWidth": 1200,
-    "originalHeight": 628,
-    "checkedAt": "2026-10-13T08:00:45Z"
-   }
-  },
-  "jomoo-12661-1-01k": {
-   "localPath": "/demo/manufacturers/jomoo/12661-1-01k-primary.webp",
-   "width": 636,
-   "height": 636,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12661-1_6295a076a9e54925af00bb3150666eda.png",
-    "assetOwner": "JOMOO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1440,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:46Z"
-   }
-  },
-  "jomoo-p12679-1-11z": {
-   "localPath": "/demo/manufacturers/jomoo/p12679-1-11z-primary.webp",
-   "width": 680,
-   "height": 680,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://product.hstatic.net/200000913817/product/p12679-1_6b8889a17f394126a8fdf89a4f062325.png",
-    "assetOwner": "JOMOO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1440,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:46Z"
-   }
-  },
-  "jomoo-12138-1-01z": {
-   "localPath": "/demo/manufacturers/jomoo/12138-1-01z-primary.webp",
-   "width": 724,
-   "height": 724,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12138-1_df88b650866a4e45892ba8af459d7cd2_3be2bf7926a84a888c314db0177618ed.png",
-    "assetOwner": "JOMOO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1440,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:47Z"
-   }
-  },
-  "jomoo-12497-1-11z": {
-   "localPath": "/demo/manufacturers/jomoo/12497-1-11z-primary.webp",
-   "width": 688,
-   "height": 688,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12497-1_464b6ff8c2bc4f20b6b754301b05161f.png",
-    "assetOwner": "JOMOO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1440,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:47Z"
-   }
-  },
-  "jomoo-12409-1-11z": {
-   "localPath": "/demo/manufacturers/jomoo/12409-1-11z-primary.webp",
-   "width": 759,
-   "height": 759,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12409-1_5387e67d65a84f5a8ccd1ae966e78a17.png",
-    "assetOwner": "JOMOO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1440,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:48Z"
-   }
-  },
-  "jomoo-p12663-1-01z-1": {
-   "localPath": "/demo/manufacturers/jomoo/p12663-1-01z-1-primary.webp",
-   "width": 687,
-   "height": 687,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://product.hstatic.net/200000913817/product/p12663-1_e877205e58e14a138f18eea440874acb.png",
-    "assetOwner": "JOMOO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1440,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:48Z"
-   }
-  },
-  "jomoo-p12748-1-11p-1": {
-   "localPath": "/demo/manufacturers/jomoo/p12748-1-11p-1-primary.webp",
-   "width": 594,
-   "height": 594,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://product.hstatic.net/200000913817/product/p12748-1_f09becc8f66f40d0946b91ba308fe850_f6727b705c5949b9a6079b749c073e82.png",
-    "assetOwner": "JOMOO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1440,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:48Z"
-   }
-  },
-  "jomoo-p12702-1-01k-2": {
-   "localPath": "/demo/manufacturers/jomoo/p12702-1-01k-2-primary.webp",
-   "width": 304,
-   "height": 304,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Jomoo-P12702-1_01K-2.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 292,
-    "originalHeight": 290,
-    "checkedAt": "2026-10-13T08:00:49Z"
-   }
-  },
-  "toto-lt4715mtg17-cmw": {
-   "localPath": "/demo/manufacturers/toto/lt4715mtg17-cmw-primary.webp",
-   "width": 591,
-   "height": 591,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/02/lavabo-toto-lt4715mtg17-545x545-1.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 545,
-    "originalHeight": 545,
-    "checkedAt": "2026-10-13T08:00:49Z"
-   }
-  },
-  "jomoo-12683-1-01k-i011": {
-   "localPath": "/demo/manufacturers/jomoo/12683-1-01k-i011-primary.webp",
-   "width": 650,
-   "height": 650,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12683-1_a5a08efa5b224ed28b58c29ec67ea9b2.png",
-    "assetOwner": "JOMOO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1440,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:49Z"
-   }
-  },
-  "jomoo-1296-1-01z": {
-   "localPath": "/demo/manufacturers/jomoo/1296-1-01z-primary.webp",
-   "width": 423,
-   "height": 423,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Chau-lavabo-JOMOO-1296-1_01Z.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 512,
-    "originalHeight": 512,
-    "checkedAt": "2026-10-13T08:00:50Z"
-   }
-  },
-  "jomoo-12145-1-01z": {
-   "localPath": "/demo/manufacturers/jomoo/12145-1-01z-primary.webp",
-   "width": 532,
-   "height": 532,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Chau-lavabo-JOMOO-12145-1.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 567,
-    "originalHeight": 568,
-    "checkedAt": "2026-10-13T08:00:50Z"
-   }
-  },
-  "jomoo-12161-1-01p": {
-   "localPath": "/demo/manufacturers/jomoo/12161-1-01p-primary.webp",
-   "width": 689,
-   "height": 689,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12161-1_96625ade518f48e591a4dbbed5a0d103.png",
-    "assetOwner": "JOMOO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1440,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:50Z"
-   }
-  },
-  "jomoo-12703-1-01p": {
-   "localPath": "/demo/manufacturers/jomoo/12703-1-01p-primary.webp",
-   "width": 620,
-   "height": 620,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://product.hstatic.net/200000913817/product/_12703-1_95d79d1ed4af4acdb4b6042ea54a6a0e.png",
-    "assetOwner": "JOMOO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1440,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:51Z"
-   }
-  },
-  "jomoo-12132-1-01z": {
-   "localPath": "/demo/manufacturers/jomoo/12132-1-01z-primary.webp",
-   "width": 614,
-   "height": 614,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12132_88bbb6a030e646a896cd6f78138386bb.png",
-    "assetOwner": "JOMOO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1440,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:51Z"
-   }
-  },
-  "jomoo-35279-477-1b-i011": {
-   "localPath": "/demo/manufacturers/jomoo/35279-477-1b-i011-primary.webp",
-   "width": 1098,
-   "height": 1098,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://product.hstatic.net/200000913817/product/35279-477_1b-i011_942f1a6a02924e7687ca023aa2569ae8.png",
-    "assetOwner": "JOMOO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1440,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:52Z"
-   }
-  },
-  "jomoo-p36412-484-1b-1": {
-   "localPath": "/demo/manufacturers/jomoo/p36412-484-1b-1-primary.webp",
-   "width": 605,
-   "height": 605,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/11/Sen-cay-tam-JOMOO-P36412-484_1B-1.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 627,
-    "originalHeight": 627,
-    "checkedAt": "2026-10-13T08:00:52Z"
-   }
-  },
-  "jomoo-36619-146-1c-i011": {
-   "localPath": "/demo/manufacturers/jomoo/36619-146-1c-i011-primary.webp",
-   "width": 579,
-   "height": 579,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/11/Sen-cay-tam-JOMOO-36619-146.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 600,
-    "originalHeight": 600,
-    "checkedAt": "2026-10-13T08:00:52Z"
-   }
-  },
-  "jomoo-36558-576-1b-i011": {
-   "localPath": "/demo/manufacturers/jomoo/36558-576-1b-i011-primary.webp",
-   "width": 505,
-   "height": 505,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/11/Sen-cay-tam-JOMOO-36558-576.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 505,
-    "originalHeight": 505,
-    "checkedAt": "2026-10-13T08:00:52Z"
-   }
-  },
-  "jomoo-26163-644-1b-i011": {
-   "localPath": "/demo/manufacturers/jomoo/26163-644-1b-i011-primary.webp",
-   "width": 768,
-   "height": 768,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://product.hstatic.net/200000913817/product/26163-644_1b-i011_3943416449ee49a9afb2ba5cc19761ca.png",
-    "assetOwner": "JOMOO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "PNG",
-    "originalWidth": 1440,
-    "originalHeight": 900,
-    "checkedAt": "2026-10-13T08:00:53Z"
-   }
-  },
-  "jomoo-36510-122-1b-1": {
-   "localPath": "/demo/manufacturers/jomoo/36510-122-1b-1-primary.webp",
-   "width": 549,
-   "height": 549,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Sen-cay-tam-JOMOO-36510-122-10.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 576,
-    "originalHeight": 576,
-    "checkedAt": "2026-10-13T08:00:53Z"
-   }
-  },
-  "jomoo-p37272-445-1b-1": {
-   "localPath": "/demo/manufacturers/jomoo/p37272-445-1b-1-primary.webp",
-   "width": 591,
-   "height": 591,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Sen-tam-am-tuong-JOMOO-P37272-445_1B-1-1-1.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 576,
-    "originalHeight": 576,
-    "checkedAt": "2026-10-13T08:00:53Z"
-   }
-  },
-  "jomoo-37311-636-1b-1": {
-   "localPath": "/demo/manufacturers/jomoo/37311-636-1b-1-primary.webp",
-   "width": 633,
-   "height": 633,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/JOMOO-37311-636_1B-1.jpg",
-    "assetOwner": "JOMOO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 600,
-    "originalHeight": 606,
-    "checkedAt": "2026-10-13T08:00:54Z"
-   }
-  },
-  "inax-lfv-6002s": {
-   "localPath": "/demo/manufacturers/inax/lfv-6002s-primary.webp",
-   "width": 728,
-   "height": 728,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://thietbivesinhlamhunghadong.com.vn/wp-content/uploads/2019/08/B%E1%BA%A3n-V%E1%BA%BD-K%E1%BB%B9-Thu%E1%BA%ADt-V%C3%B2i-Ch%E1%BA%ADu-Lavabo-INAX-LFV-6000S-1.jpg",
-    "assetOwner": "INAX",
-    "sourceType": "RETAILER",
-    "originalFormat": "JPEG",
-    "originalWidth": 589,
-    "originalHeight": 687,
-    "checkedAt": "2026-10-13T08:00:54Z"
-   }
-  },
-  "inax-lfv-1001s": {
-   "localPath": "/demo/manufacturers/inax/lfv-1001s-primary.webp",
-   "width": 388,
-   "height": 388,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://thietbivesinhlamhunghadong.com.vn/wp-content/uploads/2019/08/B%E1%BA%A3n-V%E1%BA%BD-K%E1%BB%B9-Thu%E1%BA%ADt-V%C3%B2i-Ch%E1%BA%ADu-Lavabo-INAX-LFV-1001S.jpg",
-    "assetOwner": "INAX",
-    "sourceType": "RETAILER",
-    "originalFormat": "JPEG",
-    "originalWidth": 512,
-    "originalHeight": 512,
-    "checkedAt": "2026-10-13T08:00:54Z"
-   }
-  },
-  "caesar-at7135": {
-   "localPath": "/demo/manufacturers/caesar/at7135-primary.webp",
-   "width": 573,
-   "height": 573,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/02/bon-tam-caesar-AT7135-545x545-1.jpg",
-    "assetOwner": "Caesar",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 545,
-    "originalHeight": 545,
-    "checkedAt": "2026-10-13T08:00:54Z"
-   }
-  },
-  "toto-ppy1560hpe-p-tvbf411": {
-   "localPath": "/demo/manufacturers/toto/ppy1560hpe-p-tvbf411-primary.webp",
-   "width": 489,
-   "height": 489,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/02/bon-tam-toto-PPY1560HPE-DB501R-2B-co-tay-vin-545x545-1.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 545,
-    "originalHeight": 545,
-    "checkedAt": "2026-10-13T08:00:54Z"
-   }
-  },
-  "caesar-at3350l-r": {
-   "localPath": "/demo/manufacturers/caesar/at3350l-r-primary.webp",
-   "width": 572,
-   "height": 572,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/02/AT3350L-xa-trai-545x545-1.jpg",
-    "assetOwner": "Caesar",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 545,
-    "originalHeight": 545,
-    "checkedAt": "2026-10-13T08:00:55Z"
-   }
-  },
-  "viglacera-p-61-320": {
-   "localPath": "/demo/manufacturers/viglacera/p-61-320-primary.webp",
-   "width": 642,
-   "height": 642,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2022/04/bon-tam-viglacera-platinum-p.61.320.jpg",
-    "assetOwner": "Viglacera",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 600,
-    "originalHeight": 600,
-    "checkedAt": "2026-10-13T08:00:55Z"
-   }
-  },
-  "toto-pay1725vc-tvbf411": {
-   "localPath": "/demo/manufacturers/toto/pay1725vc-tvbf411-primary.webp",
-   "width": 611,
-   "height": 611,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/pay1725vc-tvbf411.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "JPEG",
-    "originalWidth": 600,
-    "originalHeight": 600,
-    "checkedAt": "2026-10-13T08:00:55Z"
-   }
-  },
-  "toto-pay1720hv-tvbf411": {
-   "localPath": "/demo/manufacturers/toto/pay1720hv-tvbf411-primary.webp",
-   "width": 611,
-   "height": 611,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/pay1720hv-tvbf411.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "JPEG",
-    "originalWidth": 600,
-    "originalHeight": 600,
-    "checkedAt": "2026-10-13T08:00:56Z"
-   }
-  },
-  "toto-pay1780d-db501r-2b": {
-   "localPath": "/demo/manufacturers/toto/pay1780d-db501r-2b-primary.webp",
-   "width": 489,
-   "height": 489,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/02/bon-tam-toto-PPY1560HPE-DB501R-2B-co-tay-vin-545x545-1.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "SHOWROOM",
-    "originalFormat": "JPEG",
-    "originalWidth": 545,
-    "originalHeight": 545,
-    "checkedAt": "2026-10-13T08:00:56Z"
-   }
-  },
-  "toto-pay1735hvc-tvbf411": {
-   "localPath": "/demo/manufacturers/toto/pay1735hvc-tvbf411-primary.webp",
-   "width": 619,
-   "height": 619,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/pay1735hvc-tvbf411.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "JPEG",
-    "originalWidth": 600,
-    "originalHeight": 600,
-    "checkedAt": "2026-10-13T08:00:56Z"
-   }
-  },
-  "toto-pjyd2200pwe-gw": {
-   "localPath": "/demo/manufacturers/toto/pjyd2200pwe-gw-primary.webp",
-   "width": 520,
-   "height": 520,
-   "processing": [
-    "TRIMMED_WHITESPACE",
-    "NORMALIZED_CANVAS",
-    "CONVERTED_WEBP"
-   ],
-   "trimMethod": "NEAR_WHITE",
-   "provenance": {
-    "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2023/11/pjyd2200pwe_gw.jpg",
-    "assetOwner": "TOTO",
-    "sourceType": "MANUFACTURER",
-    "originalFormat": "JPEG",
-    "originalWidth": 600,
-    "originalHeight": 600,
-    "checkedAt": "2026-10-13T08:00:56Z"
-   }
+  "assets": {
+    "llv-acc-bancoot-lk2513a": {
+      "localPath": "/demo/manufacturers/bancoot/llv-acc-bancoot-lk2513a-primary.webp",
+      "width": 451,
+      "height": 451,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/upload_images/images/2022/10/19/bancoot-lk-2513a.webp",
+        "assetOwner": "Bancoot",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "WEBP",
+        "originalWidth": 500,
+        "originalHeight": 226,
+        "checkedAt": "2026-10-13T08:00:23Z"
+      }
+    },
+    "llv-acc-bancoot-lk8813": {
+      "localPath": "/demo/manufacturers/bancoot/llv-acc-bancoot-lk8813-primary.webp",
+      "width": 418,
+      "height": 418,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/upload_images/images/2022/10/20/bancoot-lk-8813.webp",
+        "assetOwner": "Bancoot",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "WEBP",
+        "originalWidth": 451,
+        "originalHeight": 226,
+        "checkedAt": "2026-10-13T08:00:23Z"
+      }
+    },
+    "llv-mir-karat-em0240250": {
+      "localPath": "/demo/manufacturers/karat/llv-mir-karat-em0240250-primary.webp",
+      "width": 859,
+      "height": 859,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/images/products/2026/03/14/large/karat-em-02-402-50_1773469364.jpg",
+        "assetOwner": "Karat",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 800,
+        "originalHeight": 800,
+        "checkedAt": "2026-10-13T08:00:23Z"
+      }
+    },
+    "llv-acc-bancoot-lk528p": {
+      "localPath": "/demo/manufacturers/bancoot/llv-acc-bancoot-lk528p-primary.webp",
+      "width": 406,
+      "height": 406,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/upload_images/images/2021/12/06/lo-giay-ve-sinh-kin-inox-304-bancoot-lk528-p.webp",
+        "assetOwner": "Bancoot",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "WEBP",
+        "originalWidth": 500,
+        "originalHeight": 500,
+        "checkedAt": "2026-10-13T08:00:23Z"
+      }
+    },
+    "llv-acc-cotto-ct0062hm": {
+      "localPath": "/demo/manufacturers/cotto/llv-acc-cotto-ct0062hm-primary.webp",
+      "width": 658,
+      "height": 658,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/upload_images/images/2022/03/25/ke-kinh-duoi-guong-cotto-ct0062-hm-.webp",
+        "assetOwner": "COTTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "WEBP",
+        "originalWidth": 600,
+        "originalHeight": 102,
+        "checkedAt": "2026-10-13T08:00:23Z"
+      }
+    },
+    "llv-sho-inax-bfv915s": {
+      "localPath": "/demo/manufacturers/inax/llv-sho-inax-bfv915s-primary.webp",
+      "width": 969,
+      "height": 969,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/images/products/2025/10/27/large/sen-tam-dung-inax-bfv-915s_1761533716.jpg",
+        "assetOwner": "INAX",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 900,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:23Z"
+      }
+    },
+    "llv-sho-inax-bfv655t8c": {
+      "localPath": "/demo/manufacturers/inax/llv-sho-inax-bfv655t8c-primary.webp",
+      "width": 908,
+      "height": 908,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/images/products/2025/10/25/large/sen-tam-cay-bfv-655t-8c_1761387323.jpg",
+        "assetOwner": "INAX",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 900,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:23Z"
+      }
+    },
+    "llv-sho-inax-bfv615s3c": {
+      "localPath": "/demo/manufacturers/inax/llv-sho-inax-bfv615s3c-primary.webp",
+      "width": 949,
+      "height": 949,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/images/products/2025/10/25/large/sen-tam-cay-bfv-615s-3c_1761387222.jpg",
+        "assetOwner": "INAX",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 900,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:23Z"
+      }
+    },
+    "llv-sho-inax-bfv615s8c": {
+      "localPath": "/demo/manufacturers/inax/llv-sho-inax-bfv615s8c-primary.webp",
+      "width": 908,
+      "height": 908,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/images/products/2025/10/26/large/sen-cay-inax-bfv-615s-8c_1761497272.jpg",
+        "assetOwner": "INAX",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 900,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:23Z"
+      }
+    },
+    "llv-toi-toto-cs818dt2": {
+      "localPath": "/demo/manufacturers/toto/llv-toi-toto-cs818dt2-primary.webp",
+      "width": 983,
+      "height": 983,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/18/large/ban-cau-2-khoi-xa-nhan-nap-em-toto-cs818dt2_1763437364.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 900,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:24Z"
+      }
+    },
+    "llv-toi-toto-cs838dt8": {
+      "localPath": "/demo/manufacturers/toto/llv-toi-toto-cs838dt8-primary.webp",
+      "width": 992,
+      "height": 992,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/17/large/bon-cau-2-khoi-nap-em-toto-cs838dt8_1763368156.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 900,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:24Z"
+      }
+    },
+    "llv-fau-toto-tx109ld": {
+      "localPath": "/demo/manufacturers/toto/llv-fau-toto-tx109ld-primary.webp",
+      "width": 696,
+      "height": 696,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/27/large/voi-lavabo-lanh-toto-tx109ld_1764235119.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 900,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:24Z"
+      }
+    },
+    "llv-lav-toto-sk322": {
+      "localPath": "/demo/manufacturers/toto/llv-lav-toto-sk322-primary.webp",
+      "width": 855,
+      "height": 855,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/19/large/chau-dich-vu-da-nang-toto-sk322-sk322f-w-treo-tuong_1763538419.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 900,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:24Z"
+      }
+    },
+    "llv-lav-toto-lht328c": {
+      "localPath": "/demo/manufacturers/toto/llv-lav-toto-lht328c-primary.webp",
+      "width": 927,
+      "height": 927,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/19/large/chau-rua-mat-treo-tuong-chan-lung-toto-lht328c_1763533573.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 900,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:24Z"
+      }
+    },
+    "llv-lav-toto-lht300cm": {
+      "localPath": "/demo/manufacturers/toto/llv-lav-toto-lht300cm-primary.webp",
+      "width": 772,
+      "height": 772,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/19/large/chau-rua-mat-treo-tuong-toto-lht300cm_1763538542.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 900,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:24Z"
+      }
+    },
+    "llv-lav-toto-lt300c": {
+      "localPath": "/demo/manufacturers/toto/llv-lav-toto-lt300c-primary.webp",
+      "width": 953,
+      "height": 953,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/19/large/chau-rua-mat-treo-tuong-toto-lt300c_1763538632.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 900,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:24Z"
+      }
+    },
+    "llv-lav-toto-lw1233b": {
+      "localPath": "/demo/manufacturers/toto/llv-lav-toto-lw1233b-primary.webp",
+      "width": 808,
+      "height": 808,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/19/large/chau-lavabo-toto-lw1233b-goc-treo-tuong_1763538136.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 900,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:24Z"
+      }
+    },
+    "llv-lav-toto-lw573jwf": {
+      "localPath": "/demo/manufacturers/toto/llv-lav-toto-lw573jwf-primary.webp",
+      "width": 815,
+      "height": 815,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/19/large/chau-lavabo-duong-ban-da-toto-lw573jw-f-w-nhap-khau-indonesia_1763538069.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 900,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:25Z"
+      }
+    },
+    "llv-lav-toto-lt1735-xw": {
+      "localPath": "/demo/manufacturers/toto/llv-lav-toto-lt1735-xw-primary.webp",
+      "width": 847,
+      "height": 847,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/19/large/chau-lavabo-toto-lt1735-dat-ban_1763538195.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 900,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:25Z"
+      }
+    },
+    "llv-lav-toto-lt1705-xw": {
+      "localPath": "/demo/manufacturers/toto/llv-lav-toto-lt1705-xw-primary.webp",
+      "width": 926,
+      "height": 926,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://luxbath.vn/images/products/2025/11/19/large/chau-lavabo-toto-lt1705-xw-dat-ban_1763538255.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 900,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:25Z"
+      }
+    },
+    "jomoo-zd7202-so-cjm305": {
+      "localPath": "/demo/manufacturers/jomoo/zd7202-so-cjm305-primary.webp",
+      "width": 784,
+      "height": 784,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/bon-cau-thong-minh-jomoo-zd7202-S0-cjm305.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 700,
+        "originalHeight": 649,
+        "checkedAt": "2026-10-13T08:00:25Z"
+      }
+    },
+    "jomoo-zd6310-sa-ido305": {
+      "localPath": "/demo/manufacturers/jomoo/zd6310-sa-ido305-primary.webp",
+      "width": 543,
+      "height": 543,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/bon-cau-thong-minh-jomoo-zd6310-sa-cjm305.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 550,
+        "originalHeight": 550,
+        "checkedAt": "2026-10-13T08:00:26Z"
+      }
+    },
+    "jomoo-zd7300-s2-ido305": {
+      "localPath": "/demo/manufacturers/jomoo/zd7300-s2-ido305-primary.webp",
+      "width": 896,
+      "height": 896,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Bon-cau-JOMOO-ZD7300-S2-IDO305.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 800,
+        "originalHeight": 800,
+        "checkedAt": "2026-10-13T08:00:26Z"
+      }
+    },
+    "jomoo-zd8610-sa-ido305": {
+      "localPath": "/demo/manufacturers/jomoo/zd8610-sa-ido305-primary.webp",
+      "width": 896,
+      "height": 896,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP",
+        "RETRIMMED_NEAR_WHITE"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Bon-cau-Jomoo-ZD8610-SA-IDO305.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "PNG",
+        "originalWidth": 800,
+        "originalHeight": 800,
+        "checkedAt": "2026-10-13T08:00:27Z"
+      }
+    },
+    "jomoo-zd8920-sa-cjm305": {
+      "localPath": "/demo/manufacturers/jomoo/zd8920-sa-cjm305-primary.webp",
+      "width": 649,
+      "height": 649,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://product.hstatic.net/200000913817/product/zd8920-sa-cjm305_20414c6f8223477caa2e3e2cb1248dd0_635a7ccedf194c208daacbae2628d802.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1440,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:28Z"
+      }
+    },
+    "jomoo-11369-2-231ka": {
+      "localPath": "/demo/manufacturers/jomoo/11369-2-231ka-primary.webp",
+      "width": 460,
+      "height": 460,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/1JOMOO-11369-2-2_31Z-1.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 523,
+        "originalHeight": 523,
+        "checkedAt": "2026-10-13T08:00:28Z"
+      }
+    },
+    "jomoo-11416-2-231k": {
+      "localPath": "/demo/manufacturers/jomoo/11416-2-231k-primary.webp",
+      "width": 701,
+      "height": 701,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://product.hstatic.net/200000913817/product/11416-2-2_31k-i011_0189057e352744dd92a0ec4291fc546a.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1440,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:29Z"
+      }
+    },
+    "jomoo-11411-2-231k-1": {
+      "localPath": "/demo/manufacturers/jomoo/11411-2-231k-1-primary.webp",
+      "width": 500,
+      "height": 500,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Bon-cau-JOMOO-JOMOO-11411-2-2_31K-1.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 543,
+        "originalHeight": 543,
+        "checkedAt": "2026-10-13T08:00:29Z"
+      }
+    },
+    "jomoo-11246-2-231z": {
+      "localPath": "/demo/manufacturers/jomoo/11246-2-231z-primary.webp",
+      "width": 450,
+      "height": 450,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Bon-cau-JOMOO-11246-2-2.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 474,
+        "originalHeight": 474,
+        "checkedAt": "2026-10-13T08:00:29Z"
+      }
+    },
+    "jomoo-11413-2-211k": {
+      "localPath": "/demo/manufacturers/jomoo/11413-2-211k-primary.webp",
+      "width": 321,
+      "height": 321,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Bon-cau-JOMOO-11413-2-2.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 362,
+        "originalHeight": 361,
+        "checkedAt": "2026-10-13T08:00:29Z"
+      }
+    },
+    "jomoo-11213-2-1-31z-i011": {
+      "localPath": "/demo/manufacturers/jomoo/11213-2-1-31z-i011-primary.webp",
+      "width": 348,
+      "height": 348,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Bon-cau-Jomoo-11213-2-1_31Z-I011.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 336,
+        "originalHeight": 341,
+        "checkedAt": "2026-10-13T08:00:30Z"
+      }
+    },
+    "toto-ms855cdw12": {
+      "localPath": "/demo/manufacturers/toto/ms855cdw12-primary.webp",
+      "width": 590,
+      "height": 590,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/02/ban-cau-toto-ms855cdw12-545x545-1.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 545,
+        "originalHeight": 545,
+        "checkedAt": "2026-10-13T08:00:30Z"
+      }
+    },
+    "toto-cs838dt10": {
+      "localPath": "/demo/manufacturers/toto/cs838dt10-primary.webp",
+      "width": 1200,
+      "height": 1200,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP",
+        "RETRIMMED_NEAR_WHITE"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/cs838t10.png",
+        "assetOwner": "TOTO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 3000,
+        "originalHeight": 3000,
+        "checkedAt": "2026-10-13T08:00:33Z"
+      }
+    },
+    "toto-ms855dw7": {
+      "localPath": "/demo/manufacturers/toto/ms855dw7-primary.webp",
+      "width": 586,
+      "height": 586,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/02/bon-cau-toto-ms855dw7-545x545-1.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 545,
+        "originalHeight": 545,
+        "checkedAt": "2026-10-13T08:00:33Z"
+      }
+    },
+    "toto-cs769drt8": {
+      "localPath": "/demo/manufacturers/toto/cs769drt8-primary.webp",
+      "width": 672,
+      "height": 672,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP",
+        "RETRIMMED_NEAR_WHITE"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/cs769drt8.png",
+        "assetOwner": "TOTO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 600,
+        "originalHeight": 600,
+        "checkedAt": "2026-10-13T08:00:34Z"
+      }
+    },
+    "toto-ms636dt8": {
+      "localPath": "/demo/manufacturers/toto/ms636dt8-primary.webp",
+      "width": 672,
+      "height": 672,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP",
+        "RETRIMMED_NEAR_WHITE"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/ms636dt8.png",
+        "assetOwner": "TOTO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 600,
+        "originalHeight": 600,
+        "checkedAt": "2026-10-13T08:00:35Z"
+      }
+    },
+    "toto-ms889drt8": {
+      "localPath": "/demo/manufacturers/toto/ms889drt8-primary.webp",
+      "width": 672,
+      "height": 672,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP",
+        "RETRIMMED_NEAR_WHITE"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/ms889t8.png",
+        "assetOwner": "TOTO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 600,
+        "originalHeight": 600,
+        "checkedAt": "2026-10-13T08:00:36Z"
+      }
+    },
+    "inax-ac-918vrn": {
+      "localPath": "/demo/manufacturers/inax/ac-918vrn-primary.webp",
+      "width": 385,
+      "height": 385,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/ac-918vrn-1038-1218.jpg",
+        "assetOwner": "INAX",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 650,
+        "originalHeight": 416,
+        "checkedAt": "2026-10-13T08:00:36Z"
+      }
+    },
+    "inax-ac-912vn": {
+      "localPath": "/demo/manufacturers/inax/ac-912vn-primary.webp",
+      "width": 944,
+      "height": 944,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "ALPHA",
+      "provenance": {
+        "imageSourceUrl": "https://inax-vn.s3-ap-southeast-1.amazonaws.com/sanitary/products/AC-912VN.png",
+        "assetOwner": "INAX",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1300,
+        "originalHeight": 1300,
+        "checkedAt": "2026-10-13T08:00:40Z"
+      }
+    },
+    "inax-ac-909vrn-1": {
+      "localPath": "/demo/manufacturers/inax/ac-909vrn-1-primary.webp",
+      "width": 532,
+      "height": 532,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/bon-cau-inax-ac-909vrn-1-khoi-1-667x500-1.jpg",
+        "assetOwner": "INAX",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 667,
+        "originalHeight": 500,
+        "checkedAt": "2026-10-13T08:00:40Z"
+      }
+    },
+    "inax-ac-909vrn": {
+      "localPath": "/demo/manufacturers/inax/ac-909vrn-primary.webp",
+      "width": 686,
+      "height": 686,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/AC-909VRN1.jpg",
+        "assetOwner": "INAX",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 621,
+        "originalHeight": 621,
+        "checkedAt": "2026-10-13T08:00:41Z"
+      }
+    },
+    "inax-ac-900vrn-2": {
+      "localPath": "/demo/manufacturers/inax/ac-900vrn-2-primary.webp",
+      "width": 823,
+      "height": 823,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "ALPHA",
+      "provenance": {
+        "imageSourceUrl": "https://inax-vn.s3-ap-southeast-1.amazonaws.com/sanitary/products/AC-900VRN-2.png",
+        "assetOwner": "INAX",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1300,
+        "originalHeight": 1300,
+        "checkedAt": "2026-10-13T08:00:43Z"
+      }
+    },
+    "inax-ac-1008vrn": {
+      "localPath": "/demo/manufacturers/inax/ac-1008vrn-primary.webp",
+      "width": 635,
+      "height": 635,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/bon-cau-Inax-AC-1008VRN-800x800-1.jpg",
+        "assetOwner": "INAX",
+        "sourceType": "RETAILER",
+        "originalFormat": "JPEG",
+        "originalWidth": 800,
+        "originalHeight": 800,
+        "checkedAt": "2026-10-13T08:00:44Z"
+      }
+    },
+    "inax-ac-4005vn": {
+      "localPath": "/demo/manufacturers/inax/ac-4005vn-primary.webp",
+      "width": 568,
+      "height": 568,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/bon-cau-inax-ac-4005vn_1.jpg",
+        "assetOwner": "INAX",
+        "sourceType": "RETAILER",
+        "originalFormat": "JPEG",
+        "originalWidth": 600,
+        "originalHeight": 600,
+        "checkedAt": "2026-10-13T08:00:44Z"
+      }
+    },
+    "inax-ac-2700vn": {
+      "localPath": "/demo/manufacturers/inax/ac-2700vn-primary.webp",
+      "width": 334,
+      "height": 334,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/AC-2700VN.jpg",
+        "assetOwner": "INAX",
+        "sourceType": "RETAILER",
+        "originalFormat": "JPEG",
+        "originalWidth": 650,
+        "originalHeight": 416,
+        "checkedAt": "2026-10-13T08:00:44Z"
+      }
+    },
+    "inax-ac-1135vn": {
+      "localPath": "/demo/manufacturers/inax/ac-1135vn-primary.webp",
+      "width": 336,
+      "height": 336,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/ac-1135vn-1032-1212.jpg",
+        "assetOwner": "INAX",
+        "sourceType": "RETAILER",
+        "originalFormat": "JPEG",
+        "originalWidth": 650,
+        "originalHeight": 416,
+        "checkedAt": "2026-10-13T08:00:45Z"
+      }
+    },
+    "inax-ac-1035vn": {
+      "localPath": "/demo/manufacturers/inax/ac-1035vn-primary.webp",
+      "width": 405,
+      "height": 405,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/AC-1035VN.jpg",
+        "assetOwner": "INAX",
+        "sourceType": "RETAILER",
+        "originalFormat": "JPEG",
+        "originalWidth": 510,
+        "originalHeight": 510,
+        "checkedAt": "2026-10-13T08:00:45Z"
+      }
+    },
+    "inax-ac-1017vrn": {
+      "localPath": "/demo/manufacturers/inax/ac-1017vrn-primary.webp",
+      "width": 659,
+      "height": 659,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/44_bon-cau-1-khoi-inax-ac-1017vrn.jpg",
+        "assetOwner": "INAX",
+        "sourceType": "RETAILER",
+        "originalFormat": "JPEG",
+        "originalWidth": 1200,
+        "originalHeight": 628,
+        "checkedAt": "2026-10-13T08:00:45Z"
+      }
+    },
+    "jomoo-12661-1-01k": {
+      "localPath": "/demo/manufacturers/jomoo/12661-1-01k-primary.webp",
+      "width": 636,
+      "height": 636,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12661-1_6295a076a9e54925af00bb3150666eda.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1440,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:46Z"
+      }
+    },
+    "jomoo-p12679-1-11z": {
+      "localPath": "/demo/manufacturers/jomoo/p12679-1-11z-primary.webp",
+      "width": 680,
+      "height": 680,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://product.hstatic.net/200000913817/product/p12679-1_6b8889a17f394126a8fdf89a4f062325.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1440,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:46Z"
+      }
+    },
+    "jomoo-12138-1-01z": {
+      "localPath": "/demo/manufacturers/jomoo/12138-1-01z-primary.webp",
+      "width": 724,
+      "height": 724,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12138-1_df88b650866a4e45892ba8af459d7cd2_3be2bf7926a84a888c314db0177618ed.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1440,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:47Z"
+      }
+    },
+    "jomoo-12497-1-11z": {
+      "localPath": "/demo/manufacturers/jomoo/12497-1-11z-primary.webp",
+      "width": 688,
+      "height": 688,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12497-1_464b6ff8c2bc4f20b6b754301b05161f.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1440,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:47Z"
+      }
+    },
+    "jomoo-12409-1-11z": {
+      "localPath": "/demo/manufacturers/jomoo/12409-1-11z-primary.webp",
+      "width": 759,
+      "height": 759,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12409-1_5387e67d65a84f5a8ccd1ae966e78a17.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1440,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:48Z"
+      }
+    },
+    "jomoo-p12663-1-01z-1": {
+      "localPath": "/demo/manufacturers/jomoo/p12663-1-01z-1-primary.webp",
+      "width": 687,
+      "height": 687,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://product.hstatic.net/200000913817/product/p12663-1_e877205e58e14a138f18eea440874acb.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1440,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:48Z"
+      }
+    },
+    "jomoo-p12748-1-11p-1": {
+      "localPath": "/demo/manufacturers/jomoo/p12748-1-11p-1-primary.webp",
+      "width": 594,
+      "height": 594,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://product.hstatic.net/200000913817/product/p12748-1_f09becc8f66f40d0946b91ba308fe850_f6727b705c5949b9a6079b749c073e82.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1440,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:48Z"
+      }
+    },
+    "jomoo-p12702-1-01k-2": {
+      "localPath": "/demo/manufacturers/jomoo/p12702-1-01k-2-primary.webp",
+      "width": 304,
+      "height": 304,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Jomoo-P12702-1_01K-2.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 292,
+        "originalHeight": 290,
+        "checkedAt": "2026-10-13T08:00:49Z"
+      }
+    },
+    "toto-lt4715mtg17-cmw": {
+      "localPath": "/demo/manufacturers/toto/lt4715mtg17-cmw-primary.webp",
+      "width": 591,
+      "height": 591,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/02/lavabo-toto-lt4715mtg17-545x545-1.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 545,
+        "originalHeight": 545,
+        "checkedAt": "2026-10-13T08:00:49Z"
+      }
+    },
+    "jomoo-12683-1-01k-i011": {
+      "localPath": "/demo/manufacturers/jomoo/12683-1-01k-i011-primary.webp",
+      "width": 650,
+      "height": 650,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12683-1_a5a08efa5b224ed28b58c29ec67ea9b2.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1440,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:49Z"
+      }
+    },
+    "jomoo-1296-1-01z": {
+      "localPath": "/demo/manufacturers/jomoo/1296-1-01z-primary.webp",
+      "width": 423,
+      "height": 423,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Chau-lavabo-JOMOO-1296-1_01Z.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 512,
+        "originalHeight": 512,
+        "checkedAt": "2026-10-13T08:00:50Z"
+      }
+    },
+    "jomoo-12145-1-01z": {
+      "localPath": "/demo/manufacturers/jomoo/12145-1-01z-primary.webp",
+      "width": 532,
+      "height": 532,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Chau-lavabo-JOMOO-12145-1.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 567,
+        "originalHeight": 568,
+        "checkedAt": "2026-10-13T08:00:50Z"
+      }
+    },
+    "jomoo-12161-1-01p": {
+      "localPath": "/demo/manufacturers/jomoo/12161-1-01p-primary.webp",
+      "width": 689,
+      "height": 689,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12161-1_96625ade518f48e591a4dbbed5a0d103.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1440,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:50Z"
+      }
+    },
+    "jomoo-12703-1-01p": {
+      "localPath": "/demo/manufacturers/jomoo/12703-1-01p-primary.webp",
+      "width": 620,
+      "height": 620,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://product.hstatic.net/200000913817/product/_12703-1_95d79d1ed4af4acdb4b6042ea54a6a0e.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1440,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:51Z"
+      }
+    },
+    "jomoo-12132-1-01z": {
+      "localPath": "/demo/manufacturers/jomoo/12132-1-01z-primary.webp",
+      "width": 614,
+      "height": 614,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12132_88bbb6a030e646a896cd6f78138386bb.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1440,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:51Z"
+      }
+    },
+    "jomoo-35279-477-1b-i011": {
+      "localPath": "/demo/manufacturers/jomoo/35279-477-1b-i011-primary.webp",
+      "width": 1098,
+      "height": 1098,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://product.hstatic.net/200000913817/product/35279-477_1b-i011_942f1a6a02924e7687ca023aa2569ae8.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1440,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:52Z"
+      }
+    },
+    "jomoo-p36412-484-1b-1": {
+      "localPath": "/demo/manufacturers/jomoo/p36412-484-1b-1-primary.webp",
+      "width": 605,
+      "height": 605,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/11/Sen-cay-tam-JOMOO-P36412-484_1B-1.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 627,
+        "originalHeight": 627,
+        "checkedAt": "2026-10-13T08:00:52Z"
+      }
+    },
+    "jomoo-36619-146-1c-i011": {
+      "localPath": "/demo/manufacturers/jomoo/36619-146-1c-i011-primary.webp",
+      "width": 579,
+      "height": 579,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/11/Sen-cay-tam-JOMOO-36619-146.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 600,
+        "originalHeight": 600,
+        "checkedAt": "2026-10-13T08:00:52Z"
+      }
+    },
+    "jomoo-36558-576-1b-i011": {
+      "localPath": "/demo/manufacturers/jomoo/36558-576-1b-i011-primary.webp",
+      "width": 505,
+      "height": 505,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/11/Sen-cay-tam-JOMOO-36558-576.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 505,
+        "originalHeight": 505,
+        "checkedAt": "2026-10-13T08:00:52Z"
+      }
+    },
+    "jomoo-26163-644-1b-i011": {
+      "localPath": "/demo/manufacturers/jomoo/26163-644-1b-i011-primary.webp",
+      "width": 768,
+      "height": 768,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://product.hstatic.net/200000913817/product/26163-644_1b-i011_3943416449ee49a9afb2ba5cc19761ca.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 1440,
+        "originalHeight": 900,
+        "checkedAt": "2026-10-13T08:00:53Z"
+      }
+    },
+    "jomoo-36510-122-1b-1": {
+      "localPath": "/demo/manufacturers/jomoo/36510-122-1b-1-primary.webp",
+      "width": 549,
+      "height": 549,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Sen-cay-tam-JOMOO-36510-122-10.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 576,
+        "originalHeight": 576,
+        "checkedAt": "2026-10-13T08:00:53Z"
+      }
+    },
+    "jomoo-p37272-445-1b-1": {
+      "localPath": "/demo/manufacturers/jomoo/p37272-445-1b-1-primary.webp",
+      "width": 591,
+      "height": 591,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/Sen-tam-am-tuong-JOMOO-P37272-445_1B-1-1-1.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 576,
+        "originalHeight": 576,
+        "checkedAt": "2026-10-13T08:00:53Z"
+      }
+    },
+    "jomoo-37311-636-1b-1": {
+      "localPath": "/demo/manufacturers/jomoo/37311-636-1b-1-primary.webp",
+      "width": 633,
+      "height": 633,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/08/JOMOO-37311-636_1B-1.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 600,
+        "originalHeight": 606,
+        "checkedAt": "2026-10-13T08:00:54Z"
+      }
+    },
+    "inax-lfv-6002s": {
+      "localPath": "/demo/manufacturers/inax/lfv-6002s-primary.webp",
+      "width": 728,
+      "height": 728,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://thietbivesinhlamhunghadong.com.vn/wp-content/uploads/2019/08/B%E1%BA%A3n-V%E1%BA%BD-K%E1%BB%B9-Thu%E1%BA%ADt-V%C3%B2i-Ch%E1%BA%ADu-Lavabo-INAX-LFV-6000S-1.jpg",
+        "assetOwner": "INAX",
+        "sourceType": "RETAILER",
+        "originalFormat": "JPEG",
+        "originalWidth": 589,
+        "originalHeight": 687,
+        "checkedAt": "2026-10-13T08:00:54Z"
+      }
+    },
+    "inax-lfv-1001s": {
+      "localPath": "/demo/manufacturers/inax/lfv-1001s-primary.webp",
+      "width": 388,
+      "height": 388,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://thietbivesinhlamhunghadong.com.vn/wp-content/uploads/2019/08/B%E1%BA%A3n-V%E1%BA%BD-K%E1%BB%B9-Thu%E1%BA%ADt-V%C3%B2i-Ch%E1%BA%ADu-Lavabo-INAX-LFV-1001S.jpg",
+        "assetOwner": "INAX",
+        "sourceType": "RETAILER",
+        "originalFormat": "JPEG",
+        "originalWidth": 512,
+        "originalHeight": 512,
+        "checkedAt": "2026-10-13T08:00:54Z"
+      }
+    },
+    "caesar-at7135": {
+      "localPath": "/demo/manufacturers/caesar/at7135-primary.webp",
+      "width": 573,
+      "height": 573,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/02/bon-tam-caesar-AT7135-545x545-1.jpg",
+        "assetOwner": "Caesar",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 545,
+        "originalHeight": 545,
+        "checkedAt": "2026-10-13T08:00:54Z"
+      }
+    },
+    "toto-ppy1560hpe-p-tvbf411": {
+      "localPath": "/demo/manufacturers/toto/ppy1560hpe-p-tvbf411-primary.webp",
+      "width": 489,
+      "height": 489,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/02/bon-tam-toto-PPY1560HPE-DB501R-2B-co-tay-vin-545x545-1.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 545,
+        "originalHeight": 545,
+        "checkedAt": "2026-10-13T08:00:54Z"
+      }
+    },
+    "caesar-at3350l-r": {
+      "localPath": "/demo/manufacturers/caesar/at3350l-r-primary.webp",
+      "width": 572,
+      "height": 572,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/02/AT3350L-xa-trai-545x545-1.jpg",
+        "assetOwner": "Caesar",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 545,
+        "originalHeight": 545,
+        "checkedAt": "2026-10-13T08:00:55Z"
+      }
+    },
+    "viglacera-p-61-320": {
+      "localPath": "/demo/manufacturers/viglacera/p-61-320-primary.webp",
+      "width": 642,
+      "height": 642,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2022/04/bon-tam-viglacera-platinum-p.61.320.jpg",
+        "assetOwner": "Viglacera",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 600,
+        "originalHeight": 600,
+        "checkedAt": "2026-10-13T08:00:55Z"
+      }
+    },
+    "toto-pay1725vc-tvbf411": {
+      "localPath": "/demo/manufacturers/toto/pay1725vc-tvbf411-primary.webp",
+      "width": 611,
+      "height": 611,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/pay1725vc-tvbf411.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "JPEG",
+        "originalWidth": 600,
+        "originalHeight": 600,
+        "checkedAt": "2026-10-13T08:00:55Z"
+      }
+    },
+    "toto-pay1720hv-tvbf411": {
+      "localPath": "/demo/manufacturers/toto/pay1720hv-tvbf411-primary.webp",
+      "width": 611,
+      "height": 611,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/pay1720hv-tvbf411.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "JPEG",
+        "originalWidth": 600,
+        "originalHeight": 600,
+        "checkedAt": "2026-10-13T08:00:56Z"
+      }
+    },
+    "toto-pay1780d-db501r-2b": {
+      "localPath": "/demo/manufacturers/toto/pay1780d-db501r-2b-primary.webp",
+      "width": 489,
+      "height": 489,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/02/bon-tam-toto-PPY1560HPE-DB501R-2B-co-tay-vin-545x545-1.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 545,
+        "originalHeight": 545,
+        "checkedAt": "2026-10-13T08:00:56Z"
+      }
+    },
+    "toto-pay1735hvc-tvbf411": {
+      "localPath": "/demo/manufacturers/toto/pay1735hvc-tvbf411-primary.webp",
+      "width": 619,
+      "height": 619,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/pay1735hvc-tvbf411.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "JPEG",
+        "originalWidth": 600,
+        "originalHeight": 600,
+        "checkedAt": "2026-10-13T08:00:56Z"
+      }
+    },
+    "toto-pjyd2200pwe-gw": {
+      "localPath": "/demo/manufacturers/toto/pjyd2200pwe-gw-primary.webp",
+      "width": 520,
+      "height": 520,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2023/11/pjyd2200pwe_gw.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "JPEG",
+        "originalWidth": 600,
+        "originalHeight": 600,
+        "checkedAt": "2026-10-13T08:00:56Z"
+      }
+    }
   }
- }
 }

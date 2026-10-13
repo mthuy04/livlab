@@ -56,12 +56,24 @@ def fetch(url):
 
 
 def content_box(im):
-    """The product's bounding box: alpha when there is one, else near-white."""
+    """The product's bounding box: alpha when there is one, else near-white.
+
+    An alpha channel is only evidence of where the product is when the
+    transparent area is actually the background. TOTO's product PNGs carry an
+    alpha channel AND a baked opaque white backdrop, so the alpha box is the
+    whole canvas and the trim does nothing: MS636DT8 came out with the toilet
+    filling 54% of its frame, which is the nested-white-rectangle failure the
+    normalisation exists to remove. When alpha claims almost the entire image,
+    it is not telling us anything and the near-white pass is asked instead.
+    """
     if im.mode in ('RGBA', 'LA') or (im.mode == 'P' and 'transparency' in im.info):
         alpha = im.convert('RGBA').getchannel('A')
         box = alpha.getbbox()
         if box:
-            return box, 'ALPHA'
+            w, h = im.size
+            covers_everything = (box[2] - box[0]) >= w * 0.98 and (box[3] - box[1]) >= h * 0.98
+            if not covers_everything:
+                return box, 'ALPHA'
 
     rgb = im.convert('RGB')
     w, h = rgb.size
