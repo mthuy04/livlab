@@ -110,7 +110,7 @@ export default async function ProductDetailPage({ params }: Props) {
             </ol>
           </nav>
 
-          <div className="mt-8 grid gap-10 lg:grid-cols-[1.6fr_1fr] lg:gap-[68px]">
+          <div className="mt-8 grid gap-10 lg:grid-cols-[1.48fr_1fr] lg:gap-[60px]">
             <ProductGallery
               media={media}
               brand={identity.brand}
@@ -126,9 +126,9 @@ export default async function ProductDetailPage({ params }: Props) {
               <h1
                 className="mt-3 line-clamp-3"
                 style={{
-                  fontSize: 'clamp(26px, 1.3rem + 1.1vw, 34px)',
+                  fontSize: 'clamp(26px, 1.3rem + 1.2vw, 37px)',
                   fontWeight: 500,
-                  lineHeight: 1.18,
+                  lineHeight: 1.14,
                   letterSpacing: '-0.01em',
                   color: TEXT,
                 }}
@@ -147,13 +147,13 @@ export default async function ProductDetailPage({ params }: Props) {
               </p>
 
               {/* ── Price ─────────────────────────────────────────────── */}
-              <div className="mt-7">
+              <div className="mt-8">
                 <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.12em', color: TEXT_MUTED }}>
                   {pricing.displayPriceLabel}
                 </p>
                 <div className="mt-2.5 flex flex-wrap items-baseline gap-x-4 gap-y-1">
                   {pricing.showroomPrice ? (
-                    <span style={{ fontSize: 'clamp(24px, 1.2rem + .6vw, 28px)', fontWeight: 600, color: TEXT }}>
+                    <span style={{ fontSize: 'clamp(24px, 1.2rem + .7vw, 30px)', fontWeight: 600, color: TEXT }}>
                       {formatVnd(pricing.showroomPrice)}
                     </span>
                   ) : (
@@ -188,26 +188,26 @@ export default async function ProductDetailPage({ params }: Props) {
                 )}
 
                 {pricing.note && (
-                  <p className="mt-3 max-w-[460px]" style={{ fontSize: 12.5, lineHeight: 1.65, color: TEXT_MUTED }}>
+                  <p className="mt-3 max-w-[480px]" style={{ fontSize: 13, lineHeight: 1.55, color: TEXT_MUTED }}>
                     {pricing.note}
                   </p>
                 )}
               </div>
 
               {vm.summary && (
-                <p className="mt-6 max-w-[480px]" style={{ fontSize: 15, lineHeight: 1.7, color: TEXT_MUTED }}>
+                <p className="mt-7 max-w-[500px]" style={{ fontSize: 15.5, lineHeight: 1.6, color: '#4A4A4A' }}>
                   {vm.summary}
                 </p>
               )}
 
               {/* ── The facts that decide ─────────────────────────────── */}
               {vm.overviewFacts.length > 0 && (
-                <dl className="mt-6 max-w-[480px]">
+                <dl className="mt-7 max-w-[500px]">
                   {vm.overviewFacts.map((fact) => (
                     <div
                       key={fact.label}
-                      className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1 py-2.5"
-                      style={{ borderBottom: `1px solid ${DIVIDER}` }}
+                      className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1"
+                      style={{ borderBottom: `1px solid ${DIVIDER}`, minHeight: 49, paddingBlock: 13 }}
                     >
                       <dt style={{ fontSize: 13, color: '#737373' }}>{fact.label}</dt>
                       <dd className="text-right" style={{ fontSize: 14, color: TEXT }}>
@@ -245,7 +245,9 @@ export default async function ProductDetailPage({ params }: Props) {
 
       {/* The sticky bar sits over the last section; this keeps the footer
           reachable rather than permanently half-covered. */}
-      <div aria-hidden="true" style={{ height: 66 }} className="max-lg:h-16" />
+      {/* Safe space under the fixed product bar, so the closing section is
+          never the thing it covers. */}
+      <div aria-hidden="true" style={{ height: 64 }} className="max-lg:h-16" />
     </>
   );
 }

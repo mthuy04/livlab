@@ -21,11 +21,13 @@ export default function DimensionsBlock({
   dimensions,
   drawingDocument,
   productName,
+  brand,
 }: {
   drawing: TechnicalDrawing | null;
   dimensions: ProductDimensions | null;
   drawingDocument: ProductDocument | null;
   productName: string;
+  brand: string;
 }) {
   const [drawingFailed, setDrawingFailed] = useState(false);
   const showDrawing = Boolean(drawing) && !drawingFailed;
@@ -53,8 +55,13 @@ export default function DimensionsBlock({
               style={{ maxHeight: 620, padding: '2%' }}
             />
           </a>
-          <figcaption className="mt-3" style={{ fontSize: 12, color: TEXT_MUTED }}>
-            {drawing.attribution ? `Bản vẽ kỹ thuật: ${drawing.attribution}` : 'Bản vẽ do nguồn cung cấp'}
+          <figcaption className="mt-3 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+            <span style={{ fontSize: 12, color: TEXT_MUTED }}>
+              {drawing.attribution ? `Bản vẽ kỹ thuật: ${drawing.attribution}` : 'Bản vẽ do nguồn cung cấp'}
+            </span>
+            <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.09em', color: TEXT }}>
+              XEM TOÀN BỘ BẢN VẼ →
+            </span>
           </figcaption>
         </figure>
       )}
@@ -68,18 +75,19 @@ export default function DimensionsBlock({
                   {row.label}
                 </dt>
                 <dd className="mt-2 flex items-baseline gap-1.5">
-                  <span style={{ fontSize: 26, fontWeight: 500, lineHeight: 1, color: TEXT }}>{row.value}</span>
+                  <span style={{ fontSize: 29, fontWeight: 500, lineHeight: 1, color: TEXT }}>{row.value}</span>
                   <span style={{ fontSize: 13, color: TEXT_MUTED }}>{row.unit}</span>
                 </dd>
               </div>
             ))}
           </dl>
 
-          {dimensions.raw && (
-            <p className="mt-5" style={{ fontSize: 12.5, color: TEXT_MUTED }}>
-              Theo nguồn: {dimensions.raw}
-            </p>
-          )}
+          {/* The raw string used to be printed here, which simply repeated
+              the four numbers immediately above it. What is worth saying is
+              where they come from. */}
+          <p className="mt-5" style={{ fontSize: 12.5, lineHeight: 1.55, color: TEXT_MUTED }}>
+            Thông số theo tài liệu kỹ thuật của {brand}.
+          </p>
 
           {drawingDocument && (
             <p className="mt-6">
@@ -87,7 +95,7 @@ export default function DimensionsBlock({
                 href={drawingDocument.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="transition-opacity hover:opacity-60"
+                className="transition-opacity duration-150 hover:opacity-60"
                 style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.08em', color: TEXT }}
               >
                 {drawingDocument.action === 'DOWNLOAD' ? 'TẢI BẢN VẼ' : 'XEM BẢN VẼ GỐC'} ({drawingDocument.format}) →

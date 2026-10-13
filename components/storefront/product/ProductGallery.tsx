@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { StageImage, ProductImagePlaceholder } from '@/components/storefront/catalog/ProductImage';
 import { DIVIDER, TEXT } from '@/components/storefront/home/editorial';
 import type { ProductMedia, ProductMediaItem } from '@/lib/storefront/productDetailTypes';
@@ -45,10 +45,24 @@ export default function ProductGallery({
   const active: ProductMediaItem | null =
     items.find((item) => item.url === activeUrl) ?? items[0] ?? null;
 
+  // Stable, so the lightbox's key handler is bound once rather than on every
+  // render.
+  const step = useCallback(
+    (delta: number) => {
+      if (items.length < 2) return;
+      const at = items.findIndex((item) => item.url === activeUrl);
+      const next = items[(((at < 0 ? 0 : at) + delta) % items.length + items.length) % items.length];
+      setActiveUrl(next.url);
+    },
+    [items, activeUrl]
+  );
+
   useEffect(() => {
     if (!zoomed) return;
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setZoomed(false);
+      if (event.key === 'ArrowRight') step(1);
+      if (event.key === 'ArrowLeft') step(-1);
     };
     window.addEventListener('keydown', onKey);
     const previous = document.body.style.overflow;
@@ -57,7 +71,7 @@ export default function ProductGallery({
       window.removeEventListener('keydown', onKey);
       document.body.style.overflow = previous;
     };
-  }, [zoomed]);
+  }, [zoomed, step]);
 
   const fail = (url: string) => setBroken((current) => (current.includes(url) ? current : [...current, url]));
 
@@ -79,7 +93,7 @@ export default function ProductGallery({
           onClick={() => setZoomed(true)}
           aria-label={`Phóng to ảnh ${name}`}
           className="block w-full cursor-zoom-in overflow-hidden"
-          style={{ aspectRatio: '1 / 1', border: `1px solid ${DIVIDER}`, backgroundColor: '#FFFFFF' }}
+          style={{ aspectRatio: '1 / 1', border: '1px solid #ECECE8', backgroundColor: '#FFFFFF' }}
         >
           <StageImage
             src={active.url}
@@ -105,7 +119,7 @@ export default function ProductGallery({
                   onClick={() => setActiveUrl(item.url)}
                   aria-label={item.kind === 'DRAWING' ? `Xem bản vẽ kỹ thuật ${name}` : `Xem ảnh ${name}`}
                   aria-pressed={selected}
-                  className="shrink-0 overflow-hidden"
+                  className="relative shrink-0 overflow-hidden transition-colors duration-150"
                   style={{
                     width: 76,
                     height: 76,
@@ -119,6 +133,23 @@ export default function ProductGallery({
                     occupancy={item.kind === 'DRAWING' ? 0.94 : media.occupancy * 0.9}
                     normalized={item.kind === 'DRAWING' ? false : media.normalized}
                   />
+                  {/* A dimensioned drawing is not another photograph of the
+                      product, and at 76px it can easily be taken for one. */}
+                  {item.kind === 'DRAWING' && (
+                    <span
+                      className="absolute inset-x-0 bottom-0 text-center"
+                      style={{
+                        fontSize: 8.5,
+                        fontWeight: 600,
+                        letterSpacing: '.10em',
+                        color: '#FFFFFF',
+                        backgroundColor: 'rgba(38,38,38,.72)',
+                        paddingBlock: 2,
+                      }}
+                    >
+                      BẢN VẼ
+                    </span>
+                  )}
                 </button>
               );
             })}
@@ -154,6 +185,35 @@ export default function ProductGallery({
           >
             ĐÓNG ✕
           </button>
+
+          {items.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  step(-1);
+                }}
+                aria-label="Ảnh trước"
+                className="absolute left-4 top-1/2 -translate-y-1/2 px-4 py-6 transition-opacity duration-150 hover:opacity-60"
+                style={{ fontSize: 26, lineHeight: 1, color: '#FFFFFF' }}
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  step(1);
+                }}
+                aria-label="Ảnh tiếp theo"
+                className="absolute right-4 top-1/2 -translate-y-1/2 px-4 py-6 transition-opacity duration-150 hover:opacity-60"
+                style={{ fontSize: 26, lineHeight: 1, color: '#FFFFFF' }}
+              >
+                ›
+              </button>
+            </>
+          )}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={active.url}

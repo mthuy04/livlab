@@ -33,8 +33,15 @@ export default function ProductNav({
   sections: SectionId[];
 }) {
   const [active, setActive] = useState<SectionId>(sections[0]);
-  const [barVisible, setBarVisible] = useState(false);
+  const [pastOverview, setPastOverview] = useState(false);
+  const [atHandoff, setAtHandoff] = useState(false);
   const railRef = useRef<HTMLElement | null>(null);
+
+  // Shown between the two ends of the page: after the overview's own actions
+  // have scrolled away, and until the closing consultation section arrives
+  // with the same two actions in it. Offering YÊU CẦU BÁO GIÁ twice on one
+  // screen makes the page look like it is nagging rather than helping.
+  const barVisible = pastOverview && !atHandoff;
 
   useEffect(() => {
     const overview = document.getElementById('tong-quan');
@@ -42,10 +49,24 @@ export default function ProductNav({
     // The bar arrives when the overview's actions have left the viewport, and
     // not a pixel before: a product bar over the product itself is noise.
     const observer = new IntersectionObserver(
-      ([entry]) => setBarVisible(!entry.isIntersecting && entry.boundingClientRect.top < 0),
+      ([entry]) => setPastOverview(!entry.isIntersecting && entry.boundingClientRect.top < 0),
       { rootMargin: `-${HEADER_HEIGHT + 60}px 0px 0px 0px`, threshold: 0 }
     );
     observer.observe(overview);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const handoff = document.getElementById('tu-van');
+    if (!handoff) return;
+    // From the handoff onwards, not only while it is on screen. Past it lies
+    // the footer, where a product bar has nothing left to offer and covers
+    // the site's own links to do it.
+    const observer = new IntersectionObserver(
+      ([entry]) => setAtHandoff(entry.isIntersecting || entry.boundingClientRect.top < 0),
+      { threshold: 0 }
+    );
+    observer.observe(handoff);
     return () => observer.disconnect();
   }, []);
 
@@ -86,7 +107,7 @@ export default function ProductNav({
           }}
         >
           <div className="home-container">
-            <ul className="no-scrollbar flex items-stretch gap-8 overflow-x-auto" style={{ height: 56 }}>
+            <ul className="no-scrollbar flex items-stretch gap-8 overflow-x-auto" style={{ height: 50 }}>
               {sections.map((id) => {
                 const current = id === active;
                 return (
@@ -94,7 +115,7 @@ export default function ProductNav({
                     <a
                       href={`#${id}`}
                       aria-current={current ? 'true' : undefined}
-                      className="relative flex items-center transition-opacity hover:opacity-70"
+                      className="relative flex items-center transition-opacity duration-150 hover:opacity-70"
                       style={{ fontSize: 11.5, fontWeight: 600, letterSpacing: '.10em', color: current ? TEXT : '#6F6F6C' }}
                     >
                       {SECTION_LABELS[id]}
@@ -145,7 +166,7 @@ function StickyBar({ vm, price }: { vm: ProductDetailViewModel; price: number | 
       {/* Desktop: identity on the left, the decision on the right. */}
       <div
         className="fixed bottom-0 left-0 right-0 z-40 max-lg:hidden"
-        style={{ height: 66, backgroundColor: '#FFFFFF', borderTop: `1px solid ${DIVIDER}` }}
+        style={{ height: 64, backgroundColor: '#FFFFFF', borderTop: '1px solid #E5E5E2' }}
       >
         <div className="home-container flex h-full items-center justify-between gap-8">
           <div className="flex min-w-0 items-center gap-4">
