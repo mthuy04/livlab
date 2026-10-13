@@ -24,11 +24,16 @@ export const CONCEPT_IMAGE_WIDTH = 1448;
 export const CONCEPT_IMAGE_HEIGHT = 1086;
 
 /**
- * Phase-2 assets were authored at a different pixel size to Phase 1 — 420x315
- * rather than 1448x1086 — but at the same 4:3 ratio, so a percentage means the
- * same thing in both. These helpers take the pixels each batch was measured in
- * and emit the ratio-independent coordinate the stage actually uses, which is
- * why a higher-resolution replacement of the same scene needs no re-measuring.
+ * Phase-2 coordinates were read on a 420x315 copy of each scene, Phase-1 ones
+ * on 1448x1086, and both batches now ship at 1448x1086. The helpers keep each
+ * batch's own measuring frame and emit percentages, so the frame a coordinate
+ * was read in stops mattering the moment it is written.
+ *
+ * That is not a theoretical nicety: the Phase-2 scenes arrived first as one
+ * low-resolution composite and were replaced with full-resolution originals
+ * afterwards, and not one of the 26 points had to be measured again. The
+ * replacement was checked by overlaying the existing coordinates on the new
+ * files — every point still sits on the fixture it names.
  */
 export const PHASE2_IMAGE_WIDTH = 420;
 export const PHASE2_IMAGE_HEIGHT = 315;
@@ -634,7 +639,7 @@ const c06: StorefrontConcept = {
   imageAlt:
     'Phòng tắm tông đá xám lạnh: gương tròn hắt sáng và chậu đặt bàn trên tủ đá bên trái, ' +
     'bồn cầu treo tường ở giữa, buồng tắm kính với thiết bị tông tối bên phải.',
-  imageHash: 'fe00ff00ff00e1c0f50077e1',
+  imageHash: 'fe00ff00ff00e140f50075e1',
   imageSourceType: 'LIVLAB_GENERATED',
   imageSourceId: 'serene_modern_stone_spa_bathroom.png',
   style: 'MODERN_SPA',
@@ -723,7 +728,7 @@ const c07: StorefrontConcept = {
   imageAlt:
     'Phòng tắm đen trắng: tủ lavabo đen với hai chậu đặt bàn và vòi gắn tường màu đen, ' +
     'bồn cầu treo tường ở giữa, khu tắm kính với thiết bị đen bên phải.',
-  imageHash: 'ffa8ff9cff8cc98cc99cc99c',
+  imageHash: 'ffe8ff9cff8cc98cc99cc99c',
   imageSourceType: 'LIVLAB_GENERATED',
   imageSourceId: 'monochrome_marble_spa_bathroom.png',
   style: 'MONOCHROME_CONTEMPORARY',
@@ -817,7 +822,7 @@ const c08: StorefrontConcept = {
   imageAlt:
     'Phòng tắm Japandi tông kem: tủ lavabo gỗ sáng với chậu tròn đặt bàn và gương bo tròn hắt sáng, ' +
     'khu tắm kính ở giữa, bồn cầu treo tường bên phải.',
-  imageHash: '8001c600c980f880f885c8a4',
+  imageHash: '8601c600c980f880f885c8a4',
   imageSourceType: 'LIVLAB_GENERATED',
   imageSourceId: 'serene_japandi_spa_bathroom.png',
   style: 'JAPANDI',
@@ -908,7 +913,7 @@ const c09: StorefrontConcept = {
   imageAlt:
     'Phòng tắm tông đá charcoal: mặt bàn đá tối với hai chậu khoét liền và vòi gắn tường ' +
     'hoàn thiện đồng, khu tắm kính tối ở giữa, bồn cầu treo tường bên phải.',
-  imageHash: '7f847f040f0403044384438c',
+  imageHash: '7f847f040f04030c438c438c',
   imageSourceType: 'LIVLAB_GENERATED',
   imageSourceId: 'luxurious_modern_stone_spa_bathroom.png',
   style: 'DARK_HOTEL_LUXURY',
@@ -995,7 +1000,7 @@ const c10: StorefrontConcept = {
   imageAlt:
     'Phòng tắm tông xanh xám mát: tủ lavabo xanh xám với chậu oval đặt bàn và gương tròn hắt sáng, ' +
     'bồn cầu đặt sàn ở giữa, khu tắm kính nhìn ra biển bên phải.',
-  imageHash: 'f07f38330d030d032d232d23',
+  imageHash: 'e07fb8330d030d032d232d23',
   imageSourceType: 'LIVLAB_GENERATED',
   imageSourceId: 'coastal_minimalist_spa_bathroom.png',
   style: 'COASTAL_MINIMAL',
