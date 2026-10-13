@@ -255,25 +255,52 @@ body {
    or padding and they cannot drift apart.
    ─────────────────────────────────────────────────────────────────────────── */
 .home-container {
-  max-width: 1360px;
+  width: min(1360px, calc(100% - 80px));
   margin-inline: auto;
-  padding-inline: 20px;
 }
 
 .home-section {
-  padding-block: 64px;
+  padding-block: 104px;
 }
 
-@media (min-width: 768px) {
-  .home-container { padding-inline: 40px; }
-  .home-section { padding-block: 104px; }
-}
-
+/* A top-level navigation item. The underline wipes in from the left on hover
+   and stays put on the item for the current section; the padding makes the
+   item the full height of the 74px header, so the rule lands on its edge. */
 .home-nav {
+  position: relative;
   font-size: 14px;
   font-weight: 500;
-  letter-spacing: 0.10em;
+  letter-spacing: 0.08em;
+  color: #282828;
+  padding-block: 27px;
   text-transform: uppercase;
+}
+
+.home-nav::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  height: 2px;
+  background: var(--tenant-accent);
+  transition: right 180ms ease;
+}
+
+.home-nav:hover::after,
+.home-nav:focus-visible::after,
+.home-nav[data-active="true"]::after {
+  right: 0;
+}
+
+@media (max-width: 767px) {
+  .home-container {
+    width: calc(100% - 36px);
+  }
+
+  .home-section {
+    padding-block: 68px;
+  }
 }
 
 /* Editorial type scale. Clamped so a headline is large on a desktop without

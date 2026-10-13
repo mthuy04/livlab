@@ -93,23 +93,17 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
             </Link>
 
             <nav aria-label="Điều hướng chính" className="hidden lg:block">
-              <ul className="flex items-center gap-11">
+              <ul className="flex items-stretch gap-11">
                 {tenant.navigation.map((item) => {
                   const active = isActive(item.href) || item.children?.some((c) => isActive(c.href));
-                  const linkStyle = {
-                    color: '#262626',
-                    fontWeight: 500,
-                    letterSpacing: '.10em',
-                    textTransform: 'uppercase' as const,
-                  };
 
                   if (!item.children?.length) {
                     return (
                       <li key={item.label}>
                         <Link
                           href={item.href as Route}
-                          className="inline-block py-1 text-[14px] outline-none transition-colors focus-visible:[border-bottom-color:var(--tenant-accent)]"
-                          style={{ ...linkStyle, borderBottom: active ? '2px solid var(--tenant-accent)' : '2px solid transparent' }}
+                          data-active={active || undefined}
+                          className="home-nav inline-block outline-none"
                         >
                           {item.label}
                         </Link>
@@ -132,8 +126,8 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                         aria-expanded={isOpen}
                         aria-haspopup="true"
                         onClick={() => setOpenGroup(isOpen ? null : item.label)}
-                        className="flex items-center gap-1.5 py-1 text-[14px] outline-none transition-colors focus-visible:[border-bottom-color:var(--tenant-accent)]"
-                        style={{ ...linkStyle, borderBottom: active ? '2px solid var(--tenant-accent)' : '2px solid transparent' }}
+                        data-active={active || isOpen || undefined}
+                        className="home-nav flex items-center gap-1.5 outline-none"
                       >
                         {item.label}
                         <ChevronDown className="h-3.5 w-3.5" strokeWidth={1.8} />
