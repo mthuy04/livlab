@@ -82,7 +82,12 @@ export default function FloatingSupportButton() {
   // generic chat bubble floating over a catalogue reads as a startup widget.
   // Expert stays on every other route, Room Studio included.
   const HIDDEN = ['/', '/products', '/compare'];
-  if (HIDDEN.includes(pathname) || pathname.startsWith('/admin') || pathname.startsWith('/showroom')) {
+  if (
+    HIDDEN.includes(pathname) ||
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/showroom') ||
+    pathname.startsWith('/pub/tool')
+  ) {
     return null;
   }
 
