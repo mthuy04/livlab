@@ -28,14 +28,24 @@ export type ConceptStyle =
   | 'SCANDINAVIAN'
   | 'SMART_MODERN'
   | 'SERENE_LUXURY'
-  | 'WARM_LUXURY';
+  | 'WARM_LUXURY'
+  | 'MODERN_SPA'
+  | 'MONOCHROME_CONTEMPORARY'
+  | 'JAPANDI'
+  | 'DARK_HOTEL_LUXURY'
+  | 'COASTAL_MINIMAL';
 
 export type ConceptUseCase =
   | 'URBAN_APARTMENT'
   | 'YOUNG_FAMILY'
   | 'SMART_LIVING'
   | 'PREMIUM_SUITE'
-  | 'MASTER_BATHROOM';
+  | 'MASTER_BATHROOM'
+  | 'CALM_DAILY_RETREAT'
+  | 'DESIGN_STATEMENT'
+  | 'RELAXED_HOME'
+  | 'HOTEL_PREMIUM'
+  | 'BRIGHT_PREMIUM_HOME';
 
 export type ConceptAreaBand =
   | 'COMPACT'
@@ -57,7 +67,12 @@ export type ConceptTone =
   | 'WARM_LIGHT'
   | 'WARM_NEUTRAL'
   | 'WARM_STONE'
-  | 'NATURAL_WARM';
+  | 'NATURAL_WARM'
+  | 'COOL_NEUTRAL'
+  | 'BLACK_WHITE'
+  | 'LIGHT_WOOD_WARM_NEUTRAL'
+  | 'CHARCOAL_BROWN'
+  | 'COOL_BLUE_GRAY';
 
 /* -------------------------------------------------------------- customer view */
 
@@ -68,7 +83,16 @@ export type ConceptTone =
  * constants are not moods. These coarse buckets are what the filter column
  * offers; the mapping below is the only place the two vocabularies meet.
  */
-export type StyleFacet = 'MODERN' | 'SCANDINAVIAN' | 'SMART' | 'LUXURY' | 'SPA';
+export type StyleFacet =
+  | 'MODERN'
+  | 'SCANDINAVIAN'
+  | 'JAPANDI'
+  | 'SMART'
+  | 'HOTEL'
+  | 'CONTRAST'
+  | 'LUXURY'
+  | 'SPA'
+  | 'COASTAL';
 export type AreaFacet = 'SMALL' | 'MEDIUM' | 'LARGE';
 
 export const STYLE_FACET_OF: Record<ConceptStyle, StyleFacet> = {
@@ -77,6 +101,13 @@ export const STYLE_FACET_OF: Record<ConceptStyle, StyleFacet> = {
   SMART_MODERN: 'SMART',
   SERENE_LUXURY: 'SPA',
   WARM_LUXURY: 'LUXURY',
+  MODERN_SPA: 'MODERN',
+  MONOCHROME_CONTEMPORARY: 'CONTRAST',
+  JAPANDI: 'JAPANDI',
+  // Hotel rather than Luxury: the palette is dark, but the band a customer
+  // filters by should follow what the mapped products cost, not the walls.
+  DARK_HOTEL_LUXURY: 'HOTEL',
+  COASTAL_MINIMAL: 'COASTAL',
 };
 
 export const AREA_FACET_OF: Record<ConceptAreaBand, AreaFacet> = {
@@ -91,8 +122,12 @@ export const STYLE_FACET_LABEL: Record<StyleFacet, string> = {
   MODERN: 'Hiện đại',
   SCANDINAVIAN: 'Scandinavian',
   SMART: 'Smart',
+  JAPANDI: 'Japandi',
+  HOTEL: 'Khách sạn',
+  CONTRAST: 'Tương phản',
   LUXURY: 'Luxury',
   SPA: 'Spa / nghỉ dưỡng',
+  COASTAL: 'Coastal',
 };
 
 export const AREA_FACET_LABEL: Record<AreaFacet, string> = {

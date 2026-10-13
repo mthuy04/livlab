@@ -5,10 +5,8 @@ import { X } from 'lucide-react';
 import { DIVIDER, TEXT, TEXT_MUTED } from '@/components/storefront/home/editorial';
 import {
   budgetFacetMatches,
-  type AreaFacet,
   type BudgetFacet,
   type ConceptCardModel,
-  type StyleFacet,
 } from '@/lib/storefront/conceptTypes';
 import ConceptCard from './ConceptCard';
 import ConceptFilters, { EMPTY_FILTERS, type ConceptFilterState } from './ConceptFilters';
@@ -51,12 +49,15 @@ export default function ConceptsBrowser({ concepts }: { concepts: ConceptCardMod
     const count = (axis: keyof ConceptFilterState, option: string) =>
       concepts.filter((c) => matches(c, { ...filters, [axis]: option } as ConceptFilterState)).length;
 
+    // Counted over the facets the library actually has, not a second list of
+    // facet names kept by hand. A hardcoded copy here is how "Tương phản" came
+    // to render as 0 beside a concept that was in the grid at the time.
     const style: Record<string, number> = {};
-    (['MODERN', 'SCANDINAVIAN', 'SMART', 'LUXURY', 'SPA'] as StyleFacet[]).forEach((s) => {
+    new Set(concepts.map((c) => c.styleFacet)).forEach((s) => {
       style[s] = count('style', s);
     });
     const area: Record<string, number> = {};
-    (['SMALL', 'MEDIUM', 'LARGE'] as AreaFacet[]).forEach((a) => {
+    new Set(concepts.map((c) => c.areaFacet)).forEach((a) => {
       area[a] = count('area', a);
     });
     const budget: Record<string, number> = {};

@@ -23,17 +23,31 @@ import type { ConceptHotspot, StorefrontConcept } from './conceptTypes';
 export const CONCEPT_IMAGE_WIDTH = 1448;
 export const CONCEPT_IMAGE_HEIGHT = 1086;
 
-const pct = (x: number, y: number) => ({
-  xPct: Number(((x / CONCEPT_IMAGE_WIDTH) * 100).toFixed(2)),
-  yPct: Number(((y / CONCEPT_IMAGE_HEIGHT) * 100).toFixed(2)),
+/**
+ * Phase-2 assets were authored at a different pixel size to Phase 1 — 420x315
+ * rather than 1448x1086 — but at the same 4:3 ratio, so a percentage means the
+ * same thing in both. These helpers take the pixels each batch was measured in
+ * and emit the ratio-independent coordinate the stage actually uses, which is
+ * why a higher-resolution replacement of the same scene needs no re-measuring.
+ */
+export const PHASE2_IMAGE_WIDTH = 420;
+export const PHASE2_IMAGE_HEIGHT = 315;
+
+const at = (w: number, h: number) => ({
+  pct: (x: number, y: number) => ({
+    xPct: Number(((x / w) * 100).toFixed(2)),
+    yPct: Number(((y / h) * 100).toFixed(2)),
+  }),
+  box: (x0: number, y0: number, x1: number, y1: number) => ({
+    xPct: Number(((x0 / w) * 100).toFixed(2)),
+    yPct: Number(((y0 / h) * 100).toFixed(2)),
+    widthPct: Number((((x1 - x0) / w) * 100).toFixed(2)),
+    heightPct: Number((((y1 - y0) / h) * 100).toFixed(2)),
+  }),
 });
 
-const box = (x0: number, y0: number, x1: number, y1: number) => ({
-  xPct: Number(((x0 / CONCEPT_IMAGE_WIDTH) * 100).toFixed(2)),
-  yPct: Number(((y0 / CONCEPT_IMAGE_HEIGHT) * 100).toFixed(2)),
-  widthPct: Number((((x1 - x0) / CONCEPT_IMAGE_WIDTH) * 100).toFixed(2)),
-  heightPct: Number((((y1 - y0) / CONCEPT_IMAGE_HEIGHT) * 100).toFixed(2)),
-});
+const { pct, box } = at(CONCEPT_IMAGE_WIDTH, CONCEPT_IMAGE_HEIGHT);
+const { pct: p2, box: b2 } = at(PHASE2_IMAGE_WIDTH, PHASE2_IMAGE_HEIGHT);
 
 /**
  * Catalogue ids are `demo:<tenant>:<BRAND>:<NORMALISED SKU>`.
@@ -547,6 +561,499 @@ const c05: StorefrontConcept = {
   ],
 };
 
+
+/* ================================================================== PHASE 2 */
+
+/**
+ * Five more rooms, and a finding that matters more than the rooms.
+ *
+ * These scenes are furnished from a product palette this showroom does not
+ * stock: wall-mounted brassware in black and bronze, concealed showers with
+ * round heads, tall vessel mixers, basins cut straight into stone. The
+ * catalogue is deck-mounted chrome, exposed columns with a visible riser,
+ * square-headed concealed sets and separate ceramic bowls. Nearly every
+ * fixture a reader would point at is a category away from anything on sale.
+ *
+ * So four of the five hold below the publication floor, and the notes below
+ * record what each one would need. That is the useful output: not five rooms
+ * forced live on loose matches, but a precise list of the four products that
+ * would unlock them.
+ */
+
+const WALL_HUNG_WC = {
+  brand: 'JOMOO',
+  sku: '11413-2-211K',
+  note:
+    'Bồn cầu treo tường, két âm, thân trơn không vành, nắp D. Là bồn cầu treo tường duy nhất ' +
+    'trong danh mục và khớp kiểu lắp đặt với thiết bị trong ảnh. Model chính xác không xác định được.',
+};
+
+const VESSEL_BASIN_OVAL = {
+  brand: 'JOMOO',
+  sku: 'P12663-1/01Z-1',
+  note:
+    'Chậu đặt bàn dáng bầu dục mềm, thành mỏng, không lỗ vòi, men trắng — khớp kiểu lắp đặt, ' +
+    'dáng và tỷ lệ thấp rộng của chậu trong ảnh. Model chính xác không xác định được.',
+};
+
+/** Shared across all five: the shower never maps, and always for one reason. */
+const SHOWER_NO_MATCH =
+  'Bát sen tròn, van âm tường, chỉ thấy bát sen và tay sen — không có cần đứng lộ thiên. ' +
+  'Danh mục có 5 cây sen lộ thiên bát tròn (khác kiểu lắp: có cần đứng và củ sen lộ ra) và 2 bộ ' +
+  'âm tường (JOMOO P37272-445, 37311-636) nhưng cả hai đều dùng bát sen VUÔNG. Không bộ nào khớp.';
+
+const WALL_FAUCET_NO_MATCH =
+  'Vòi gắn tường. Toàn bộ vòi lavabo trong danh mục đều là loại đặt bàn — không có vòi gắn tường nào.';
+
+/* -------------------------------------------------------------------- C06 */
+
+const C06_ID = 'c06-serene-stone';
+
+const c06: StorefrontConcept = {
+  id: C06_ID,
+  slug: 'serene-stone-spa',
+  title: 'Serene Stone Spa',
+  titleVi: 'Phòng tắm đá xám tĩnh lặng',
+  shortDescription:
+    'Sắc đá xám, ánh sáng tự nhiên và các thiết bị có đường nét gọn tạo nên một phòng tắm ' +
+    'hiện đại, yên tĩnh và dễ sống mỗi ngày.',
+  conceptStory:
+    'Serene Stone Spa lấy sự cân bằng làm trọng tâm thay vì tạo ra một không gian quá nhiều điểm ' +
+    'nhấn. Các bề mặt đá xám sáng được sử dụng liên tục để giữ tổng thể ổn định, trong khi ánh ' +
+    'sáng tự nhiên từ cửa sổ lớn giúp vật liệu không trở nên lạnh hoặc nặng nề.\n\n' +
+    'Khu lavabo, bồn cầu và khu tắm được tổ chức thành ba vùng rõ ràng nhưng vẫn liên kết bằng ' +
+    'cùng một ngôn ngữ vật liệu. Gương tròn có ánh sáng viền tạo một điểm mềm giữa các mặt phẳng ' +
+    'kiến trúc vuông vức, còn kính trong giúp khu tắm giữ được cảm giác mở. Concept hướng tới một ' +
+    'phòng tắm hiện đại nhưng không phô trương — nơi sự thư giãn đến từ tỷ lệ, ánh sáng và trật tự thị giác.',
+  designPrinciples: [
+    'Một bảng vật liệu nhất quán giúp không gian giữ được sự tĩnh và liền mạch.',
+    'Gương tròn tạo độ mềm giữa các hình khối kiến trúc thẳng và mạnh.',
+    'Ánh sáng tự nhiên cân bằng sắc xám để căn phòng không trở nên lạnh.',
+  ],
+  canonicalImage: '/concepts/serene-modern-stone-spa-bathroom.webp',
+  imageAlt:
+    'Phòng tắm tông đá xám lạnh: gương tròn hắt sáng và chậu đặt bàn trên tủ đá bên trái, ' +
+    'bồn cầu treo tường ở giữa, buồng tắm kính với thiết bị tông tối bên phải.',
+  imageHash: 'fe00ff00ff00e1c0f50077e1',
+  imageSourceType: 'LIVLAB_GENERATED',
+  imageSourceId: 'serene_modern_stone_spa_bathroom.png',
+  style: 'MODERN_SPA',
+  useCase: 'CALM_DAILY_RETREAT',
+  areaBand: 'MEDIUM',
+  budgetBand: 'MID_TO_PREMIUM',
+  tone: 'COOL_NEUTRAL',
+  publicationStatus: 'QA_PENDING',
+  qaNote:
+    'Map được 2/6 thiết bị (ngưỡng 3). Thiếu: vòi thân cao cho chậu đặt bàn — INAX LFV-502SH ' +
+    'đúng loại nhưng bị audit ảnh giữ lại khỏi danh mục; và một bộ sen âm tường bát TRÒN. ' +
+    'Chỉ cần sửa ảnh LFV-502SH là đạt ngưỡng.',
+  tenantId: null,
+  hotspots: [
+    h(C06_ID, 1, {
+      targetType: 'TOILET',
+      ...p2(245, 222),
+      bbox: b2(222, 203, 270, 245),
+      catalogProductId: demoId(PHASE1_TENANT, WALL_HUNG_WC.brand, WALL_HUNG_WC.sku),
+      ...WALL_HUNG_WC,
+      matchConfidence: 'CLOSE_VISUAL_MATCH',
+      qaStatus: 'VERIFIED',
+    }),
+    h(C06_ID, 2, {
+      targetType: 'BASIN',
+      ...p2(115, 163),
+      bbox: b2(75, 150, 152, 176),
+      catalogProductId: demoId(PHASE1_TENANT, VESSEL_BASIN_OVAL.brand, VESSEL_BASIN_OVAL.sku),
+      ...VESSEL_BASIN_OVAL,
+      matchConfidence: 'CLOSE_VISUAL_MATCH',
+      qaStatus: 'VERIFIED',
+    }),
+    h(C06_ID, 3, {
+      targetType: 'FAUCET',
+      ...p2(118, 145),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note:
+        'Vòi đặt bàn THÂN CAO cho chậu đặt bàn, mạ chrome. INAX LFV-502SH đúng lớp sản phẩm ' +
+        '(thân 268mm, vòi 238mm) nhưng ảnh của nó là bản vẽ nên audit gán NEEDS_REPLACEMENT và ' +
+        'sản phẩm bị loại khỏi danh mục. LFV-6002S còn lại chỉ cao 151mm — vòi sẽ thấp hơn vành chậu.',
+    }),
+    h(C06_ID, 4, {
+      targetType: 'SHOWER',
+      ...p2(358, 140),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note: SHOWER_NO_MATCH,
+    }),
+    h(C06_ID, 5, {
+      targetType: 'MIRROR',
+      ...p2(115, 85),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note: 'Danh mục tenant không có nhóm gương.',
+    }),
+  ],
+};
+
+/* -------------------------------------------------------------------- C07 */
+
+const C07_ID = 'c07-monochrome';
+
+const c07: StorefrontConcept = {
+  id: C07_ID,
+  slug: 'monochrome-architectural-bath',
+  title: 'Monochrome Architectural Bath',
+  titleVi: 'Phòng tắm đen – trắng kiến trúc',
+  shortDescription:
+    'Tương phản đen – trắng, mặt đá sáng và thiết bị tối màu tạo nên một không gian sắc nét, ' +
+    'hiện đại và mang tính kiến trúc rõ ràng.',
+  conceptStory:
+    'Monochrome Architectural Bath sử dụng tương phản như một công cụ tổ chức không gian chứ không ' +
+    'chỉ là lựa chọn màu sắc. Các bề mặt đá trắng tạo nền sáng và rộng, trong khi tủ lavabo, vòi, ' +
+    'sen và những mảng tường tối được đặt có chủ đích để tạo nhịp và chiều sâu.\n\n' +
+    'Khu lavabo đôi trở thành trục thị giác chính của căn phòng, được cân bằng bởi bồn cầu và khu ' +
+    'tắm đặt về hai phía. Kính trong giữ sự kết nối giữa các vùng chức năng, giúp các chi tiết đen ' +
+    'không chia nhỏ căn phòng. Concept phù hợp với người dùng muốn một phòng tắm có cá tính rõ ' +
+    'nhưng vẫn giữ được sự kiểm soát, sạch sẽ và bền về thị giác.',
+  designPrinciples: [
+    'Tương phản được dùng để tổ chức không gian thay vì phủ đen toàn bộ căn phòng.',
+    'Mặt đá sáng giữ cảm giác rộng và giúp thiết bị tối màu nổi bật có kiểm soát.',
+    'Một trục lavabo mạnh tạo điểm nhìn chính cho toàn bộ bố cục.',
+  ],
+  canonicalImage: '/concepts/monochrome-marble-spa-bathroom.webp',
+  imageAlt:
+    'Phòng tắm đen trắng: tủ lavabo đen với hai chậu đặt bàn và vòi gắn tường màu đen, ' +
+    'bồn cầu treo tường ở giữa, khu tắm kính với thiết bị đen bên phải.',
+  imageHash: 'ffa8ff9cff8cc98cc99cc99c',
+  imageSourceType: 'LIVLAB_GENERATED',
+  imageSourceId: 'monochrome_marble_spa_bathroom.png',
+  style: 'MONOCHROME_CONTEMPORARY',
+  useCase: 'DESIGN_STATEMENT',
+  areaBand: 'MEDIUM_TO_LARGE',
+  budgetBand: 'MID_TO_PREMIUM',
+  tone: 'BLACK_WHITE',
+  publicationStatus: 'PUBLISHED_VERIFIED',
+  tenantId: null,
+  hotspots: [
+    h(C07_ID, 1, {
+      targetType: 'TOILET',
+      ...p2(252, 216),
+      bbox: b2(232, 197, 275, 239),
+      catalogProductId: demoId(PHASE1_TENANT, WALL_HUNG_WC.brand, WALL_HUNG_WC.sku),
+      ...WALL_HUNG_WC,
+      matchConfidence: 'CLOSE_VISUAL_MATCH',
+      qaStatus: 'VERIFIED',
+    }),
+    h(C07_ID, 2, {
+      targetType: 'BASIN',
+      ...p2(73, 172),
+      bbox: b2(57, 164, 95, 183),
+      catalogProductId: demoId(PHASE1_TENANT, VESSEL_BASIN_OVAL.brand, VESSEL_BASIN_OVAL.sku),
+      ...VESSEL_BASIN_OVAL,
+      matchConfidence: 'CLOSE_VISUAL_MATCH',
+      qaStatus: 'VERIFIED',
+    }),
+    h(C07_ID, 3, {
+      targetType: 'BASIN',
+      ...p2(157, 172),
+      bbox: b2(140, 164, 178, 183),
+      catalogProductId: demoId(PHASE1_TENANT, VESSEL_BASIN_OVAL.brand, VESSEL_BASIN_OVAL.sku),
+      ...VESSEL_BASIN_OVAL,
+      matchConfidence: 'CLOSE_VISUAL_MATCH',
+      qaStatus: 'VERIFIED',
+      note: `${VESSEL_BASIN_OVAL.note} Chậu thứ hai của mặt bàn đôi, cùng model.`,
+    }),
+    h(C07_ID, 4, {
+      targetType: 'FAUCET',
+      ...p2(90, 155),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note: `${WALL_FAUCET_NO_MATCH} Thiết bị trong ảnh còn là màu ĐEN; danh mục không có vòi lavabo đen nào.`,
+    }),
+    h(C07_ID, 5, {
+      targetType: 'SHOWER',
+      ...p2(353, 150),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note:
+        `${SHOWER_NO_MATCH} Riêng cảnh này thiết bị còn là màu đen: JOMOO 37311-636 ghi "mạ đen" ` +
+        'trong dữ liệu nhưng ảnh sản phẩm lại là chrome, nên bề mặt cũng không xác nhận được.',
+    }),
+    h(C07_ID, 6, {
+      targetType: 'MIRROR',
+      ...p2(125, 95),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note: 'Danh mục tenant không có nhóm gương.',
+    }),
+  ],
+};
+
+/* -------------------------------------------------------------------- C08 */
+
+const C08_ID = 'c08-japandi';
+
+const c08: StorefrontConcept = {
+  id: C08_ID,
+  slug: 'soft-japandi-retreat',
+  title: 'Soft Japandi Retreat',
+  titleVi: 'Phòng tắm Japandi nhẹ nhàng',
+  shortDescription:
+    'Gỗ sáng, vật liệu trung tính và ánh sáng mềm tạo nên một phòng tắm Japandi gần gũi, ' +
+    'nhẹ nhàng và cân bằng trong sinh hoạt hàng ngày.',
+  conceptStory:
+    'Soft Japandi Retreat kết hợp sự giản dị của không gian Nhật Bản với độ ấm và tính dễ sống của ' +
+    'phong cách Scandinavian. Gỗ sáng được dùng như một lớp vật liệu chính để cân bằng các bề mặt ' +
+    'sứ và đá, trong khi bảng màu kem – trắng ấm giúp căn phòng giữ cảm giác nhẹ và tự nhiên.\n\n' +
+    'Các thiết bị được sắp xếp thấp và gọn, tránh cảm giác phô diễn. Khu lavabo đóng vai trò trung ' +
+    'tâm, còn khu tắm và bồn cầu được bố trí về hai phía để giữ sự rõ ràng trong lưu thông. Ánh sáng ' +
+    'mềm và một lượng rất nhỏ cây xanh bổ sung cảm giác thư giãn mà không biến không gian thành một ' +
+    'cảnh trang trí. Concept hướng tới sự ấm áp, tĩnh và dễ gắn bó lâu dài.',
+  designPrinciples: [
+    'Gỗ sáng làm mềm bề mặt sứ và đá, tạo cảm giác gần gũi hơn.',
+    'Thiết bị được giữ thấp và đơn giản để giảm nhiễu thị giác.',
+    'Ánh sáng mềm quan trọng hơn các chi tiết trang trí cầu kỳ.',
+  ],
+  canonicalImage: '/concepts/serene-japandi-spa-bathroom.webp',
+  imageAlt:
+    'Phòng tắm Japandi tông kem: tủ lavabo gỗ sáng với chậu tròn đặt bàn và gương bo tròn hắt sáng, ' +
+    'khu tắm kính ở giữa, bồn cầu treo tường bên phải.',
+  imageHash: '8001c600c980f880f885c8a4',
+  imageSourceType: 'LIVLAB_GENERATED',
+  imageSourceId: 'serene_japandi_spa_bathroom.png',
+  style: 'JAPANDI',
+  useCase: 'RELAXED_HOME',
+  areaBand: 'MEDIUM',
+  budgetBand: 'MID',
+  tone: 'LIGHT_WOOD_WARM_NEUTRAL',
+  publicationStatus: 'QA_PENDING',
+  qaNote:
+    'Map được 2/6 thiết bị (ngưỡng 3). Thiếu: vòi gắn tường (danh mục chỉ có vòi đặt bàn) và ' +
+    'bộ sen âm tường bát tròn. Một trong hai là đủ để đạt ngưỡng.',
+  tenantId: null,
+  hotspots: [
+    h(C08_ID, 1, {
+      targetType: 'TOILET',
+      ...p2(378, 228),
+      bbox: b2(340, 205, 420, 258),
+      catalogProductId: demoId(PHASE1_TENANT, WALL_HUNG_WC.brand, WALL_HUNG_WC.sku),
+      ...WALL_HUNG_WC,
+      matchConfidence: 'CLOSE_VISUAL_MATCH',
+      qaStatus: 'VERIFIED',
+    }),
+    h(C08_ID, 2, {
+      targetType: 'BASIN',
+      ...p2(162, 158),
+      bbox: b2(143, 149, 185, 168),
+      catalogProductId: demoId(PHASE1_TENANT, 'JOMOO', '12661-1/01K'),
+      brand: 'JOMOO',
+      sku: '12661-1/01K',
+      matchConfidence: 'CLOSE_VISUAL_MATCH',
+      qaStatus: 'VERIFIED',
+      note:
+        'Chậu đặt bàn dáng tròn, thành trụ thẳng, vành mỏng — khớp kiểu lắp đặt và dáng. ' +
+        'Khác biệt cần ghi: chậu trong ảnh là đá mờ tông kem, sản phẩm là sứ men trắng bóng. ' +
+        'Cùng tông sáng nhưng khác chất liệu bề mặt.',
+    }),
+    h(C08_ID, 3, {
+      targetType: 'FAUCET',
+      ...p2(176, 142),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note: `${WALL_FAUCET_NO_MATCH} Thiết bị trong ảnh hoàn thiện đồng xước.`,
+    }),
+    h(C08_ID, 4, {
+      targetType: 'SHOWER',
+      ...p2(276, 40),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note: SHOWER_NO_MATCH,
+    }),
+    h(C08_ID, 5, {
+      targetType: 'MIRROR',
+      ...p2(170, 80),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note: 'Danh mục tenant không có nhóm gương.',
+    }),
+  ],
+};
+
+/* -------------------------------------------------------------------- C09 */
+
+const C09_ID = 'c09-dark-hotel';
+
+const c09: StorefrontConcept = {
+  id: C09_ID,
+  slug: 'dark-hotel-suite',
+  title: 'Dark Hotel Suite',
+  titleVi: 'Phòng tắm khách sạn tông tối',
+  shortDescription:
+    'Đá tối, ánh sáng gián tiếp và những đường nét kim loại tinh gọn tạo nên một phòng tắm ' +
+    'khách sạn sang trọng, trầm và có chiều sâu.',
+  conceptStory:
+    'Dark Hotel Suite khai thác bảng màu sâu để tạo cảm giác riêng tư và cao cấp, nhưng tránh biến ' +
+    'phòng tắm thành một không gian tối nặng nề. Đá charcoal và nâu được sử dụng trên các mặt phẳng ' +
+    'lớn, trong khi ánh sáng gián tiếp chạy dọc tủ lavabo, gương và các hốc tường giúp vật liệu hiện ' +
+    'lên theo từng lớp.\n\n' +
+    'Thiết bị sứ sáng đóng vai trò cân bằng, tạo điểm nghỉ giữa những mảng tối. Khu tắm được tách ' +
+    'bằng kính trong để giữ chiều sâu thị giác, còn mặt bàn dài tạo trục ngang giúp căn phòng có cảm ' +
+    'giác rộng và ổn định hơn. Concept hướng tới tinh thần khách sạn hiện đại — sang trọng nhờ vật ' +
+    'liệu, tỷ lệ và ánh sáng thay vì các chi tiết trang trí phô trương.',
+  designPrinciples: [
+    'Thiết bị sáng tạo điểm cân bằng trong bảng vật liệu tối.',
+    'Ánh sáng gián tiếp làm rõ lớp vật liệu mà không phá vỡ cảm giác trầm.',
+    'Các đường ngang dài giúp không gian tối vẫn giữ được cảm giác rộng.',
+  ],
+  canonicalImage: '/concepts/luxurious-modern-stone-spa-bathroom.webp',
+  imageAlt:
+    'Phòng tắm tông đá charcoal: mặt bàn đá tối với hai chậu khoét liền và vòi gắn tường ' +
+    'hoàn thiện đồng, khu tắm kính tối ở giữa, bồn cầu treo tường bên phải.',
+  imageHash: '7f847f040f0403044384438c',
+  imageSourceType: 'LIVLAB_GENERATED',
+  imageSourceId: 'luxurious_modern_stone_spa_bathroom.png',
+  style: 'DARK_HOTEL_LUXURY',
+  useCase: 'HOTEL_PREMIUM',
+  areaBand: 'MEDIUM_TO_LARGE',
+  budgetBand: 'PREMIUM',
+  tone: 'CHARCOAL_BROWN',
+  publicationStatus: 'QA_PENDING',
+  qaNote:
+    'Map được 1/6 thiết bị (ngưỡng 3) — thấp nhất trong mười concept. Chậu là loại khoét liền ' +
+    'khối đá, vòi gắn tường hoàn thiện đồng, sen âm tường bát tròn: cả ba đều không có nhóm ' +
+    'tương ứng trong danh mục.',
+  tenantId: null,
+  hotspots: [
+    h(C09_ID, 1, {
+      targetType: 'TOILET',
+      ...p2(372, 220),
+      bbox: b2(352, 198, 420, 252),
+      catalogProductId: demoId(PHASE1_TENANT, WALL_HUNG_WC.brand, WALL_HUNG_WC.sku),
+      ...WALL_HUNG_WC,
+      matchConfidence: 'CLOSE_VISUAL_MATCH',
+      qaStatus: 'VERIFIED',
+    }),
+    h(C09_ID, 2, {
+      targetType: 'BASIN',
+      ...p2(80, 172),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note:
+        'Chậu khoét liền khối vào mặt đá — cùng vật liệu, cùng tông, không có vành. Danh mục chỉ ' +
+        'có chậu rời bằng sứ (đặt bàn / âm bàn / bán âm), không có chậu đá liền khối.',
+    }),
+    h(C09_ID, 3, {
+      targetType: 'FAUCET',
+      ...p2(68, 155),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note: `${WALL_FAUCET_NO_MATCH} Thiết bị trong ảnh hoàn thiện đồng/vàng đồng — danh mục không có bề mặt này.`,
+    }),
+    h(C09_ID, 4, {
+      targetType: 'SHOWER',
+      ...p2(285, 100),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note: SHOWER_NO_MATCH,
+    }),
+    h(C09_ID, 5, {
+      targetType: 'MIRROR',
+      ...p2(92, 80),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note: 'Danh mục tenant không có nhóm gương.',
+    }),
+  ],
+};
+
+/* -------------------------------------------------------------------- C10 */
+
+const C10_ID = 'c10-coastal';
+
+const c10: StorefrontConcept = {
+  id: C10_ID,
+  slug: 'coastal-blue-retreat',
+  title: 'Coastal Blue Retreat',
+  titleVi: 'Phòng tắm xanh xám hướng biển',
+  shortDescription:
+    'Xanh xám dịu, đá sáng và nguồn sáng lớn tạo nên một không gian thư giãn, thoáng và mát ' +
+    'hơn so với các concept tông ấm truyền thống.',
+  conceptStory:
+    'Coastal Blue Retreat được phát triển như một lựa chọn đối lập với các bảng màu beige thường ' +
+    'thấy trong phòng tắm cao cấp. Sắc xanh xám được sử dụng có kiểm soát tại tủ lavabo và các mặt ' +
+    'phẳng phụ, kết hợp cùng đá sáng và kính trong để tạo cảm giác mát, nhẹ và thoáng.\n\n' +
+    'Nguồn sáng lớn cùng khoảng nhìn mở trở thành một phần quan trọng của trải nghiệm, giúp không ' +
+    'gian có cảm giác kết nối với môi trường bên ngoài. Thiết bị sứ trắng và các chi tiết kim loại ' +
+    'trung tính giữ tổng thể tinh gọn, tránh biến sắc xanh thành một chủ đề trang trí quá rõ ràng. ' +
+    'Concept phù hợp với người dùng yêu thích không gian sáng, hiện đại và có cảm giác nghỉ dưỡng ' +
+    'nhưng không muốn đi theo hướng vàng – nâu truyền thống.',
+  designPrinciples: [
+    'Xanh xám tạo bản sắc riêng mà vẫn đủ trung tính để phối thiết bị.',
+    'Ánh sáng và khoảng nhìn mở là thành phần chính của trải nghiệm không gian.',
+    'Đá sáng và sứ trắng giữ bảng màu mát trở nên nhẹ và dễ sử dụng.',
+  ],
+  canonicalImage: '/concepts/coastal-minimalist-spa-bathroom.webp',
+  imageAlt:
+    'Phòng tắm tông xanh xám mát: tủ lavabo xanh xám với chậu oval đặt bàn và gương tròn hắt sáng, ' +
+    'bồn cầu đặt sàn ở giữa, khu tắm kính nhìn ra biển bên phải.',
+  imageHash: 'f07f38330d030d032d232d23',
+  imageSourceType: 'LIVLAB_GENERATED',
+  imageSourceId: 'coastal_minimalist_spa_bathroom.png',
+  style: 'COASTAL_MINIMAL',
+  useCase: 'BRIGHT_PREMIUM_HOME',
+  areaBand: 'MEDIUM_TO_LARGE',
+  budgetBand: 'MID_TO_PREMIUM',
+  tone: 'COOL_BLUE_GRAY',
+  publicationStatus: 'QA_PENDING',
+  qaNote:
+    'Map được 1/5 thiết bị (ngưỡng 3). Bồn cầu ở đây ĐẶT SÀN két âm — khác với bốn cảnh Phase 2 ' +
+    'còn lại — nên bồn treo tường duy nhất của danh mục không dùng được. Thiếu thêm vòi thân cao ' +
+    '(LFV-502SH, đang bị giữ lại) và sen âm tường bát tròn.',
+  tenantId: null,
+  hotspots: [
+    h(C10_ID, 1, {
+      targetType: 'BASIN',
+      ...p2(85, 162),
+      bbox: b2(52, 151, 120, 173),
+      catalogProductId: demoId(PHASE1_TENANT, VESSEL_BASIN_OVAL.brand, VESSEL_BASIN_OVAL.sku),
+      ...VESSEL_BASIN_OVAL,
+      matchConfidence: 'CLOSE_VISUAL_MATCH',
+      qaStatus: 'VERIFIED',
+    }),
+    h(C10_ID, 2, {
+      targetType: 'TOILET',
+      ...p2(222, 212),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note:
+        'Bồn cầu ĐẶT SÀN sát tường, két âm (nút xả trên tường), thân chạm sàn. Bồn cầu không két ' +
+        'duy nhất trong danh mục là JOMOO 11413-2-211K loại treo tường — khác kiểu lắp đặt.',
+    }),
+    h(C10_ID, 3, {
+      targetType: 'FAUCET',
+      ...p2(73, 141),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note:
+        'Vòi đặt bàn thân cao cho chậu đặt bàn, mạ chrome. Cùng nguyên nhân với C06: INAX ' +
+        'LFV-502SH đúng loại nhưng bị audit ảnh giữ lại khỏi danh mục.',
+    }),
+    h(C10_ID, 4, {
+      targetType: 'SHOWER',
+      ...p2(280, 135),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note: SHOWER_NO_MATCH,
+    }),
+    h(C10_ID, 5, {
+      targetType: 'MIRROR',
+      ...p2(55, 70),
+      matchConfidence: 'GENERIC_FIXTURE',
+      qaStatus: 'VERIFIED',
+      note: 'Danh mục tenant không có nhóm gương.',
+    }),
+  ],
+};
+
 /**
  * Reading order, set by how the rooms look rather than by when they were made.
  *
@@ -560,4 +1067,6 @@ const c05: StorefrontConcept = {
  * in this order, so a concept that clears its QA gap later appears where the
  * rhythm already expects it, and nothing has to be resorted by hand.
  */
-export const CONCEPT_LIBRARY: StorefrontConcept[] = [c01, c03, c04, c02, c05];
+export const CONCEPT_LIBRARY: StorefrontConcept[] = [
+  c01, c07, c03, c10, c08, c04, c06, c09, c02, c05,
+];

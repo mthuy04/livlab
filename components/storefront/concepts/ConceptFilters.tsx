@@ -42,7 +42,17 @@ export const EMPTY_FILTERS: ConceptFilterState = { style: 'ALL', area: 'ALL', bu
  * advertises an absence; as concepts are added their facets appear here on
  * their own, with no list to remember to update.
  */
-const STYLE_ORDER: StyleFacet[] = ['MODERN', 'SCANDINAVIAN', 'SMART', 'LUXURY', 'SPA'];
+const STYLE_ORDER: StyleFacet[] = [
+  'MODERN',
+  'SCANDINAVIAN',
+  'JAPANDI',
+  'SMART',
+  'HOTEL',
+  'CONTRAST',
+  'LUXURY',
+  'SPA',
+  'COASTAL',
+];
 const AREA_ORDER: AreaFacet[] = ['SMALL', 'MEDIUM', 'LARGE'];
 const BUDGET_ORDER: BudgetFacet[] = ['UNDER_30', 'FROM_30_TO_60', 'FROM_60_TO_100', 'OVER_100'];
 
