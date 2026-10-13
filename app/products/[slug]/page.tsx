@@ -7,7 +7,7 @@ import { activeSections, formatVnd } from '@/lib/storefront/productDetailTypes';
 import { DIVIDER, TEXT, TEXT_MUTED, TEXT_FAINT } from '@/components/storefront/home/editorial';
 import ProductGallery from '@/components/storefront/product/ProductGallery';
 import ProductActions from '@/components/storefront/product/ProductActions';
-import ProductNav from '@/components/storefront/product/ProductNav';
+import ProductNav, { ANCHOR_OFFSET } from '@/components/storefront/product/ProductNav';
 import {
   Compatibility,
   Consultation,
@@ -80,7 +80,7 @@ export default async function ProductDetailPage({ params }: Props) {
 
   return (
     <>
-      <section id="tong-quan">
+      <section id="tong-quan" style={{ scrollMarginTop: ANCHOR_OFFSET }}>
         <div className="home-container" style={{ paddingTop: 26, paddingBottom: 'clamp(44px, 4.4vw, 68px)' }}>
           <nav aria-label="Breadcrumb">
             <ol

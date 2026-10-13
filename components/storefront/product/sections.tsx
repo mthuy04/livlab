@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Route } from 'next';
 import { StageImage, ProductImagePlaceholder } from '@/components/storefront/catalog/ProductImage';
 import DimensionsBlock from './DimensionsBlock';
+import { ANCHOR_OFFSET } from './ProductNav';
 import { DIVIDER, TEXT, TEXT_MUTED, TEXT_FAINT } from '@/components/storefront/home/editorial';
 import {
   formatVnd,
@@ -71,7 +72,13 @@ export function Section({
       ? 'clamp(40px, 4vw, 64px)'
       : 'clamp(44px, 4.6vw, 72px)';
   return (
-    <section id={id} style={muted ? { backgroundColor: '#F7F7F5' } : undefined}>
+    <section
+      id={id}
+      style={{
+        ...(muted ? { backgroundColor: '#F7F7F5' } : null),
+        ...(id ? { scrollMarginTop: ANCHOR_OFFSET } : null),
+      }}
+    >
       <div className="home-container" style={{ paddingBlock }}>
         {children}
       </div>
@@ -91,7 +98,7 @@ export function Specifications({ groups }: { groups: SpecGroup[] }) {
 
       {/* Constrained so a short spec list does not drift across a 1360px
           canvas, while the heading stays on the container's own left edge. */}
-      <div className="mt-7 flex max-w-[1160px] flex-col gap-8">
+      <div className="mt-7 flex max-w-[1100px] flex-col gap-8">
         {filled.map((group) => (
           <div key={group.title}>
             <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.12em', color: TEXT_FAINT }}>

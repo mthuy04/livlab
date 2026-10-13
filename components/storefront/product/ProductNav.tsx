@@ -24,6 +24,16 @@ import {
  */
 
 const HEADER_HEIGHT = 74;
+const NAV_HEIGHT = 50;
+
+/**
+ * Where an anchored section comes to rest.
+ *
+ * The header and the rail together are 124px of fixed chrome, so a bare
+ * `#thong-so` jump puts the heading underneath them. This leaves the heading
+ * clear of the rail with room to breathe.
+ */
+export const ANCHOR_OFFSET = HEADER_HEIGHT + NAV_HEIGHT + 34;
 
 export default function ProductNav({
   vm,
@@ -35,6 +45,7 @@ export default function ProductNav({
   const [active, setActive] = useState<SectionId>(sections[0]);
   const [pastOverview, setPastOverview] = useState(false);
   const [atHandoff, setAtHandoff] = useState(false);
+  const [pastContent, setPastContent] = useState(false);
   const railRef = useRef<HTMLElement | null>(null);
 
   // Shown between the two ends of the page: after the overview's own actions
@@ -56,6 +67,21 @@ export default function ProductNav({
     return () => observer.disconnect();
   }, []);
 
+  // The rail belongs to the product's own technical content. Once the last
+  // anchored section has gone by, the reader is looking at other products and
+  // then at the footer, and a rail still highlighting MÔ PHỎNG is describing
+  // something that is no longer on screen.
+  useEffect(() => {
+    const last = document.getElementById(sections[sections.length - 1]);
+    if (!last) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setPastContent(!entry.isIntersecting && entry.boundingClientRect.top < 0),
+      { rootMargin: `-${HEADER_HEIGHT + NAV_HEIGHT}px 0px 0px 0px`, threshold: 0 }
+    );
+    observer.observe(last);
+    return () => observer.disconnect();
+  }, [sections]);
+
   useEffect(() => {
     const handoff = document.getElementById('tu-van');
     if (!handoff) return;
@@ -70,24 +96,51 @@ export default function ProductNav({
     return () => observer.disconnect();
   }, []);
 
+  // Which section the reader is in, decided by position rather than by which
+  // boxes happen to overlap an observation band. The band approach kept
+  // naming THÔNG SỐ while the drawing filled the screen, because a tall
+  // section's box still intersected the band after its content had gone by.
+  // The rule here is the plain one: the last section that has passed under
+  // the rail is the section you are reading.
   useEffect(() => {
     if (sections.length < 2) return;
-    const nodes = sections
-      .map((id) => document.getElementById(id))
-      .filter((node): node is HTMLElement => node !== null);
-    if (nodes.length === 0) return;
+    const line = HEADER_HEIGHT + NAV_HEIGHT + 1;
+    let last = 0;
+    let timer: ReturnType<typeof setTimeout> | undefined;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-        if (visible?.target.id) setActive(visible.target.id as SectionId);
-      },
-      { rootMargin: `-${HEADER_HEIGHT + 70}px 0px -62% 0px`, threshold: 0 }
-    );
-    nodes.forEach((node) => observer.observe(node));
-    return () => observer.disconnect();
+    const update = () => {
+      last = Date.now();
+      let current = sections[0];
+      for (const id of sections) {
+        const node = document.getElementById(id);
+        if (node && node.getBoundingClientRect().top <= line) current = id;
+      }
+      setActive(current);
+    };
+
+    // Throttled on the clock rather than on an animation frame: a frame
+    // callback does not run while the tab is in the background, which would
+    // leave the rail naming whatever section it last saw.
+    const onScroll = () => {
+      const since = Date.now() - last;
+      if (since >= 80) {
+        update();
+      } else if (timer === undefined) {
+        timer = setTimeout(() => {
+          timer = undefined;
+          update();
+        }, 80 - since);
+      }
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      if (timer !== undefined) clearTimeout(timer);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
   }, [sections]);
 
   const price = vm.pricing.showroomPrice;
@@ -98,16 +151,21 @@ export default function ProductNav({
         <nav
           ref={railRef}
           aria-label="Nội dung sản phẩm"
-          className="sticky z-30"
+          className="sticky z-30 transition-transform duration-200"
           style={{
             top: HEADER_HEIGHT,
             backgroundColor: '#FFFFFF',
             borderTop: `1px solid ${DIVIDER}`,
             borderBottom: `1px solid ${DIVIDER}`,
+            // Sticky elements keep their slot in the flow, so sliding it out
+            // of view disengages the rail without shifting the page.
+            transform: pastContent ? `translateY(-${HEADER_HEIGHT + NAV_HEIGHT + 2}px)` : undefined,
+            pointerEvents: pastContent ? 'none' : undefined,
           }}
+          aria-hidden={pastContent || undefined}
         >
           <div className="home-container">
-            <ul className="no-scrollbar flex items-stretch gap-8 overflow-x-auto" style={{ height: 50 }}>
+            <ul className="no-scrollbar flex items-stretch gap-8 overflow-x-auto" style={{ height: NAV_HEIGHT }}>
               {sections.map((id) => {
                 const current = id === active;
                 return (
