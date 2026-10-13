@@ -10,3 +10,19 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 public/images/products-raw/
+
+# 3D asset pipeline — source and working files, never the repository's job.
+#
+# A manufacturer .max or an exported .fbx is production input: large, binary,
+# and reproducible from the share URL recorded in the handoff manifest. Only
+# the reviewed runtime GLB under public/assets/3d/ is the app's to carry, and
+# only after it has passed QA.
+assets/3d/received/
+assets/3d/workspace/
+assets/3d/source/
+*.max
+*.fbx
+*.3ds
+*.skp
+*.rfa
+*.rvt

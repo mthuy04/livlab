@@ -1,0 +1,43 @@
+INAX AC-4005VN — yêu cầu export từ 3ds Max
+================================================================
+
+FILE NGUỒN
+  Tên file hãng : 4_-_AC_-_4005VN_-_FN.max
+  Tải tại       : https://app.box.com/s/rcqxfbjkj9ltkrlm5vviy6jjzfokfzf1
+  Trang sản phẩm: https://www.inax.com.vn/products/toilet/ac-4005vn/
+
+CẦN XUẤT RA
+  Tên file      : inax_ac-4005vn_source.fbx
+  Định dạng     : FBX
+  Đơn vị        : milimét (mm) — nếu dùng đơn vị khác, ghi rõ vào file kèm theo
+
+KÍCH THƯỚC CHÍNH THỨC CỦA HÃNG (để đối chiếu sau khi export)
+  Sâu  (trước–sau) : 780 mm
+  Rộng (trái–phải) : 518 mm
+  Cao  (sàn–đỉnh)  : 623 mm
+
+GIỮ LẠI
+  - Toàn bộ hình học của sản phẩm: thân sứ, nắp, két, nút xả, chi tiết mạ
+  - Vật liệu và texture gốc
+    (nếu FBX không nhúng được texture, gửi kèm thư mục texture)
+
+XOÁ ĐI
+  - Camera
+  - Đèn trong cảnh
+  - Sàn, tường, phông nền, đạo cụ
+  - Đối tượng trợ giúp (helper, dummy), lưới tham chiếu
+  - Ghi chú, kích thước, chữ trong cảnh
+
+KHÔNG LÀM
+  - KHÔNG scale lại model cho "trông đúng". Giữ nguyên tỷ lệ gốc của file hãng.
+  - KHÔNG xoay model cho thẳng hướng.
+  - KHÔNG chỉnh pivot / tâm xoay.
+  - KHÔNG xoá chi tiết thuộc về sản phẩm thật (nút bấm, bản lề, logo dập nổi).
+
+  Ba việc pivot / hướng / tỷ lệ thế giới do bên em tự chuẩn hoá sau khi nhận
+  file. Việc của bước này chỉ là giữ đúng hình học và đúng kích thước gốc.
+
+NẾU CÓ VẤN ĐỀ
+  Nếu file .max mở ra mà thiếu texture, sai tỷ lệ rõ rệt, hoặc chứa nhiều sản
+  phẩm trong một cảnh — xin báo lại thay vì tự xử lý. Bên em cần biết file gốc
+  thực sự chứa gì.

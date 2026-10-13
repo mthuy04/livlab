@@ -1,0 +1,21 @@
+{
+  "brand": "INAX",
+  "sku": "AC-1017VRN",
+  "sourceFormat": "MAX",
+  "sourceFileName": "AC-1017VRN.max",
+  "sourceFileSizeBytes": 1003520,
+  "sourceUrl": "https://app.box.com/s/kkbn2cx6i2h4imdqvbbadivgi4mqbevb",
+  "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-1017vrn/",
+  "officialDimensionsMm": {
+    "depth": 805,
+    "width": 400,
+    "height": 588
+  },
+  "dimensionAxisNote": "INAX ghi D x W x H. depth = trước–sau, width = trái–phải, height = sàn–đỉnh.",
+  "requestedExport": "FBX",
+  "requestedOutputFileName": "inax_ac-1017vrn_source.fbx",
+  "preferredUnits": "millimeters",
+  "downloadState": "DOWNLOAD_MANUAL_REQUIRED",
+  "downloadNote": "Box trả về trang xem bằng JavaScript; /download trả 404 cho client ẩn danh. Không lách hạn chế truy cập.",
+  "exportPriority": 1
+}

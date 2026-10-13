@@ -1,0 +1,21 @@
+{
+  "brand": "INAX",
+  "sku": "AC-4005VN",
+  "sourceFormat": "MAX",
+  "sourceFileName": "4_-_AC_-_4005VN_-_FN.max",
+  "sourceFileSizeBytes": 11808768,
+  "sourceUrl": "https://app.box.com/s/rcqxfbjkj9ltkrlm5vviy6jjzfokfzf1",
+  "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-4005vn/",
+  "officialDimensionsMm": {
+    "depth": 780,
+    "width": 518,
+    "height": 623
+  },
+  "dimensionAxisNote": "INAX ghi D x W x H. depth = trước–sau, width = trái–phải, height = sàn–đỉnh.",
+  "requestedExport": "FBX",
+  "requestedOutputFileName": "inax_ac-4005vn_source.fbx",
+  "preferredUnits": "millimeters",
+  "downloadState": "DOWNLOAD_MANUAL_REQUIRED",
+  "downloadNote": "Box trả về trang xem bằng JavaScript; /download trả 404 cho client ẩn danh. Không lách hạn chế truy cập.",
+  "exportPriority": 6
+}
