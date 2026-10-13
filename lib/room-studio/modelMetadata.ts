@@ -13,6 +13,7 @@
 
 import { Product } from '@/lib/types';
 import { productModelMap, availableProductModels, Product3DCategory } from '@/lib/livlabProductModels';
+import { getProduct3DAsset, hasReadyAssetForKeys } from './product3dRegistry';
 
 export interface ModelMetadata {
   /** Public path to the master GLB, or undefined when none exists yet. */
@@ -32,9 +33,14 @@ export interface ModelMetadata {
 }
 
 /**
- * Per-SKU / per-product-id master assets. Empty today — the catalogue has no
- * per-SKU GLBs yet — but this is where they get registered as they are produced,
- * keyed by `Product.sku` or `Product.id`.
+ * Per-SKU overrides for assets that need one.
+ *
+ * This is no longer the registry — `lib/room-studio/product3dRegistry` is, and
+ * it holds the source, the identity, the measured dimensions and the seven QA
+ * checks that a bare path cannot carry. What stays here is the narrow escape
+ * hatch: a scale multiplier for an asset whose authored proportions are wrong.
+ * Two registries would eventually disagree, so this one no longer answers the
+ * readiness question.
  */
 export const SKU_MODEL_OVERRIDES: Record<string, ModelMetadata> = {};
 
@@ -52,7 +58,7 @@ export const SKU_MODEL_OVERRIDES: Record<string, ModelMetadata> = {};
  * hidden. Registering a SKU above turns it on for that product alone.
  */
 export function hasSkuMasterModel(...keys: (string | null | undefined)[]): boolean {
-  return keys.some((key) => Boolean(key) && SKU_MODEL_OVERRIDES[key as string] !== undefined);
+  return hasReadyAssetForKeys(...keys);
 }
 
 /**
@@ -89,8 +95,21 @@ export function getCategoryFallbackSize(normalizedCategory: string) {
 }
 
 export function getModelMetadata(product: Product, normalizedCategory: string): ModelMetadata {
+  // The verified asset wins over everything. A registered record carries its
+  // own reviewed GLB; nothing below may override or substitute for it.
+  const asset = getProduct3DAsset(product.id);
+  if (asset?.runtime.glbUrl) {
+    return {
+      model3dUrl: asset.runtime.glbUrl,
+      ...(SKU_MODEL_OVERRIDES[product.sku] ?? SKU_MODEL_OVERRIDES[product.id] ?? {}),
+      approxSizeMb: asset.runtime.fileSizeBytes
+        ? Math.round((asset.runtime.fileSizeBytes / 1_048_576) * 10) / 10
+        : undefined,
+    };
+  }
+
   const override = SKU_MODEL_OVERRIDES[product.sku] || SKU_MODEL_OVERRIDES[product.id];
-  if (override) return override;
+  if (override?.model3dUrl) return override;
 
   const category = normalizedCategory as Product3DCategory;
   const isAvailable = availableProductModels[category] === true;
