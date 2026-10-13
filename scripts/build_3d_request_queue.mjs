@@ -60,6 +60,24 @@ async function main() {
   const fixture = JSON.parse(await readFile(path.join(ROOT, 'data/demo/tungdang-sanitaryware.json'), 'utf8'));
   const conceptLib = await readFile(path.join(ROOT, 'lib/storefront/conceptLibrary.ts'), 'utf8');
 
+  // SKUs whose 3D source has since been found on the manufacturer's own site.
+  // They leave the request queue: asking a showroom to chase a file that is
+  // already public wastes the one favour you get to ask for.
+  let discovered = new Map();
+  try {
+    const audit = JSON.parse(
+      await readFile(path.join(ROOT, 'data/demo/manufacturer-3d-source-audit.json'), 'utf8')
+    );
+    for (const entry of audit.activeCatalog ?? []) {
+      const row = (entry.rows ?? []).find(
+        (r) => r.sectionType === 'THREE_D' && r.present && r.exactness === 'EXACT_COMMERCIAL_SKU'
+      );
+      if (row) discovered.set(entry.sku, { url: row.url, format: row.actualFormat, file: row.actualFileName });
+    }
+  } catch {
+    // No audit yet — every SKU still needs asking for.
+  }
+
   const conceptSkus = new Set([...conceptLib.matchAll(/sku: '([^']+)'/g)].map((m) => m[1]));
   const specSkus = new Set(audit.products.filter((p) => p.hasTechnicalSpec && p.sku).map((p) => p.sku));
   const urlBySku = new Map(audit.products.filter((p) => p.sku).map((p) => [p.sku, p.manufacturerProductUrl]));
@@ -74,6 +92,7 @@ async function main() {
       const d = p.dimensions;
       const score =
         (inConcept ? 3 : 0) + (hasSpec ? 2 : 0) + (d ? 1 : 0) + (CATEGORY_PRIORITY[p.category] ?? 0);
+      const found = discovered.get(p.sku);
       return {
         brand: p.brand,
         sku: p.sku,
@@ -83,10 +102,12 @@ async function main() {
         // No source file exists to export from — this is a request, not a
         // conversion. Saying otherwise would put work in a queue that nobody
         // can start.
-        sourceFile: null,
-        sourceFormat: null,
-        status: 'SOURCE_UNAVAILABLE',
-        requiredTool: null,
+        sourceFile: found?.file ?? null,
+        sourceFormat: found?.format ?? null,
+        sourceUrl: found?.url ?? null,
+        status: found ? 'SOURCE_VERIFIED' : 'SOURCE_UNAVAILABLE',
+        // A .max needs Autodesk; nothing in this repository opens one.
+        requiredTool: found?.format === 'MAX' ? 'Autodesk 3ds Max' : null,
         requestedOutput: 'FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu',
         officialDimensionsMm: d
           ? { width: d.width, depth: d.length, height: d.height }
@@ -94,7 +115,8 @@ async function main() {
         dimensionsKnown: Boolean(d),
         usedInPublishedConcept: inConcept,
         hasManufacturerSpecSheet: hasSpec,
-        priority: score,
+        priority: found ? 0 : score,
+        stillNeedsShowroomRequest: !found,
         notes: [
           inConcept ? 'Đang xuất hiện trong concept đã xuất bản.' : null,
           hasSpec ? 'Có thông số chính thức để đối chiếu kích thước.' : 'Chưa có thông số chính thức — cần xin kèm.',
@@ -104,7 +126,10 @@ async function main() {
     })
     .sort((a, b) => b.priority - a.priority || a.brand.localeCompare(b.brand));
 
-  const pilot = queue.slice(0, 15);
+  // Only what still has to be asked for.
+  const needsRequest = queue.filter((q) => q.stillNeedsShowroomRequest);
+  const alreadyFound = queue.filter((q) => !q.stillNeedsShowroomRequest);
+  const pilot = needsRequest.slice(0, 15);
 
   const report = {
     generatedAt: new Date().toISOString(),
@@ -115,7 +140,13 @@ async function main() {
       withManufacturerSpec: queue.filter((q) => q.hasManufacturerSpecSheet).length,
       usedInPublishedConcepts: queue.filter((q) => q.usedInPublishedConcept).length,
       pilotBatchSize: pilot.length,
+      sourceAlreadyPublic: alreadyFound.length,
+      stillNeedsShowroomRequest: needsRequest.length,
     },
+    alreadyDiscovered: alreadyFound.map((q) => ({
+      brand: q.brand, sku: q.sku, sourceFormat: q.sourceFormat,
+      sourceFile: q.sourceFile, sourceUrl: q.sourceUrl, requiredTool: q.requiredTool,
+    })),
     requestedFormats: REQUESTED_FORMATS,
     alsoRequest: ALSO_REQUEST,
     requestMessageVi: REQUEST_MESSAGE_VI,
@@ -126,7 +157,8 @@ async function main() {
   await writeFile(OUT, JSON.stringify(report, null, 2) + '\n', 'utf8');
 
   console.log(`SKU trong catalog          : ${queue.length}`);
-  console.log(`co nguon hinh hoc          : 0`);
+  console.log(`da co nguon chinh hang     : ${alreadyFound.length}`);
+  console.log(`con phai xin showroom      : ${needsRequest.length}`);
   console.log(`co thong so chinh thuc     : ${report.summary.withManufacturerSpec}`);
   console.log(`dang dung trong concept    : ${report.summary.usedInPublishedConcepts}`);
   console.log(`\n=== LO THI DIEM (15 uu tien cao nhat) ===`);

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T18:04:36.950Z",
+  "generatedAt": "2026-10-13T18:23:29.936Z",
   "tenant": "tungdang",
   "tools": {
     "blender": false,
@@ -40,6 +40,19 @@
     "runtimeGlbCount": 1,
     "registeredAssets": 0,
     "readyAssets": 0
+  },
+  "manufacturerDiscovery": {
+    "checkedAt": "2026-10-13T18:19:52Z",
+    "activeCatalogChecked": 8,
+    "activeCatalogWith3dFile": 6,
+    "activeCatalogExactSku": 6,
+    "outsideCatalogChecked": 5,
+    "outsideCatalogWith3dFile": 5,
+    "formats": [
+      "MAX",
+      "IGES",
+      "ARCHIVE"
+    ]
   },
   "runtimeAssets": [
     {

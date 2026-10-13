@@ -1,13 +1,65 @@
 {
-  "generatedAt": "2026-10-13T18:06:56.296Z",
+  "generatedAt": "2026-10-13T18:22:58.725Z",
   "tenant": "tungdang",
   "summary": {
     "catalogSkus": 99,
     "withGeometrySource": 0,
     "withManufacturerSpec": 22,
     "usedInPublishedConcepts": 10,
-    "pilotBatchSize": 15
+    "pilotBatchSize": 15,
+    "sourceAlreadyPublic": 6,
+    "stillNeedsShowroomRequest": 93
   },
+  "alreadyDiscovered": [
+    {
+      "brand": "INAX",
+      "sku": "AC-1008VRN",
+      "sourceFormat": "MAX",
+      "sourceFile": "AC-1008VRN.max",
+      "sourceUrl": "https://app.box.com/s/br6ru4nr1n1ikyoi1hcjgdtwhqxx6iow",
+      "requiredTool": "Autodesk 3ds Max"
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-4005VN",
+      "sourceFormat": "MAX",
+      "sourceFile": "4_-_AC_-_4005VN_-_FN.max",
+      "sourceUrl": "https://app.box.com/s/rcqxfbjkj9ltkrlm5vviy6jjzfokfzf1",
+      "requiredTool": "Autodesk 3ds Max"
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-2700VN",
+      "sourceFormat": "MAX",
+      "sourceFile": "AC-2700VN.max",
+      "sourceUrl": "https://app.box.com/s/g1jb83m9dq97a7174iqv9gvn3by3ybzp",
+      "requiredTool": "Autodesk 3ds Max"
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-1135VN",
+      "sourceFormat": "MAX",
+      "sourceFile": "AC-1135VN.max",
+      "sourceUrl": "https://app.box.com/s/krjrdhfnakzse75m4zrl3cgpp5atut0s",
+      "requiredTool": "Autodesk 3ds Max"
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-1035VN",
+      "sourceFormat": "MAX",
+      "sourceFile": "AC-1035VN.max",
+      "sourceUrl": "https://app.box.com/s/93cn279dbftqfu4y4y0m431zw0mqjhze",
+      "requiredTool": "Autodesk 3ds Max"
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-1017VRN",
+      "sourceFormat": "MAX",
+      "sourceFile": "AC-1017VRN.max",
+      "sourceUrl": "https://app.box.com/s/kkbn2cx6i2h4imdqvbbadivgi4mqbevb",
+      "requiredTool": "Autodesk 3ds Max"
+    }
+  ],
   "requestedFormats": [
     {
       "format": "GLB / GLTF",
@@ -58,6 +110,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12661-1-01k-i011",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -70,6 +123,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": true,
       "priority": 9,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Có thông số chính thức để đối chiếu kích thước."
@@ -83,6 +137,7 @@
       "manufacturerUrl": "https://vn.toto.com/cs769drt8/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -91,6 +146,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": true,
       "priority": 8,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Có thông số chính thức để đối chiếu kích thước.",
@@ -105,6 +161,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-mot-khoi-jomoo-11411-2-231k-1/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -117,6 +174,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": false,
       "priority": 7,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -130,6 +188,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-treo-tuong-jomoo-11413-2-211k/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -142,6 +201,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": false,
       "priority": 7,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -155,6 +215,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/chau-rua-duong-vanh-p12663-1-01z-1",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -167,6 +228,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": false,
       "priority": 7,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -180,6 +242,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12132-1-01z-i011",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -192,6 +255,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": false,
       "priority": 7,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -205,6 +269,7 @@
       "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-23pvn/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -217,6 +282,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 6,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -229,6 +295,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-thong-minh-jomoo-zd6310-sa-ido305/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -237,6 +304,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": false,
       "priority": 6,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm.",
@@ -251,6 +319,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12161-1-01p-i011",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -263,6 +332,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 6,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -275,6 +345,7 @@
       "manufacturerUrl": "https://vn.toto.com/ms636dt8/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -287,18 +358,20 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 6,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
     },
     {
       "brand": "INAX",
-      "sku": "AC-1008VRN",
+      "sku": "AC-1032VN",
       "category": "Bồn cầu",
-      "productName": "Bồn cầu 1 khối INAX AC-1008VRN",
-      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-1008vrn/",
+      "productName": "Bồn cầu 1 khối INAX AC-1032VN",
+      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-1032vn/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -307,6 +380,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 5,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -314,12 +388,61 @@
     },
     {
       "brand": "INAX",
-      "sku": "AC-4005VN",
-      "category": "Bồn cầu",
-      "productName": "Bồn cầu 1 khối INAX AC-4005VN",
-      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-4005vn/",
+      "sku": "LFV-6002S",
+      "category": "Vòi lavabo",
+      "productName": "Vòi Chậu INAX LFV-6002S",
+      "manufacturerUrl": "https://beptungdang.vn/san-pham/voi-chau-inax-lfv-6002s/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
+      "status": "SOURCE_UNAVAILABLE",
+      "requiredTool": null,
+      "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
+      "officialDimensionsMm": null,
+      "dimensionsKnown": false,
+      "usedInPublishedConcept": true,
+      "hasManufacturerSpecSheet": false,
+      "priority": 5,
+      "stillNeedsShowroomRequest": true,
+      "notes": [
+        "Đang xuất hiện trong concept đã xuất bản.",
+        "Chưa có thông số chính thức — cần xin kèm.",
+        "Catalog chưa có kích thước."
+      ]
+    },
+    {
+      "brand": "JOMOO",
+      "sku": "P36412-484/1B-1",
+      "category": "Sen tắm",
+      "productName": "Sen cây nóng lạnh JOMOO P36412-484/1B-1",
+      "manufacturerUrl": "https://beptungdang.vn/san-pham/sen-cay-nong-lanh-jomoo-p36412-484-1b-1/",
+      "sourceFile": null,
+      "sourceFormat": null,
+      "sourceUrl": null,
+      "status": "SOURCE_UNAVAILABLE",
+      "requiredTool": null,
+      "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
+      "officialDimensionsMm": null,
+      "dimensionsKnown": false,
+      "usedInPublishedConcept": true,
+      "hasManufacturerSpecSheet": false,
+      "priority": 5,
+      "stillNeedsShowroomRequest": true,
+      "notes": [
+        "Đang xuất hiện trong concept đã xuất bản.",
+        "Chưa có thông số chính thức — cần xin kèm.",
+        "Catalog chưa có kích thước."
+      ]
+    },
+    {
+      "brand": "TOTO",
+      "sku": "CS838DT10",
+      "category": "Bồn cầu",
+      "productName": "Bồn Cầu TOTO CS838DT10 Nắp Êm TC395VS 2 Khối",
+      "manufacturerUrl": "https://vn.toto.com/cs838dt10/",
+      "sourceFile": null,
+      "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -328,19 +451,21 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 5,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
       ]
     },
     {
-      "brand": "INAX",
-      "sku": "AC-2700VN",
+      "brand": "TOTO",
+      "sku": "MS889DRT8",
       "category": "Bồn cầu",
-      "productName": "Bồn cầu 1 khối INAX AC-2700VN",
-      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-2700vn/",
+      "productName": "Bồn Cầu TOTO MS889DRT8",
+      "manufacturerUrl": "https://vn.toto.com/ms889drt8/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -349,48 +474,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 5,
-      "notes": [
-        "Có thông số chính thức để đối chiếu kích thước.",
-        "Catalog chưa có kích thước."
-      ]
-    },
-    {
-      "brand": "INAX",
-      "sku": "AC-1135VN",
-      "category": "Bồn cầu",
-      "productName": "Bồn cầu 1 khối INAX AC-1135VN",
-      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-1135vn/",
-      "sourceFile": null,
-      "sourceFormat": null,
-      "status": "SOURCE_UNAVAILABLE",
-      "requiredTool": null,
-      "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
-      "officialDimensionsMm": null,
-      "dimensionsKnown": false,
-      "usedInPublishedConcept": false,
-      "hasManufacturerSpecSheet": true,
-      "priority": 5,
-      "notes": [
-        "Có thông số chính thức để đối chiếu kích thước.",
-        "Catalog chưa có kích thước."
-      ]
-    },
-    {
-      "brand": "INAX",
-      "sku": "AC-1035VN",
-      "category": "Bồn cầu",
-      "productName": "Bồn cầu 1 khối INAX AC-1035VN",
-      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-1035vn/",
-      "sourceFile": null,
-      "sourceFormat": null,
-      "status": "SOURCE_UNAVAILABLE",
-      "requiredTool": null,
-      "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
-      "officialDimensionsMm": null,
-      "dimensionsKnown": false,
-      "usedInPublishedConcept": false,
-      "hasManufacturerSpecSheet": true,
-      "priority": 5,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -406,6 +490,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12661-1-01k-i011",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -418,6 +503,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": true,
       "priority": 9,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Có thông số chính thức để đối chiếu kích thước."
@@ -431,6 +517,7 @@
       "manufacturerUrl": "https://vn.toto.com/cs769drt8/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -439,6 +526,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": true,
       "priority": 8,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Có thông số chính thức để đối chiếu kích thước.",
@@ -453,6 +541,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-mot-khoi-jomoo-11411-2-231k-1/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -465,6 +554,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": false,
       "priority": 7,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -478,6 +568,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-treo-tuong-jomoo-11413-2-211k/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -490,6 +581,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": false,
       "priority": 7,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -503,6 +595,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/chau-rua-duong-vanh-p12663-1-01z-1",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -515,6 +608,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": false,
       "priority": 7,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -528,6 +622,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12132-1-01z-i011",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -540,6 +635,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": false,
       "priority": 7,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -553,6 +649,7 @@
       "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-23pvn/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -565,6 +662,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 6,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -577,6 +675,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-thong-minh-jomoo-zd6310-sa-ido305/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -585,6 +684,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": false,
       "priority": 6,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm.",
@@ -599,6 +699,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12161-1-01p-i011",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -611,6 +712,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 6,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -623,6 +725,7 @@
       "manufacturerUrl": "https://vn.toto.com/ms636dt8/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -635,113 +738,9 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 6,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
-      ]
-    },
-    {
-      "brand": "INAX",
-      "sku": "AC-1008VRN",
-      "category": "Bồn cầu",
-      "productName": "Bồn cầu 1 khối INAX AC-1008VRN",
-      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-1008vrn/",
-      "sourceFile": null,
-      "sourceFormat": null,
-      "status": "SOURCE_UNAVAILABLE",
-      "requiredTool": null,
-      "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
-      "officialDimensionsMm": null,
-      "dimensionsKnown": false,
-      "usedInPublishedConcept": false,
-      "hasManufacturerSpecSheet": true,
-      "priority": 5,
-      "notes": [
-        "Có thông số chính thức để đối chiếu kích thước.",
-        "Catalog chưa có kích thước."
-      ]
-    },
-    {
-      "brand": "INAX",
-      "sku": "AC-4005VN",
-      "category": "Bồn cầu",
-      "productName": "Bồn cầu 1 khối INAX AC-4005VN",
-      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-4005vn/",
-      "sourceFile": null,
-      "sourceFormat": null,
-      "status": "SOURCE_UNAVAILABLE",
-      "requiredTool": null,
-      "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
-      "officialDimensionsMm": null,
-      "dimensionsKnown": false,
-      "usedInPublishedConcept": false,
-      "hasManufacturerSpecSheet": true,
-      "priority": 5,
-      "notes": [
-        "Có thông số chính thức để đối chiếu kích thước.",
-        "Catalog chưa có kích thước."
-      ]
-    },
-    {
-      "brand": "INAX",
-      "sku": "AC-2700VN",
-      "category": "Bồn cầu",
-      "productName": "Bồn cầu 1 khối INAX AC-2700VN",
-      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-2700vn/",
-      "sourceFile": null,
-      "sourceFormat": null,
-      "status": "SOURCE_UNAVAILABLE",
-      "requiredTool": null,
-      "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
-      "officialDimensionsMm": null,
-      "dimensionsKnown": false,
-      "usedInPublishedConcept": false,
-      "hasManufacturerSpecSheet": true,
-      "priority": 5,
-      "notes": [
-        "Có thông số chính thức để đối chiếu kích thước.",
-        "Catalog chưa có kích thước."
-      ]
-    },
-    {
-      "brand": "INAX",
-      "sku": "AC-1135VN",
-      "category": "Bồn cầu",
-      "productName": "Bồn cầu 1 khối INAX AC-1135VN",
-      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-1135vn/",
-      "sourceFile": null,
-      "sourceFormat": null,
-      "status": "SOURCE_UNAVAILABLE",
-      "requiredTool": null,
-      "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
-      "officialDimensionsMm": null,
-      "dimensionsKnown": false,
-      "usedInPublishedConcept": false,
-      "hasManufacturerSpecSheet": true,
-      "priority": 5,
-      "notes": [
-        "Có thông số chính thức để đối chiếu kích thước.",
-        "Catalog chưa có kích thước."
-      ]
-    },
-    {
-      "brand": "INAX",
-      "sku": "AC-1035VN",
-      "category": "Bồn cầu",
-      "productName": "Bồn cầu 1 khối INAX AC-1035VN",
-      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-1035vn/",
-      "sourceFile": null,
-      "sourceFormat": null,
-      "status": "SOURCE_UNAVAILABLE",
-      "requiredTool": null,
-      "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
-      "officialDimensionsMm": null,
-      "dimensionsKnown": false,
-      "usedInPublishedConcept": false,
-      "hasManufacturerSpecSheet": true,
-      "priority": 5,
-      "notes": [
-        "Có thông số chính thức để đối chiếu kích thước.",
-        "Catalog chưa có kích thước."
       ]
     },
     {
@@ -752,6 +751,7 @@
       "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-1032vn/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -760,27 +760,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 5,
-      "notes": [
-        "Có thông số chính thức để đối chiếu kích thước.",
-        "Catalog chưa có kích thước."
-      ]
-    },
-    {
-      "brand": "INAX",
-      "sku": "AC-1017VRN",
-      "category": "Bồn cầu",
-      "productName": "Bồn cầu 1 khối INAX AC-1017VRN",
-      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-1017vrn/",
-      "sourceFile": null,
-      "sourceFormat": null,
-      "status": "SOURCE_UNAVAILABLE",
-      "requiredTool": null,
-      "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
-      "officialDimensionsMm": null,
-      "dimensionsKnown": false,
-      "usedInPublishedConcept": false,
-      "hasManufacturerSpecSheet": true,
-      "priority": 5,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -794,6 +774,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/voi-chau-inax-lfv-6002s/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -802,6 +783,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": false,
       "priority": 5,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm.",
@@ -816,6 +798,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/sen-cay-nong-lanh-jomoo-p36412-484-1b-1/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -824,6 +807,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": false,
       "priority": 5,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm.",
@@ -838,6 +822,7 @@
       "manufacturerUrl": "https://vn.toto.com/cs838dt10/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -846,6 +831,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 5,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -859,6 +845,7 @@
       "manufacturerUrl": "https://vn.toto.com/ms889drt8/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -867,6 +854,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 5,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -880,6 +868,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-tam-viglacera-platinum-p-61-320/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -892,6 +881,7 @@
       "usedInPublishedConcept": true,
       "hasManufacturerSpecSheet": false,
       "priority": 5,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -905,6 +895,7 @@
       "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-900vrn-2/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -917,6 +908,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -929,6 +921,7 @@
       "manufacturerUrl": "https://www.inax.com.vn/products/bathroom-faucet/lfv-112sh/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -937,6 +930,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -950,6 +944,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-thong-minh-jomoo-zd7202-so-cjm305/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -962,6 +957,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -974,6 +970,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-thong-minh-jomoo-zd7300-s2-ido305/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -986,6 +983,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -998,6 +996,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-thong-minh-jomoo-zd8610-sa-ido305/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1010,6 +1009,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1022,6 +1022,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-mot-khoi-jomoo-11369-2-231ka/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1034,6 +1035,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1046,6 +1048,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/ban-cau-mot-khoi-11416-2-2-31k-i011",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1058,6 +1061,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1070,6 +1074,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-mot-khoi-jomoo-11246-2-231z/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1082,6 +1087,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1094,6 +1100,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/above-counter-sink-12138-101z-i011",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1106,6 +1113,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1118,6 +1126,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/chau-rua-duong-vanh-12409-1-11z-i011",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1130,6 +1139,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1142,6 +1152,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/chau-rua-mat-am-ban-jomoo-1296-1-01z/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1154,6 +1165,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1166,6 +1178,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/chau-rua-mat-am-ban-jomoo-1293-1-01z/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1178,6 +1191,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1190,6 +1204,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/chau-rua-mat-lavabo-am-ban-jomoo-12145-1-01z/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1202,6 +1217,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1214,6 +1230,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12703-1-01p-i011",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1226,6 +1243,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1238,6 +1256,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/sen-cay-tu-dong-tay-can-kem-voi-xit-36473-463-hbs-1",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1246,6 +1265,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -1259,6 +1279,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/sen-cay-chong-bong-36457-592-hbs-1",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1267,6 +1288,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -1280,6 +1302,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/sen-cay-on-nhiet-tu-dong-tay-can-kem-voi-xit-26163-644-1b-i011",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1288,6 +1311,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -1301,6 +1325,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-dien-tu-toto-ms366w14-washlet/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1313,6 +1338,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1325,6 +1351,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-neorest-toto-cs900kvtnw1-t53p100vr-nx-i-thong-minh/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1337,6 +1364,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1349,6 +1377,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/ban-cau-toto-ms688t2-mot-khoi-nap-tc393vs/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1361,6 +1390,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1373,6 +1403,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/chau-rua-mat-lavabo-toto-lt4715mtg17cmw/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1385,6 +1416,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1397,6 +1429,7 @@
       "manufacturerUrl": "https://vn.toto.com/pay1725vc-tvbf411/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1409,6 +1442,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -1421,6 +1455,7 @@
       "manufacturerUrl": "https://vn.toto.com/pay1720hv-tvbf411/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1433,6 +1468,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -1445,6 +1481,7 @@
       "manufacturerUrl": "https://vn.toto.com/pay1735hvc-tvbf411/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1457,6 +1494,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -1469,6 +1507,7 @@
       "manufacturerUrl": "https://vn.toto.com/pjyd2200pwegw/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1481,6 +1520,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": true,
       "priority": 4,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -1493,6 +1533,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-mot-khoi-huge-h-bc268/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1501,6 +1542,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1514,6 +1556,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-1-khoi-inax-ac-918vrn/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1522,6 +1565,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1535,6 +1579,7 @@
       "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-912vn/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1543,6 +1588,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1556,6 +1602,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-1-khoi-inax-ac-909vrn-1/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1564,6 +1611,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1577,6 +1625,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-inax-ac-909vrn/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1585,6 +1634,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1598,6 +1648,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-thong-minh-jomoo-zd7220-sa-cjm305/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1606,6 +1657,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1619,6 +1671,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/smart-toilet-zd8920-sa-cjm305",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1627,6 +1680,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1640,6 +1694,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-mot-khoi-nap-rua-co-jomoo-11213-2-1-31z-i011/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1648,6 +1703,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1661,6 +1717,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/chau-rua-dat-ban-p12679-1-11z-1",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1669,6 +1726,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1682,6 +1740,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/chau-rua-duong-vanh-12497-1-11z-i011",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1690,6 +1749,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1703,6 +1763,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/wall-mounted-sink-p12748-111p-1",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1711,6 +1772,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1724,6 +1786,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/chau-rua-mat-am-ban-da-jomoo-p12702-1-01k-2/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1732,6 +1795,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1745,6 +1809,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/chau-rua-am-ban-12683-1-01k-i011",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1753,6 +1818,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1766,6 +1832,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bo-tu-chau-mowoen-mw6808s-60/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1774,6 +1841,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1787,6 +1855,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-toto-cw553-tcf34320gaa-wh172at-mb174p-ss-nap-dien-tu-treo-tuong/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1795,6 +1864,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1808,6 +1878,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-thong-minh-toto-cs911vt-tcf87120gaa-t53p100vr-neorest-ls/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1816,6 +1887,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1829,6 +1901,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-thong-minh-toto-cs921vt-tcf83410gaa-t53p100vr-neorest-rs/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1837,6 +1910,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1850,6 +1924,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/than-bon-cau-toto-cw822ra-tcf23410aaa-wh172a-nap-dien-tu-treo-tuong/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1858,6 +1933,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1871,6 +1947,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-dien-tu-toto-cs838dw11-nap-rua-washlet/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1879,6 +1956,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1892,6 +1970,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-dien-tu-toto-ms855cdw12-nap-tu-dong-dong-mo/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1900,6 +1979,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1913,6 +1993,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-dien-tu-toto-cs767crw15-washlet/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1921,6 +2002,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1934,6 +2016,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-dien-tu-toto-ms855dw7-nap-rua-washlet/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1942,6 +2025,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1955,6 +2039,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-cau-toto-ms885dt3/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1963,6 +2048,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 3,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1976,6 +2062,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-tam-american-standard-dat-san-70280-wt/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -1988,6 +2075,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -2000,6 +2088,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-tam-xay-caesar-at7135/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2012,6 +2101,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -2024,6 +2114,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-tam-chan-yem-1-5m-caesar-at3350l-r/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2036,6 +2127,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -2048,6 +2140,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-tam-caesar-mt5165-massage/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2060,6 +2153,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -2072,6 +2166,7 @@
       "manufacturerUrl": "https://www.inax.com.vn/products/bathroom-faucet/lfv-502sh/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2080,6 +2175,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2093,6 +2189,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/voi-chau-inax-lfv-1001s/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2101,6 +2198,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2114,6 +2212,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/voi-chau-nuoc-lanh-inax-lf-14-13/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2122,6 +2221,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2135,6 +2235,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/voi-chau-inax-lf-12-13/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2143,6 +2244,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2156,6 +2258,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/sen-tam-am-tuong-nong-lanh-mau-den-jomoo-37311-636-dbc-1/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2164,6 +2267,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2177,6 +2281,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/sen-tam-35279-477-1b-i011",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2185,6 +2290,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2198,6 +2304,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/sen-cay-nong-lanh-jomoo-36619-146-1c-i011/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2206,6 +2313,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2219,6 +2327,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/sen-cay-p36411-484-1b-1",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2227,6 +2336,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2240,6 +2350,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/sen-cay-nong-lanh-jomoo-36558-576-1b-i011/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2248,6 +2359,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2261,6 +2373,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/sen-cay-36437-477-1b-i011",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2269,6 +2382,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2282,6 +2396,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/sen-cay-tam-nong-lanh-jomoo-36473-463-1b-1/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2290,6 +2405,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2303,6 +2419,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/sen-cay-tam-nong-lanh-jomoo-26135-531-1b-1/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2311,6 +2428,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2324,6 +2442,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/sen-cay-nong-lanh-jomoo-36510-122-1b-1/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2332,6 +2451,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2345,6 +2465,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/sen-cay-tam-nong-lanh-jomoo-26140-533-1b-1/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2353,6 +2474,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2366,6 +2488,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/sen-cay-tam-nhiet-do-jomoo-26178-624-1b-1/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2374,6 +2497,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2387,6 +2511,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/sen-cay-tam-nhiet-do-jomoo-26161-624-1b-1/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2395,6 +2520,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2408,6 +2534,7 @@
       "manufacturerUrl": "https://jomoo.vn/products/sen-cay-on-nhiet-26161-624-hb-1",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2416,6 +2543,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2429,6 +2557,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/sen-tam-am-tuong-nong-lanh-jomoo-p37271-240-1b/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2437,6 +2566,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2450,6 +2580,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/sen-tam-am-tuong-nong-lanh-jomoo-p37272-445-1b-1/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2458,6 +2589,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2471,6 +2603,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/sen-tam-am-tuong-nong-lanh-jomoo-37311-636-1b-1/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2479,6 +2612,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2492,6 +2626,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-tam-mowoen-mw8305b-180-ms/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2504,6 +2639,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -2516,6 +2652,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-tam-mowoen-mw8305b-170-ms/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2528,6 +2665,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -2540,6 +2678,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-tam-toto-ppy1560hpep-tvbf411/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2552,6 +2691,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -2564,6 +2704,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/bon-tam-toto-pay1780d-db501r-2b-xay-1-7m/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2576,6 +2717,7 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 2,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -2588,6 +2730,7 @@
       "manufacturerUrl": "https://beptungdang.vn/san-pham/1114/",
       "sourceFile": null,
       "sourceFormat": null,
+      "sourceUrl": null,
       "status": "SOURCE_UNAVAILABLE",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
@@ -2596,8 +2739,147 @@
       "usedInPublishedConcept": false,
       "hasManufacturerSpecSheet": false,
       "priority": 1,
+      "stillNeedsShowroomRequest": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
+        "Catalog chưa có kích thước."
+      ]
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-1008VRN",
+      "category": "Bồn cầu",
+      "productName": "Bồn cầu 1 khối INAX AC-1008VRN",
+      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-1008vrn/",
+      "sourceFile": "AC-1008VRN.max",
+      "sourceFormat": "MAX",
+      "sourceUrl": "https://app.box.com/s/br6ru4nr1n1ikyoi1hcjgdtwhqxx6iow",
+      "status": "SOURCE_VERIFIED",
+      "requiredTool": "Autodesk 3ds Max",
+      "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
+      "officialDimensionsMm": null,
+      "dimensionsKnown": false,
+      "usedInPublishedConcept": false,
+      "hasManufacturerSpecSheet": true,
+      "priority": 0,
+      "stillNeedsShowroomRequest": false,
+      "notes": [
+        "Có thông số chính thức để đối chiếu kích thước.",
+        "Catalog chưa có kích thước."
+      ]
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-4005VN",
+      "category": "Bồn cầu",
+      "productName": "Bồn cầu 1 khối INAX AC-4005VN",
+      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-4005vn/",
+      "sourceFile": "4_-_AC_-_4005VN_-_FN.max",
+      "sourceFormat": "MAX",
+      "sourceUrl": "https://app.box.com/s/rcqxfbjkj9ltkrlm5vviy6jjzfokfzf1",
+      "status": "SOURCE_VERIFIED",
+      "requiredTool": "Autodesk 3ds Max",
+      "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
+      "officialDimensionsMm": null,
+      "dimensionsKnown": false,
+      "usedInPublishedConcept": false,
+      "hasManufacturerSpecSheet": true,
+      "priority": 0,
+      "stillNeedsShowroomRequest": false,
+      "notes": [
+        "Có thông số chính thức để đối chiếu kích thước.",
+        "Catalog chưa có kích thước."
+      ]
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-2700VN",
+      "category": "Bồn cầu",
+      "productName": "Bồn cầu 1 khối INAX AC-2700VN",
+      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-2700vn/",
+      "sourceFile": "AC-2700VN.max",
+      "sourceFormat": "MAX",
+      "sourceUrl": "https://app.box.com/s/g1jb83m9dq97a7174iqv9gvn3by3ybzp",
+      "status": "SOURCE_VERIFIED",
+      "requiredTool": "Autodesk 3ds Max",
+      "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
+      "officialDimensionsMm": null,
+      "dimensionsKnown": false,
+      "usedInPublishedConcept": false,
+      "hasManufacturerSpecSheet": true,
+      "priority": 0,
+      "stillNeedsShowroomRequest": false,
+      "notes": [
+        "Có thông số chính thức để đối chiếu kích thước.",
+        "Catalog chưa có kích thước."
+      ]
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-1135VN",
+      "category": "Bồn cầu",
+      "productName": "Bồn cầu 1 khối INAX AC-1135VN",
+      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-1135vn/",
+      "sourceFile": "AC-1135VN.max",
+      "sourceFormat": "MAX",
+      "sourceUrl": "https://app.box.com/s/krjrdhfnakzse75m4zrl3cgpp5atut0s",
+      "status": "SOURCE_VERIFIED",
+      "requiredTool": "Autodesk 3ds Max",
+      "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
+      "officialDimensionsMm": null,
+      "dimensionsKnown": false,
+      "usedInPublishedConcept": false,
+      "hasManufacturerSpecSheet": true,
+      "priority": 0,
+      "stillNeedsShowroomRequest": false,
+      "notes": [
+        "Có thông số chính thức để đối chiếu kích thước.",
+        "Catalog chưa có kích thước."
+      ]
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-1035VN",
+      "category": "Bồn cầu",
+      "productName": "Bồn cầu 1 khối INAX AC-1035VN",
+      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-1035vn/",
+      "sourceFile": "AC-1035VN.max",
+      "sourceFormat": "MAX",
+      "sourceUrl": "https://app.box.com/s/93cn279dbftqfu4y4y0m431zw0mqjhze",
+      "status": "SOURCE_VERIFIED",
+      "requiredTool": "Autodesk 3ds Max",
+      "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
+      "officialDimensionsMm": null,
+      "dimensionsKnown": false,
+      "usedInPublishedConcept": false,
+      "hasManufacturerSpecSheet": true,
+      "priority": 0,
+      "stillNeedsShowroomRequest": false,
+      "notes": [
+        "Có thông số chính thức để đối chiếu kích thước.",
+        "Catalog chưa có kích thước."
+      ]
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-1017VRN",
+      "category": "Bồn cầu",
+      "productName": "Bồn cầu 1 khối INAX AC-1017VRN",
+      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-1017vrn/",
+      "sourceFile": "AC-1017VRN.max",
+      "sourceFormat": "MAX",
+      "sourceUrl": "https://app.box.com/s/kkbn2cx6i2h4imdqvbbadivgi4mqbevb",
+      "status": "SOURCE_VERIFIED",
+      "requiredTool": "Autodesk 3ds Max",
+      "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
+      "officialDimensionsMm": null,
+      "dimensionsKnown": false,
+      "usedInPublishedConcept": false,
+      "hasManufacturerSpecSheet": true,
+      "priority": 0,
+      "stillNeedsShowroomRequest": false,
+      "notes": [
+        "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
       ]
     }

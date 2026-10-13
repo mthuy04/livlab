@@ -256,6 +256,29 @@ async function main() {
   }
 
   const withGeometry = products.filter((p) => p.geometrySourceCount > 0);
+
+  // §22: the enrichment count and what the manufacturer actually publishes are
+  // different numbers and are never added together. Enrichment says what this
+  // repository has captured; discovery says what is on the manufacturer's own
+  // page. They differed by six, and the gap was a missing file host.
+  let discovery = null;
+  try {
+    const d = JSON.parse(await readFile(path.join(ROOT, 'data/demo/manufacturer-3d-source-audit.json'), 'utf8'));
+    const exact = (entry) =>
+      (entry.rows ?? []).filter((r) => r.sectionType === 'THREE_D' && r.present && r.exactness === 'EXACT_COMMERCIAL_SKU');
+    const anyFile = (entry) => (entry.rows ?? []).filter((r) => r.sectionType === 'THREE_D' && r.present);
+    discovery = {
+      checkedAt: d.generatedAt,
+      activeCatalogChecked: (d.activeCatalog ?? []).length,
+      activeCatalogWith3dFile: (d.activeCatalog ?? []).filter((e) => anyFile(e).length).length,
+      activeCatalogExactSku: (d.activeCatalog ?? []).filter((e) => exact(e).length).length,
+      outsideCatalogChecked: (d.parserQa ?? []).length,
+      outsideCatalogWith3dFile: (d.parserQa ?? []).filter((e) => anyFile(e).length).length,
+      formats: [...new Set([...(d.activeCatalog ?? []), ...(d.parserQa ?? [])].flatMap((e) => anyFile(e).map((r) => r.actualFormat)))],
+    };
+  } catch {
+    discovery = null;
+  }
   const report = {
     generatedAt: new Date().toISOString(),
     tenant: 'tungdang',
@@ -274,6 +297,7 @@ async function main() {
       registeredAssets: 0,
       readyAssets: 0,
     },
+    manufacturerDiscovery: discovery,
     runtimeAssets,
     products,
   };
@@ -286,7 +310,15 @@ async function main() {
   console.log(`co nguon hinh hoc 3D         : ${withGeometry.length}`);
   console.log(`co thong so ky thuat         : ${report.summary.productsWithTechnicalSpec}`);
   console.log(`dinh dang file tu hang       : ${JSON.stringify(formatTally)}`);
-  console.log(`GLB trong public/            : ${runtimeAssets.length}`);
+  if (discovery) {
+    console.log(`\n--- phat hien tren trang hang (khac voi enrichment) ---`);
+    console.log(`SKU catalog da kiem tra      : ${discovery.activeCatalogChecked}`);
+    console.log(`  co file 3D                 : ${discovery.activeCatalogWith3dFile}`);
+    console.log(`  khop chinh xac SKU         : ${discovery.activeCatalogExactSku}`);
+    console.log(`SKU ngoai catalog (QA parser): ${discovery.outsideCatalogChecked} -> ${discovery.outsideCatalogWith3dFile} co file`);
+    console.log(`dinh dang that               : ${discovery.formats.join(', ')}`);
+  }
+  console.log(`\nGLB trong public/            : ${runtimeAssets.length}`);
   for (const a of runtimeAssets) {
     const mb = (a.fileSizeBytes / 1_048_576).toFixed(1);
     console.log(`  ${a.path}  ${mb}MB  tris=${a.triangleCount ?? '?'}  mats=${a.materialCount ?? '?'}  texs=${a.textureCount ?? '?'}`);
