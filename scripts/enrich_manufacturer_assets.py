@@ -493,10 +493,21 @@ def document_is_product_specific(href, sku, section_label):
         return True, 'PRODUCT_PAGE_SECTION'
     return False, 'NO_PRODUCT_EVIDENCE'
 
+# Hosts that serve a file behind a share link, plus the extensions that name a
+# file directly.
+#
+# `app.box.com` was missing, and that single omission is why this enrichment
+# reported no 3D sources at all. INAX publishes its 3D Max files on Box with
+# extensionless share URLs — `app.box.com/s/br6ru4nr1n1ikyoi1hcjgdtwhqxx6iow`
+# — so neither the host nor the path matched, the link was skipped before it
+# was ever classified, and six active SKUs looked like they had nothing. The
+# `THREE_D` label and the `.max` extension were both already here; the link
+# just never reached them.
 DOC_HREF = re.compile(
-    r'(drive\.google|docs\.google|dropbox\.com|'
+    r'(drive\.google|docs\.google|dropbox\.com|box\.com|'
     r'(?:\.pdf|\.dwg|\.dxf|\.dwf|\.zip|\.rar|\.7z|\.max|\.3ds|\.skp|\.obj|\.fbx|'
-    r'\.glb|\.gltf|\.stl|\.rvt|\.ifc|\.xlsx?|\.docx?)(?:$|[?#]))', re.I)
+    r'\.igs|\.iges|\.step|\.stp|'
+    r'\.glb|\.gltf|\.stl|\.rvt|\.rfa|\.ifc|\.xlsx?|\.docx?)(?:$|[?#]))', re.I)
 
 
 def extract_files(html, sku):
