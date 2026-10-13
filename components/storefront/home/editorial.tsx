@@ -10,10 +10,12 @@ import type { ReactNode } from 'react';
  */
 
 export const BG_SOFT = '#F7F7F5';
-export const STAGE = '#F6F6F4';
-export const DIVIDER = '#E5E5E5';
+export const STAGE = '#F7F7F5';
+export const DIVIDER = '#E4E4E1';
 export const TEXT = '#262626';
-export const TEXT_MUTED = '#666666';
+export const TEXT_MUTED = '#686868';
+/** For counts, SKUs and anything that must recede behind the product. */
+export const TEXT_FAINT = '#929292';
 
 /** Section title on the left, "xem tất cả" on the right. */
 export function SectionHeader({ title, href }: { title: string; href?: Route | string }) {

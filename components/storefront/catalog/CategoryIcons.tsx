@@ -5,7 +5,9 @@ import type { SVGProps } from 'react';
  *
  * The project's icon library has no sanitaryware, and the source site's icons
  * are its own artwork — so these are original outlines sharing one geometry:
- * a 24-unit box, 1.5px stroke, round joins, no fill.
+ * a 24-unit viewBox, 1.4px stroke, round joins, no fill. Every drawing sits
+ * inside roughly the same optical square so a tap target never looks heavier
+ * than its neighbour.
  */
 
 type IconProps = SVGProps<SVGSVGElement>;
@@ -14,7 +16,7 @@ const base = (props: IconProps) => ({
   viewBox: '0 0 24 24',
   fill: 'none',
   stroke: 'currentColor',
-  strokeWidth: 1.5,
+  strokeWidth: 1.4,
   strokeLinecap: 'round' as const,
   strokeLinejoin: 'round' as const,
   'aria-hidden': true,

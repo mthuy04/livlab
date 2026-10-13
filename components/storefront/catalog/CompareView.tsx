@@ -1,12 +1,12 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import type { Route } from 'next';
 import type { CatalogProduct } from '@/lib/storefront/catalogTypes';
 import { AVAILABILITY_LABEL } from '@/lib/storefront/catalogTypes';
 import { formatVnd } from './CatalogProductCard';
-import { TEXT, TEXT_MUTED, STAGE } from '@/components/storefront/home/editorial';
+import { TEXT, TEXT_MUTED, TEXT_FAINT, STAGE } from '@/components/storefront/home/editorial';
 
 /**
  * Side-by-side comparison, grouped rather than one endless table.
@@ -21,10 +21,9 @@ import { TEXT, TEXT_MUTED, STAGE } from '@/components/storefront/home/editorial'
  * each product's list price against the showroom's. Never another showroom.
  */
 
-const BORDER = '#E7E7E5';
-const GROUP_BG = '#F5F5F3';
-const DIFF_BG = '#F4F7F8';
-const ZEBRA = '#FCFCFB';
+const BORDER = '#ECECEA';
+/** Barely there: enough to find a difference, not enough to shout about it. */
+const DIFF_BG = '#F8FAFB';
 
 type Row = { key: string; label: string; value: (p: CatalogProduct) => string | null };
 
@@ -96,6 +95,25 @@ const EXPERIENCE: Row[] = [
 
 export default function CompareView({ products }: { products: CatalogProduct[] }) {
   const [differencesOnly, setDifferencesOnly] = useState(false);
+  const [headerPassed, setHeaderPassed] = useState(false);
+  const headerRef = useRef<HTMLDivElement>(null);
+
+  /**
+   * The product header cannot be sticky itself: it lives inside the table's
+   * horizontal scroll container, and a horizontal scroll container is a
+   * scroll container on both axes, so `position: sticky` has nothing to stick
+   * to. A compact bar outside it takes over once the header scrolls away.
+   */
+  useEffect(() => {
+    const node = headerRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setHeaderPassed(entry.boundingClientRect.bottom < 120 && !entry.isIntersecting),
+      { rootMargin: '-120px 0px 0px 0px', threshold: 0 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   const category = products[0]?.category ?? '';
 
@@ -152,53 +170,82 @@ export default function CompareView({ products }: { products: CatalogProduct[] }
 
   return (
     <>
-      <section className="home-container pb-9 pt-8">
+      <section className="home-container" style={{ paddingTop: 32, paddingBottom: 32 }}>
         <nav aria-label="Breadcrumb">
-          <ol className="flex items-center gap-2" style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.12em', color: '#777777' }}>
+          <ol className="flex items-center gap-2" style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.12em', color: TEXT_FAINT }}>
             <li><Link href={'/' as Route} className="transition-opacity hover:opacity-60">TRANG CHỦ</Link></li>
             <li aria-hidden="true">/</li>
             <li aria-current="page" style={{ color: TEXT }}>SO SÁNH</li>
           </ol>
         </nav>
 
-        <div className="mt-6 flex flex-wrap items-end justify-between gap-6">
+        <div className="mt-5 flex flex-wrap items-end justify-between gap-x-10 gap-y-4">
           <div>
-            <h1 style={{ fontSize: 'clamp(28px, 1.4rem + 1vw, 36px)', fontWeight: 500, color: TEXT }}>
+            <h1 style={{ fontSize: 'clamp(26px, 1.3rem + 1vw, 34px)', fontWeight: 500, color: TEXT }}>
               So sánh sản phẩm
             </h1>
-            <p className="mt-3" style={{ fontSize: 15, color: TEXT_MUTED }}>
+            <p style={{ marginTop: 10, fontSize: 15, color: TEXT_MUTED }}>
               Đối chiếu giá, kích thước và thông số quan trọng trước khi lựa chọn.
             </p>
           </div>
 
-          <label className="flex shrink-0 cursor-pointer items-center gap-3" style={{ fontSize: 13, color: TEXT }}>
+          <label className="flex shrink-0 cursor-pointer items-center gap-2.5 pb-1" style={{ fontSize: 13, color: TEXT }}>
             <input
               type="checkbox"
               checked={differencesOnly}
               onChange={(e) => setDifferencesOnly(e.target.checked)}
-              className="h-4 w-4 accent-[color:var(--tenant-accent)]"
+              className="h-[14px] w-[14px] accent-[color:var(--tenant-accent)]"
+              style={{ borderRadius: 0 }}
             />
             Chỉ hiển thị điểm khác biệt
           </label>
         </div>
       </section>
 
+      {/* Compact identity bar: keeps the products named while the table scrolls. */}
+      {headerPassed && (
+      <div
+        className="sticky top-[74px] z-30 hidden bg-white md:block"
+        style={{ borderBottom: `1px solid ${BORDER}` }}
+      >
+        <div className="home-container">
+          <div className="grid items-center" style={{ gridTemplateColumns: columns, height: 86 }}>
+            <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.10em', color: TEXT_FAINT }}>THÔNG SỐ</p>
+            {products.map((p) => (
+              <div key={p.id} className="flex items-center gap-3 px-6 py-3" style={{ borderLeft: `1px solid ${BORDER}` }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={p.image} alt="" className="shrink-0 object-contain" style={{ width: 48, height: 48, backgroundColor: STAGE }} />
+                <span className="min-w-0">
+                  <span className="block truncate" style={{ fontSize: 13, fontWeight: 500, color: TEXT }}>{p.name}</span>
+                  {p.showroomPrice && (
+                    <span className="block" style={{ fontSize: 13, fontWeight: 600, color: TEXT }}>
+                      {formatVnd(p.showroomPrice)}
+                    </span>
+                  )}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      )}
+
       <section className="home-container pb-24">
         <div className="no-scrollbar overflow-x-auto">
           <div className="min-w-[760px]">
-            {/* Product header, sticky under the 74px storefront header. */}
-            <div className="sticky top-[74px] z-20 grid bg-white" style={{ gridTemplateColumns: columns }}>
+            {/* The full product header; the compact bar above mirrors it. */}
+            <div ref={headerRef} className="grid bg-white" style={{ gridTemplateColumns: columns }}>
               <div style={{ borderBottom: `1px solid ${BORDER}` }} />
               {products.map((p) => (
-                <div key={p.id} className="px-6 pb-6 pt-4" style={{ borderBottom: `1px solid ${BORDER}`, borderLeft: `1px solid ${BORDER}` }}>
+                <div key={p.id} className="px-6 pb-5 pt-2" style={{ borderBottom: `1px solid ${BORDER}`, borderLeft: `1px solid ${BORDER}` }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={p.image}
                     alt={p.name}
-                    className="w-full object-contain p-6"
-                    style={{ height: 230, backgroundColor: STAGE }}
+                    className="w-full object-contain"
+                    style={{ height: 190, padding: '7%', backgroundColor: STAGE }}
                   />
-                  <p className="mt-5" style={{ fontSize: 10, fontWeight: 600, letterSpacing: '.11em', color: '#777777' }}>
+                  <p className="mt-4" style={{ fontSize: 10, fontWeight: 600, letterSpacing: '.10em', color: '#808080' }}>
                     {p.brand.toUpperCase()}
                   </p>
                   <h2 className="mt-2">
@@ -206,28 +253,29 @@ export default function CompareView({ products }: { products: CatalogProduct[] }
                       {p.name}
                     </Link>
                   </h2>
-                  {p.sku && <p className="mt-2" style={{ fontSize: 12, color: '#888888' }}>{p.sku}</p>}
+                  {p.sku && <p className="mt-2" style={{ fontSize: 11.5, color: '#8B8B8B' }}>{p.sku}</p>}
 
-                  {p.showroomPrice && (
-                    <p className="mt-4 flex flex-wrap items-baseline gap-2" style={{ fontSize: 17, fontWeight: 600, color: TEXT }}>
-                      {formatVnd(p.showroomPrice)}
-                      {lowestPrice !== null && p.showroomPrice === lowestPrice && (
-                        <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.06em', color: 'var(--tenant-accent)' }}>
-                          Thấp nhất
-                        </span>
-                      )}
+                  <div className="mt-4 flex flex-wrap items-baseline gap-x-3">
+                    {p.showroomPrice && (
+                      <span style={{ fontSize: 17, fontWeight: 600, color: TEXT }}>{formatVnd(p.showroomPrice)}</span>
+                    )}
+                    {p.referencePrice && (
+                      <span style={{ fontSize: 12, color: '#999999', textDecoration: 'line-through' }}>
+                        {formatVnd(p.referencePrice)}
+                      </span>
+                    )}
+                  </div>
+                  {/* A caption, not a badge — and only when it says something. */}
+                  {lowestPrice !== null && p.showroomPrice === lowestPrice && (
+                    <p className="mt-1.5" style={{ fontSize: 11, color: 'var(--tenant-accent)' }}>
+                      Giá thấp hơn trong nhóm so sánh
                     </p>
                   )}
-                  {p.referencePrice && (
-                    <p className="mt-1" style={{ fontSize: 12, color: '#999999', textDecoration: 'line-through' }}>
-                      {formatVnd(p.referencePrice)}
-                    </p>
-                  )}
 
-                  <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2" style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.06em' }}>
+                  <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2" style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.07em' }}>
                     <Link href={p.href as Route} style={{ color: TEXT }}>XEM CHI TIẾT →</Link>
                     {p.roomStudioReady && (
-                      <Link href={'/room-studio' as Route} style={{ color: 'var(--tenant-accent)' }}>THỬ TRONG PHÒNG</Link>
+                      <Link href={'/room-studio' as Route} style={{ color: 'var(--tenant-accent)' }}>THỬ TRONG PHÒNG →</Link>
                     )}
                   </div>
                 </div>
@@ -236,23 +284,22 @@ export default function CompareView({ products }: { products: CatalogProduct[] }
 
             {groups.map((group) => (
               <div key={group.title}>
-                <div className="grid" style={{ gridTemplateColumns: columns, backgroundColor: GROUP_BG, borderBottom: '1px solid #D9D9D7' }}>
-                  <div className="px-4 py-3.5" style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.10em', color: TEXT }}>
+                <div style={{ paddingTop: 28, paddingBottom: 10, borderBottom: `1px solid ${BORDER}` }}>
+                  <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.10em', color: 'var(--tenant-accent)' }}>
                     {group.title}
-                  </div>
-                  {products.map((p) => <div key={p.id} />)}
+                  </p>
                 </div>
 
-                {group.rows.map((row, rowIndex) => {
+                {group.rows.map((row) => {
                   const values = products.map((p) => row.value(p));
                   const differs = new Set(values.map((v) => String(v))).size > 1;
                   return (
                     <div
                       key={row.key}
-                      className="grid"
-                      style={{ gridTemplateColumns: columns, borderBottom: `1px solid ${BORDER}`, backgroundColor: rowIndex % 2 === 1 ? ZEBRA : undefined }}
+                      className="grid bg-white"
+                      style={{ gridTemplateColumns: columns, borderBottom: `1px solid ${BORDER}` }}
                     >
-                      <div className="flex min-h-[60px] items-center px-4 py-3" style={{ fontSize: 13, color: TEXT_MUTED }}>
+                      <div className="flex min-h-[56px] items-center px-4 py-3" style={{ fontSize: 13, color: '#737373' }}>
                         {row.label}
                       </div>
                       {products.map((p, index) => {
@@ -260,12 +307,17 @@ export default function CompareView({ products }: { products: CatalogProduct[] }
                         return (
                           <div
                             key={p.id}
-                            className="flex min-h-[60px] items-center px-6 py-3"
+                            className="flex min-h-[56px] items-center py-3"
                             style={{
-                              borderLeft: `1px solid ${BORDER}`,
-                              fontSize: 14,
-                              color: value ? TEXT : '#999999',
+                              paddingInline: 24,
+                              // A 3px rule and a little weight, rather than a
+                              // block of colour across the row.
+                              borderLeft: differs ? '3px solid var(--tenant-accent)' : `1px solid ${BORDER}`,
+                              paddingLeft: differs ? 22 : 24,
                               backgroundColor: differs ? DIFF_BG : undefined,
+                              fontSize: 14,
+                              fontWeight: differs ? 500 : 400,
+                              color: value ? TEXT : TEXT_FAINT,
                             }}
                           >
                             {value ?? 'Chưa có dữ liệu'}
@@ -280,25 +332,25 @@ export default function CompareView({ products }: { products: CatalogProduct[] }
           </div>
         </div>
 
-        <div className="mt-14 pt-9" style={{ borderTop: '1px solid #DDDDDA' }}>
-          <h2 style={{ fontSize: 26, fontWeight: 500, color: TEXT }}>Đã chọn được sản phẩm phù hợp?</h2>
-          <div className="mt-7 flex flex-wrap items-center gap-x-8 gap-y-4">
+        <div className="mt-12 pt-8" style={{ borderTop: `1px solid ${BORDER}` }}>
+          <h2 style={{ fontSize: 20, fontWeight: 500, color: TEXT }}>Đã chọn được sản phẩm phù hợp?</h2>
+          <div className="mt-5 flex flex-wrap items-center gap-x-8 gap-y-4">
             <Link
               href={'/quote' as Route}
               className="inline-flex items-center"
               style={{
-                height: 43, paddingInline: 24,
+                height: 40, paddingInline: 18,
                 backgroundColor: 'var(--tenant-accent)', color: 'var(--tenant-accent-contrast)',
-                fontSize: 12, fontWeight: 600, letterSpacing: '.08em',
+                fontSize: 11, fontWeight: 600, letterSpacing: '.08em',
               }}
             >
               YÊU CẦU BÁO GIÁ
             </Link>
-            <Link href={'/room-studio' as Route} style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.08em', color: TEXT }}>
+            <Link href={'/room-studio' as Route} style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.08em', color: TEXT }}>
               THỬ TRONG ROOM STUDIO →
             </Link>
           </div>
-          <p className="mt-6" style={{ fontSize: 13, color: TEXT_MUTED }}>
+          <p className="mt-5" style={{ fontSize: 12, color: TEXT_FAINT }}>
             Giá tham khảo. Giá cuối do showroom xác nhận theo tồn kho và phương án lắp đặt.
           </p>
         </div>

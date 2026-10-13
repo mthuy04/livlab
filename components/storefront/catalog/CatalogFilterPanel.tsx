@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { CatalogFilters, Facet } from '@/lib/storefront/catalogFilters';
 import { PRICE_PRESETS } from '@/lib/storefront/catalogFilters';
 import { AVAILABILITY_LABEL, type Availability } from '@/lib/storefront/catalogTypes';
-import { TEXT, DIVIDER } from '@/components/storefront/home/editorial';
+import { TEXT, TEXT_FAINT, DIVIDER } from '@/components/storefront/home/editorial';
 
 /**
  * The filter sidebar.
@@ -12,6 +12,10 @@ import { TEXT, DIVIDER } from '@/components/storefront/home/editorial';
  * Every group is a real `<button>` with `aria-expanded`, and a group whose
  * facet is empty is not rendered at all — a catalogue of basins should not
  * offer a flush-volume filter.
+ *
+ * Only category and price open by default. Fifteen brand checkboxes unfurled
+ * on arrival is an admin screen, not a shop; a group the customer has already
+ * used stays open so their own choices never hide.
  */
 
 function Group({
@@ -27,21 +31,21 @@ function Group({
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div style={{ borderTop: `1px solid ${DIVIDER}` }}>
+    <div style={{ borderBottom: '1px solid #E8E8E5' }}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex w-full items-center justify-between py-4 text-left"
-        style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.08em', color: TEXT }}
+        className="flex w-full items-center justify-between text-left"
+        style={{ height: 50, fontSize: 11, fontWeight: 600, letterSpacing: '.09em', color: TEXT }}
       >
         <span>
           {title}
-          {count ? <span style={{ color: '#999999', fontWeight: 400 }}> ({count})</span> : null}
+          {count ? <span style={{ color: TEXT_FAINT, fontWeight: 400 }}> ({count})</span> : null}
         </span>
-        <span aria-hidden="true" style={{ fontSize: 14, color: '#777777' }}>{open ? '−' : '+'}</span>
+        <span aria-hidden="true" style={{ fontSize: 14, color: TEXT_FAINT }}>{open ? '−' : '+'}</span>
       </button>
-      {open && <div className="pb-5">{children}</div>}
+      {open && <div className="pb-4">{children}</div>}
     </div>
   );
 }
@@ -58,15 +62,16 @@ function CheckRow({
   onChange: () => void;
 }) {
   return (
-    <label className="flex cursor-pointer items-center gap-2.5 py-1.5" style={{ fontSize: 14, color: '#444444' }}>
+    <label className="flex cursor-pointer items-center gap-2.5" style={{ height: 32, fontSize: 13.5, color: '#444444' }}>
       <input
         type="checkbox"
         checked={checked}
         onChange={onChange}
-        className="h-[15px] w-[15px] shrink-0 accent-[color:var(--tenant-accent)]"
+        className="h-[14px] w-[14px] shrink-0 accent-[color:var(--tenant-accent)]"
+        style={{ borderRadius: 0 }}
       />
       <span className="flex-1">{label}</span>
-      {count !== undefined && <span style={{ fontSize: 12, color: '#999999' }}>{count}</span>}
+      {count !== undefined && <span style={{ fontSize: 11, color: TEXT_FAINT }}>{count}</span>}
     </label>
   );
 }
@@ -113,7 +118,7 @@ export default function CatalogFilterPanel({
       )}
 
       {facets.brands.length > 1 && (
-        <Group title="THƯƠNG HIỆU">
+        <Group title="THƯƠNG HIỆU" defaultOpen={filters.brands.length > 0}>
           {facets.brands.map((f) => (
             <CheckRow
               key={f.value}
@@ -144,7 +149,7 @@ export default function CatalogFilterPanel({
             />
           );
         })}
-        <div className="mt-3 flex items-center gap-2">
+        <div className="mt-2.5 flex items-center gap-2">
           <input
             type="number"
             inputMode="numeric"
@@ -172,7 +177,7 @@ export default function CatalogFilterPanel({
       {/* Category-specific: the subcategory facet only has values once a
           category narrows the catalogue to one kind of product. */}
       {facets.subcategories.length > 1 && (
-        <Group title="LOẠI SẢN PHẨM">
+        <Group title="LOẠI SẢN PHẨM" defaultOpen={filters.subcategories.length > 0}>
           {facets.subcategories.map((f) => (
             <CheckRow
               key={f.value}
@@ -186,7 +191,7 @@ export default function CatalogFilterPanel({
       )}
 
       {facets.colors.length > 1 && (
-        <Group title="MÀU SẮC" defaultOpen={false}>
+        <Group title="MÀU SẮC" defaultOpen={filters.colors.length > 0}>
           {facets.colors.map((f) => (
             <CheckRow
               key={f.value}
@@ -200,7 +205,7 @@ export default function CatalogFilterPanel({
       )}
 
       {facets.roomStudio > 0 && (
-        <Group title="ROOM STUDIO">
+        <Group title="ROOM STUDIO" defaultOpen={filters.roomStudio}>
           <CheckRow
             label="Thử được trong Room Studio"
             count={facets.roomStudio}

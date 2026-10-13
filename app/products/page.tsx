@@ -17,7 +17,7 @@ export default async function ProductsPage() {
 
   return (
     <>
-      <div className="home-container pb-8 pt-7">
+      <div className="home-container" style={{ paddingTop: 28, paddingBottom: 30 }}>
         <nav aria-label="Breadcrumb">
           <ol className="flex items-center gap-2" style={{ fontSize: 11, fontWeight: 500, letterSpacing: '.10em', color: TEXT_MUTED }}>
             <li>
@@ -28,10 +28,10 @@ export default async function ProductsPage() {
           </ol>
         </nav>
 
-        <h1 className="mt-6" style={{ fontSize: 'clamp(30px, 1.4rem + 1vw, 36px)', fontWeight: 500, lineHeight: 1.15, letterSpacing: '.015em', color: TEXT }}>
+        <h1 style={{ marginTop: 20, fontSize: 'clamp(28px, 1.3rem + 1vw, 34px)', fontWeight: 500, lineHeight: 1.15, letterSpacing: '.015em', color: TEXT }}>
           Thiết bị phòng tắm
         </h1>
-        <p className="mt-4 max-w-[620px]" style={{ fontSize: 16, lineHeight: 1.65, color: TEXT_MUTED }}>
+        <p className="max-w-[620px]" style={{ marginTop: 12, fontSize: 15, lineHeight: 1.65, color: TEXT_MUTED }}>
           Khám phá thiết bị vệ sinh theo danh mục, thương hiệu và thông số phù hợp với không gian của bạn.
         </p>
       </div>

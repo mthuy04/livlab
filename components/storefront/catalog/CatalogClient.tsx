@@ -13,7 +13,7 @@ import {
   type CatalogFilters,
 } from '@/lib/storefront/catalogFilters';
 import { toggleCompare, toggleSaved, useTenantIds } from '@/lib/storefront/tenantStorage';
-import { TEXT, DIVIDER, STAGE } from '@/components/storefront/home/editorial';
+import { TEXT, TEXT_FAINT, DIVIDER, STAGE } from '@/components/storefront/home/editorial';
 import CatalogProductCard from './CatalogProductCard';
 import { AllIcon, iconFor } from './CategoryIcons';
 import { BRAND_LOGOS } from './brandLogos';
@@ -179,7 +179,7 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
       {!loading && categoryRail.length > 1 && (
         <div className="home-container relative" style={{ borderBottom: `1px solid ${DIVIDER}` }}>
           <RailFade />
-          <div className="no-scrollbar -mx-5 flex gap-1 overflow-x-auto px-5 md:mx-0 md:px-0">
+          <div className="no-scrollbar -mx-5 flex overflow-x-auto px-5 md:mx-0 md:px-0">
             {[{ name: 'TẤT CẢ', key: null as string | null }, ...categoryRail.map((c) => ({ name: c.name, key: c.name }))].map(
               (entry) => {
                 const selected = filters.category === entry.key;
@@ -190,20 +190,26 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
                     type="button"
                     onClick={() => update({ category: selected ? null : entry.key, subcategories: [] })}
                     aria-pressed={selected}
-                    className="flex shrink-0 flex-col items-center justify-center gap-3 pb-4 pt-5 transition-colors"
-                    style={{
-                      width: 122,
-                      color: selected ? 'var(--tenant-accent)' : '#282828',
-                      borderBottom: selected ? '2px solid var(--tenant-accent)' : '2px solid transparent',
-                    }}
+                    className="relative flex shrink-0 flex-col items-center justify-center gap-2.5 pb-5 pt-4"
+                    style={{ width: 112, color: selected ? 'var(--tenant-accent)' : '#343434' }}
                   >
-                    <Icon style={{ width: 30, height: 30 }} />
+                    <span className="grid place-items-center" style={{ width: 32, height: 32 }}>
+                      <Icon style={{ width: 27, height: 27 }} />
+                    </span>
                     <span
                       className="text-center"
-                      style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.05em', color: selected ? 'var(--tenant-accent)' : '#282828' }}
+                      style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.05em', lineHeight: 1.2 }}
                     >
                       {entry.name.toUpperCase()}
                     </span>
+                    {/* A short centred rule, not a full-width underline. */}
+                    {selected && (
+                      <span
+                        aria-hidden="true"
+                        className="absolute bottom-0 left-1/2 -translate-x-1/2"
+                        style={{ width: 46, height: 2, backgroundColor: 'var(--tenant-accent)' }}
+                      />
+                    )}
                   </button>
                 );
               }
@@ -214,10 +220,13 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
 
       {/* ── Brand rail ──────────────────────────────────────────────────── */}
       {!loading && brandRail.length > 1 && (
-        <div className="home-container relative py-5" style={{ borderBottom: `1px solid ${DIVIDER}` }}>
+        <div className="home-container relative pb-1 pt-6" style={{ borderBottom: `1px solid ${DIVIDER}` }}>
+          <p className="mb-2" style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.12em', color: TEXT_FAINT }}>
+            THƯƠNG HIỆU
+          </p>
           <RailFade />
-          <div className="no-scrollbar -mx-5 flex gap-2.5 overflow-x-auto px-5 md:mx-0 md:px-0">
-            {[{ name: 'TẤT CẢ', count: products.length }, ...brandRail].map((b) => {
+          <div className="no-scrollbar -mx-5 flex overflow-x-auto px-5 md:mx-0 md:px-0">
+            {[{ name: 'TẤT CẢ', count: products.length }, ...brandRail].map((b, index) => {
               const isAll = b.name === 'TẤT CẢ';
               const selected = isAll ? filters.brands.length === 0 : filters.brands.includes(b.name);
               const logo = isAll ? null : BRAND_LOGOS[b.name];
@@ -236,14 +245,12 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
                           : [...filters.brands, b.name],
                     })
                   }
-                  className="flex shrink-0 items-center justify-center transition-colors"
+                  className="relative flex shrink-0 items-center justify-center"
                   style={{
-                    width: 150,
-                    height: 76,
-                    padding: '18px 20px',
-                    backgroundColor: selected ? '#FFFFFF' : '#F7F7F6',
-                    border: '1px solid #ECECEA',
-                    borderBottom: selected ? '3px solid var(--tenant-accent)' : '1px solid #ECECEA',
+                    width: 130,
+                    height: 62,
+                    paddingInline: 18,
+                    borderLeft: index > 0 ? '1px solid #ECECEA' : undefined,
                   }}
                 >
                   {logo ? (
@@ -251,14 +258,22 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
                     <img
                       src={logo}
                       alt={b.name}
-                      className="h-full w-full object-contain"
-                      style={{ maxHeight: 36, maxWidth: 112 }}
+                      className="object-contain"
+                      style={{ maxHeight: 28, maxWidth: 100 }}
                     />
                   ) : (
-                    // No logo asset for this brand, so its wordmark stands in.
-                    <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: '.06em', color: TEXT }}>
+                    // No asset for this brand, so its wordmark stands in — set
+                    // at one size so a logo and a name sit at the same weight.
+                    <span style={{ fontSize: 13, fontWeight: 600, letterSpacing: '.04em', color: TEXT }}>
                       {b.name.toUpperCase()}
                     </span>
+                  )}
+                  {selected && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute bottom-0 left-1/2 -translate-x-1/2"
+                      style={{ width: '65%', height: 2, backgroundColor: 'var(--tenant-accent)' }}
+                    />
                   )}
                 </button>
               );
@@ -269,43 +284,59 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
 
       {/* ── Toolbar + results ───────────────────────────────────────────── */}
       <div className="home-container pb-24 pt-7">
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 md:flex-nowrap" style={{ minHeight: 48 }}>
+        <div
+          className="flex flex-wrap items-center gap-x-6 gap-y-3 md:flex-nowrap"
+          style={{ minHeight: 54, borderBottom: `1px solid ${DIVIDER}` }}
+        >
           <p className="shrink-0" style={{ fontSize: 14, color: TEXT }}>
             {loading ? 'Đang tải…' : `${sorted.length} sản phẩm`}
           </p>
 
           <div className="order-last w-full md:order-none md:mx-auto md:w-auto">
-            <input
-              type="search"
-              value={searchDraft}
-              onChange={(e) => setSearchDraft(e.target.value)}
-              placeholder="Tìm theo tên, SKU hoặc thương hiệu…"
-              aria-label="Tìm trong danh mục"
-              className="w-full px-3.5 md:w-[370px]"
-              style={{ height: 40, border: '1px solid #DDDDDD', fontSize: 14 }}
-            />
+            <div className="relative">
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                className="pointer-events-none absolute left-3 top-1/2 h-[17px] w-[17px] -translate-y-1/2"
+                fill="none"
+                stroke={TEXT_FAINT}
+                strokeWidth="1.5"
+              >
+                <circle cx="11" cy="11" r="6.5" />
+                <path d="m16 16 4 4" strokeLinecap="round" />
+              </svg>
+              <input
+                type="search"
+                value={searchDraft}
+                onChange={(e) => setSearchDraft(e.target.value)}
+                placeholder="Tìm theo tên, SKU hoặc thương hiệu"
+                aria-label="Tìm trong danh mục"
+                className="w-full bg-white pl-10 pr-3.5 md:w-[360px]"
+                style={{ height: 42, border: '1px solid #D9D9D6', fontSize: 14 }}
+              />
+            </div>
           </div>
 
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
             className="shrink-0 xl:hidden"
-            style={{ height: 40, fontSize: 12, fontWeight: 600, letterSpacing: '.08em', color: TEXT, border: `1px solid ${DIVIDER}`, paddingInline: 14 }}
+            style={{ height: 42, fontSize: 11, fontWeight: 600, letterSpacing: '.08em', color: TEXT, border: `1px solid ${DIVIDER}`, paddingInline: 14 }}
           >
             LỌC{activeCount > 0 ? ` · ${activeCount}` : ''}
           </button>
 
-          <div className="ml-auto flex shrink-0 items-center gap-5 md:ml-0">
+          <div className="ml-auto flex shrink-0 items-center gap-6 md:ml-0">
             {compareIds.length > 0 ? (
               <Link
                 href={`/compare?ids=${compareIds.join(',')}` as Route}
-                style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.08em', color: 'var(--tenant-accent)' }}
+                style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.09em', color: 'var(--tenant-accent)' }}
               >
-                SO SÁNH ({compareIds.length})
+                SO SÁNH · {compareIds.length}
               </Link>
             ) : (
-              <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: '.08em', color: '#999999' }}>
-                SO SÁNH (0)
+              <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: '.09em', color: TEXT_FAINT }}>
+                So sánh
               </span>
             )}
             <label>
@@ -314,10 +345,10 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
                 value={filters.sort}
                 onChange={(e) => update({ sort: e.target.value as CatalogFilters['sort'] })}
                 className="bg-white px-3"
-                style={{ height: 40, width: 162, border: '1px solid #DDDDDD', fontSize: 13, color: TEXT }}
+                style={{ height: 42, width: 155, border: '1px solid #D9D9D6', fontSize: 11, fontWeight: 600, letterSpacing: '.06em', color: TEXT }}
               >
                 {SORT_OPTIONS.map((o) => (
-                  <option key={o.value} value={o.value}>{o.label}</option>
+                  <option key={o.value} value={o.value}>{o.label.toUpperCase()}</option>
                 ))}
               </select>
             </label>
@@ -371,7 +402,7 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
           <p role="status" className="mt-4" style={{ fontSize: 13, color: '#A33A3A' }}>{compareError}</p>
         )}
 
-        <div className="mt-7 grid gap-10 xl:grid-cols-[244px_minmax(0,1fr)] xl:gap-[38px]">
+        <div className="mt-8 grid gap-10 xl:grid-cols-[220px_minmax(0,1fr)] xl:gap-10">
           <aside className="hidden xl:block">
             <div className="sticky top-[92px]">
               {!loading && <CatalogFilterPanel filters={filters} facets={facets} onChange={update} />}
@@ -491,8 +522,8 @@ function RailFade() {
 function Chip({ label, onRemove }: { label: string; onRemove: () => void }) {
   return (
     <span
-      className="inline-flex items-center gap-2 rounded-full px-3 py-1.5"
-      style={{ border: `1px solid ${DIVIDER}`, fontSize: 12, color: TEXT }}
+      className="inline-flex items-center gap-2 bg-white px-2.5"
+      style={{ height: 28, borderRadius: 2, border: '1px solid #DCDCD9', fontSize: 11, color: TEXT }}
     >
       {label}
       <button type="button" onClick={onRemove} aria-label={`Bỏ lọc ${label}`} style={{ color: '#777777' }}>×</button>
