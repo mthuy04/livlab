@@ -165,3 +165,95 @@ body {
     transform: none;
   }
 }
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Storefront V2 design tokens
+
+   Scoped to .storefront rather than :root on purpose. The showroom workspace
+   at /showroom is operational software with its own density and type scale,
+   and a global restyle would quietly change every table and form in it. The
+   storefront shell is the only thing that carries this class.
+
+   Values are deliberately calmer than the current customer UI: warm neutrals
+   instead of blue-tinted greys, small radii instead of rounded-2xl everywhere,
+   and borders doing the work that 179 box-shadows were doing.
+   ─────────────────────────────────────────────────────────────────────────── */
+.storefront {
+  /* Surfaces — warm white, not blue-grey */
+  --sf-bg: #FCFCFB;
+  --sf-surface: #FFFFFF;
+  --sf-surface-muted: #F4F3F1;
+  --sf-surface-dark: #1A1A18;
+
+  /* Text — charcoal rather than near-black, which reads softer at large sizes */
+  --sf-text: #1A1A18;
+  --sf-text-secondary: #55534E;
+  --sf-text-muted: #8A877F;
+  --sf-text-inverse: #FCFCFB;
+
+  /* Borders carry the structure, so there are two weights and no more */
+  --sf-border: #E3E1DC;
+  --sf-border-strong: #C9C6BF;
+
+  /* Tenant accent. Overridden inline by the shell; these are the fallbacks
+     that keep the page readable if a tenant ever resolves without them. */
+  --tenant-accent: #123C5A;
+  --tenant-accent-hover: #0D2B42;
+  --tenant-accent-contrast: #FFFFFF;
+
+  /* State. Consumer UI should reach for these rarely. */
+  --sf-success: #2E7D52;
+  --sf-warning: #8A6520;
+  --sf-danger: #A33A3A;
+
+  /* Radii — small and deliberate. The old UI used 1rem–1.5rem almost
+     everywhere, which is most of why it read as a SaaS template. */
+  --sf-radius-sm: 4px;
+  --sf-radius: 6px;
+  --sf-radius-lg: 10px;
+
+  /* Rhythm */
+  --sf-gutter: 24px;
+  --sf-max-width: 1360px;
+
+  background-color: var(--sf-bg);
+  color: var(--sf-text);
+}
+
+@media (min-width: 1024px) {
+  .storefront { --sf-gutter: 40px; }
+}
+
+/* Editorial type scale. Clamped so a headline is large on a desktop without
+   overflowing a 390px phone, which is where most Vietnamese traffic is. */
+.sf-display { font-size: clamp(2.25rem, 1.2rem + 4.4vw, 4.25rem); line-height: 1.04; letter-spacing: -0.025em; font-weight: 600; }
+.sf-h1      { font-size: clamp(1.9rem, 1.1rem + 3.2vw, 3.25rem); line-height: 1.08; letter-spacing: -0.022em; font-weight: 600; }
+.sf-h2      { font-size: clamp(1.5rem, 1rem + 1.9vw, 2.35rem);  line-height: 1.14; letter-spacing: -0.018em; font-weight: 600; }
+.sf-h3      { font-size: clamp(1.2rem, 1rem + 0.8vw, 1.6rem);   line-height: 1.22; letter-spacing: -0.012em; font-weight: 600; }
+.sf-body-lg { font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem); line-height: 1.62; }
+.sf-body    { font-size: 1rem; line-height: 1.62; }
+.sf-caption { font-size: 0.8125rem; line-height: 1.5; letter-spacing: 0.005em; }
+
+/* The editorial link: an arrow action, not another filled button. Most of the
+   repeated CTA buttons in the old UI should become one of these. */
+.sf-link {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-weight: 500; color: var(--sf-text);
+  border-bottom: 1px solid var(--sf-border-strong);
+  padding-bottom: 2px; transition: border-color 140ms ease, color 140ms ease;
+}
+.sf-link:hover { color: var(--tenant-accent); border-color: var(--tenant-accent); }
+
+.storefront :focus-visible {
+  outline: 2px solid var(--tenant-accent);
+  outline-offset: 2px;
+}
+
+/* Motion: a fade and a small rise, nothing that draws attention to itself. */
+@media (prefers-reduced-motion: no-preference) {
+  .sf-rise { animation: sf-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+}
+@keyframes sf-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
