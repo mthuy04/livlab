@@ -45,7 +45,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
       relationType: 'EXACT_PRODUCT',
       note: 'Tên file hãng đặt chứa đúng SKU thương mại.',
     },
-    dimensionsMm: {},
+    dimensionsMm: { depth: 805, width: 400, height: 588 },
     placement: {
       type: 'FLOOR_TOILET',
       pivot: PIVOT_FOR_PLACEMENT.FLOOR_TOILET,
@@ -55,7 +55,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
     status: 'SOURCE_VERIFIED',
     qa: {
       identityVerified: true,
-      dimensionsVerified: false,
+      dimensionsVerified: true,
       scaleVerified: false,
       pivotVerified: false,
       orientationVerified: false,
@@ -63,7 +63,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
       performanceVerified: false,
     },
     assetVersion: 1,
-    note: 'Nguồn .max — cần 3ds Max để xuất. Kích thước chính thức chưa có trong catalog; phải đọc từ bản thông số của hãng trước khi kiểm tỷ lệ.',
+    note: 'Nguồn .max — cần 3ds Max để xuất sang FBX. Kích thước là của hãng, chưa đối chiếu với mesh vì chưa có mesh.',
   },
   'demo:tungdang:INAX:AC4005VN': {
     id: 'inax-ac-4005vn-src',
@@ -84,7 +84,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
       relationType: 'EXACT_PRODUCT',
       note: 'Tên file hãng đặt chứa đúng SKU thương mại.',
     },
-    dimensionsMm: {},
+    dimensionsMm: { depth: 780, width: 518, height: 623 },
     placement: {
       type: 'FLOOR_TOILET',
       pivot: PIVOT_FOR_PLACEMENT.FLOOR_TOILET,
@@ -94,7 +94,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
     status: 'SOURCE_VERIFIED',
     qa: {
       identityVerified: true,
-      dimensionsVerified: false,
+      dimensionsVerified: true,
       scaleVerified: false,
       pivotVerified: false,
       orientationVerified: false,
@@ -102,7 +102,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
       performanceVerified: false,
     },
     assetVersion: 1,
-    note: 'Nguồn .max — cần 3ds Max để xuất. Kích thước chính thức chưa có trong catalog; phải đọc từ bản thông số của hãng trước khi kiểm tỷ lệ.',
+    note: 'Nguồn .max — cần 3ds Max để xuất sang FBX. Kích thước là của hãng, chưa đối chiếu với mesh vì chưa có mesh.',
   },
   'demo:tungdang:INAX:AC2700VN': {
     id: 'inax-ac-2700vn-src',
@@ -123,7 +123,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
       relationType: 'EXACT_PRODUCT',
       note: 'Tên file hãng đặt chứa đúng SKU thương mại.',
     },
-    dimensionsMm: {},
+    dimensionsMm: { depth: 810, width: 424, height: 642 },
     placement: {
       type: 'FLOOR_TOILET',
       pivot: PIVOT_FOR_PLACEMENT.FLOOR_TOILET,
@@ -133,7 +133,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
     status: 'SOURCE_VERIFIED',
     qa: {
       identityVerified: true,
-      dimensionsVerified: false,
+      dimensionsVerified: true,
       scaleVerified: false,
       pivotVerified: false,
       orientationVerified: false,
@@ -141,7 +141,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
       performanceVerified: false,
     },
     assetVersion: 1,
-    note: 'Nguồn .max — cần 3ds Max để xuất. Kích thước chính thức chưa có trong catalog; phải đọc từ bản thông số của hãng trước khi kiểm tỷ lệ.',
+    note: 'Nguồn .max — cần 3ds Max để xuất sang FBX. Kích thước là của hãng, chưa đối chiếu với mesh vì chưa có mesh.',
   },
   'demo:tungdang:INAX:AC1135VN': {
     id: 'inax-ac-1135vn-src',
@@ -162,7 +162,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
       relationType: 'EXACT_PRODUCT',
       note: 'Tên file hãng đặt chứa đúng SKU thương mại.',
     },
-    dimensionsMm: {},
+    dimensionsMm: { depth: 809, width: 475, height: 615 },
     placement: {
       type: 'FLOOR_TOILET',
       pivot: PIVOT_FOR_PLACEMENT.FLOOR_TOILET,
@@ -172,7 +172,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
     status: 'SOURCE_VERIFIED',
     qa: {
       identityVerified: true,
-      dimensionsVerified: false,
+      dimensionsVerified: true,
       scaleVerified: false,
       pivotVerified: false,
       orientationVerified: false,
@@ -180,7 +180,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
       performanceVerified: false,
     },
     assetVersion: 1,
-    note: 'Nguồn .max — cần 3ds Max để xuất. Kích thước chính thức chưa có trong catalog; phải đọc từ bản thông số của hãng trước khi kiểm tỷ lệ.',
+    note: 'Nguồn .max — cần 3ds Max để xuất sang FBX. Kích thước là của hãng, chưa đối chiếu với mesh vì chưa có mesh.',
   },
   'demo:tungdang:INAX:AC1035VN': {
     id: 'inax-ac-1035vn-src',
@@ -201,7 +201,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
       relationType: 'EXACT_PRODUCT',
       note: 'Tên file hãng đặt chứa đúng SKU thương mại.',
     },
-    dimensionsMm: {},
+    dimensionsMm: { depth: 809, width: 475, height: 615 },
     placement: {
       type: 'FLOOR_TOILET',
       pivot: PIVOT_FOR_PLACEMENT.FLOOR_TOILET,
@@ -211,7 +211,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
     status: 'SOURCE_VERIFIED',
     qa: {
       identityVerified: true,
-      dimensionsVerified: false,
+      dimensionsVerified: true,
       scaleVerified: false,
       pivotVerified: false,
       orientationVerified: false,
@@ -219,7 +219,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
       performanceVerified: false,
     },
     assetVersion: 1,
-    note: 'Nguồn .max — cần 3ds Max để xuất. Kích thước chính thức chưa có trong catalog; phải đọc từ bản thông số của hãng trước khi kiểm tỷ lệ.',
+    note: 'Nguồn .max — cần 3ds Max để xuất sang FBX. Kích thước là của hãng, chưa đối chiếu với mesh vì chưa có mesh.',
   },
   'demo:tungdang:INAX:AC1017VRN': {
     id: 'inax-ac-1017vrn-src',
@@ -240,7 +240,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
       relationType: 'EXACT_PRODUCT',
       note: 'Tên file hãng đặt chứa đúng SKU thương mại.',
     },
-    dimensionsMm: {},
+    dimensionsMm: { depth: 805, width: 400, height: 588 },
     placement: {
       type: 'FLOOR_TOILET',
       pivot: PIVOT_FOR_PLACEMENT.FLOOR_TOILET,
@@ -250,7 +250,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
     status: 'SOURCE_VERIFIED',
     qa: {
       identityVerified: true,
-      dimensionsVerified: false,
+      dimensionsVerified: true,
       scaleVerified: false,
       pivotVerified: false,
       orientationVerified: false,
@@ -258,7 +258,7 @@ const REGISTRY: Record<string, Product3DAsset> = {
       performanceVerified: false,
     },
     assetVersion: 1,
-    note: 'Nguồn .max — cần 3ds Max để xuất. Kích thước chính thức chưa có trong catalog; phải đọc từ bản thông số của hãng trước khi kiểm tỷ lệ.',
+    note: 'Nguồn .max — cần 3ds Max để xuất sang FBX. Kích thước là của hãng, chưa đối chiếu với mesh vì chưa có mesh.',
   },
 };
 
