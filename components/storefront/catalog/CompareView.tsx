@@ -6,6 +6,7 @@ import type { Route } from 'next';
 import type { CatalogProduct } from '@/lib/storefront/catalogTypes';
 import { AVAILABILITY_LABEL } from '@/lib/storefront/catalogTypes';
 import { formatVnd } from './CatalogProductCard';
+import ProductImage from './ProductImage';
 import { TEXT, TEXT_MUTED, TEXT_FAINT, STAGE } from '@/components/storefront/home/editorial';
 
 /**
@@ -213,8 +214,9 @@ export default function CompareView({ products }: { products: CatalogProduct[] }
             <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.10em', color: TEXT_FAINT }}>THÔNG SỐ</p>
             {products.map((p) => (
               <div key={p.id} className="flex items-center gap-3 px-6 py-3" style={{ borderLeft: `1px solid ${BORDER}` }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={p.image} alt="" className="shrink-0 object-contain" style={{ width: 48, height: 48, backgroundColor: STAGE }} />
+                <span className="block shrink-0" style={{ width: 48, height: 48 }}>
+                  <ProductImage product={p} stage={STAGE} eager />
+                </span>
                 <span className="min-w-0">
                   <span className="block truncate" style={{ fontSize: 13, fontWeight: 500, color: TEXT }}>{p.name}</span>
                   {p.showroomPrice && (
@@ -238,13 +240,9 @@ export default function CompareView({ products }: { products: CatalogProduct[] }
               <div style={{ borderBottom: `1px solid ${BORDER}` }} />
               {products.map((p) => (
                 <div key={p.id} className="px-6 pb-5 pt-2" style={{ borderBottom: `1px solid ${BORDER}`, borderLeft: `1px solid ${BORDER}` }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    className="w-full object-contain"
-                    style={{ height: 190, padding: '7%', backgroundColor: STAGE }}
-                  />
+                  <div style={{ height: 178 }}>
+                    <ProductImage product={p} stage="#F8F8F6" eager />
+                  </div>
                   <p className="mt-4" style={{ fontSize: 10, fontWeight: 600, letterSpacing: '.10em', color: '#808080' }}>
                     {p.brand.toUpperCase()}
                   </p>

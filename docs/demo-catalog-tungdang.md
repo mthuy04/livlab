@@ -60,3 +60,25 @@ excluded rather than shown the wrong one.
 A product enters the fixture only with a name, a brand, a category and a
 matching image. Deduplication is by brand + normalised model code, so
 `AC989VN` and `AC-989VN` are one product; the original code is kept verbatim.
+
+## Image quality
+
+`python3 scripts/audit_catalog_images.py` opens every image the storefront
+exposes, for every tenant, and files a status. It measures rather than guesses:
+how white the ring around the product is, how much colour and dark ink sit in
+that ring, how much ink runs along the bottom edge, and the pixel size.
+
+The question it answers is the one a grid cares about — *is this an isolated
+product on a clean plate* — not *does this contain a watermark*, which needs
+OCR. A bouquet, a dealer phone number, a QR code, a model-code caption and a
+sky-blue advert all put colour or ink in the ring; a product's own badge sits
+in the middle, where it belongs.
+
+A product whose only image is rejected is **withheld from the storefront grid**
+and kept in the data. `/api/storefront/products?quality=all` returns everything
+for cleanup work. Where the importer already captured a cleaner sibling, the
+catalogue substitutes it automatically.
+
+No image is ever edited. Watermarks are not painted out, logos are not removed
+and missing product area is never invented — a rejected asset is replaced,
+withheld, or named here as a data-quality issue.

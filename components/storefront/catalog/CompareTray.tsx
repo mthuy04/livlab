@@ -4,6 +4,7 @@ import Link from 'next/link';
 import type { Route } from 'next';
 import type { CatalogProduct } from '@/lib/storefront/catalogTypes';
 import { TEXT, TEXT_FAINT, STAGE } from '@/components/storefront/home/editorial';
+import ProductImage from './ProductImage';
 
 /**
  * The comparison tray.
@@ -40,13 +41,9 @@ export default function CompareTray({
               className="flex shrink-0 items-center gap-3 px-5"
               style={{ borderLeft: index > 0 ? '1px solid #ECECEA' : undefined }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={p.image}
-                alt=""
-                className="shrink-0 object-contain"
-                style={{ width: 38, height: 38, backgroundColor: STAGE }}
-              />
+              <span className="block shrink-0" style={{ width: 38, height: 38 }}>
+                <ProductImage product={p} stage={STAGE} />
+              </span>
               <span className="truncate" style={{ maxWidth: 136, fontSize: 13, color: TEXT }}>
                 {p.name}
               </span>

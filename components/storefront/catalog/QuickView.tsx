@@ -5,6 +5,7 @@ import type { Route } from 'next';
 import type { CatalogProduct } from '@/lib/storefront/catalogTypes';
 import { formatVnd } from './CatalogProductCard';
 import { TEXT, DIVIDER, STAGE } from '@/components/storefront/home/editorial';
+import ProductImage from './ProductImage';
 
 /** A short look at one product. Full specs live on the detail page. */
 export default function QuickView({
@@ -48,13 +49,9 @@ export default function QuickView({
         </div>
 
         <div className="grid gap-8 px-6 pb-8 md:grid-cols-2 md:px-10 md:pb-10">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={product.image}
-            alt={product.name}
-            className="aspect-square w-full object-contain"
-            style={{ backgroundColor: STAGE }}
-          />
+          <div className="aspect-square w-full">
+            <ProductImage product={product} stage={STAGE} eager />
+          </div>
 
           <div>
             <p style={{ fontSize: 11, fontWeight: 500, letterSpacing: '.10em', color: '#777777' }}>

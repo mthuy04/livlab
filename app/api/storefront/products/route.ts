@@ -11,16 +11,20 @@ import { getCatalog } from '@/lib/storefront/catalog';
  * asks the catalogue layer, which is the only thing that decides what a
  * tenant may see.
  */
-export async function GET() {
+export async function GET(request: Request) {
   const tenant = await resolveTenant();
+  // An internal escape hatch for cleanup work: ?quality=all keeps the products
+  // whose photography the audit rejected.
+  const includeUnpresentable = new URL(request.url).searchParams.get('quality') === 'all';
 
   try {
-    const catalog = await getCatalog(tenant);
+    const catalog = await getCatalog(tenant, { includeUnpresentable });
     return NextResponse.json(
       {
         tenantId: catalog.tenantId,
         products: catalog.products,
         sourceCheckedAt: catalog.sourceCheckedAt,
+        withheldForImageQuality: catalog.withheldForImageQuality,
       },
       { headers: { 'cache-control': 'no-store' } }
     );

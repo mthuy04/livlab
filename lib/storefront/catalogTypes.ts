@@ -65,6 +65,38 @@ export interface CatalogProduct {
 
   sourceUrl: string | null;
   sourceCheckedAt: string | null;
+
+  /**
+   * What the image audit made of this product's photograph, and whether the
+   * grid should fall back to a placeholder rather than show it.
+   */
+  imageStatus: string;
+  imagePresentable: boolean;
+}
+
+/**
+ * How much of its stage each kind of product should fill.
+ *
+ * Source photography frames a toilet, a basin and a towel rail completely
+ * differently, so one scale across the grid leaves an accessory looking like
+ * a speck beside a close-cropped toilet. These are presentation values tuned
+ * against screenshots, not facts about the product.
+ */
+export const CATEGORY_OPTICAL_SCALE: Record<string, number> = {
+  'Bồn cầu': 0.78,
+  Lavabo: 0.72,
+  'Vòi lavabo': 0.68,
+  'Sen tắm': 0.72,
+  'Bồn tắm': 0.78,
+  'Gương & phụ kiện': 0.72,
+};
+
+/** Small hardware reads as a speck at a category scale meant for a bathtub. */
+const SMALL_ACCESSORY = /(lô giấy|móc|thanh (vắt )?khăn|kệ|vòi xịt|thoát sàn|phụ kiện)/i;
+
+export function opticalScale(category: string, name: string): number {
+  if (SMALL_ACCESSORY.test(name)) return 0.62;
+  return CATEGORY_OPTICAL_SCALE[category] ?? 0.72;
 }
 
 export interface Catalog {

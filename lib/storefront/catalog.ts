@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { prisma } from '@/lib/prisma';
 import type { TenantStorefrontConfig } from './tenantConfig';
+import { imageVerdicts, isRejected, type ImageStatus } from './imageQuality';
 import {
   isRoomStudioReady,
   isSanitaryware,
@@ -33,6 +34,8 @@ export interface Catalog {
   /** Shown in the internal data notes, never to a customer as a guarantee. */
   sourceCheckedAt: string | null;
   demoNotice: string | null;
+  /** Held back because their only photograph failed the image audit. */
+  withheldForImageQuality: number;
 }
 
 /**
@@ -109,13 +112,17 @@ const fixtureId = (brand: string | null, sku: string | null, name: string) =>
 
 async function fromFixture(tenant: TenantStorefrontConfig, file: string): Promise<Catalog> {
   const fixture = await loadFixture(file);
-  if (!fixture) return { tenantId: tenant.id, products: [], sourceCheckedAt: null, demoNotice: null };
+  if (!fixture)
+    return { tenantId: tenant.id, products: [], sourceCheckedAt: null, demoNotice: null, withheldForImageQuality: 0 };
+  const verdicts = await imageVerdicts(tenant.id);
 
   const products: CatalogProduct[] = fixture.products
     // §39: a card needs a name, a brand, a category and an image.
     .filter((p) => p.name && p.brand && p.category && p.primaryImage && isSanitaryware(p.category))
     .map((p) => {
       const id = fixtureId(p.brand, p.sku, p.name);
+      const verdict = verdicts.get(id);
+      const status = (verdict?.status ?? 'ACCEPTABLE') as ImageStatus;
       return {
         id,
         href: `/products/${id}`,
@@ -124,7 +131,11 @@ async function fromFixture(tenant: TenantStorefrontConfig, file: string): Promis
         brand: normaliseBrand(p.brand) as string,
         category: p.category,
         subcategory: p.subcategory,
-        image: p.primaryImage as string,
+        // The audit may have found a cleaner sibling than the one the
+        // importer picked; prefer it.
+        image: verdict?.replacementImage ?? (p.primaryImage as string),
+        imageStatus: status,
+        imagePresentable: !isRejected(status),
         additionalImages: p.additionalImages ?? [],
         technicalDrawing: p.technicalDrawing,
         showroomPrice: p.showroomPrice,
@@ -161,11 +172,13 @@ async function fromFixture(tenant: TenantStorefrontConfig, file: string): Promis
     products,
     sourceCheckedAt: fixture.sourceCheckedAt,
     demoNotice: fixture.notice,
+    withheldForImageQuality: 0,
   };
 }
 
 async function fromDatabase(tenant: TenantStorefrontConfig): Promise<Catalog> {
   const { showroomId } = tenant.catalogScope;
+  const verdicts = await imageVerdicts(tenant.id);
 
   // A showroom tenant sells what it has offered. A tenant with no offer rows
   // yet falls back to the LivLab catalogue rather than an empty shop, but it
@@ -206,6 +219,8 @@ async function fromDatabase(tenant: TenantStorefrontConfig): Promise<Catalog> {
     )
     .map((p) => {
       const offer = offerByProduct.get(p.id);
+      const verdict = verdicts.get(p.id);
+      const status = (verdict?.status ?? 'ACCEPTABLE') as ImageStatus;
       const showroomPrice = offer?.promotionPrice ?? offer?.showroomPrice ?? p.priceMin ?? null;
       const reference = offer?.promotionPrice ? (offer.showroomPrice ?? p.priceMax) : p.priceMax;
 
@@ -218,7 +233,9 @@ async function fromDatabase(tenant: TenantStorefrontConfig): Promise<Catalog> {
         brand: normaliseBrand(p.brand) as string,
         category: normaliseCategory(p.category) as string,
         subcategory: null,
-        image: p.imageUrl as string,
+        image: verdict?.replacementImage ?? (p.imageUrl as string),
+        imageStatus: status,
+        imagePresentable: !isRejected(status),
         additionalImages: [],
         technicalDrawing: null,
         showroomPrice,
@@ -244,7 +261,7 @@ async function fromDatabase(tenant: TenantStorefrontConfig): Promise<Catalog> {
       };
     });
 
-  return { tenantId: tenant.id, products, sourceCheckedAt: null, demoNotice: null };
+  return { tenantId: tenant.id, products, sourceCheckedAt: null, demoNotice: null, withheldForImageQuality: 0 };
 }
 
 /** Fixture-backed tenants, by tenant id. Everything else reads the database. */
@@ -252,13 +269,35 @@ const FIXTURE_TENANTS: Record<string, string> = {
   tungdang: 'tungdang-sanitaryware.json',
 };
 
-export async function getCatalog(tenant: TenantStorefrontConfig): Promise<Catalog> {
+/**
+ * The tenant's catalogue.
+ *
+ * `includeUnpresentable` keeps the products whose only photograph failed the
+ * image audit. The storefront leaves them out: a grid is judged on its worst
+ * tile, and a dealer's phone number baked into a product shot is worse than a
+ * shorter catalogue. The records stay in the data for cleanup, and the count
+ * of what was held back travels with the catalogue so it can be reported
+ * rather than quietly lost.
+ */
+export async function getCatalog(
+  tenant: TenantStorefrontConfig,
+  { includeUnpresentable = false }: { includeUnpresentable?: boolean } = {}
+): Promise<Catalog> {
   const fixture = FIXTURE_TENANTS[tenant.id];
-  if (fixture) return fromFixture(tenant, fixture);
+  let catalog: Catalog;
   try {
-    return await fromDatabase(tenant);
+    catalog = fixture ? await fromFixture(tenant, fixture) : await fromDatabase(tenant);
   } catch {
     // Surfaced as the error state rather than an empty catalogue.
     throw new Error('CATALOG_UNAVAILABLE');
   }
+
+  if (includeUnpresentable) return catalog;
+
+  const presentable = catalog.products.filter((p) => p.imagePresentable);
+  return {
+    ...catalog,
+    products: presentable,
+    withheldForImageQuality: catalog.products.length - presentable.length,
+  };
 }

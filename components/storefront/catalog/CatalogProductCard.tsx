@@ -4,6 +4,7 @@ import Link from 'next/link';
 import type { Route } from 'next';
 import type { CatalogProduct } from '@/lib/storefront/catalogTypes';
 import { TEXT, TEXT_FAINT, STAGE } from '@/components/storefront/home/editorial';
+import ProductImage from './ProductImage';
 
 /**
  * A catalogue card: image stage, then brand, name, SKU, price, then actions.
@@ -16,7 +17,7 @@ export const formatVnd = (v: number) => `${v.toLocaleString('vi-VN')}đ`;
 
 export default function CatalogProductCard({
   product,
-  scale,
+  eager = false,
   saved,
   comparing,
   onToggleSave,
@@ -24,7 +25,8 @@ export default function CatalogProductCard({
   onQuickView,
 }: {
   product: CatalogProduct;
-  scale: number;
+  /** The first row is above the fold, so it does not wait for the scroll. */
+  eager?: boolean;
   saved: boolean;
   comparing: boolean;
   onToggleSave: (id: string) => void;
@@ -46,16 +48,9 @@ export default function CatalogProductCard({
           className="block w-full overflow-hidden"
           // Square, but capped so a three-up row at 1536 does not hand each
           // product a 430px stage.
-          style={{ backgroundColor: STAGE, aspectRatio: '1 / 1', maxHeight: 320 }}
+          style={{ aspectRatio: '1 / 1', maxHeight: 320 }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={product.image}
-            alt={product.name}
-            loading="lazy"
-            className="h-full w-full object-contain p-[15%] transition-transform duration-500 group-hover:scale-[1.02]"
-            style={{ transform: `scale(${scale})` }}
-          />
+          <ProductImage product={product} stage={STAGE} eager={eager} />
         </button>
 
         <button

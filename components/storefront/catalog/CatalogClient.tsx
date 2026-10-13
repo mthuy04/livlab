@@ -31,23 +31,6 @@ import QuickView from './QuickView';
  * function over an array, so moving it behind the API later changes one call.
  */
 
-/**
- * Per-category stage scale.
- *
- * Source photography frames each kind of product differently: a toilet fills
- * its frame, a basin floats in white, a shower column is tall and narrow.
- * Without this a grid row reads as four unrelated sizes.
- */
-const CATEGORY_SCALE: Record<string, number> = {
-  'Bồn cầu': 0.92,
-  Lavabo: 1.0,
-  'Vòi lavabo': 1.08,
-  'Sen tắm': 0.9,
-  'Bồn tắm': 1.0,
-  'Gương & phụ kiện': 0.95,
-};
-const scaleFor = (category: string) => CATEGORY_SCALE[category] ?? 0.95;
-
 type LoadState = 'loading' | 'ready' | 'error';
 
 export default function CatalogClient({ tenantId }: { tenantId: string }) {
@@ -439,11 +422,11 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
             ) : (
               <>
                 <div className="grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-3 lg:gap-x-8">
-                  {visible.map((p) => (
+                  {visible.map((p, index) => (
                     <CatalogProductCard
                       key={p.id}
                       product={p}
-                      scale={scaleFor(p.category)}
+                      eager={index < 3}
                       saved={savedIds.includes(p.id)}
                       comparing={compareIds.includes(p.id)}
                       onToggleSave={handleToggleSave}
