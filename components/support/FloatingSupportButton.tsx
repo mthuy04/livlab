@@ -75,7 +75,10 @@ export default function FloatingSupportButton() {
   // Hidden in the admin and showroom portals. Must stay below every hook —
   // see the note in Navbar: an early return above the effects changes this
   // component's hook count between renders and crashes the page (React #300).
-  if (pathname.startsWith('/admin') || pathname.startsWith('/showroom')) {
+  // The storefront homepage carries its own consultation block, and a generic
+  // chat bubble floating over it reads as a startup widget. Expert stays on
+  // every other route, Room Studio included.
+  if (pathname === '/' || pathname.startsWith('/admin') || pathname.startsWith('/showroom')) {
     return null;
   }
 

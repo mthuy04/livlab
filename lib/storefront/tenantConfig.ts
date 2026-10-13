@@ -107,36 +107,44 @@ function baseNavigation(
   features: TenantFeatureFlags,
   { isDefaultTenant }: { isDefaultTenant: boolean }
 ): TenantNavItem[] {
-  const design: { href: string; label: string }[] = [];
-  if (features.roomStudio) design.push({ href: '/room-studio', label: 'Room Studio' });
-  design.push({ href: '/visual-studio', label: 'Visual Studio' });
-  if (features.expert) design.push({ href: '/ai-suggestion', label: 'Gợi ý thiết kế' });
-
   const advice: { href: string; label: string }[] = [
-    { href: '/contact', label: 'Liên hệ tư vấn' },
+    { href: '/contact', label: 'Tư vấn showroom' },
   ];
   if (features.quotations) {
     advice.push(
+      { href: '/quote', label: 'Yêu cầu báo giá' },
       { href: '/track-quote', label: 'Tra cứu báo giá' },
       { href: '/quote-process', label: 'Quy trình báo giá' }
     );
   }
   if (isDefaultTenant) advice.push({ href: '/about', label: 'Về LivLab' });
 
-  return [
+  const items: TenantNavItem[] = [
     {
       href: '/concepts',
       label: 'Không gian',
       children: [
         { href: '/concepts', label: 'Concept phòng tắm' },
-        { href: '/small-bathroom-combo', label: 'Combo phòng tắm' },
         { href: '/blog', label: 'Cẩm nang' },
       ],
     },
     { href: '/products', label: 'Sản phẩm' },
-    { href: design[0]?.href ?? '/room-studio', label: 'Thiết kế', children: design },
-    { href: '/contact', label: 'Tư vấn', children: advice },
   ];
+
+  if (features.roomStudio) items.push({ href: '/room-studio', label: 'Room Studio' });
+  items.push({ href: '/contact', label: 'Tư vấn', children: advice });
+
+  return items;
+}
+
+/**
+ * The thin bar above the header. Only real destinations go here — never a
+ * phone number or address the tenant has not actually provided.
+ */
+export function utilityLinks(features: TenantFeatureFlags): { href: string; label: string }[] {
+  const links = [{ href: '/blog', label: 'CẨM NANG' }];
+  if (features.quotations) links.push({ href: '/track-quote', label: 'TRA CỨU BÁO GIÁ' });
+  return links;
 }
 
 const LIVLAB_FEATURES: TenantFeatureFlags = {

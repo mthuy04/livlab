@@ -16,6 +16,12 @@ export interface RoomProduct {
   brand: string | null;
   category: string | null;
   priceMin: number | null;
+  priceMax: number | null;
+  priceRange: string | null;
+  material: string | null;
+  finish: string | null;
+  dimensions: string | null;
+  warranty: string | null;
   imageUrl: string | null;
   slug: string | null;
 }
@@ -66,8 +72,20 @@ const TITLE_IMAGES: { match: RegExp; image: string }[] = [
   { match: /nhỏ|compact|4m/i, image: '/images/concept-compact-bathroom.png' },
 ];
 
-/** Held back from the collections row so the page never repeats a render. */
-export const ROOM_STUDIO_IMAGE = '/images/concept-luxury-master-bathroom.png';
+/**
+ * Which concept becomes the shoppable room, in order. Titles rather than the
+ * `style` field, for the reason given above. The shoppable section is the one
+ * place a customer looks closely at a room, so it gets the best render LivLab
+ * has rather than whichever concept happens to be first in the seed.
+ */
+const FEATURED_PREFERENCE = [/master cao cấp/i, /luxury/i, /khách sạn/i, /japandi/i];
+
+/**
+ * Held back from the collections row so the page never repeats a render. The
+ * Room Studio section shows a screenshot of the application, not a render, so
+ * only the hero and the shoppable room reserve one.
+ */
+const HERO_IMAGE = '/images/concept-japandi-bathroom.png';
 
 function imageForTitle(title: string): string | null {
   return TITLE_IMAGES.find((entry) => entry.match.test(title))?.image ?? null;
@@ -75,58 +93,121 @@ function imageForTitle(title: string): string | null {
 
 export interface CategoryEntry {
   name: string;
-  count: number;
   image: string;
+  /** Scale applied inside the stage so every product reads at one size. */
+  imageScale: number;
   href: string;
+}
+
+export interface FeaturedProduct extends RoomProduct {
+  imageScale: number;
 }
 
 export interface HomepageData {
   categories: CategoryEntry[];
   featured: FeaturedRoom | null;
+  featuredProducts: FeaturedProduct[];
   collections: CollectionItem[];
 }
 
 /**
- * The four sanitaryware categories the storefront leads with, in the order a
- * bathroom is specified. Each is a real catalogue category; one with no
- * products simply does not appear.
+ * The product stage.
+ *
+ * The catalogue's shots are square with white margin baked in, but how much
+ * margin varies enormously: a toilet fills 97% of its frame's height and a
+ * basin 75%, so `object-contain` alone renders one huge and the next tiny.
+ * Each scale below was measured off the asset — content height as a fraction
+ * of the file — and solved so the product lands at ~74% of the stage height.
+ * Swapping an image means re-measuring it.
  */
-const LEAD_CATEGORIES = ['Lavabo', 'Bồn cầu', 'Sen tắm', 'Gương'];
+const STAGE_SCALE: Record<string, number> = {
+  'llv-toi-toto-cs818dt2': 0.76,   // 97% of frame
+  'llv-toi-toto-cs838dt8': 0.76,   // 97%
+  'llv-lav-toto-lt1705-xw': 0.98,  // 75%
+  'llv-lav-toto-lht328c': 0.89,    // 83%
+  'llv-sho-inax-bfv915s': 0.77,    // 96%
+  'llv-sho-inax-bfv655t8c': 0.82,  // 90%
+  'llv-fau-toto-tx109ld': 1.37,    // 54%
+  'llv-mir-karat-em0240250': 0.78, // 95%
+};
+
+const stageScale = (id: string) => STAGE_SCALE[id] ?? 0.82;
+
+/**
+ * The four categories the storefront leads with, in the order a bathroom is
+ * specified. `Bồn tắm` is not here because the catalogue holds no bathtub, so
+ * the fourth slot is mirrors and accessories instead of an empty category.
+ */
+const LEAD_CATEGORIES: { name: string; productId: string; category: string }[] = [
+  { name: 'Bồn cầu', productId: 'llv-toi-toto-cs818dt2', category: 'Bồn cầu' },
+  { name: 'Chậu lavabo', productId: 'llv-lav-toto-lt1705-xw', category: 'Lavabo' },
+  { name: 'Sen & vòi', productId: 'llv-sho-inax-bfv915s', category: 'Sen tắm' },
+  { name: 'Gương & phụ kiện', productId: 'llv-mir-karat-em0240250', category: 'Gương' },
+];
+
+/** A toilet, a basin, a mixer and a shower — the spine of a bathroom spec. */
+const FEATURED_PRODUCT_IDS = [
+  'llv-toi-toto-cs838dt8',
+  'llv-lav-toto-lht328c',
+  'llv-fau-toto-tx109ld',
+  'llv-sho-inax-bfv655t8c',
+];
+
+const PRODUCT_FIELDS = {
+  id: true, name: true, brand: true, category: true,
+  priceMin: true, priceMax: true, priceRange: true,
+  material: true, finish: true, dimensions: true, warranty: true,
+  imageUrl: true, slug: true,
+} as const;
 
 async function getCategories(): Promise<CategoryEntry[]> {
   try {
     const rows = await prisma.product.findMany({
-      where: { category: { in: LEAD_CATEGORIES }, imageUrl: { not: null } },
-      select: { category: true, imageUrl: true },
-      orderBy: { name: 'asc' },
+      where: { id: { in: LEAD_CATEGORIES.map((c) => c.productId) } },
+      select: { id: true, imageUrl: true },
     });
+    const byId = new Map(rows.map((r) => [r.id, r.imageUrl]));
 
-    return LEAD_CATEGORIES.map((name) => {
-      const inCategory = rows.filter((r) => r.category === name);
-      return {
-        name,
-        count: inCategory.length,
-        image: inCategory[0]?.imageUrl ?? '',
-        href: `/products?category=${encodeURIComponent(name)}`,
-      };
-    }).filter((c) => c.image);
+    return LEAD_CATEGORIES.map((entry) => ({
+      name: entry.name,
+      image: byId.get(entry.productId) ?? '',
+      imageScale: stageScale(entry.productId),
+      href: `/products?category=${encodeURIComponent(entry.category)}`,
+    })).filter((c) => c.image);
   } catch {
     return [];
   }
 }
 
-/**
- * Catalogue scoping by tenant lands with the Phase 2 product work; until then
- * every storefront shows the same concepts, which is correct while LivLab has
- * one live tenant. See docs/storefront-tenant-fields.md.
- */
+async function getFeaturedProducts(): Promise<FeaturedProduct[]> {
+  try {
+    const rows = await prisma.product.findMany({
+      where: { id: { in: FEATURED_PRODUCT_IDS } },
+      select: PRODUCT_FIELDS,
+    });
+    const byId = new Map(rows.map((r) => [r.id, r]));
+    return FEATURED_PRODUCT_IDS.map((id) => {
+      const row = byId.get(id);
+      return row ? { ...row, imageScale: stageScale(id) } : null;
+    }).filter((p): p is FeaturedProduct => p !== null && Boolean(p.imageUrl));
+  } catch {
+    return [];
+  }
+}
+
 export async function getHomepageData(): Promise<HomepageData> {
   // The first concept whose style has a LivLab render, so the featured room is
   // shown at the quality the rest of the page is held to. Deterministic, so the
   // homepage does not shuffle between deploys.
   // The shoppable room must be a concept that has BOTH hotspots and products
   // the catalogue can resolve.
-  const candidate = concepts.find((c) => (c.hotspots?.length ?? 0) > 0 && (c.productIds?.length ?? 0) > 0);
+  const shoppable = concepts.filter(
+    (c) => (c.hotspots?.length ?? 0) > 0 && (c.productIds?.length ?? 0) > 0 && imageForTitle(c.title)
+  );
+  const candidate =
+    FEATURED_PREFERENCE.map((pattern) => shoppable.find((c) => pattern.test(c.title))).find(Boolean) ??
+    shoppable[0] ??
+    concepts.find((c) => (c.hotspots?.length ?? 0) > 0 && (c.productIds?.length ?? 0) > 0);
 
   let featured: FeaturedRoom | null = null;
 
@@ -135,15 +216,12 @@ export async function getHomepageData(): Promise<HomepageData> {
       ...new Set([...(candidate.productIds ?? []), ...(candidate.hotspots ?? []).map((h) => h.productId)]),
     ].filter(Boolean) as string[];
 
-    let rows: {
-      id: string; name: string; brand: string | null; category: string | null;
-      priceMin: number | null; imageUrl: string | null; slug: string | null;
-    }[] = [];
+    let rows: RoomProduct[] = [];
 
     try {
       rows = await prisma.product.findMany({
         where: { id: { in: ids } },
-        select: { id: true, name: true, brand: true, category: true, priceMin: true, imageUrl: true, slug: true },
+        select: PRODUCT_FIELDS,
       });
     } catch {
       // The homepage must still render without the database. It then shows the
@@ -165,9 +243,9 @@ export async function getHomepageData(): Promise<HomepageData> {
       slug: candidate.slug,
       title: candidate.title,
       description: candidate.shortDescription ?? '',
-      // Asked for at editorial width. Unsplash serves the same photograph at
-      // any size, so this is a larger render of the asset already in use.
-      image: candidate.image.replace(/([?&])w=\d+/, '$1w=2000'),
+      // LivLab's own render where there is one. The seed's stock photograph is
+      // the fallback, asked for at editorial width.
+      image: imageForTitle(candidate.title) ?? candidate.image.replace(/([?&])w=\d+/, '$1w=2000'),
       products: rows,
       hotspots,
       priceFrom: prices.length ? Math.min(...prices) : null,
@@ -180,7 +258,7 @@ export async function getHomepageData(): Promise<HomepageData> {
   // Deduped by IMAGE, so the row shows distinct rooms rather than the same
   // render under several headlines. The Room Studio section holds one render
   // back for itself.
-  const seen = new Set<string>([ROOM_STUDIO_IMAGE]);
+  const seen = new Set<string>([HERO_IMAGE, featured?.image ?? '']);
   const collections: CollectionItem[] = [];
   for (const concept of concepts) {
     const image = imageForTitle(concept.title);
@@ -195,5 +273,6 @@ export async function getHomepageData(): Promise<HomepageData> {
     if (collections.length >= 4) break;
   }
 
-  return { categories: await getCategories(), featured, collections };
+  const [categories, featuredProducts] = await Promise.all([getCategories(), getFeaturedProducts()]);
+  return { categories, featured, featuredProducts, collections };
 }

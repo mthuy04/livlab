@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -213,11 +213,15 @@ body {
   --sf-radius-lg: 10px;
 
   /* Rhythm */
-  --sf-gutter: 24px;
+  --sf-gutter: 18px;
   --sf-max-width: 1360px;
 
   background-color: var(--sf-bg);
   color: var(--sf-text);
+}
+
+@media (min-width: 768px) {
+  .storefront { --sf-gutter: 28px; }
 }
 
 @media (min-width: 1024px) {

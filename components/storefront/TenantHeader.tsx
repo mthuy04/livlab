@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import type { Route } from 'next';
 import { ChevronDown, Menu, Search, Bookmark, X } from 'lucide-react';
 import { useQuote } from '@/lib/context/QuoteContext';
-import type { TenantStorefrontConfig } from '@/lib/storefront/tenantConfig';
+import { utilityLinks, type TenantStorefrontConfig } from '@/lib/storefront/tenantConfig';
 import { Container } from './primitives';
 
 /**
@@ -45,21 +45,42 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
 
   const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
 
+  const utility = utilityLinks(tenant.features);
+
   return (
     <>
       <header
         className="sticky top-0 z-50"
         style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #E5E5E5' }}
       >
+        {/* Only real destinations; never an invented phone number or address. */}
+        {utility.length > 0 && (
+          <div className="hidden lg:block" style={{ height: 30, backgroundColor: '#F5F5F5' }}>
+            <Container>
+              <div className="flex h-[30px] items-center justify-end gap-7">
+                {utility.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href as Route}
+                    className="transition-opacity hover:opacity-60"
+                    style={{ fontSize: 12, fontWeight: 500, letterSpacing: '.1em', color: '#555555' }}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </Container>
+          </div>
+        )}
         <Container>
-          <div className="flex h-16 items-center justify-between gap-6 lg:h-[72px]">
+          <div className="flex h-16 items-center justify-between gap-6 lg:h-[74px]">
             <Link href="/" className="flex shrink-0 items-center gap-2.5" aria-label={tenant.brand.name}>
               {tenant.brand.logo && !logoFailed ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={tenant.brand.logo}
                   alt={tenant.brand.logoAlt ?? tenant.brand.name}
-                  className="h-7 w-auto lg:h-8"
+                  className="h-9 w-auto lg:h-[42px]"
                   onError={() => setLogoFailed(true)}
                 />
               ) : (
@@ -73,10 +94,15 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
             </Link>
 
             <nav aria-label="Điều hướng chính" className="hidden lg:block">
-              <ul className="flex items-center gap-9">
+              <ul className="flex items-center gap-8">
                 {tenant.navigation.map((item) => {
                   const active = isActive(item.href) || item.children?.some((c) => isActive(c.href));
-                  const linkStyle = { color: active ? '#252525' : '#555555', fontWeight: 500 };
+                  const linkStyle = {
+                    color: active ? '#262626' : '#262626',
+                    fontWeight: 500,
+                    letterSpacing: '.10em',
+                    textTransform: 'uppercase' as const,
+                  };
 
                   if (!item.children?.length) {
                     return (
@@ -107,7 +133,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                         aria-expanded={isOpen}
                         aria-haspopup="true"
                         onClick={() => setOpenGroup(isOpen ? null : item.label)}
-                        className="flex items-center gap-1 py-1 text-[14px] transition-colors"
+                        className="flex items-center gap-1.5 py-1 text-[14px] transition-colors"
                         style={{ ...linkStyle, borderBottom: active ? '2px solid var(--tenant-accent)' : '2px solid transparent' }}
                       >
                         {item.label}
@@ -120,8 +146,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                           style={{
                             backgroundColor: '#FFFFFF',
                             border: '1px solid #E5E5E5',
-                            borderRadius: 2,
-                            boxShadow: '0 8px 28px rgba(0,0,0,0.10)',
+                            borderRadius: 0,
                           }}
                         >
                           {item.children.map((child) => (
@@ -129,8 +154,8 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                               key={child.href}
                               href={child.href as Route}
                               onClick={() => setOpenGroup(null)}
-                              className="block px-4 py-2.5 text-[14px] transition-colors hover:bg-[color:var(--sf-surface-muted)]"
-                              style={{ color: isActive(child.href) ? 'var(--sf-text)' : 'var(--sf-text-secondary)' }}
+                              className="block px-5 py-3 transition-colors hover:bg-[color:var(--sf-surface-muted)]"
+                              style={{ fontSize: 14, fontWeight: 400, color: isActive(child.href) ? '#262626' : '#555555' }}
                             >
                               {child.label}
                             </Link>
@@ -154,16 +179,19 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
               {tenant.features.quotations && (
                 <button
                   onClick={toggleDrawer}
-                  className="ml-2 hidden items-center gap-2 text-[14px] font-medium transition-opacity hover:opacity-90 lg:inline-flex"
+                  className="ml-2 hidden items-center gap-2 transition-opacity hover:opacity-80 lg:inline-flex"
                   style={{
                     height: 42,
                     padding: '0 20px',
+                    borderRadius: 2,
                     backgroundColor: 'var(--tenant-accent)',
                     color: 'var(--tenant-accent-contrast)',
-                    borderRadius: 2,
+                    fontSize: 14,
+                    fontWeight: 500,
+                    letterSpacing: '.08em',
                   }}
                 >
-                  Yêu cầu báo giá
+                  YÊU CẦU BÁO GIÁ
                   {count > 0 && <span className="opacity-75">({count})</span>}
                 </button>
               )}
