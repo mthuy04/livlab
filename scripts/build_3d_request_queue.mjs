@@ -69,10 +69,20 @@ async function main() {
       await readFile(path.join(ROOT, 'data/demo/manufacturer-3d-source-audit.json'), 'utf8')
     );
     for (const entry of audit.activeCatalog ?? []) {
-      const row = (entry.rows ?? []).find(
-        (r) => r.sectionType === 'THREE_D' && r.present && r.exactness === 'EXACT_COMMERCIAL_SKU'
-      );
-      if (row) discovered.set(entry.sku, { url: row.url, format: row.actualFormat, file: row.actualFileName });
+      const rows3d = (entry.rows ?? []).filter((r) => r.sectionType === 'THREE_D');
+      const exact = rows3d.find((r) => r.present && r.exactness === 'EXACT_COMMERCIAL_SKU');
+      if (exact) {
+        discovered.set(entry.sku, {
+          state: 'SOURCE_FOUND_EXPORT_REQUIRED',
+          url: exact.url, format: exact.actualFormat, file: exact.actualFileName,
+        });
+      } else if (rows3d.length && !rows3d.some((r) => r.present)) {
+        // §39: INAX lists a 3D Max row for these and leaves the href empty.
+        // The manufacturer says a file should exist and does not serve one —
+        // which is a better thing to ask about than a blank page, and no
+        // invented URL goes in the record.
+        discovered.set(entry.sku, { state: 'LISTED_BUT_SOURCE_MISSING', url: null, format: null, file: null });
+      }
     }
   } catch {
     // No audit yet — every SKU still needs asking for.
@@ -105,7 +115,7 @@ async function main() {
         sourceFile: found?.file ?? null,
         sourceFormat: found?.format ?? null,
         sourceUrl: found?.url ?? null,
-        status: found ? 'SOURCE_VERIFIED' : 'SOURCE_UNAVAILABLE',
+        status: found?.state ?? 'SOURCE_UNAVAILABLE',
         // A .max needs Autodesk; nothing in this repository opens one.
         requiredTool: found?.format === 'MAX' ? 'Autodesk 3ds Max' : null,
         requestedOutput: 'FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu',
@@ -115,8 +125,12 @@ async function main() {
         dimensionsKnown: Boolean(d),
         usedInPublishedConcept: inConcept,
         hasManufacturerSpecSheet: hasSpec,
-        priority: found ? 0 : score,
-        stillNeedsShowroomRequest: !found,
+        // A SKU whose file is already public needs an export, not a hunt. One
+        // whose row is listed-but-empty is the best thing to ask the
+        // manufacturer about, so it keeps its priority.
+        priority: found?.state === 'SOURCE_FOUND_EXPORT_REQUIRED' ? 0 : score,
+        stillNeedsShowroomRequest: found?.state !== 'SOURCE_FOUND_EXPORT_REQUIRED',
+        askManufacturerForMissingListedFile: found?.state === 'LISTED_BUT_SOURCE_MISSING',
         notes: [
           inConcept ? 'Đang xuất hiện trong concept đã xuất bản.' : null,
           hasSpec ? 'Có thông số chính thức để đối chiếu kích thước.' : 'Chưa có thông số chính thức — cần xin kèm.',
@@ -143,6 +157,8 @@ async function main() {
       sourceAlreadyPublic: alreadyFound.length,
       stillNeedsShowroomRequest: needsRequest.length,
     },
+    listedButMissing: queue.filter((q) => q.askManufacturerForMissingListedFile)
+      .map((q) => ({ brand: q.brand, sku: q.sku, manufacturerUrl: q.manufacturerUrl })),
     alreadyDiscovered: alreadyFound.map((q) => ({
       brand: q.brand, sku: q.sku, sourceFormat: q.sourceFormat,
       sourceFile: q.sourceFile, sourceUrl: q.sourceUrl, requiredTool: q.requiredTool,
@@ -159,6 +175,8 @@ async function main() {
   console.log(`SKU trong catalog          : ${queue.length}`);
   console.log(`da co nguon chinh hang     : ${alreadyFound.length}`);
   console.log(`con phai xin showroom      : ${needsRequest.length}`);
+  const listed = queue.filter((q) => q.askManufacturerForMissingListedFile);
+  console.log(`hang co liet ke nhung thieu: ${listed.length}  (${listed.map((q) => q.sku).join(', ') || '—'})`);
   console.log(`co thong so chinh thuc     : ${report.summary.withManufacturerSpec}`);
   console.log(`dang dung trong concept    : ${report.summary.usedInPublishedConcepts}`);
   console.log(`\n=== LO THI DIEM (15 uu tien cao nhat) ===`);

@@ -66,9 +66,11 @@ def declared_format(url):
     for ext, fmt in FORMAT_BY_EXT.items():
         if path.endswith(ext):
             return fmt
-    if 'drive.google' in path or 'docs.google' in path:
-        # §15: the host says nothing about the payload. A Drive link under a 3D
+    if any(h in path for h in ('drive.google', 'docs.google', 'box.com', 'dropbox.com')):
+        # §15: the host says nothing about the payload. A share link under a 3D
         # heading may hold a .max, a .zip or a PDF, and only opening it tells.
+        # Box belongs here for the same reason Drive does — INAX serves its 3D
+        # Max files from extensionless Box URLs.
         return 'UNKNOWN_REMOTE_FILE'
     return 'UNKNOWN'
 

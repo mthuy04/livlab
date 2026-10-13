@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T18:22:58.725Z",
+  "generatedAt": "2026-10-13T18:34:28.687Z",
   "tenant": "tungdang",
   "summary": {
     "catalogSkus": 99,
@@ -10,6 +10,18 @@
     "sourceAlreadyPublic": 6,
     "stillNeedsShowroomRequest": 93
   },
+  "listedButMissing": [
+    {
+      "brand": "INAX",
+      "sku": "AC-900VRN-2",
+      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-900vrn-2/"
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-912VN",
+      "manufacturerUrl": "https://www.inax.com.vn/products/toilet/ac-912vn/"
+    }
+  ],
   "alreadyDiscovered": [
     {
       "brand": "INAX",
@@ -124,6 +136,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 9,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Có thông số chính thức để đối chiếu kích thước."
@@ -147,6 +160,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 8,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Có thông số chính thức để đối chiếu kích thước.",
@@ -175,6 +189,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 7,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -202,6 +217,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 7,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -229,6 +245,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 7,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -256,6 +273,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 7,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -283,6 +301,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 6,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -305,6 +324,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 6,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm.",
@@ -333,6 +353,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 6,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -359,6 +380,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 6,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -381,6 +403,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 5,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -404,6 +427,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 5,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm.",
@@ -428,6 +452,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 5,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm.",
@@ -452,6 +477,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 5,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -475,6 +501,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 5,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -504,6 +531,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 9,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Có thông số chính thức để đối chiếu kích thước."
@@ -527,6 +555,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 8,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Có thông số chính thức để đối chiếu kích thước.",
@@ -555,6 +584,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 7,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -582,6 +612,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 7,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -609,6 +640,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 7,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -636,6 +668,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 7,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -663,6 +696,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 6,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -685,6 +719,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 6,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm.",
@@ -713,6 +748,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 6,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -739,6 +775,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 6,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -761,6 +798,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 5,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -784,6 +822,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 5,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm.",
@@ -808,6 +847,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 5,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm.",
@@ -832,6 +872,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 5,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -855,6 +896,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 5,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -882,6 +924,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 5,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Đang xuất hiện trong concept đã xuất bản.",
         "Chưa có thông số chính thức — cần xin kèm."
@@ -896,7 +939,7 @@
       "sourceFile": null,
       "sourceFormat": null,
       "sourceUrl": null,
-      "status": "SOURCE_UNAVAILABLE",
+      "status": "LISTED_BUT_SOURCE_MISSING",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
       "officialDimensionsMm": {
@@ -909,6 +952,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -931,6 +975,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -958,6 +1003,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -984,6 +1030,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1010,6 +1057,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1036,6 +1084,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1062,6 +1111,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1088,6 +1138,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1114,6 +1165,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1140,6 +1192,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1166,6 +1219,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1192,6 +1246,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1218,6 +1273,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1244,6 +1300,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1266,6 +1323,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -1289,6 +1347,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -1312,6 +1371,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -1339,6 +1399,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1365,6 +1426,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1391,6 +1453,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1417,6 +1480,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -1443,6 +1507,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -1469,6 +1534,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -1495,6 +1561,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -1521,6 +1588,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 4,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước."
       ]
@@ -1543,6 +1611,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1566,6 +1635,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1580,7 +1650,7 @@
       "sourceFile": null,
       "sourceFormat": null,
       "sourceUrl": null,
-      "status": "SOURCE_UNAVAILABLE",
+      "status": "LISTED_BUT_SOURCE_MISSING",
       "requiredTool": null,
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
       "officialDimensionsMm": null,
@@ -1589,6 +1659,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": true,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1612,6 +1683,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1635,6 +1707,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1658,6 +1731,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1681,6 +1755,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1704,6 +1779,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1727,6 +1803,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1750,6 +1827,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1773,6 +1851,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1796,6 +1875,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1819,6 +1899,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1842,6 +1923,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1865,6 +1947,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1888,6 +1971,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1911,6 +1995,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1934,6 +2019,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1957,6 +2043,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -1980,6 +2067,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2003,6 +2091,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2026,6 +2115,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2049,6 +2139,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 3,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2076,6 +2167,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -2102,6 +2194,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -2128,6 +2221,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -2154,6 +2248,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -2176,6 +2271,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2199,6 +2295,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2222,6 +2319,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2245,6 +2343,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2268,6 +2367,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2291,6 +2391,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2314,6 +2415,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2337,6 +2439,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2360,6 +2463,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2383,6 +2487,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2406,6 +2511,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2429,6 +2535,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2452,6 +2559,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2475,6 +2583,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2498,6 +2607,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2521,6 +2631,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2544,6 +2655,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2567,6 +2679,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2590,6 +2703,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2613,6 +2727,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2640,6 +2755,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -2666,6 +2782,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -2692,6 +2809,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -2718,6 +2836,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 2,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm."
       ]
@@ -2740,6 +2859,7 @@
       "hasManufacturerSpecSheet": false,
       "priority": 1,
       "stillNeedsShowroomRequest": true,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Chưa có thông số chính thức — cần xin kèm.",
         "Catalog chưa có kích thước."
@@ -2754,7 +2874,7 @@
       "sourceFile": "AC-1008VRN.max",
       "sourceFormat": "MAX",
       "sourceUrl": "https://app.box.com/s/br6ru4nr1n1ikyoi1hcjgdtwhqxx6iow",
-      "status": "SOURCE_VERIFIED",
+      "status": "SOURCE_FOUND_EXPORT_REQUIRED",
       "requiredTool": "Autodesk 3ds Max",
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
       "officialDimensionsMm": null,
@@ -2763,6 +2883,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 0,
       "stillNeedsShowroomRequest": false,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -2777,7 +2898,7 @@
       "sourceFile": "4_-_AC_-_4005VN_-_FN.max",
       "sourceFormat": "MAX",
       "sourceUrl": "https://app.box.com/s/rcqxfbjkj9ltkrlm5vviy6jjzfokfzf1",
-      "status": "SOURCE_VERIFIED",
+      "status": "SOURCE_FOUND_EXPORT_REQUIRED",
       "requiredTool": "Autodesk 3ds Max",
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
       "officialDimensionsMm": null,
@@ -2786,6 +2907,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 0,
       "stillNeedsShowroomRequest": false,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -2800,7 +2922,7 @@
       "sourceFile": "AC-2700VN.max",
       "sourceFormat": "MAX",
       "sourceUrl": "https://app.box.com/s/g1jb83m9dq97a7174iqv9gvn3by3ybzp",
-      "status": "SOURCE_VERIFIED",
+      "status": "SOURCE_FOUND_EXPORT_REQUIRED",
       "requiredTool": "Autodesk 3ds Max",
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
       "officialDimensionsMm": null,
@@ -2809,6 +2931,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 0,
       "stillNeedsShowroomRequest": false,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -2823,7 +2946,7 @@
       "sourceFile": "AC-1135VN.max",
       "sourceFormat": "MAX",
       "sourceUrl": "https://app.box.com/s/krjrdhfnakzse75m4zrl3cgpp5atut0s",
-      "status": "SOURCE_VERIFIED",
+      "status": "SOURCE_FOUND_EXPORT_REQUIRED",
       "requiredTool": "Autodesk 3ds Max",
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
       "officialDimensionsMm": null,
@@ -2832,6 +2955,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 0,
       "stillNeedsShowroomRequest": false,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -2846,7 +2970,7 @@
       "sourceFile": "AC-1035VN.max",
       "sourceFormat": "MAX",
       "sourceUrl": "https://app.box.com/s/93cn279dbftqfu4y4y0m431zw0mqjhze",
-      "status": "SOURCE_VERIFIED",
+      "status": "SOURCE_FOUND_EXPORT_REQUIRED",
       "requiredTool": "Autodesk 3ds Max",
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
       "officialDimensionsMm": null,
@@ -2855,6 +2979,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 0,
       "stillNeedsShowroomRequest": false,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
@@ -2869,7 +2994,7 @@
       "sourceFile": "AC-1017VRN.max",
       "sourceFormat": "MAX",
       "sourceUrl": "https://app.box.com/s/kkbn2cx6i2h4imdqvbbadivgi4mqbevb",
-      "status": "SOURCE_VERIFIED",
+      "status": "SOURCE_FOUND_EXPORT_REQUIRED",
       "requiredTool": "Autodesk 3ds Max",
       "requestedOutput": "FBX hoặc GLB (ưu tiên), kèm đơn vị đo và vật liệu",
       "officialDimensionsMm": null,
@@ -2878,6 +3003,7 @@
       "hasManufacturerSpecSheet": true,
       "priority": 0,
       "stillNeedsShowroomRequest": false,
+      "askManufacturerForMissingListedFile": false,
       "notes": [
         "Có thông số chính thức để đối chiếu kích thước.",
         "Catalog chưa có kích thước."
