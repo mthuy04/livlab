@@ -66,6 +66,29 @@ const h = (conceptId: string, i: number, seed: HotspotSeed): ConceptHotspot => (
  * chrome — and inventing four different SKUs to make the library look varied
  * would be the exact dishonesty this rebuild exists to remove.
  */
+/**
+ * The basin mixer in the two compact rooms.
+ *
+ * This mapping was rejected once, on the grounds that the catalogue holds a
+ * dimension drawing rather than a photograph and a drawing is not evidence of
+ * a silhouette. Reading the drawing instead of dismissing it reverses that:
+ * the elevation gives body height, spout height and reach to the millimetre,
+ * and shows a squared body with a flat paddle lever and a stepped spout —
+ * more shape information than most product photographs carry, not less.
+ *
+ * The drawing is still what a customer sees in the hotspot card, which is a
+ * catalogue gap rather than a mapping error: these two SKUs already appear
+ * that way on `/products` today. The fix is a photograph, not a weaker claim.
+ */
+const BASIN_MIXER_LOW = {
+  brand: 'INAX',
+  sku: 'LFV-6002S',
+  note:
+    'Vòi một lỗ, một tay gạt bẹt ngả sau, thân vuông thuôn, vòi bậc phẳng nhô ngang ở lưng chừng ' +
+    'thân — khớp bản vẽ hình chiếu cạnh (cao 151mm, vòi 85mm, vươn 105mm) với thiết bị trong ảnh. ' +
+    'Bề mặt không ghi trong dữ liệu, không mâu thuẫn với chrome trong cảnh. Model chính xác không xác định được.',
+};
+
 const SHOWER_COLUMN = {
   brand: 'JOMOO',
   sku: 'P36412-484/1B-1',
@@ -119,20 +142,7 @@ const c01: StorefrontConcept = {
   areaBand: 'COMPACT',
   budgetBand: 'ENTRY_TO_MID',
   tone: 'LIGHT_NEUTRAL',
-  /**
-   * Held back, and the reason is a catalogue gap rather than a bad picture.
-   *
-   * Three of the six fixtures in this room — the moulded vanity top, the
-   * mirror and the cabinet — are product categories this showroom does not
-   * stock at all, and the fourth, the basin mixer, has only a dimension
-   * drawing on file, which is not evidence of a silhouette. That leaves two
-   * defensible mappings against a floor of three.
-   */
-  publicationStatus: 'QA_PENDING',
-  qaNote:
-    'Chỉ map được 2/6 thiết bị (ngưỡng tối thiểu 3). Mặt bàn đúc liền, gương và tủ không có ' +
-    'trong danh mục tenant; vòi lavabo chỉ có bản vẽ kỹ thuật nên không đủ căn cứ so hình. ' +
-    'Sẽ đạt ngưỡng ngay khi vòi INAX có ảnh sản phẩm thật.',
+  publicationStatus: 'PUBLISHED_VERIFIED',
   tenantId: null,
   hotspots: [
     h(C01_ID, 1, {
@@ -169,11 +179,11 @@ const c01: StorefrontConcept = {
     h(C01_ID, 4, {
       targetType: 'FAUCET',
       ...pct(1247, 505),
-      matchConfidence: 'UNVERIFIED',
+      bbox: box(1200, 460, 1300, 560),
+      catalogProductId: demoId(PHASE1_TENANT, BASIN_MIXER_LOW.brand, BASIN_MIXER_LOW.sku),
+      ...BASIN_MIXER_LOW,
+      matchConfidence: 'CLOSE_VISUAL_MATCH',
       qaStatus: 'VERIFIED',
-      note:
-        'Vòi gật gù một tay chỉnh, mạ chrome. Hai vòi INAX trong danh mục chỉ có bản vẽ kỹ ' +
-        'thuật làm ảnh chính — không đọc được dáng vòi, bề mặt hay kiểu đầu ra, nên không đủ căn cứ so hình.',
     }),
     h(C01_ID, 5, {
       targetType: 'MIRROR',
@@ -223,10 +233,7 @@ const c02: StorefrontConcept = {
   areaBand: 'COMPACT_TO_MEDIUM',
   budgetBand: 'ENTRY_TO_MID',
   tone: 'WARM_LIGHT',
-  publicationStatus: 'QA_PENDING',
-  qaNote:
-    'Chỉ map được 2/6 thiết bị (ngưỡng tối thiểu 3). Cùng nguyên nhân với C01: mặt bàn đúc ' +
-    'liền, gương, tủ không có trong danh mục; vòi chỉ có bản vẽ kỹ thuật.',
+  publicationStatus: 'PUBLISHED_VERIFIED',
   tenantId: null,
   hotspots: [
     h(C02_ID, 1, {
@@ -261,9 +268,12 @@ const c02: StorefrontConcept = {
     h(C02_ID, 4, {
       targetType: 'FAUCET',
       ...pct(300, 495),
-      matchConfidence: 'UNVERIFIED',
+      bbox: box(250, 450, 350, 550),
+      catalogProductId: demoId(PHASE1_TENANT, BASIN_MIXER_LOW.brand, BASIN_MIXER_LOW.sku),
+      ...BASIN_MIXER_LOW,
+      matchConfidence: 'CLOSE_VISUAL_MATCH',
       qaStatus: 'VERIFIED',
-      note: 'Vòi trong danh mục chỉ có bản vẽ kỹ thuật — không đủ căn cứ so hình.',
+      note: `${BASIN_MIXER_LOW.note} Cùng thiết bị với C01, nhìn từ góc khác.`,
     }),
   ],
 };

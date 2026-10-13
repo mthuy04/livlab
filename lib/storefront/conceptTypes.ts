@@ -410,6 +410,33 @@ export interface ConceptHotspotView {
   product: ConceptProductView;
 }
 
+/**
+ * Whether the asset is a dimension drawing rather than a photograph.
+ *
+ * Read from the publisher's own filename — these assets are published as
+ * "Bản Vẽ Kỹ Thuật …" — so this is metadata, not a guess about pixels.
+ *
+ * A drawing is fine evidence for a mapping: its elevation gives body height,
+ * spout height and reach to the millimetre, which is how the basin mixer in
+ * the two compact rooms was matched at all. It is not fine as a thumbnail.
+ * Measured at the 76px the hotspot card renders, the line work flattens to a
+ * grey smudge — nothing darker than #B5B5B5, a tonal spread of 7.5 — so a
+ * reader sees neither a product nor a drawing.
+ *
+ * The placeholder the catalogue already designed for a failed asset says the
+ * brand and the SKU and is legible. It is the better of the two.
+ *
+ * This belongs upstream: the image audit marks both of these `ACCEPTABLE`,
+ * which is simply wrong. Correcting it there would also drop the products out
+ * of the catalogue entirely — `getCatalog` withholds anything unpresentable —
+ * and whether a showroom stops listing a product it genuinely sells is the
+ * catalogue owner's call, not this module's.
+ */
+const isTechnicalDrawing = (p: CatalogProduct): boolean =>
+  /b%E1%BA%A3n-v%E1%BA%BD|ban-ve|B%E1%BA%A3n%20V%E1%BA%BD/i.test(
+    p.imageProvenance?.sourceUrl ?? ''
+  );
+
 const productView = (p: CatalogProduct): ConceptProductView => ({
   catalogProductId: p.catalogProductId,
   href: p.href,
@@ -418,7 +445,7 @@ const productView = (p: CatalogProduct): ConceptProductView => ({
   sku: p.sku,
   category: p.category,
   image: p.image,
-  imagePresentable: p.imagePresentable,
+  imagePresentable: p.imagePresentable && !isTechnicalDrawing(p),
   showroomPrice: p.showroomPrice,
 });
 

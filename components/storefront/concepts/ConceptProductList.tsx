@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { Route } from 'next';
-import { StageImage } from '@/components/storefront/catalog/ProductImage';
+import { ProductImagePlaceholder, StageImage } from '@/components/storefront/catalog/ProductImage';
 import { opticalScale } from '@/lib/storefront/catalogTypes';
 import { DIVIDER, TEXT, TEXT_FAINT, TEXT_MUTED } from '@/components/storefront/home/editorial';
 import { formatVnd } from '@/lib/storefront/productDetailTypes';
@@ -87,7 +87,9 @@ export default function ConceptProductList({
                         occupancy={opticalScale(product.category, product.name) * 0.82}
                       />
                     ) : (
-                      <div style={{ aspectRatio: '1', background: '#F8F8F7' }} />
+                      <div style={{ aspectRatio: '1' }}>
+              <ProductImagePlaceholder brand={product.brand} sku={product.sku} />
+            </div>
                     )}
                   </div>
 

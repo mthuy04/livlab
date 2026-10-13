@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import type { Route } from 'next';
 import { X } from 'lucide-react';
-import { StageImage } from '@/components/storefront/catalog/ProductImage';
+import { ProductImagePlaceholder, StageImage } from '@/components/storefront/catalog/ProductImage';
 import { opticalScale } from '@/lib/storefront/catalogTypes';
 import { TEXT, TEXT_FAINT, TEXT_MUTED } from '@/components/storefront/home/editorial';
 import { formatVnd } from '@/lib/storefront/productDetailTypes';
@@ -204,7 +204,9 @@ function ProductPreview({ hotspot }: { hotspot: ConceptHotspotView }) {
               occupancy={opticalScale(p.category, p.name) * 0.82}
             />
           ) : (
-            <div style={{ aspectRatio: '1', background: '#F8F8F7' }} />
+            <div style={{ aspectRatio: '1' }}>
+              <ProductImagePlaceholder brand={p.brand} sku={p.sku} />
+            </div>
           )}
         </div>
 
