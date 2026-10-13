@@ -488,11 +488,16 @@ body {
   display: block;
 }
 
+/* The visible circle stays small so the room is never covered by its own
+   annotations; the hit area does not. A 30px target is below the 44px minimum
+   a finger needs, so the button carries an invisible 44px square through
+   ::before — the dot a reader sees and the thing a thumb lands on are
+   deliberately different sizes. */
 .concept-hotspot {
   position: absolute;
-  width: 26px;
-  height: 26px;
-  margin: -13px 0 0 -13px;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.94);
   border: 1px solid rgba(26, 26, 24, 0.55);
@@ -501,6 +506,29 @@ body {
   transition: transform 180ms ease, background 180ms ease;
   display: grid;
   place-items: center;
+}
+
+.concept-hotspot::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 767px) {
+  .concept-hotspot {
+    width: 34px;
+    height: 34px;
+    margin: -17px 0 0 -17px;
+  }
+
+  .concept-hotspot::before {
+    width: 52px;
+    height: 52px;
+  }
 }
 
 .concept-hotspot::after {

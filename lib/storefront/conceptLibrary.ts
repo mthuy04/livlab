@@ -538,7 +538,16 @@ const c05: StorefrontConcept = {
 };
 
 /**
- * Order is editorial, not alphabetical: the two rooms a customer is most
- * likely to be shopping for come first.
+ * Reading order, set by how the rooms look rather than by when they were made.
+ *
+ * A library sorted by batch puts every warm stone room together and every
+ * cool one after it, and a grid of near-identical thumbnails reads as one
+ * concept photographed five times however different the rooms actually are.
+ * The sequence alternates instead — light, cool, warm, dark — so two adjacent
+ * cards never share a palette.
+ *
+ * Unpublished entries keep their slot. The grid renders the published subset
+ * in this order, so a concept that clears its QA gap later appears where the
+ * rhythm already expects it, and nothing has to be resorted by hand.
  */
-export const CONCEPT_LIBRARY: StorefrontConcept[] = [c03, c04, c05, c01, c02];
+export const CONCEPT_LIBRARY: StorefrontConcept[] = [c01, c03, c04, c02, c05];

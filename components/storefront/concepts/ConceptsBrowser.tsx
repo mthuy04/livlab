@@ -66,6 +66,20 @@ export default function ConceptsBrowser({ concepts }: { concepts: ConceptCardMod
     return { style, area, budget, all: concepts.length };
   }, [concepts, filters]);
 
+  /**
+   * Which facets the published library actually contains, independent of what
+   * is filtered. The column renders from this, so an option never advertises
+   * an absence and a concept added later brings its own options with it.
+   */
+  const available = useMemo(
+    () => ({
+      style: [...new Set(concepts.map((c) => c.styleFacet))],
+      area: [...new Set(concepts.map((c) => c.areaFacet))],
+      budget: BUDGET_FACETS.filter((b) => concepts.some((c) => budgetFacetMatches(b, c.estimate))),
+    }),
+    [concepts]
+  );
+
   const dirty =
     filters.style !== 'ALL' || filters.area !== 'ALL' || filters.budget !== 'ALL';
 
@@ -113,7 +127,7 @@ export default function ConceptsBrowser({ concepts }: { concepts: ConceptCardMod
   return (
     <div className="concepts-layout">
       <aside className="concepts-filter-column hidden lg:block" aria-label="Bộ lọc không gian">
-        <ConceptFilters value={filters} onChange={setFilters} counts={counts} />
+        <ConceptFilters value={filters} onChange={setFilters} counts={counts} available={available} />
       </aside>
 
       <div className="min-w-0">
@@ -142,7 +156,7 @@ export default function ConceptsBrowser({ concepts }: { concepts: ConceptCardMod
                 <X size={20} strokeWidth={1.4} color={TEXT} />
               </button>
             </div>
-            <ConceptFilters value={filters} onChange={setFilters} counts={counts} />
+            <ConceptFilters value={filters} onChange={setFilters} counts={counts} available={available} />
             <button
               type="button"
               onClick={() => setSheetOpen(false)}
