@@ -29,6 +29,8 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
    */
   const [menuOpenAt, setMenuOpenAt] = useState<string | null>(null);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
+  // A missing logo file should degrade to the brand name, not a broken image.
+  const [logoFailed, setLogoFailed] = useState(false);
   const menuOpen = menuOpenAt === pathname;
   const setMenuOpen = (open: boolean) => setMenuOpenAt(open ? pathname : null);
   const { count, toggleDrawer } = useQuote();
@@ -69,9 +71,14 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
         <Container>
           <div className="flex h-16 items-center justify-between gap-6 lg:h-20">
             <Link href="/" className="flex shrink-0 items-center gap-2.5" aria-label={tenant.brand.name}>
-              {tenant.brand.logo ? (
+              {tenant.brand.logo && !logoFailed ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={tenant.brand.logo} alt={tenant.brand.logoAlt ?? tenant.brand.name} className="h-7 w-auto lg:h-8" />
+                <img
+                  src={tenant.brand.logo}
+                  alt={tenant.brand.logoAlt ?? tenant.brand.name}
+                  className="h-7 w-auto lg:h-8"
+                  onError={() => setLogoFailed(true)}
+                />
               ) : (
                 <span
                   className="text-[19px] font-semibold tracking-tight lg:text-[21px]"

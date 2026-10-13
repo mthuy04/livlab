@@ -156,7 +156,7 @@ export const LIVLAB_TENANT: TenantStorefrontConfig = {
   brand: {
     name: 'LivLab',
     tagline: 'Dựng thử không gian phòng tắm với sản phẩm thật trước khi quyết định.',
-    logo: '/images/livlab-logo.png',
+    logo: '/images/logo.png',
     logoAlt: 'LivLab',
     accent: '#123C5A',
     accentHover: '#0D2B42',

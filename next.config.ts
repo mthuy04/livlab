@@ -22,6 +22,12 @@ const nextConfig: NextConfig = {
         hostname: 'plus.unsplash.com',
         pathname: '/**',
       },
+      {
+        // Product photography for the LivLab catalogue.
+        protocol: 'https',
+        hostname: 'luxbath.vn',
+        pathname: '/**',
+      },
     ],
   },
 };
