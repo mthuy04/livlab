@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState, useSyncExternalStore } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import type { Route } from 'next';
@@ -35,20 +35,6 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
   const setMenuOpen = (open: boolean) => setMenuOpenAt(open ? pathname : null);
   const { count, toggleDrawer } = useQuote();
 
-  // Scroll position is an external store, so it is read as one. An effect that
-  // seeded the value with setState would also be correct, but this gives the
-  // right answer on the first render — including when the browser restores a
-  // scroll position — with no extra pass.
-  const subscribeScroll = useCallback((onChange: () => void) => {
-    window.addEventListener('scroll', onChange, { passive: true });
-    return () => window.removeEventListener('scroll', onChange);
-  }, []);
-  const scrolled = useSyncExternalStore(
-    subscribeScroll,
-    () => window.scrollY > 8,
-    () => false
-  );
-
   // The drawer covers the page, so the page behind it must not scroll.
   useEffect(() => {
     if (!menuOpen) return;
@@ -62,14 +48,11 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
   return (
     <>
       <header
-        className="sticky top-0 z-50 transition-colors duration-200"
-        style={{
-          backgroundColor: 'var(--sf-surface)',
-          borderBottom: `1px solid ${scrolled ? 'var(--sf-border)' : 'transparent'}`,
-        }}
+        className="sticky top-0 z-50"
+        style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #E5E5E5' }}
       >
         <Container>
-          <div className="flex h-16 items-center justify-between gap-6 lg:h-20">
+          <div className="flex h-16 items-center justify-between gap-6 lg:h-[72px]">
             <Link href="/" className="flex shrink-0 items-center gap-2.5" aria-label={tenant.brand.name}>
               {tenant.brand.logo && !logoFailed ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -93,15 +76,16 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
               <ul className="flex items-center gap-9">
                 {tenant.navigation.map((item) => {
                   const active = isActive(item.href) || item.children?.some((c) => isActive(c.href));
-                  const linkStyle = {
-                    color: active ? 'var(--sf-text)' : 'var(--sf-text-secondary)',
-                    fontWeight: active ? 500 : 400,
-                  };
+                  const linkStyle = { color: active ? '#252525' : '#555555', fontWeight: 500 };
 
                   if (!item.children?.length) {
                     return (
                       <li key={item.label}>
-                        <Link href={item.href as Route} className="text-[15px] transition-colors" style={linkStyle}>
+                        <Link
+                          href={item.href as Route}
+                          className="inline-block py-1 text-[14px] transition-colors"
+                          style={{ ...linkStyle, borderBottom: active ? '2px solid var(--tenant-accent)' : '2px solid transparent' }}
+                        >
                           {item.label}
                         </Link>
                       </li>
@@ -123,8 +107,8 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                         aria-expanded={isOpen}
                         aria-haspopup="true"
                         onClick={() => setOpenGroup(isOpen ? null : item.label)}
-                        className="flex items-center gap-1 py-2 text-[15px] transition-colors"
-                        style={linkStyle}
+                        className="flex items-center gap-1 py-1 text-[14px] transition-colors"
+                        style={{ ...linkStyle, borderBottom: active ? '2px solid var(--tenant-accent)' : '2px solid transparent' }}
                       >
                         {item.label}
                         <ChevronDown className="h-3.5 w-3.5" strokeWidth={1.8} />
@@ -134,10 +118,10 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                         <div
                           className="absolute left-0 top-full z-50 min-w-[220px] py-2"
                           style={{
-                            backgroundColor: 'var(--sf-surface)',
-                            border: '1px solid var(--sf-border)',
-                            borderRadius: 'var(--sf-radius)',
-                            boxShadow: '0 8px 28px rgba(26,26,24,0.08)',
+                            backgroundColor: '#FFFFFF',
+                            border: '1px solid #E5E5E5',
+                            borderRadius: 2,
+                            boxShadow: '0 8px 28px rgba(0,0,0,0.10)',
                           }}
                         >
                           {item.children.map((child) => (
@@ -170,11 +154,13 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
               {tenant.features.quotations && (
                 <button
                   onClick={toggleDrawer}
-                  className="ml-1.5 hidden items-center gap-2 px-4 py-2.5 text-[14px] font-medium transition-colors lg:inline-flex"
+                  className="ml-2 hidden items-center gap-2 text-[14px] font-medium transition-opacity hover:opacity-90 lg:inline-flex"
                   style={{
+                    height: 42,
+                    padding: '0 20px',
                     backgroundColor: 'var(--tenant-accent)',
                     color: 'var(--tenant-accent-contrast)',
-                    borderRadius: 'var(--sf-radius)',
+                    borderRadius: 2,
                   }}
                 >
                   Yêu cầu báo giá
@@ -253,7 +239,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                 style={{
                   backgroundColor: 'var(--tenant-accent)',
                   color: 'var(--tenant-accent-contrast)',
-                  borderRadius: 'var(--sf-radius)',
+                  borderRadius: 2,
                 }}
               >
                 Yêu cầu báo giá{count > 0 ? ` (${count})` : ''}

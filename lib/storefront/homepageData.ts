@@ -20,12 +20,20 @@ export interface RoomProduct {
   slug: string | null;
 }
 
+export interface RoomHotspot extends RoomProduct {
+  xPercent: number;
+  yPercent: number;
+  label: string;
+}
+
 export interface FeaturedRoom {
   slug: string;
   title: string;
-  style: string;
+  description: string;
+  /** The concept's own photograph — hotspots were authored against this one. */
   image: string;
   products: RoomProduct[];
+  hotspots: RoomHotspot[];
   priceFrom: number | null;
   /** Sum of the real catalogue prices, or null when none of them have one. */
   priceTo: number | null;
@@ -65,9 +73,46 @@ function imageForTitle(title: string): string | null {
   return TITLE_IMAGES.find((entry) => entry.match.test(title))?.image ?? null;
 }
 
+export interface CategoryEntry {
+  name: string;
+  count: number;
+  image: string;
+  href: string;
+}
+
 export interface HomepageData {
+  categories: CategoryEntry[];
   featured: FeaturedRoom | null;
   collections: CollectionItem[];
+}
+
+/**
+ * The four sanitaryware categories the storefront leads with, in the order a
+ * bathroom is specified. Each is a real catalogue category; one with no
+ * products simply does not appear.
+ */
+const LEAD_CATEGORIES = ['Lavabo', 'Bồn cầu', 'Sen tắm', 'Gương'];
+
+async function getCategories(): Promise<CategoryEntry[]> {
+  try {
+    const rows = await prisma.product.findMany({
+      where: { category: { in: LEAD_CATEGORIES }, imageUrl: { not: null } },
+      select: { category: true, imageUrl: true },
+      orderBy: { name: 'asc' },
+    });
+
+    return LEAD_CATEGORIES.map((name) => {
+      const inCategory = rows.filter((r) => r.category === name);
+      return {
+        name,
+        count: inCategory.length,
+        image: inCategory[0]?.imageUrl ?? '',
+        href: `/products?category=${encodeURIComponent(name)}`,
+      };
+    }).filter((c) => c.image);
+  } catch {
+    return [];
+  }
 }
 
 /**
@@ -79,12 +124,16 @@ export async function getHomepageData(): Promise<HomepageData> {
   // The first concept whose style has a LivLab render, so the featured room is
   // shown at the quality the rest of the page is held to. Deterministic, so the
   // homepage does not shuffle between deploys.
-  const candidate = concepts.find((c) => imageForTitle(c.title) && (c.productIds?.length ?? 0) > 0);
+  // The shoppable room must be a concept that has BOTH hotspots and products
+  // the catalogue can resolve.
+  const candidate = concepts.find((c) => (c.hotspots?.length ?? 0) > 0 && (c.productIds?.length ?? 0) > 0);
 
   let featured: FeaturedRoom | null = null;
 
   if (candidate) {
-    const ids = [...new Set(candidate.productIds ?? [])].filter(Boolean) as string[];
+    const ids = [
+      ...new Set([...(candidate.productIds ?? []), ...(candidate.hotspots ?? []).map((h) => h.productId)]),
+    ].filter(Boolean) as string[];
 
     let rows: {
       id: string; name: string; brand: string | null; category: string | null;
@@ -104,12 +153,23 @@ export async function getHomepageData(): Promise<HomepageData> {
 
     const prices = rows.map((r) => r.priceMin).filter((p): p is number => typeof p === 'number' && p > 0);
 
+    const byId = new Map(rows.map((r) => [r.id, r]));
+    const hotspots = (candidate.hotspots ?? [])
+      .map((h) => {
+        const product = byId.get(h.productId);
+        return product ? { ...product, xPercent: h.xPercent, yPercent: h.yPercent, label: h.label } : null;
+      })
+      .filter((h): h is RoomHotspot => h !== null);
+
     featured = {
       slug: candidate.slug,
       title: candidate.title,
-      style: candidate.style,
-      image: imageForTitle(candidate.title)!,
+      description: candidate.shortDescription ?? '',
+      // Asked for at editorial width. Unsplash serves the same photograph at
+      // any size, so this is a larger render of the asset already in use.
+      image: candidate.image.replace(/([?&])w=\d+/, '$1w=2000'),
       products: rows,
+      hotspots,
       priceFrom: prices.length ? Math.min(...prices) : null,
       priceTo: prices.length ? prices.reduce((a, b) => a + b, 0) : null,
     };
@@ -135,5 +195,5 @@ export async function getHomepageData(): Promise<HomepageData> {
     if (collections.length >= 4) break;
   }
 
-  return { featured, collections };
+  return { categories: await getCategories(), featured, collections };
 }
