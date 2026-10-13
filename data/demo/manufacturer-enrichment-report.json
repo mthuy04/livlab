@@ -1,0 +1,57 @@
+{
+ "checkedAt": "2026-10-13T07:51:58Z",
+ "brands": {
+  "INAX": {
+   "attempted": 20,
+   "indexSize": 1141,
+   "matchTypes": {
+    "EXACT_SKU": 12,
+    "NO_MATCH": 8
+   },
+   "filesInstallation": 18,
+   "officialImagesFound": 2
+  },
+  "JOMOO": {
+   "attempted": 47,
+   "indexSize": 802,
+   "matchTypes": {
+    "NO_MATCH": 27,
+    "NORMALIZED_SKU": 20
+   },
+   "officialImagesFound": 20
+  },
+  "TOTO": {
+   "attempted": 23,
+   "indexSize": 1747,
+   "matchTypes": {
+    "NO_MATCH": 15,
+    "EXACT_SKU": 8
+   },
+   "officialImagesFound": 8,
+   "filesCad": 24,
+   "filesInstallation": 2,
+   "filesSpec": 9
+  },
+  "Viglacera": {
+   "attempted": 1,
+   "note": "No official sitemap wired for this brand.",
+   "matchTypes": {
+    "NO_MATCH": 1
+   }
+  },
+  "Caesar": {
+   "attempted": 3,
+   "note": "No official sitemap wired for this brand.",
+   "matchTypes": {
+    "NO_MATCH": 3
+   }
+  },
+  "American Standard": {
+   "attempted": 1,
+   "note": "No official sitemap wired for this brand.",
+   "matchTypes": {
+    "NO_MATCH": 1
+   }
+  }
+ }
+}

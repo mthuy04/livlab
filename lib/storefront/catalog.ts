@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { prisma } from '@/lib/prisma';
 import type { TenantStorefrontConfig } from './tenantConfig';
 import { imageVerdicts, isRejected, type ImageStatus } from './imageQuality';
+import { manufacturerRecords, type ImageSource, type ManufacturerRecord } from './manufacturerData';
 import {
   isRoomStudioReady,
   isSanitaryware,
@@ -136,6 +137,12 @@ async function fromFixture(tenant: TenantStorefrontConfig, file: string): Promis
         image: verdict?.replacementImage ?? (p.primaryImage as string),
         imageStatus: status,
         imagePresentable: !isRejected(status),
+        imageSource: 'RETAILER' as ImageSource,
+        manufacturerUrl: null,
+        manufacturerReferencePrice: null,
+        documents: [],
+        galleryImages: [],
+        compatibleSkus: [],
         additionalImages: p.additionalImages ?? [],
         technicalDrawing: p.technicalDrawing,
         showroomPrice: p.showroomPrice,
@@ -236,6 +243,12 @@ async function fromDatabase(tenant: TenantStorefrontConfig): Promise<Catalog> {
         image: verdict?.replacementImage ?? (p.imageUrl as string),
         imageStatus: status,
         imagePresentable: !isRejected(status),
+        imageSource: 'RETAILER' as ImageSource,
+        manufacturerUrl: null,
+        manufacturerReferencePrice: null,
+        documents: [],
+        galleryImages: [],
+        compatibleSkus: [],
         additionalImages: [],
         technicalDrawing: null,
         showroomPrice,
@@ -262,6 +275,54 @@ async function fromDatabase(tenant: TenantStorefrontConfig): Promise<Catalog> {
     });
 
   return { tenantId: tenant.id, products, sourceCheckedAt: null, demoNotice: null, withheldForImageQuality: 0 };
+}
+
+
+/**
+ * Fold manufacturer data onto a catalogue row.
+ *
+ * Technical facts from the manufacturer win where they exist, because that is
+ * what a manufacturer is the source of truth for. Commercial facts do not move
+ * at all: `showroomPrice` and `referencePrice` stay exactly as the showroom
+ * set them, and a manufacturer list price lands beside them.
+ */
+function withManufacturer(product: CatalogProduct, record: ManufacturerRecord | undefined): CatalogProduct {
+  if (!record) {
+    const host = product.image?.startsWith('http') ? product.image.split('/')[2] : '';
+    const source: ImageSource = !product.image
+      ? 'PLACEHOLDER'
+      : /luxbath\.vn|beptungdang\.vn/.test(host)
+        ? 'SHOWROOM'
+        : host
+          ? 'RETAILER'
+          : 'PLACEHOLDER';
+    return { ...product, imageSource: source };
+  }
+
+  const specs = record.technicalSpecs ?? {};
+  const image = record.primaryImage ?? product.image;
+
+  return {
+    ...product,
+    image,
+    imageSource: record.primaryImage ? 'MANUFACTURER' : product.imageSource,
+    name: product.name,
+    dimensionsRaw: specs.dimensions ?? product.dimensionsRaw,
+    color: specs.color ?? product.color,
+    finish: specs.finish ?? product.finish,
+    material: specs.material ?? product.material,
+    flushType: specs.flushSystem ?? product.flushType,
+    flushVolume: specs.flushVolume ?? product.flushVolume,
+    roughIn: specs.roughIn ?? product.roughIn,
+    seatType: specs.seatType ?? product.seatType,
+    technologies: record.technologies?.length ? record.technologies : product.technologies,
+    manufacturerUrl: record.manufacturerProductUrl ?? null,
+    manufacturerReferencePrice: record.manufacturerReferencePrice ?? null,
+    documents: record.files ?? [],
+    galleryImages: record.galleryImages ?? [],
+    compatibleSkus: record.compatibleSkus ?? [],
+    technicalDrawing: product.technicalDrawing,
+  };
 }
 
 /** Fixture-backed tenants, by tenant id. Everything else reads the database. */
@@ -291,6 +352,14 @@ export async function getCatalog(
     // Surfaced as the error state rather than an empty catalogue.
     throw new Error('CATALOG_UNAVAILABLE');
   }
+
+  // Manufacturer data is merged before anything is filtered, so a product
+  // rescued by an official photograph is judged on that photograph.
+  const records = await manufacturerRecords();
+  catalog = {
+    ...catalog,
+    products: catalog.products.map((p) => withManufacturer(p, records.get(p.id))),
+  };
 
   if (includeUnpresentable) return catalog;
 

@@ -42,6 +42,18 @@ UA = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)'}
 # carries that showroom's branding more often than not.
 SHOWROOM_HOSTS = {'luxbath.vn': 'luxbath', 'beptungdang.vn': 'tungdang'}
 
+# A manufacturer's own CDN. An image from here belongs to the product, not to
+# any showroom, so it can never be cross-tenant contamination.
+MANUFACTURER_HOSTS = (
+    'inax-vn.s3.ap-southeast-1.amazonaws.com',
+    'inax-vn.s3-ap-southeast-1.amazonaws.com',
+    'product.hstatic.net',
+    'www.inax.com.vn',
+    'vn.toto.com',
+    'jomoo.vn',
+    'cdn.hstatic.net',
+)
+
 NEAR_WHITE = 238
 
 
@@ -119,7 +131,7 @@ def measure(raw):
 
 def classify(m, url, tenant_id):
     host = url.split('/')[2] if url.startswith('http') else ''
-    owner = SHOWROOM_HOSTS.get(host)
+    owner = None if host in MANUFACTURER_HOSTS else SHOWROOM_HOSTS.get(host)
     longest = max(m['width'], m['height'])
     isolated = m['ringWhite'] >= 0.90
 
@@ -178,7 +190,9 @@ def main():
 
     for tenant in TENANTS:
         req = urllib.request.Request(
-            f'{BASE}/api/storefront/products',
+            # Every product, withheld ones included: the audit is what decides
+            # which are withheld, so it cannot read a list it already filtered.
+            f'{BASE}/api/storefront/products?quality=all',
             headers={**UA, 'Cookie': f'livlab_tenant_preview={tenant}'},
         )
         data = json.loads(urllib.request.urlopen(req, timeout=60).read())
@@ -223,7 +237,12 @@ def main():
                         break
 
             host = row['image'].split('/')[2] if row['image'].startswith('http') else 'local'
-            row['imageSourceType'] = 'SHOWROOM' if host in SHOWROOM_HOSTS else 'RETAILER' if host != 'local' else 'PLACEHOLDER'
+            row['imageSourceType'] = (
+                'MANUFACTURER' if host in MANUFACTURER_HOSTS
+                else 'SHOWROOM' if host in SHOWROOM_HOSTS
+                else 'RETAILER' if host != 'local'
+                else 'PLACEHOLDER'
+            )
             row['imageSourceHost'] = host
             counts[row['status']] += 1
             overall[row['status']] += 1

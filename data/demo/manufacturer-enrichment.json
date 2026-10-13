@@ -1,0 +1,1316 @@
+{
+ "checkedAt": "2026-10-13T07:51:58Z",
+ "products": {
+  "inax-ac-23pvn": {
+   "matchType": "EXACT_SKU",
+   "brand": "INAX",
+   "sku": "AC-23PVN",
+   "manufacturerBrand": "INAX",
+   "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-23pvn/",
+   "officialName": "AC-23PVN",
+   "officialSku": "AC-23PVN",
+   "primaryImage": null,
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1Qtwpy5BzlaznAFv9D3pDipJ-06fbz4zp/view?usp=sharing"
+    },
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1tPFdy3ajn4ahDTBQYsqa9pKKro545xBb/view?usp=sharing"
+    }
+   ],
+   "technologies": [
+    "Aqua Ceramic"
+   ],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://www.inax.com.vn/products/toilet/ac-23pvn/",
+   "imageSourceUrl": null,
+   "manufacturerCheckedAt": "2026-10-13T07:51:58Z"
+  },
+  "inax-ac-918vrn": {
+   "matchType": "NO_MATCH",
+   "brand": "INAX",
+   "sku": "AC-918VRN"
+  },
+  "inax-ac-912vn": {
+   "matchType": "EXACT_SKU",
+   "brand": "INAX",
+   "sku": "AC-912VN",
+   "manufacturerBrand": "INAX",
+   "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-912vn/",
+   "officialName": "AC-912VN",
+   "officialSku": "AC-912VN",
+   "primaryImage": "https://inax-vn.s3-ap-southeast-1.amazonaws.com/sanitary/products/AC-912VN.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1R6SL1b9eiyf2v-RdjhAEDZngaagFMds0/view?usp=sharing"
+    }
+   ],
+   "technologies": [
+    "Aqua Ceramic"
+   ],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://www.inax.com.vn/products/toilet/ac-912vn/",
+   "imageSourceUrl": "https://inax-vn.s3-ap-southeast-1.amazonaws.com/sanitary/products/AC-912VN.png",
+   "manufacturerCheckedAt": "2026-10-13T07:51:58Z"
+  },
+  "inax-ac-909vrn-1": {
+   "matchType": "NO_MATCH",
+   "brand": "INAX",
+   "sku": "AC-909VRN-1"
+  },
+  "inax-ac-909vrn": {
+   "matchType": "NO_MATCH",
+   "brand": "INAX",
+   "sku": "AC-909VRN"
+  },
+  "inax-ac-900vrn-2": {
+   "matchType": "EXACT_SKU",
+   "brand": "INAX",
+   "sku": "AC-900VRN-2",
+   "manufacturerBrand": "INAX",
+   "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-900vrn-2/",
+   "officialName": "AC-900VRN-2",
+   "officialSku": "AC-900VRN-2",
+   "primaryImage": "https://inax-vn.s3-ap-southeast-1.amazonaws.com/sanitary/products/AC-900VRN-2.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1F1nzplAkIANok-rf6aBNn8N53pjzNrNc/view"
+    }
+   ],
+   "technologies": [
+    "Aqua Ceramic",
+    "Rimless"
+   ],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://www.inax.com.vn/products/toilet/ac-900vrn-2/",
+   "imageSourceUrl": "https://inax-vn.s3-ap-southeast-1.amazonaws.com/sanitary/products/AC-900VRN-2.png",
+   "manufacturerCheckedAt": "2026-10-13T07:51:58Z"
+  },
+  "inax-ac-1008vrn": {
+   "matchType": "EXACT_SKU",
+   "brand": "INAX",
+   "sku": "AC-1008VRN",
+   "manufacturerBrand": "INAX",
+   "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-1008vrn/",
+   "officialName": "AC-1008VRN",
+   "officialSku": "AC-1008VRN",
+   "primaryImage": null,
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1xAOVxgTghzNJM2gPLhK8IqqMAWo9XGjL/view?usp=sharing"
+    },
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1h72oJgxHceelp7z1SMZ7UpE2jfNv3h0G/view?usp=sharing"
+    }
+   ],
+   "technologies": [
+    "Aqua Ceramic"
+   ],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://www.inax.com.vn/products/toilet/ac-1008vrn/",
+   "imageSourceUrl": null,
+   "manufacturerCheckedAt": "2026-10-13T07:51:58Z"
+  },
+  "inax-ac-4005vn": {
+   "matchType": "EXACT_SKU",
+   "brand": "INAX",
+   "sku": "AC-4005VN",
+   "manufacturerBrand": "INAX",
+   "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-4005vn/",
+   "officialName": "AC-4005VN",
+   "officialSku": "AC-4005VN",
+   "primaryImage": null,
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1eOGAqgWoIcptr-_XiUq65XLqJWf7-r-E/view?usp=sharing"
+    },
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1tli8_cdn4ITGyotzrzX2o8Aa5RG-QXpp/view?usp=sharing"
+    }
+   ],
+   "technologies": [
+    "Aqua Ceramic"
+   ],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://www.inax.com.vn/products/toilet/ac-4005vn/",
+   "imageSourceUrl": null,
+   "manufacturerCheckedAt": "2026-10-13T07:51:58Z"
+  },
+  "inax-ac-2700vn": {
+   "matchType": "EXACT_SKU",
+   "brand": "INAX",
+   "sku": "AC-2700VN",
+   "manufacturerBrand": "INAX",
+   "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-2700vn/",
+   "officialName": "AC-2700VN",
+   "officialSku": "AC-2700VN",
+   "primaryImage": null,
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1Qj76pGzZZjxYo90mMnslYjIidAQBbf4j/view?usp=sharing"
+    },
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1-Ip3tM2jdBmhXpAtnH_DwzxMbFdELnG4/view?usp=sharing"
+    }
+   ],
+   "technologies": [
+    "Aqua Ceramic"
+   ],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://www.inax.com.vn/products/toilet/ac-2700vn/",
+   "imageSourceUrl": null,
+   "manufacturerCheckedAt": "2026-10-13T07:51:58Z"
+  },
+  "inax-ac-1135vn": {
+   "matchType": "EXACT_SKU",
+   "brand": "INAX",
+   "sku": "AC-1135VN",
+   "manufacturerBrand": "INAX",
+   "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-1135vn/",
+   "officialName": "AC-1135VN",
+   "officialSku": "AC-1135VN",
+   "primaryImage": null,
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1sGe1P0Q0dR3KSxMGy6Af5oMECwAnuOOq/view?usp=sharing"
+    },
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1_KY5iDRWvOF5Uegu9_VC2BE1EP7okFPU/view?usp=sharing"
+    }
+   ],
+   "technologies": [
+    "Aqua Ceramic"
+   ],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://www.inax.com.vn/products/toilet/ac-1135vn/",
+   "imageSourceUrl": null,
+   "manufacturerCheckedAt": "2026-10-13T07:51:58Z"
+  },
+  "inax-ac-1035vn": {
+   "matchType": "EXACT_SKU",
+   "brand": "INAX",
+   "sku": "AC-1035VN",
+   "manufacturerBrand": "INAX",
+   "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-1035vn/",
+   "officialName": "AC-1035VN",
+   "officialSku": "AC-1035VN",
+   "primaryImage": null,
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1sGe1P0Q0dR3KSxMGy6Af5oMECwAnuOOq/view?usp=sharing"
+    },
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1_KY5iDRWvOF5Uegu9_VC2BE1EP7okFPU/view?usp=sharing"
+    }
+   ],
+   "technologies": [
+    "Aqua Ceramic"
+   ],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://www.inax.com.vn/products/toilet/ac-1035vn/",
+   "imageSourceUrl": null,
+   "manufacturerCheckedAt": "2026-10-13T07:51:58Z"
+  },
+  "inax-ac-1032vn": {
+   "matchType": "EXACT_SKU",
+   "brand": "INAX",
+   "sku": "AC-1032VN",
+   "manufacturerBrand": "INAX",
+   "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-1032vn/",
+   "officialName": "AC-1032VN",
+   "officialSku": "AC-1032VN",
+   "primaryImage": null,
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1cMMXimxMA3QCDyyHqbak9mqX_JVfXZg-/view?usp=sharing"
+    }
+   ],
+   "technologies": [
+    "Aqua Ceramic"
+   ],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://www.inax.com.vn/products/toilet/ac-1032vn/",
+   "imageSourceUrl": null,
+   "manufacturerCheckedAt": "2026-10-13T07:51:58Z"
+  },
+  "inax-ac-1017vrn": {
+   "matchType": "EXACT_SKU",
+   "brand": "INAX",
+   "sku": "AC-1017VRN",
+   "manufacturerBrand": "INAX",
+   "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-1017vrn/",
+   "officialName": "AC-1017VRN",
+   "officialSku": "AC-1017VRN",
+   "primaryImage": null,
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1xAOVxgTghzNJM2gPLhK8IqqMAWo9XGjL/view?usp=sharing"
+    },
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1h72oJgxHceelp7z1SMZ7UpE2jfNv3h0G/view?usp=sharing"
+    }
+   ],
+   "technologies": [
+    "Aqua Ceramic"
+   ],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://www.inax.com.vn/products/toilet/ac-1017vrn/",
+   "imageSourceUrl": null,
+   "manufacturerCheckedAt": "2026-10-13T07:51:58Z"
+  },
+  "inax-lfv-6002s": {
+   "matchType": "NO_MATCH",
+   "brand": "INAX",
+   "sku": "LFV-6002S"
+  },
+  "inax-lfv-502sh": {
+   "matchType": "EXACT_SKU",
+   "brand": "INAX",
+   "sku": "LFV-502SH",
+   "manufacturerBrand": "INAX",
+   "manufacturerProductUrl": "https://www.inax.com.vn/products/bathroom-faucet/lfv-502sh/",
+   "officialName": "LFV-502SH",
+   "officialSku": "LFV-502SH",
+   "primaryImage": null,
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [
+    "Aqua Ceramic"
+   ],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://www.inax.com.vn/products/bathroom-faucet/lfv-502sh/",
+   "imageSourceUrl": null,
+   "manufacturerCheckedAt": "2026-10-13T07:51:58Z"
+  },
+  "inax-lfv-112sh": {
+   "matchType": "EXACT_SKU",
+   "brand": "INAX",
+   "sku": "LFV-112SH",
+   "manufacturerBrand": "INAX",
+   "manufacturerProductUrl": "https://www.inax.com.vn/products/bathroom-faucet/lfv-112sh/",
+   "officialName": "LFV-112SH",
+   "officialSku": "LFV-112SH",
+   "primaryImage": null,
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://drive.google.com/file/d/1VTuoomyy8MAwkfhSGpDwJzCFknY7xfrF/view?usp=sharing"
+    }
+   ],
+   "technologies": [
+    "Aqua Ceramic"
+   ],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://www.inax.com.vn/products/bathroom-faucet/lfv-112sh/",
+   "imageSourceUrl": null,
+   "manufacturerCheckedAt": "2026-10-13T07:51:58Z"
+  },
+  "inax-lfv-1001s": {
+   "matchType": "NO_MATCH",
+   "brand": "INAX",
+   "sku": "LFV-1001S"
+  },
+  "inax-lf-14-13": {
+   "matchType": "NO_MATCH",
+   "brand": "INAX",
+   "sku": "LF-14-13"
+  },
+  "inax-lf-12-13": {
+   "matchType": "NO_MATCH",
+   "brand": "INAX",
+   "sku": "LF-12-13"
+  },
+  "inax-smbv-1000": {
+   "matchType": "NO_MATCH",
+   "brand": "INAX",
+   "sku": "SMBV-1000"
+  },
+  "jomoo-zd7202-so-cjm305": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "ZD7202-SO-CJM305"
+  },
+  "jomoo-zd7220-sa-cjm305": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "ZD7220-SA-CJM305"
+  },
+  "jomoo-zd6310-sa-ido305": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "ZD6310-SA-IDO305"
+  },
+  "jomoo-zd7300-s2-ido305": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "ZD7300-S2-IDO305"
+  },
+  "jomoo-zd8610-sa-ido305": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "ZD8610-SA-IDO305"
+  },
+  "jomoo-zd8920-sa-cjm305": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "ZD8920-SA-CJM305",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/smart-toilet-zd8920-sa-cjm305",
+   "officialName": "Smart toilet ZD8920-SA-CJM305",
+   "officialSku": "ZD8920-SA-CJM305",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/zd8920-sa-cjm305_20414c6f8223477caa2e3e2cb1248dd0_635a7ccedf194c208daacbae2628d802.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 86670000,
+   "technicalSourceUrl": "https://jomoo.vn/products/smart-toilet-zd8920-sa-cjm305",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/zd8920-sa-cjm305_20414c6f8223477caa2e3e2cb1248dd0_635a7ccedf194c208daacbae2628d802.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-11369-2-231ka": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "11369-2-231KA"
+  },
+  "jomoo-11416-2-231k": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "11416-2-231K",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/ban-cau-mot-khoi-11416-2-2-31k-i011",
+   "officialName": "Bàn cầu một khối 11416-2-2/31K-I011",
+   "officialSku": "11416-2-2/31K-I011",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/11416-2-2_31k-i011_0189057e352744dd92a0ec4291fc546a.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [
+    "Tornado"
+   ],
+   "manufacturerReferencePrice": 10710000,
+   "technicalSourceUrl": "https://jomoo.vn/products/ban-cau-mot-khoi-11416-2-2-31k-i011",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/11416-2-2_31k-i011_0189057e352744dd92a0ec4291fc546a.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-11411-2-231k-1": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "11411-2-231K-1"
+  },
+  "jomoo-11246-2-231z": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "11246-2-231Z"
+  },
+  "jomoo-11413-2-211k": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "11413-2-211K"
+  },
+  "jomoo-11213-2-1-31z-i011": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "11213-2-1/31Z-I011"
+  },
+  "jomoo-12661-1-01k": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "12661-1/01K",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12661-1-01k-i011",
+   "officialName": "Chậu rửa đặt bàn 12661-1/01K-I011",
+   "officialSku": "12661-1/01K-I011",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/12661-1_6295a076a9e54925af00bb3150666eda.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 3850000,
+   "technicalSourceUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12661-1-01k-i011",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12661-1_6295a076a9e54925af00bb3150666eda.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-p12679-1-11z": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "P12679-1/11Z",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-dat-ban-p12679-1-11z-1",
+   "officialName": "Chậu rửa đặt bàn P12679-1/11Z-1",
+   "officialSku": "P12679-1/11Z-1",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/p12679-1_6b8889a17f394126a8fdf89a4f062325.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 3140000,
+   "technicalSourceUrl": "https://jomoo.vn/products/chau-rua-dat-ban-p12679-1-11z-1",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/p12679-1_6b8889a17f394126a8fdf89a4f062325.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-12138-1-01z": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "12138-1/01Z",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/above-counter-sink-12138-101z-i011",
+   "officialName": "Above-counter sink 12138-1/01Z-I011",
+   "officialSku": "12138-1/01Z-I011",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/12138-1_df88b650866a4e45892ba8af459d7cd2_3be2bf7926a84a888c314db0177618ed.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [
+    "nano"
+   ],
+   "manufacturerReferencePrice": 2550000,
+   "technicalSourceUrl": "https://jomoo.vn/products/above-counter-sink-12138-101z-i011",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12138-1_df88b650866a4e45892ba8af459d7cd2_3be2bf7926a84a888c314db0177618ed.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-12497-1-11z": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "12497-1/11Z",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-duong-vanh-12497-1-11z-i011",
+   "officialName": "Chậu rửa dương vành 12497-1/11Z-I011",
+   "officialSku": "12497-1/11Z-I011",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/12497-1_464b6ff8c2bc4f20b6b754301b05161f.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 2310000,
+   "technicalSourceUrl": "https://jomoo.vn/products/chau-rua-duong-vanh-12497-1-11z-i011",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12497-1_464b6ff8c2bc4f20b6b754301b05161f.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-12409-1-11z": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "12409-1/11Z",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-duong-vanh-12409-1-11z-i011",
+   "officialName": "Chậu rửa dương vành 12409-1/11Z-I011",
+   "officialSku": "12409-1/11Z-I011",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/12409-1_5387e67d65a84f5a8ccd1ae966e78a17.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 3300000,
+   "technicalSourceUrl": "https://jomoo.vn/products/chau-rua-duong-vanh-12409-1-11z-i011",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12409-1_5387e67d65a84f5a8ccd1ae966e78a17.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-p12663-1-01z-1": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "P12663-1/01Z-1",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-duong-vanh-p12663-1-01z-1",
+   "officialName": "Chậu rửa dương vành P12663-1/01Z-1",
+   "officialSku": "P12663-1/01Z-1",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/p12663-1_e877205e58e14a138f18eea440874acb.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 3970000,
+   "technicalSourceUrl": "https://jomoo.vn/products/chau-rua-duong-vanh-p12663-1-01z-1",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/p12663-1_e877205e58e14a138f18eea440874acb.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-p12748-1-11p-1": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "P12748-1/11P-1",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/wall-mounted-sink-p12748-111p-1",
+   "officialName": "Wall-mounted sink P12748-1/11P-1",
+   "officialSku": "P12748-1/11P-1",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/p12748-1_f09becc8f66f40d0946b91ba308fe850_f6727b705c5949b9a6079b749c073e82.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 2340000,
+   "technicalSourceUrl": "https://jomoo.vn/products/wall-mounted-sink-p12748-111p-1",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/p12748-1_f09becc8f66f40d0946b91ba308fe850_f6727b705c5949b9a6079b749c073e82.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-p12702-1-01k-2": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "P12702-1/01K-2"
+  },
+  "jomoo-12683-1-01k-i011": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "12683-1/01K-I011",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-am-ban-12683-1-01k-i011",
+   "officialName": "Chậu rửa âm bàn 12683-1/01K-I011",
+   "officialSku": "12683-1/01K-I011",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/12683-1_a5a08efa5b224ed28b58c29ec67ea9b2.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 1610000,
+   "technicalSourceUrl": "https://jomoo.vn/products/chau-rua-am-ban-12683-1-01k-i011",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12683-1_a5a08efa5b224ed28b58c29ec67ea9b2.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-1296-1-01z": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "1296-1/01Z"
+  },
+  "jomoo-1293-1-01z": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "1293-1/01Z"
+  },
+  "jomoo-12145-1-01z": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "12145-1/01Z"
+  },
+  "jomoo-12161-1-01p": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "12161-1/01P",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12161-1-01p-i011",
+   "officialName": "Chậu rửa đặt bàn 12161-1/01P-I011",
+   "officialSku": "12161-1/01P-I011",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/12161-1_96625ade518f48e591a4dbbed5a0d103.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 2030000,
+   "technicalSourceUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12161-1-01p-i011",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12161-1_96625ade518f48e591a4dbbed5a0d103.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-12703-1-01p": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "12703-1/01P",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12703-1-01p-i011",
+   "officialName": "Chậu rửa đặt bàn 12703-1/01P-I011",
+   "officialSku": "12703-1/01P-I011",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/_12703-1_95d79d1ed4af4acdb4b6042ea54a6a0e.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 2000000,
+   "technicalSourceUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12703-1-01p-i011",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/_12703-1_95d79d1ed4af4acdb4b6042ea54a6a0e.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-12132-1-01z": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "12132-1/01Z",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12132-1-01z-i011",
+   "officialName": "Chậu rửa đặt bàn 12132-1/01Z-I011",
+   "officialSku": "12132-1/01Z-I011",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/12132_88bbb6a030e646a896cd6f78138386bb.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 2550000,
+   "technicalSourceUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12132-1-01z-i011",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/12132_88bbb6a030e646a896cd6f78138386bb.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-37311-636-dbc-1": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "37311-636/DBC-1"
+  },
+  "jomoo-36473-463-hbs-1": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "36473-463/HBS-1",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/sen-cay-tu-dong-tay-can-kem-voi-xit-36473-463-hbs-1",
+   "officialName": "Sen cây tự động tẩy cặn kèm vòi xịt 36473-463/HBS-1",
+   "officialSku": "36473-463/HBS-1",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/36473-463_hbs-1_a4c9179bcbd04072bda1d752ec920ad2.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 12110000,
+   "technicalSourceUrl": "https://jomoo.vn/products/sen-cay-tu-dong-tay-can-kem-voi-xit-36473-463-hbs-1",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/36473-463_hbs-1_a4c9179bcbd04072bda1d752ec920ad2.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-35279-477-1b-i011": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "35279-477/1B-I011",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/sen-tam-35279-477-1b-i011",
+   "officialName": "Sen tắm 35279-477/1B-I011",
+   "officialSku": "35279-477/1B-I011",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/35279-477_1b-i011_942f1a6a02924e7687ca023aa2569ae8.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 3990000,
+   "technicalSourceUrl": "https://jomoo.vn/products/sen-tam-35279-477-1b-i011",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/35279-477_1b-i011_942f1a6a02924e7687ca023aa2569ae8.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-p36412-484-1b-1": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "P36412-484/1B-1"
+  },
+  "jomoo-36619-146-1c-i011": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "36619-146/1C-I011"
+  },
+  "jomoo-p36411-484-1b-1": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "P36411-484/1B-1",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/sen-cay-p36411-484-1b-1",
+   "officialName": "Sen cây P36411-484/1B-1",
+   "officialSku": "P36411-484/1B-1",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/p36411-484_1b-1_2395584758cf4a0a874e956813be4699.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 5160000,
+   "technicalSourceUrl": "https://jomoo.vn/products/sen-cay-p36411-484-1b-1",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/p36411-484_1b-1_2395584758cf4a0a874e956813be4699.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-36558-576-1b-i011": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "36558-576/1B-I011"
+  },
+  "jomoo-36437-477-1b-i011": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "36437-477/1B-I011",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/sen-cay-36437-477-1b-i011",
+   "officialName": "Sen cây 36437-477/1B-I011",
+   "officialSku": "36437-477/1B-I011",
+   "primaryImage": "https://cdn.hstatic.net/products/200000913817/36437_cc4d1a315ef846febe9cc2240ea95e86.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 9680000,
+   "technicalSourceUrl": "https://jomoo.vn/products/sen-cay-36437-477-1b-i011",
+   "imageSourceUrl": "https://cdn.hstatic.net/products/200000913817/36437_cc4d1a315ef846febe9cc2240ea95e86.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-36457-592-hbs-1": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "36457-592/HBS-1",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/sen-cay-chong-bong-36457-592-hbs-1",
+   "officialName": "Sen cây chống bỏng 36457-592/HBS",
+   "officialSku": "36457-592/HBS-1",
+   "primaryImage": "https://cdn.hstatic.net/products/200000913817/36457_3ef9401ff58d49eb98a3588e28a8e272.png",
+   "galleryImages": [
+    "https://product.hstatic.net/200000913817/product/36457-592_hbs-1_59111da01fb84ede925357bea50f2355.png"
+   ],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 9560000,
+   "technicalSourceUrl": "https://jomoo.vn/products/sen-cay-chong-bong-36457-592-hbs-1",
+   "imageSourceUrl": "https://cdn.hstatic.net/products/200000913817/36457_3ef9401ff58d49eb98a3588e28a8e272.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-36473-463-1b-1": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "36473-463/1B-1"
+  },
+  "jomoo-26135-531-1b-1": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "26135-531/1B-1"
+  },
+  "jomoo-26163-644-1b-i011": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "26163-644/1B-I011",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/sen-cay-on-nhiet-tu-dong-tay-can-kem-voi-xit-26163-644-1b-i011",
+   "officialName": "Sen cây ổn nhiệt tự động tẩy cặn kèm vòi xịt 26163-644/1B-I011",
+   "officialSku": "26163-644/1B-I011",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/26163-644_1b-i011_3943416449ee49a9afb2ba5cc19761ca.png",
+   "galleryImages": [
+    "https://cdn.hstatic.net/products/200000913817/_______-___53f3be761c614a8f9f716cefbe7bf82e.jpg",
+    "https://cdn.hstatic.net/products/200000913817/_______-______1__8edf8d7ca34b4128a7d353aac00b1412.jpg",
+    "https://cdn.hstatic.net/products/200000913817/___fd1ff7d9dc8a4950bfbe60726fb1f7c2.jpg",
+    "https://cdn.hstatic.net/products/200000913817/___d140567a083f433ebf07efea7060a805.jpg"
+   ],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 9810000,
+   "technicalSourceUrl": "https://jomoo.vn/products/sen-cay-on-nhiet-tu-dong-tay-can-kem-voi-xit-26163-644-1b-i011",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/26163-644_1b-i011_3943416449ee49a9afb2ba5cc19761ca.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-36510-122-1b-1": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "36510-122/1B-1"
+  },
+  "jomoo-26140-533-1b-1": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "26140-533/1B-1"
+  },
+  "jomoo-26178-624-1b-1": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "26178-624/1B-1"
+  },
+  "jomoo-26161-624-1b-1": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "26161-624/1B-1"
+  },
+  "jomoo-26161-624-hb-1": {
+   "matchType": "NORMALIZED_SKU",
+   "brand": "JOMOO",
+   "sku": "26161-624/HB-1",
+   "manufacturerBrand": "JOMOO",
+   "manufacturerProductUrl": "https://jomoo.vn/products/sen-cay-on-nhiet-26161-624-hb-1",
+   "officialName": "Sen cây ổn nhiệt 26161-624/HB-1",
+   "officialSku": "26161-624/HB-1",
+   "primaryImage": "https://product.hstatic.net/200000913817/product/26161-624_hb-1_cebc593a780940038dc6a9f8786b11af.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [],
+   "technologies": [],
+   "manufacturerReferencePrice": 28560000,
+   "technicalSourceUrl": "https://jomoo.vn/products/sen-cay-on-nhiet-26161-624-hb-1",
+   "imageSourceUrl": "https://product.hstatic.net/200000913817/product/26161-624_hb-1_cebc593a780940038dc6a9f8786b11af.png",
+   "manufacturerCheckedAt": "2026-10-13T07:48:10Z"
+  },
+  "jomoo-p37271-240-1b": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "P37271-240/1B"
+  },
+  "jomoo-p37272-445-1b-1": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "P37272-445/1B-1"
+  },
+  "jomoo-37311-636-1b-1": {
+   "matchType": "NO_MATCH",
+   "brand": "JOMOO",
+   "sku": "37311-636/1B-1"
+  },
+  "toto-cw553-tcf34320gaa-wh172at-mb174p": {
+   "matchType": "NO_MATCH",
+   "brand": "TOTO",
+   "sku": "CW553/TCF34320GAA/WH172AT/MB174P"
+  },
+  "toto-cs911vt-tcf87120gaa-t53p100vr": {
+   "matchType": "NO_MATCH",
+   "brand": "TOTO",
+   "sku": "CS911VT/TCF87120GAA/T53P100VR"
+  },
+  "toto-cs921vt-tcf83410gaa-t53p100vr": {
+   "matchType": "NO_MATCH",
+   "brand": "TOTO",
+   "sku": "CS921VT/TCF83410GAA/T53P100VR"
+  },
+  "toto-ms366w14": {
+   "matchType": "NO_MATCH",
+   "brand": "TOTO",
+   "sku": "MS366W14"
+  },
+  "toto-cw822ra-tcf23410aaa-wh172a": {
+   "matchType": "NO_MATCH",
+   "brand": "TOTO",
+   "sku": "CW822RA/TCF23410AAA/WH172A"
+  },
+  "toto-cs838dw11": {
+   "matchType": "NO_MATCH",
+   "brand": "TOTO",
+   "sku": "CS838DW11"
+  },
+  "toto-ms855cdw12": {
+   "matchType": "NO_MATCH",
+   "brand": "TOTO",
+   "sku": "MS855CDW12"
+  },
+  "toto-cs767crw15": {
+   "matchType": "NO_MATCH",
+   "brand": "TOTO",
+   "sku": "CS767CRW15"
+  },
+  "toto-cs900kvt-nw1-t53p100vr": {
+   "matchType": "NO_MATCH",
+   "brand": "TOTO",
+   "sku": "CS900KVT#NW1/T53P100VR"
+  },
+  "toto-cs838dt10": {
+   "matchType": "EXACT_SKU",
+   "brand": "TOTO",
+   "sku": "CS838DT10",
+   "manufacturerBrand": "TOTO",
+   "manufacturerProductUrl": "https://vn.toto.com/cs838dt10/",
+   "officialName": "CS838DT10",
+   "officialSku": "CS838DT10",
+   "primaryImage": "https://vn.toto.com/wp-content/uploads/2024/02/cs838t10.png",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDSD_Ban_cau_0IM067301S1_Rv06.pdf"
+    },
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/CAD_CS838D_Rv02.dwg"
+    },
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2026/01/Du-lieu-nguon-goc-xuat-xu-revised_-29.08.25.xlsx.pdf"
+    },
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDLD_0IM079405N1_CS767_CS769_CS986_CS838_Rv06.pdf"
+    },
+    {
+     "type": "SPEC",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2025/04/TSKT_Ban_cau_hai_khoi_CS838DT10_Rv01.pdf"
+    }
+   ],
+   "technologies": [
+    "CEFIONTECT",
+    "Tornado"
+   ],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://vn.toto.com/cs838dt10/",
+   "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/cs838t10.png",
+   "manufacturerCheckedAt": "2026-10-13T07:46:37Z"
+  },
+  "toto-ms855dw7": {
+   "matchType": "NO_MATCH",
+   "brand": "TOTO",
+   "sku": "MS855DW7"
+  },
+  "toto-ms688t2": {
+   "matchType": "NO_MATCH",
+   "brand": "TOTO",
+   "sku": "MS688T2"
+  },
+  "toto-ms885dt3": {
+   "matchType": "NO_MATCH",
+   "brand": "TOTO",
+   "sku": "MS885DT3"
+  },
+  "toto-cs769drt8": {
+   "matchType": "EXACT_SKU",
+   "brand": "TOTO",
+   "sku": "CS769DRT8",
+   "manufacturerBrand": "TOTO",
+   "manufacturerProductUrl": "https://vn.toto.com/cs769drt8/",
+   "officialName": "CS769DRT8",
+   "officialSku": "CS769DRT8",
+   "primaryImage": "https://vn.toto.com/wp-content/uploads/2024/02/cs769drt8.png",
+   "galleryImages": [
+    "https://vn.toto.com/contents/wp-content/uploads/2022/07/be-ve-sinh-hai-khoi-nap-dong-em-tc600vs.jpeg",
+    "https://vn.toto.com/wp-content/uploads/2026/08/CS769DRW26-1.png",
+    "https://vn.toto.com/wp-content/uploads/2026/08/CS767RW26.jpg",
+    "https://vn.toto.com/wp-content/uploads/2026/07/CS326DW26.jpg",
+    "https://vn.toto.com/wp-content/uploads/2025/12/CS769DRW24.png"
+   ],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDSD_Ban_cau_0IM067301S1_Rv06.pdf"
+    },
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/CAD_CS769D_CS769DR_CS986G_Rv07.dwg"
+    },
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2026/01/Du-lieu-nguon-goc-xuat-xu-revised_-29.08.25.xlsx.pdf"
+    },
+    {
+     "type": "SPEC",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/TSKT_Ban_cau_hai_khoi_CS769D_CS769DR_CS986G_Rv07.pdf"
+    },
+    {
+     "type": "SPEC",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDLD_0IM079405N1_CS767_CS769_CS986_CS838_Rv06.pdf"
+    }
+   ],
+   "technologies": [
+    "CEFIONTECT",
+    "Tornado"
+   ],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://vn.toto.com/cs769drt8/",
+   "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/cs769drt8.png",
+   "manufacturerCheckedAt": "2026-10-13T07:46:37Z"
+  },
+  "toto-ms636dt8": {
+   "matchType": "EXACT_SKU",
+   "brand": "TOTO",
+   "sku": "MS636DT8",
+   "manufacturerBrand": "TOTO",
+   "manufacturerProductUrl": "https://vn.toto.com/ms636dt8/",
+   "officialName": "MS636DT8",
+   "officialSku": "MS636DT8",
+   "primaryImage": "https://vn.toto.com/wp-content/uploads/2024/02/ms636dt8.png",
+   "galleryImages": [
+    "https://vn.toto.com/contents/wp-content/uploads/2022/07/be-ve-sinh-mot-khoi-nap-dong-em-nhe-tc600vs.jpeg",
+    "https://vn.toto.com/contents/wp-content/uploads/2022/08/hinh-anh-be-ve-sinh-mot-khoi-nap-dong-em-nhe-tc600vs.jpeg",
+    "https://vn.toto.com/wp-content/uploads/2026/08/MS857CDW26.jpg",
+    "https://vn.toto.com/wp-content/uploads/2026/08/MS857DW26.jpg",
+    "https://vn.toto.com/wp-content/uploads/2025/12/MS889DRW25.png"
+   ],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDSD_Ban_cau_0IM067301S1_Rv06.pdf"
+    },
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/CAD_MS636_Rv09.dwg"
+    },
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2026/01/Du-lieu-nguon-goc-xuat-xu-revised_-29.08.25.xlsx.pdf"
+    },
+    {
+     "type": "INSTALLATION",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDLD_Ban_cau_mot_khoi_0IM062502N_MS636D_Rv05.pdf"
+    },
+    {
+     "type": "SPEC",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/TSKT_Ban_cau_mot_khoi_MS636_Rv09.pdf"
+    }
+   ],
+   "technologies": [
+    "CEFIONTECT",
+    "TORNADO",
+    "Tornado"
+   ],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://vn.toto.com/ms636dt8/",
+   "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/ms636dt8.png",
+   "manufacturerCheckedAt": "2026-10-13T07:46:37Z"
+  },
+  "toto-ms889drt8": {
+   "matchType": "EXACT_SKU",
+   "brand": "TOTO",
+   "sku": "MS889DRT8",
+   "manufacturerBrand": "TOTO",
+   "manufacturerProductUrl": "https://vn.toto.com/ms889drt8/",
+   "officialName": "MS889DRT8",
+   "officialSku": "MS889DRT8",
+   "primaryImage": "https://vn.toto.com/wp-content/uploads/2024/02/ms889t8.png",
+   "galleryImages": [
+    "https://vn.toto.com/contents/wp-content/uploads/2022/07/ban-cau-ve-sinh-mot-khoi-nap-dong-em-tc600vs.jpeg",
+    "https://vn.toto.com/wp-content/uploads/2026/08/MS857CDW26.jpg",
+    "https://vn.toto.com/wp-content/uploads/2026/08/MS857DW26.jpg",
+    "https://vn.toto.com/wp-content/uploads/2025/12/MS889DRW25.png",
+    "https://vn.toto.com/wp-content/uploads/2025/12/MS887RW25-1.png"
+   ],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDSD_Ban_cau_0IM067301S1_Rv06.pdf"
+    },
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/CAD_MS889DR_Rv03.dwg"
+    },
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2026/01/Du-lieu-nguon-goc-xuat-xu-revised_-29.08.25.xlsx.pdf"
+    },
+    {
+     "type": "SPEC",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/TSKT_Ban_cau_mot_khoi_MS889DR_Rv03.pdf"
+    },
+    {
+     "type": "SPEC",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDLD_Ban_cau_mot_khoi_0IM080503R1_MS887_MS889_Rv04.pdf"
+    }
+   ],
+   "technologies": [
+    "CEFIONTECT",
+    "Tornado"
+   ],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://vn.toto.com/ms889drt8/",
+   "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/ms889t8.png",
+   "manufacturerCheckedAt": "2026-10-13T07:46:37Z"
+  },
+  "toto-lt4715mtg17-cmw": {
+   "matchType": "NO_MATCH",
+   "brand": "TOTO",
+   "sku": "LT4715MTG17#CMW"
+  },
+  "toto-ppy1560hpe-p-tvbf411": {
+   "matchType": "NO_MATCH",
+   "brand": "TOTO",
+   "sku": "PPY1560HPE#P/TVBF411"
+  },
+  "toto-pay1725vc-tvbf411": {
+   "matchType": "EXACT_SKU",
+   "brand": "TOTO",
+   "sku": "PAY1725VC/TVBF411",
+   "manufacturerBrand": "TOTO",
+   "manufacturerProductUrl": "https://vn.toto.com/pay1725vc-tvbf411/",
+   "officialName": "PAY1725VC/TVBF411",
+   "officialSku": "PAY1725VC/TVBF411",
+   "primaryImage": "https://vn.toto.com/wp-content/uploads/2024/02/pay1725vc-tvbf411.jpg",
+   "galleryImages": [
+    "https://vn.toto.com/wp-content/uploads/2026/08/2_GB_GROSS_RD_02.jpg",
+    "https://vn.toto.com/wp-content/uploads/2026/08/4_GB_GROSS_SQ_02.jpg",
+    "https://vn.toto.com/wp-content/uploads/2026/08/8_GB_GROSS_SQ_01.jpg",
+    "https://vn.toto.com/wp-content/uploads/2026/08/1_ZERO-DIMENTION.jpg",
+    "https://vn.toto.com/wp-content/uploads/2025/11/MS625CDW25.png"
+   ],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/SDLD_0IMI175002_bon_tam_Rev04.pdf"
+    },
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/CAD_PAY1725VC_PAY1725HVC_TVBF411_Rev01.dwg"
+    },
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2026/01/Du-lieu-nguon-goc-xuat-xu-revised_-29.08.25.xlsx.pdf"
+    },
+    {
+     "type": "SPEC",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/TSKT_Bon_tam_PAY1725VC_PAY1725HVC_TVBF411_Rev01.pdf"
+    }
+   ],
+   "technologies": [],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://vn.toto.com/pay1725vc-tvbf411/",
+   "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/pay1725vc-tvbf411.jpg",
+   "manufacturerCheckedAt": "2026-10-13T07:46:37Z"
+  },
+  "toto-pay1720hv-tvbf411": {
+   "matchType": "EXACT_SKU",
+   "brand": "TOTO",
+   "sku": "PAY1720HV/TVBF411",
+   "manufacturerBrand": "TOTO",
+   "manufacturerProductUrl": "https://vn.toto.com/pay1720hv-tvbf411/",
+   "officialName": "PAY1720HV/TVBF411",
+   "officialSku": "PAY1720HV/TVBF411",
+   "primaryImage": "https://vn.toto.com/wp-content/uploads/2024/02/pay1720hv-tvbf411.jpg",
+   "galleryImages": [],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/SDLD_0IMI174902_bon_tam_khong_yem_Rev03.pdf"
+    },
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/CAD_PAY1720V_PAY1720HV_TVBF411_Rev01.dwg"
+    },
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2026/01/Du-lieu-nguon-goc-xuat-xu-revised_-29.08.25.xlsx.pdf"
+    },
+    {
+     "type": "SPEC",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/TSKT_Bon_tam_PAY1720V_PAY1720HV_TVBF411_Rev01.pdf"
+    }
+   ],
+   "technologies": [],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://vn.toto.com/pay1720hv-tvbf411/",
+   "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/pay1720hv-tvbf411.jpg",
+   "manufacturerCheckedAt": "2026-10-13T07:46:37Z"
+  },
+  "toto-pay1780d-db501r-2b": {
+   "matchType": "NO_MATCH",
+   "brand": "TOTO",
+   "sku": "PAY1780D/DB501R-2B"
+  },
+  "toto-pay1735hvc-tvbf411": {
+   "matchType": "EXACT_SKU",
+   "brand": "TOTO",
+   "sku": "PAY1735HVC/TVBF411",
+   "manufacturerBrand": "TOTO",
+   "manufacturerProductUrl": "https://vn.toto.com/pay1735hvc-tvbf411/",
+   "officialName": "PAY1735HVC/TVBF411",
+   "officialSku": "PAY1735HVC/TVBF411",
+   "primaryImage": "https://vn.toto.com/wp-content/uploads/2024/02/pay1735hvc-tvbf411.jpg",
+   "galleryImages": [
+    "https://vn.toto.com/wp-content/uploads/2026/08/2_GB_GROSS_RD_02.jpg",
+    "https://vn.toto.com/wp-content/uploads/2026/08/4_GB_GROSS_SQ_02.jpg",
+    "https://vn.toto.com/wp-content/uploads/2026/08/8_GB_GROSS_SQ_01.jpg",
+    "https://vn.toto.com/wp-content/uploads/2026/08/1_ZERO-DIMENTION.jpg",
+    "https://vn.toto.com/wp-content/uploads/2025/11/MS625CDW25.png"
+   ],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/SDLD_0IMI175002_bon_tam_Rev04.pdf"
+    },
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/CAD_PAY1735VC_PAY1735HVC_TVBF411_Rev02.dwg"
+    },
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2026/01/Du-lieu-nguon-goc-xuat-xu-revised_-29.08.25.xlsx.pdf"
+    },
+    {
+     "type": "SPEC",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/TSKT_Bon_tam_PAY1735VC_PAY1735HVC_TVBF411_Rev02.pdf"
+    }
+   ],
+   "technologies": [],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://vn.toto.com/pay1735hvc-tvbf411/",
+   "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/pay1735hvc-tvbf411.jpg",
+   "manufacturerCheckedAt": "2026-10-13T07:46:37Z"
+  },
+  "toto-pjyd2200pwe-gw": {
+   "matchType": "EXACT_SKU",
+   "brand": "TOTO",
+   "sku": "PJYD2200PWE#GW",
+   "manufacturerBrand": "TOTO",
+   "manufacturerProductUrl": "https://vn.toto.com/pjyd2200pwegw/",
+   "officialName": "PJYD2200PWE#GW",
+   "officialSku": "PJYD2200PWE#GW",
+   "primaryImage": "https://vn.toto.com/wp-content/uploads/2023/11/pjyd2200pwe_gw.jpg",
+   "galleryImages": [
+    "https://vn.toto.com/contents/wp-content/uploads/2022/07/PJYD2200PWEGW.jpeg",
+    "https://vn.toto.com/wp-content/uploads/2026/08/2_GB_GROSS_RD_02.jpg",
+    "https://vn.toto.com/wp-content/uploads/2026/08/4_GB_GROSS_SQ_02.jpg",
+    "https://vn.toto.com/wp-content/uploads/2026/08/8_GB_GROSS_SQ_01.jpg",
+    "https://vn.toto.com/wp-content/uploads/2026/08/1_ZERO-DIMENTION.jpg"
+   ],
+   "technicalSpecs": {},
+   "files": [
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDSD_NTE182_PJYD2200PWE.pdf"
+    },
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/CAD_PJYD2200PWE_GW.Rev01.dwg"
+    },
+    {
+     "type": "CAD",
+     "sourceUrl": "https://vn.toto.com/wp-content/uploads/2026/01/Du-lieu-nguon-goc-xuat-xu-revised_-29.08.25.xlsx.pdf"
+    }
+   ],
+   "technologies": [],
+   "manufacturerReferencePrice": null,
+   "technicalSourceUrl": "https://vn.toto.com/pjyd2200pwegw/",
+   "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2023/11/pjyd2200pwe_gw.jpg",
+   "manufacturerCheckedAt": "2026-10-13T07:46:37Z"
+  },
+  "viglacera-p-61-320": {
+   "matchType": "NO_MATCH",
+   "brand": "Viglacera",
+   "sku": "P.61.320"
+  },
+  "caesar-at7135": {
+   "matchType": "NO_MATCH",
+   "brand": "Caesar",
+   "sku": "AT7135"
+  },
+  "caesar-at3350l-r": {
+   "matchType": "NO_MATCH",
+   "brand": "Caesar",
+   "sku": "AT3350L/R"
+  },
+  "caesar-mt5165": {
+   "matchType": "NO_MATCH",
+   "brand": "Caesar",
+   "sku": "MT5165"
+  },
+  "american-standard-70280-wt": {
+   "matchType": "NO_MATCH",
+   "brand": "American Standard",
+   "sku": "70280-WT"
+  }
+ }
+}

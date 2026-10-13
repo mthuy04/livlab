@@ -72,6 +72,20 @@ export interface CatalogProduct {
    */
   imageStatus: string;
   imagePresentable: boolean;
+
+  /* ── Manufacturer-sourced, where an exact SKU match exists ───────────── */
+
+  /** Where the picture came from. Reported internally, never shown as a claim. */
+  imageSource: 'MANUFACTURER' | 'SHOWROOM' | 'RETAILER' | 'PLACEHOLDER';
+  /** The manufacturer's own product page, kept for auditability. */
+  manufacturerUrl: string | null;
+  /** The manufacturer's list price. Never conflated with the showroom's. */
+  manufacturerReferencePrice: number | null;
+  /** Official CAD / installation / 3D / spec links, by reference only. */
+  documents: { type: string; sourceUrl: string }[];
+  galleryImages: string[];
+  /** Only where the manufacturer states it. Compatibility is never inferred. */
+  compatibleSkus: string[];
 }
 
 /**

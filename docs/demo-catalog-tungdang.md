@@ -82,3 +82,34 @@ catalogue substitutes it automatically.
 No image is ever edited. Watermarks are not painted out, logos are not removed
 and missing product area is never invented — a rejected asset is replaced,
 withheld, or named here as a data-quality issue.
+
+## Manufacturer enrichment
+
+`python3 scripts/enrich_manufacturer_assets.py [--brands INAX,TOTO]` joins the
+catalogue to the manufacturers' own product pages on brand + normalised SKU.
+
+Sources, all reached through the sitemaps their robots.txt advertises. INAX
+disallows `/search/` and `/?s=`, so neither is used:
+
+- INAX `https://www.inax.com.vn/product-sitemap*.xml`
+- TOTO `https://vn.toto.com/product-sitemap*.xml`
+- JOMOO `https://jomoo.vn/sitemap_products_1.xml` plus Haravan's per-product
+  `.js`, which carries the exact SKU, images and list price
+
+Matching is by SKU alone. `AC-989VN` and `AC989VN` compare equal; `#` and `/`
+are preserved in the stored SKU but dropped from the comparison token. A title
+that merely looks similar is never enough, and an ambiguous code is recorded
+`NO_MATCH`. Several URLs for one product — a Vietnamese and an English slug —
+only count as one match when everything after the code is identical.
+
+**What the manufacturer wins:** photograph, dimensions, colour, finish,
+material, flush system and volume, rough-in, technologies, and links to CAD,
+installation and spec files.
+
+**What it never touches:** `showroomPrice`, the showroom's reference price,
+promotions and availability. A manufacturer list price is stored separately as
+`manufacturerReferencePrice`.
+
+Document links are references only — nothing is downloaded or rehosted, and no
+redistribution right is assumed. Compatibility is captured only where a
+manufacturer states it explicitly; it is never inferred.
