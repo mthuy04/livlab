@@ -1,6 +1,6 @@
 {
   "schema": "livlab.3d.qa/1",
-  "generatedAt": "2026-10-14T09:00:28+00:00",
+  "generatedAt": "2026-10-14T09:27:20+00:00",
   "status": "BLOCKED_AWAITING_SOURCE",
   "identity": {
     "manufacturer": "TOTO",
@@ -46,13 +46,12 @@
     "reviewedAt": "2026-10-14T09:00:28+00:00"
   },
   "officialDimensions": {
-    "source": "TOTO China official dimensional drawing size_x.jpg (300dpi), linked from the product page",
-    "sourceSha256": "1dfc536147addc7042e0be9f8ef5a10cef41b8c535a639bd8fcaf4e6f6799f6b",
+    "source": "TOTO India master catalogue (COLLECTIONS 2026), GR Series p.134 of 244 — linked as MASTER CATALOGUE from https://in.toto.com/catalogue/",
+    "sourceSha256": "9c25db9b7f905c2cbb6117e9df3f9ab3ccef9d3b9f62cda2716873feeb103d8a",
     "unit": "mm",
-    "heightMm": 133.2,
-    "depthMm": 117.2,
-    "widthMm": null,
-    "widthNote": "NOT DIMENSIONED by the manufacturer. The drawing gives height (133.2) and spout reach (117.2) only; the body is a slim cylinder and no width figure is published. cad.dwg is 2D-only (0 3D entities) and carries no extractable width. Width therefore cannot be QA-scored against manufacturer data and must not be invented.",
+    "heightMm": 133,
+    "depthMm": 117,
+    "widthMm": 55,
     "otherOfficialFigures": {
       "spoutOutletHeightMm": 78,
       "handleOpenAngleDeg": 22,
@@ -65,7 +64,24 @@
       "drainPipeDiameterMm": 31.75,
       "supplyConnection": "G1/2"
     },
-    "bboxScopeWarning": "Supply hoses (394mm) and the pop-up drain assembly (202/285mm) are BELOW-COUNTER accessories. The official page states 排水配件：已配 (drain included), so the archive may contain them. They must be excluded from the Room Studio bbox or the height QA will be wrong by a factor of ~4."
+    "bboxScopeWarning": "Supply hoses (394mm) and the pop-up drain assembly (202/285mm) are BELOW-COUNTER accessories. The official page states 排水配件：已配 (drain included), so the archive may contain them. They must be excluded from the Room Studio bbox or the height QA will be wrong by a factor of ~4.",
+    "sourceUrl": "https://publish.ecollat.com/totoindia/collections2026/page/134",
+    "quote": "TLG02301B / Single Lever Washbasin Faucet / w/ Pop-Up Waste / Size : 55W x 117D x 133H mm",
+    "canonicalMapping": {
+      "note": "Room Studio / glTF canonical axes, metres.",
+      "X_width_m": 0.055,
+      "Y_height_m": 0.133,
+      "Z_depth_m": 0.117
+    },
+    "secondSource": {
+      "source": "TOTO China official dimensional drawing size_x.jpg",
+      "sha256": "1dfc536147addc7042e0be9f8ef5a10cef41b8c535a639bd8fcaf4e6f6799f6b",
+      "heightMm": 133.2,
+      "depthMm": 117.2,
+      "widthMm": null,
+      "note": "More precise on the two axes it gives, and silent on width. The catalogue is used as the QA target because it is the only source covering all three; the disagreement is 0.15% on height and 0.17% on depth, inside the 2% PASS band either way."
+    },
+    "notFromGeometry": "No figure here is measured off a mesh. In particular 40mm, which appears in the converter regression fixture, is a synthetic cube edge chosen to make three axes distinguishable and is not this product's width."
   },
   "catalogDimensionConflict": {
     "conflict": false,

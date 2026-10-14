@@ -272,13 +272,18 @@ const REGISTRY: Record<string, Product3DAsset> = {
    * `manufacturerModel` carries the code the geometry is filed under so the
    * two never have to be reconciled by eye again.
    *
-   * It is registered without a width because TOTO does not publish one. The
-   * drawing dimensions height (133.2) and spout reach (117.2) and nothing
-   * across the body; the official cad.dwg is a 2D drawing with no 3D entity to
-   * measure. `blockers()` therefore refuses the convert with
-   * MISSING_OFFICIAL_DIMENSIONS, which is the honest answer: a width invented
-   * here would be checked against the mesh and would pass, because it came
-   * from the mesh's own family rather than from the manufacturer.
+   * The width took a second source to find. TOTO China's dimensional drawing
+   * gives height and spout reach and nothing across the body, so this record
+   * sat blocked on MISSING_OFFICIAL_DIMENSIONS rather than carry a guess.
+   * TOTO India's master catalogue prints the whole box — "TLG02301B / Single
+   * Lever Washbasin Faucet / w/ Pop-Up Waste / Size : 55W x 117D x 133H mm" —
+   * and its elevation repeats 55, 117 and 133 against the drawing.
+   *
+   * The two sources disagree in the last digit: the China drawing reads 133.2
+   * and 117.2 where the catalogue reads 133 and 117. That is rounding, 0.15%
+   * and 0.17%, inside the 2% the pipeline calls a PASS either way. The
+   * catalogue's figures are used because they are the only set that covers all
+   * three axes, and a QA target mixing two sources would be neither.
    */
   'llv-fau-toto-tlg02301b-bfg': {
     id: 'toto-tlg02301b-bfg-src',
@@ -307,8 +312,8 @@ const REGISTRY: Record<string, Product3DAsset> = {
         'Chứng cứ: asia.toto.com liệt kê #BFG cho dòng GR, và catalogue chính thức của TOTO ' +
         'định nghĩa #BFG = Brushed French Gold, một lớp phủ PVD trên bề mặt.',
     },
-    // width: hãng không công bố. Xem chú thích ở trên.
-    dimensionsMm: { depth: 117.2, height: 133.2 },
+    // TOTO India master catalogue: "Size : 55W x 117D x 133H mm".
+    dimensionsMm: { width: 55, depth: 117, height: 133 },
     placement: {
       type: 'DECK_FAUCET',
       pivot: PIVOT_FOR_PLACEMENT.DECK_FAUCET,
@@ -327,8 +332,9 @@ const REGISTRY: Record<string, Product3DAsset> = {
     },
     assetVersion: 1,
     note:
-      'Chờ tệp nguồn: link 3D của hãng yêu cầu đăng nhập. Thiếu chiều rộng chính thức nên ' +
-      'dimensionsVerified = false và convert sẽ bị chặn cho tới khi có đủ ba chiều của hãng.',
+      'Chờ tệp nguồn: link 3D của hãng yêu cầu đăng nhập. Đã đủ ba chiều chính thức ' +
+      '(catalogue TOTO India), nhưng dimensionsVerified = false cho tới khi đo bbox của ' +
+      'GLB thật và đối chiếu với 55 x 133 x 117 mm theo X/Y/Z.',
   },
 };
 

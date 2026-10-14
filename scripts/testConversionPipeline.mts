@@ -394,8 +394,19 @@ if (!blenderForAxis) {
   console.log('\nI. quy uoc truc (§11)\n  SKIP  khong co Blender — bo qua kiem tra truc');
 } else {
   const tmp = mkdtempSync(path.join(tmpdir(), 'livlab-axis-'));
-  // Three clearly different extents, so no two axes can be confused.
-  const W = 40, D = 117.2, H = 133.2;
+  /**
+   * Three clearly different extents, so no two axes can be confused — and
+   * three that are obviously not a product.
+   *
+   * These were 40 x 117.2 x 133.2, which borrowed the TOTO faucet's real
+   * height and reach so the fixture would resemble the thing being shipped.
+   * That was a mistake worth naming: the one number nobody had a manufacturer
+   * source for, 40, then looked like the faucet's width, and a fixture
+   * constant is the worst possible provenance for a QA target. The numbers
+   * below match no catalogue entry, and the assertion under
+   * `OFFICIAL_VS_FIXTURE` keeps it that way.
+   */
+  const W = 41, D = 173, H = 229;
   const mk = path.join(tmp, 'mk.py');
   writeFileSync(
     mk,
@@ -464,6 +475,43 @@ if (!blenderForAxis) {
     }
   }
   rmSync(tmp, { recursive: true, force: true });
+
+  /* ------------------------------------------- OFFICIAL_VS_FIXTURE (§14) */
+
+  /**
+   * A manufacturer's figure and a test constant must never be the same number.
+   *
+   * The regression fixture above exists to prove the converter maps axes
+   * correctly, so its cube has to have three distinguishable edges — and that
+   * is all it is. If one of those edges ever equals a dimension a product is
+   * judged against, the QA target has quietly acquired a fixture for a source,
+   * and the measurement would agree with itself forever.
+   *
+   * 40 is called out by name because it was that number: it sat in this file
+   * as the fixture's width while the TOTO faucet had no published width at
+   * all, which is exactly the circumstance in which the two get confused.
+   */
+  for (const asset of assets) {
+    const { width, depth, height } = asset.dimensionsMm;
+    check(
+      `${asset.sku}: kich thuoc hang khong trung hang so fixture`,
+      ![width, depth, height].some((v) => v !== undefined && [W, D, H].includes(v)),
+      { official: asset.dimensionsMm, fixture: { W, D, H } }
+    );
+  }
+
+  const faucet = resolveSku('TLG02301B#BFG');
+  check(
+    'TLG02301B#BFG: chieu rong la 55 cua catalogue, khong phai 40 cua fixture',
+    faucet?.dimensionsMm.width === 55,
+    faucet?.dimensionsMm
+  );
+  check(
+    'khong asset nao lay 40mm lam kich thuoc hang',
+    assets.every(
+      (a) => ![a.dimensionsMm.width, a.dimensionsMm.depth, a.dimensionsMm.height].includes(40)
+    )
+  );
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);
