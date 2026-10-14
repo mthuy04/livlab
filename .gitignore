@@ -38,3 +38,7 @@ assets/3d/work/normalized/
 # (see §73/§74 licence review). data/3d/manufacturer-sources.json records each
 # file's hash, size and inspection verdict, which is the part worth keeping.
 assets/3d/sources/
+
+# Python bytecode from the 3D pipeline scripts
+__pycache__/
+*.pyc
