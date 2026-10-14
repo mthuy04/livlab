@@ -1,6 +1,6 @@
 {
   "schema": "livlab.3d.sources/1",
-  "generatedAt": "2026-10-14T08:22:25+00:00",
+  "generatedAt": "2026-10-14T09:04:12+00:00",
   "note": "Nguồn hình học 3D của hãng cho sản phẩm trong danh mục hiện tại. Một dòng = một file thật đã kiểm, không phải một khả năng.",
   "records": [
     {
@@ -225,14 +225,14 @@
       "sourceFormat": "RAR",
       "sourceFilename": "tlg02301.rar",
       "manufacturerOwned": true,
-      "identityConfidence": "OFFICIAL_PRODUCT_PAGE_3D_ASSET",
+      "identityConfidence": "MANUFACTURER_CONFIRMED_FINISH_VARIANT",
       "sourceStatus": "AWAITING_SOURCE",
       "blocker": "DOWNLOAD_REQUIRES_LOGIN",
       "downloadedAt": null,
       "sourceSha256": null,
       "sourceSizeBytes": null,
       "geometryInspection": null,
-      "notes": "Link 3D素材 của trang chính thức trả 302 -> /cn/common/login.html (form username/password/verificationCode). Hãng yêu cầu đăng nhập; không tự tạo tài khoản hay giải CAPTCHA. Chờ người dùng tải thủ công đặt tại assets/3d/sources/toto/tlg02301b/tlg02301.rar (~61.824 bytes)."
+      "notes": "Link 3D素材 của trang chính thức trả 302 -> /cn/common/login.html (form username/password/verificationCode). Hãng yêu cầu đăng nhập; không tự tạo tài khoản hay giải CAPTCHA. Chờ tải thủ công, đặt tại assets/3d/sources/toto/tlg02301b/tlg02301.rar (~61.824 bytes). Định danh đã xác nhận: TLG02301B#BFG = hình học TLG02301B + lớp phủ PVD #BFG (Brushed French Gold) — asia.toto.com liệt kê #BFG cho dòng GR."
     }
   ]
 }

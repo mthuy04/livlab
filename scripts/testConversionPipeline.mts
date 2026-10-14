@@ -57,18 +57,45 @@ console.log('\nA. sau INAX record (§65)');
 const assets = allProduct3DAssets();
 const skus = assets.map((a) => a.sku).sort();
 check(
-  'dung sau SKU, khong thieu khong thua',
+  'dung bay SKU, khong thieu khong thua',
   JSON.stringify(skus) ===
-    JSON.stringify(['AC-1008VRN', 'AC-1017VRN', 'AC-1035VN', 'AC-1135VN', 'AC-2700VN', 'AC-4005VN']),
+    JSON.stringify([
+      'AC-1008VRN',
+      'AC-1017VRN',
+      'AC-1035VN',
+      'AC-1135VN',
+      'AC-2700VN',
+      'AC-4005VN',
+      'TLG02301B#BFG',
+    ]),
   skus
 );
 check('tat ca con o SOURCE_VERIFIED', assets.every((a) => a.status === 'SOURCE_VERIFIED'));
 check('khong asset nao co glbUrl', assets.every((a) => !a.runtime.glbUrl));
 check('READY = 0', assets.filter(isRoomStudioReady).length === 0);
-check(
-  'moi asset deu co du ba chieu cua hang',
-  assets.every((a) => a.dimensionsMm.width && a.dimensionsMm.depth && a.dimensionsMm.height)
-);
+/**
+ * Three official dimensions, or refused — not "three official dimensions".
+ *
+ * The original rule assumed every manufacturer publishes all three, which was
+ * true while every record was a toilet. TOTO dimensions the TLG02301B faucet's
+ * height and spout reach and nothing across its body, and its official CAD is
+ * a 2D drawing, so there is no width to record and inventing one would defeat
+ * the check it is supposed to feed.
+ *
+ * What has to hold is that an incomplete record cannot become a product: it is
+ * blocked from convert and can never be READY. Both halves are asserted, so a
+ * toilet that quietly loses a dimension is still caught.
+ */
+for (const a of assets) {
+  const complete = Boolean(a.dimensionsMm.width && a.dimensionsMm.depth && a.dimensionsMm.height);
+  if (complete) continue;
+  check(
+    `${a.sku}: thieu chieu cua hang thi bi chan convert`,
+    blockers(a).some((b) => b.startsWith('MISSING_OFFICIAL_DIMENSIONS')),
+    blockers(a)
+  );
+  check(`${a.sku}: thieu chieu cua hang thi khong the READY`, !isRoomStudioReady(a));
+}
 
 // §66: the two SKUs whose 3D section exists but carries no file must not have
 // crept into the registry as if a source had been found.
@@ -337,8 +364,16 @@ check('file da tai deu co sha256', downloaded.every((r) => typeof r.sourceSha256
 check('assets/3d/sources/ bi gitignore', readFileSync('.gitignore', 'utf8').includes('assets/3d/sources/'));
 
 // The six INAX records in the manifest must agree with the registry, not drift.
+// Compared brand against brand: this used to check the INAX manifest against
+// every SKU in the registry, which only held while the registry was all INAX
+// and broke the moment a TOTO record joined it.
 const inaxManifest = manifest.records.filter((r) => r.brand === 'INAX').map((r) => r.sku).sort();
-check('manifest va registry khop sau SKU INAX', JSON.stringify(inaxManifest) === JSON.stringify(skus), inaxManifest);
+const inaxRegistry = assets.filter((a) => a.brand === 'INAX').map((a) => a.sku).sort();
+check(
+  'manifest va registry khop sau SKU INAX',
+  JSON.stringify(inaxManifest) === JSON.stringify(inaxRegistry),
+  { inaxManifest, inaxRegistry }
+);
 
 /* ------------------------------------------- I. the axis convention (§11) */
 

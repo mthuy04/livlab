@@ -1,6 +1,6 @@
 {
   "schema": "livlab.3d.qa/1",
-  "generatedAt": "2026-10-14T08:23:11+00:00",
+  "generatedAt": "2026-10-14T09:00:28+00:00",
   "status": "BLOCKED_AWAITING_SOURCE",
   "identity": {
     "manufacturer": "TOTO",
@@ -9,14 +9,13 @@
     "finishCode": "BFG",
     "finishName": "Brushed French Gold / Vàng Pháp Mờ",
     "catalogProductId": "llv-fau-toto-tlg02301b-bfg",
-    "identityVerified": false,
-    "flag": "IDENTITY_VARIANT_REVIEW_REQUIRED",
+    "identityVerified": true,
     "evidence": {
       "baseGeometrySkuConfirmed": true,
       "baseGeometrySkuSource": "https://www.toto.com.cn/cn/products/categories/faucet/lava_tory/single_hole_single_handle_lava_tory/product/TLG02301B.html",
       "officialProductName": "铜合金台式单柄双控洗面器水嘴（单孔）(GR系列)",
       "officialProductNameEn": "Brass deck-mounted single-handle dual-control lavatory faucet (single hole), GR series",
-      "finishSuffixConfirmed": false,
+      "finishSuffixConfirmed": true,
       "finishFindings": [
         "Official TOTO China page for TLG02301B names the model 43 times and documents NO finish/colour codes at all.",
         "#PFG = Polished French Gold is well attested across the TOTO TLG range (dealer listings).",
@@ -24,8 +23,27 @@
         "#BFG found in no reachable TOTO or dealer documentation.",
         "LivLab catalogue carries both TLG02301B#BFG (Vàng Pháp Mờ) and TLG02301B#PFG (Vàng Pháp Bóng); the Mờ/Bóng pair is internally consistent with brushed/polished but is LivLab naming, not TOTO documentation."
       ],
-      "conclusion": "Geometry identity (TLG02301B) is confirmed. Finish-only nature of #BFG is NOT confirmed by manufacturer documentation. Per §2, activation is withheld."
-    }
+      "conclusion": "Resolved. TLG02301B is a GR-series single-lever lavatory faucet with pop-up waste; the GR series is offered in #BFG; and TOTO's own catalogue defines #BFG as Brushed French Gold, a PVD surface finish. TLG02301B#BFG is therefore geometry TLG02301B carrying finish #BFG, not separate geometry. Earlier searches missed this because they reached US dealer listings and the China product page, none of which carry the Asia finish legend.",
+      "finishSuffixEvidence": [
+        {
+          "source": "TOTO Asia official catalogue PDF (Showers 2024), finish legend p.3",
+          "url": "https://asia.toto.com/pdfs/Showers2024.pdf",
+          "sha256": "1fee87c5453f959d741d4af4a4b94d674078d4d69fc1bd7d2b8a9bf2e0d40a94",
+          "quote": "Brushed French Gold #BFG",
+          "note": "The legend heads the section 'A VARIETY OF COLORS & FINISHES' and describes these as PVD layers added on the surface. A surface layer is not a geometry variant, which is the point that was missing."
+        },
+        {
+          "source": "TOTO Asia official faucet collection, GR Series row",
+          "url": "https://asia.toto.com/toto-ish/faucet.html",
+          "sha256": "9df26bf8ece1275fc67a4153cf7a251beda8986dc118062cdf4367e6c659fef1",
+          "quote": "GR Series / Single Lever Lavatory Faucet w/ Pop-Up Waste — Polished Chrome, Polished Nickel #PN, Brushed Nickel #BN, Polished French Gold #PFG, Brushed French Gold #BFG, Brushed Bronze #BBR",
+          "note": "The first product in the GR row is the single-lever lavatory faucet with pop-up waste, which is what TLG02301B is: the TOTO China page calls it GR系列 and states 排水配件：已配."
+        }
+      ],
+      "supersedes": "Earlier finding that #BFG was unattested and that #BRG (Brushed Rose Gold) was the nearest brushed gold code. #BFG is a real TOTO finish code; the earlier sources simply did not list it."
+    },
+    "reviewedBy": "user-supplied manufacturer catalogue lead, verified against asia.toto.com",
+    "reviewedAt": "2026-10-14T09:00:28+00:00"
   },
   "officialDimensions": {
     "source": "TOTO China official dimensional drawing size_x.jpg (300dpi), linked from the product page",
@@ -104,7 +122,7 @@
     "runtimeFileSize": null
   },
   "qaFlags": {
-    "identityVerified": false,
+    "identityVerified": true,
     "dimensionsVerified": false,
     "scaleVerified": false,
     "orientationVerified": false,
@@ -116,8 +134,7 @@
   "ready": false,
   "roomStudioReady": false,
   "readyBlockers": [
-    "DOWNLOAD_REQUIRES_LOGIN",
-    "IDENTITY_VARIANT_REVIEW_REQUIRED"
+    "DOWNLOAD_REQUIRES_LOGIN"
   ],
   "toolchain": {
     "blender": "Blender 5.2.2 LTS",

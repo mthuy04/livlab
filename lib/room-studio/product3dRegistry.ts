@@ -260,6 +260,76 @@ const REGISTRY: Record<string, Product3DAsset> = {
     assetVersion: 1,
     note: 'Nguồn .max — cần 3ds Max để xuất sang FBX. Kích thước là của hãng, chưa đối chiếu với mesh vì chưa có mesh.',
   },
+
+  /**
+   * The first source on this list that is not a toilet, and the first whose
+   * commercial SKU is not the model code the manufacturer draws.
+   *
+   * TOTO sells this faucet as TLG02301B#BFG and publishes geometry, a drawing
+   * and a product page for TLG02301B. The suffix is a finish: TOTO's own Asia
+   * catalogue lists #BFG as Brushed French Gold among the PVD colours offered
+   * on the GR series, and a PVD layer on the surface is not a different shape.
+   * `manufacturerModel` carries the code the geometry is filed under so the
+   * two never have to be reconciled by eye again.
+   *
+   * It is registered without a width because TOTO does not publish one. The
+   * drawing dimensions height (133.2) and spout reach (117.2) and nothing
+   * across the body; the official cad.dwg is a 2D drawing with no 3D entity to
+   * measure. `blockers()` therefore refuses the convert with
+   * MISSING_OFFICIAL_DIMENSIONS, which is the honest answer: a width invented
+   * here would be checked against the mesh and would pass, because it came
+   * from the mesh's own family rather than from the manufacturer.
+   */
+  'llv-fau-toto-tlg02301b-bfg': {
+    id: 'toto-tlg02301b-bfg-src',
+    catalogProductId: 'llv-fau-toto-tlg02301b-bfg',
+    brand: 'TOTO',
+    sku: 'TLG02301B#BFG',
+    normalizedSku: 'TLG02301BBFG',
+    source: {
+      type: 'MANUFACTURER_OFFICIAL',
+      url: 'https://www.toto.com.cn/cn/down.php?f=/cn/resource/3D/20170803/tlg02301.rar',
+      originalFileName: 'tlg02301.rar',
+      // ARCHIVE until it is opened. The page advertises .fbx/.obj/.3ds/.max
+      // inside, and that becomes FBX here once the contents are confirmed
+      // rather than expected.
+      originalFormat: 'ARCHIVE',
+      checkedAt: '2026-10-14T08:10:00Z',
+      rightsStatus: 'MANUFACTURER_PUBLIC',
+      retrievalMethod:
+        'Mục "3D素材" trên trang chính thức TLG02301B (toto.com.cn). Link trả 302 về /cn/common/login.html — hãng yêu cầu đăng nhập, chưa tải được.',
+    },
+    identity: {
+      relationType: 'EXACT_PRODUCT',
+      manufacturerModel: 'TLG02301B',
+      note:
+        'TLG02301B#BFG = hình học TLG02301B + nước hoàn thiện #BFG (Brushed French Gold). ' +
+        'Chứng cứ: asia.toto.com liệt kê #BFG cho dòng GR, và catalogue chính thức của TOTO ' +
+        'định nghĩa #BFG = Brushed French Gold, một lớp phủ PVD trên bề mặt.',
+    },
+    // width: hãng không công bố. Xem chú thích ở trên.
+    dimensionsMm: { depth: 117.2, height: 133.2 },
+    placement: {
+      type: 'DECK_FAUCET',
+      pivot: PIVOT_FOR_PLACEMENT.DECK_FAUCET,
+      defaultRotation: [0, 0, 0],
+    },
+    runtime: {},
+    status: 'SOURCE_VERIFIED',
+    qa: {
+      identityVerified: true,
+      dimensionsVerified: false,
+      scaleVerified: false,
+      pivotVerified: false,
+      orientationVerified: false,
+      materialsVerified: false,
+      performanceVerified: false,
+    },
+    assetVersion: 1,
+    note:
+      'Chờ tệp nguồn: link 3D của hãng yêu cầu đăng nhập. Thiếu chiều rộng chính thức nên ' +
+      'dimensionsVerified = false và convert sẽ bị chặn cho tới khi có đủ ba chiều của hãng.',
+  },
 };
 
 /**
