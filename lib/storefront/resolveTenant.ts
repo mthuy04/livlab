@@ -45,12 +45,24 @@ const HOST_TENANTS: Record<string, string> = {
  * searchParams — only pages do — so a query string cannot reach this function.
  */
 async function previewTenantSlug(): Promise<string | null> {
-  if (!tenantPreviewEnabled()) return null;
+  let slug: string | null = null;
   try {
-    return (await cookies()).get(TENANT_PREVIEW_COOKIE)?.value ?? null;
+    slug = (await cookies()).get(TENANT_PREVIEW_COOKIE)?.value ?? null;
   } catch {
     return null;
   }
+  if (!slug) return null;
+
+  const tenant = TENANTS[slug];
+  if (!tenant) return null;
+
+  // A storefront marked `publicDemo` exists in order to be shown, so it is
+  // honoured wherever it is opened — that is what `/s/<slug>` hands out.
+  // Everything else is an internal switch and stays behind the dev gate: a
+  // tenant backed by a live showroom carries that showroom's prices, and a
+  // customer must never reach them by holding someone else's cookie.
+  if (tenant.publicDemo) return slug;
+  return tenantPreviewEnabled() ? slug : null;
 }
 
 /**

@@ -88,6 +88,16 @@ export interface TenantStorefrontConfig {
   features: TenantFeatureFlags;
   /** Quiet "Powered by LivLab" in the footer. A tenant may switch it off. */
   poweredByLivLab: boolean;
+  /**
+   * Reachable by anyone who has the link, including in production, via
+   * `/s/<slug>`.
+   *
+   * Only for storefronts that exist to be shown: their catalogue is a fixture,
+   * their branding is their own, and nothing behind them is a real showroom's
+   * commercial data. A tenant backed by a live `showroomId` must never carry
+   * this, because its prices and offers belong to that showroom.
+   */
+  publicDemo?: boolean;
   seo: { title: string; description: string };
 }
 
@@ -257,6 +267,10 @@ export const DEMO_TUNGDANG_TENANT: TenantStorefrontConfig = {
   },
   features: DEMO_FEATURES,
   poweredByLivLab: false,
+  // Safe to hand out: the catalogue is a fixture, the name shown is "Showroom
+  // Demo" rather than any real company's, and no live showroom's prices or
+  // offers are behind it.
+  publicDemo: true,
   seo: {
     title: 'Showroom Demo — Thiết bị phòng tắm',
     description: 'Danh mục thiết bị phòng tắm dùng cho demo nội bộ của LivLab.',
