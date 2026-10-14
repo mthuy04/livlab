@@ -179,8 +179,40 @@ console.log('\ndanh mục thật (CSV seed)');
   check('mọi sản phẩm đặt được đều có đủ ba chiều',
     placeable.every((p) => p.width !== undefined && p.depth !== undefined && p.height !== undefined),
     placeable.filter((p) => p.height === undefined).map((p) => p.sku));
-  check('không sản phẩm nào trỏ tới model dùng chung',
-    products.every((p) => !p.model3dUrl), products.filter((p) => p.model3dUrl).map((p) => p.sku));
+  /**
+   * Geometry may only reach a product on stated terms.
+   *
+   * This used to read `every(p => !p.model3dUrl)` — no product may carry a
+   * model at all — which was right while the honest answer was zero models,
+   * and which is a blunter rule than the thing it was protecting. What went
+   * wrong originally was not that a product had geometry; it was that geometry
+   * arrived BY CATEGORY and was drawn under the name of a product it was not.
+   *
+   * So the rule is now: a product carrying a model is either showing its own
+   * verified asset, or is declared a stand-in and says so on screen. Anything
+   * else — a model that appeared without either claim — is the old failure
+   * returning, and fails here.
+   *
+   * The category path itself stays shut, asserted above and again in the
+   * conversion suite. That guard is untouched.
+   */
+  const withModel = products.filter((p) => p.model3dUrl);
+  const undeclared = withModel.filter(
+    (p) => p.capability !== 'VERIFIED_3D' && p.illustrativeModel !== true
+  );
+  check('model nào cũng phải khai báo: verified hoặc minh hoạ', undeclared.length === 0,
+    undeclared.map((p) => p.sku));
+  check('model minh hoạ không bao giờ mang 3D VERIFIED',
+    products.filter((p) => p.illustrativeModel).every((p) => p.capability !== 'VERIFIED_3D'),
+    products.filter((p) => p.illustrativeModel && p.capability === 'VERIFIED_3D').map((p) => p.sku));
+  check('model dùng chung phải là minh hoạ, không phải verified',
+    (() => {
+      const byUrl = new Map<string, typeof products>();
+      for (const p of withModel) byUrl.set(p.model3dUrl!, [...(byUrl.get(p.model3dUrl!) ?? []), p]);
+      return [...byUrl.values()]
+        .filter((group) => group.length > 1)
+        .every((group) => group.every((p) => p.illustrativeModel === true));
+    })());
   check('đèn sưởi âm trần H4B không đặt được (chuỗi kích thước mơ hồ)',
     !placeable.some((p) => p.sku === 'H4B'));
   check('phụ kiện treo tường, không nằm sàn',

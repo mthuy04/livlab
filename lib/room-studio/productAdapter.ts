@@ -50,6 +50,14 @@ export interface RoomStudioProduct {
   dimensionsLabel?: string;
   model3dUrl?: string;
   modelScale?: number;
+  /**
+   * The GLB being drawn is a stand-in, not this product.
+   *
+   * Never true for geometry from `product3dRegistry`; only a per-SKU
+   * demonstration override sets it. The scene draws it at the product's true
+   * size either way — this exists so the words around it can say which it is.
+   */
+  illustrativeModel?: boolean;
   /** What Room Studio may claim about this product. The one badge/gate source. */
   capability: RoomStudioCapability;
   placementType: PlacementType;
@@ -165,6 +173,7 @@ export function toRoomStudioProduct(product: Product): RoomStudioProduct {
     dimensionsLabel: product.dimensions || product.size || undefined,
     model3dUrl: metadata.model3dUrl,
     modelScale: metadata.modelScale,
+    illustrativeModel: metadata.illustrativeModel,
     capability: deriveCapability(asset, parsed),
     placementType: derivePlacementType(product, normalizedCategory),
     source: product,

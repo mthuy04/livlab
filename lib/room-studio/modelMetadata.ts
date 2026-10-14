@@ -30,6 +30,20 @@ export interface ModelMetadata {
   fallbackTargetSize?: number;
   /** Rough file weight in MB, used to warn before a heavy download. */
   approxSizeMb?: number;
+  /**
+   * The geometry is a stand-in, not this product.
+   *
+   * The scene still draws it, at the product's true size, so "does it fit?" is
+   * still answered honestly. What changes is the wording: every surface that
+   * shows the product alongside this model has to say the shape is
+   * illustrative, because a 3D object in a room reads as "this is yours" and
+   * nothing else on screen corrects that.
+   *
+   * Never set for an asset from `product3dRegistry` — that registry only holds
+   * geometry that IS the product, and a flag saying otherwise there would mean
+   * one of the two is wrong.
+   */
+  illustrativeModel?: boolean;
 }
 
 /**
@@ -42,7 +56,41 @@ export interface ModelMetadata {
  * Two registries would eventually disagree, so this one no longer answers the
  * readiness question.
  */
-export const SKU_MODEL_OVERRIDES: Record<string, ModelMetadata> = {};
+/**
+ * The three entries below are demonstration stand-ins, requested so Room
+ * Studio has something to show before the first exact asset lands.
+ *
+ * They point every one of these basins at the same `lavabo.glb`, which is not
+ * any of them. That is the arrangement this file once had by category and
+ * which was removed for good reason — so what makes it tolerable here is what
+ * is different about it:
+ *
+ *   - It is three named products, not a category. Choosing a basin outside
+ *     this list still gets a true-size placeholder; nothing is silently
+ *     substituted for a product nobody listed.
+ *   - It never reaches `product3dRegistry`, so these can never become
+ *     `VERIFIED_3D`, never gain a badge, and never pass the activation gate.
+ *   - `illustrativeModel` travels with them, so the workspace says the shape
+ *     is an illustration wherever it draws one.
+ *
+ * Delete an entry the moment that SKU gets a real asset: the registry wins
+ * over this file in `getModelMetadata`, so a stale line here would be
+ * harmless but misleading to read.
+ */
+const DEMO_LAVABO_STANDIN: ModelMetadata = {
+  model3dUrl: '/models/bathroom/lavabo.glb',
+  approxSizeMb: 16.3,
+  illustrativeModel: true,
+};
+
+export const SKU_MODEL_OVERRIDES: Record<string, ModelMetadata> = {
+  // Chậu Lavabo TOTO LT1705#XW Đặt Bàn — 550 x 380 x 125 mm
+  'llv-lav-toto-lt1705-xw': DEMO_LAVABO_STANDIN,
+  // Chậu Lavabo TOTO LT1735#XW Đặt Bàn — 550 x 380 x 125 mm
+  'llv-lav-toto-lt1735-xw': DEMO_LAVABO_STANDIN,
+  // Chậu Lavabo Dương Bàn Đá TOTO LW573JW/F#W — 420 x 420 x 125 mm
+  'llv-lav-toto-lw573jwf': DEMO_LAVABO_STANDIN,
+};
 
 /**
  * Whether a LivLab master 3D asset exists for this specific product.

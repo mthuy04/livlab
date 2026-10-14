@@ -294,6 +294,18 @@ export default function ProductLibraryPanel({
                           {badge.label}
                         </span>
                       )}
+                      {/* A stand-in gets its own words, never the 3D badge. The
+                          room will draw a shape under this product's name, and
+                          this is the only thing on screen that says the shape
+                          is not the product. */}
+                      {product.illustrativeModel && (
+                        <span
+                          title="Hình khối 3D chỉ để minh hoạ, không phải hình dáng thật của sản phẩm này. Kích thước trong phòng vẫn đúng."
+                          className="whitespace-nowrap rounded border border-[#D8E2EA] px-1.5 py-px text-[11px] font-medium tracking-[0.04em] text-[#8C9BAB]"
+                        >
+                          MÔ HÌNH MINH HOẠ
+                        </span>
+                      )}
                     </div>
                     <span className="truncate text-[12px] text-[#9AA9B6]">
                       {placeable ? product.dimensionsLabel : NO_DIMENSIONS_REASON}
