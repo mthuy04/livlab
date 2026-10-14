@@ -246,8 +246,13 @@ export default function RoomScene3D({
         </button>
       </div>
 
+      {/* The hint changes with the selection rather than listing everything at
+          once: the arrow keys only do something while a product is selected,
+          and a line that mentions them the rest of the time is noise. */}
       <div className="pointer-events-none absolute bottom-3 left-3 z-10 hidden rounded bg-white/85 px-2.5 py-1.5 text-[12px] text-[#5B6B7A] shadow-sm backdrop-blur sm:block">
-        Kéo để xoay · Cuộn để phóng to · Kéo sản phẩm để đổi vị trí
+        {selectedInstanceId
+          ? 'Kéo sản phẩm để đổi vị trí · Phím mũi tên chỉnh từng centimét · Giữ Shift để bước 10cm'
+          : 'Kéo để xoay · Cuộn để phóng to · Kéo sản phẩm để đổi vị trí'}
       </div>
 
       <CanvasErrorBoundary>

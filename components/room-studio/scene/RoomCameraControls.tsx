@@ -69,7 +69,7 @@ export default function RoomCameraControls({ dimensions, enabled, resetSignal }:
       minDistance={framing.minDistance}
       maxDistance={framing.maxDistance}
       minPolarAngle={0.15}
-      maxPolarAngle={Math.PI / 2 - 0.02}
+      maxPolarAngle={framing.maxPolarAngle}
       target={framing.target}
       makeDefault
     />

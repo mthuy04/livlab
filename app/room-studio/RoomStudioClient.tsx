@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { CheckCircle, Layers, Package, Wrench } from 'lucide-react';
@@ -286,6 +286,48 @@ export default function RoomStudioClient() {
       }}
     />
   );
+
+  /**
+   * Arrow keys nudge the selected product; Shift makes the step coarse.
+   *
+   * Dragging answers "roughly there" and a mouse cannot do better than the
+   * camera angle allows — on the floor plane a vertical screen movement is
+   * multiplied by 1/tan(elevation), so the last few centimetres of a placement
+   * are a fight even after the angle was raised. A key press is the same
+   * distance every time regardless of where the camera is, which is the only
+   * way to land a basin exactly against a wall.
+   *
+   * Movement is in room axes, not camera axes: Left/Right run along the room's
+   * length and Up/Down into its depth, which is what the arrows look like they
+   * do from the default framing. `moveProduct` clamps, so holding a key walks
+   * the product to the wall and stops.
+   */
+  useEffect(() => {
+    const selected = studio.selected;
+    if (!selected) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      // Never steal the arrows from a field the customer is typing in.
+      if (target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) return;
+
+      const step = event.shiftKey ? 0.1 : 0.01;
+      const [x, y, z] = selected.placed.position;
+      let next: Vec3 | null = null;
+      if (event.key === 'ArrowLeft') next = [x - step, y, z];
+      else if (event.key === 'ArrowRight') next = [x + step, y, z];
+      else if (event.key === 'ArrowUp') next = [x, y, z - step];
+      else if (event.key === 'ArrowDown') next = [x, y, z + step];
+      if (!next) return;
+
+      // Otherwise the page scrolls under the room while the product moves.
+      event.preventDefault();
+      studio.moveProduct(selected.placed.instanceId, next);
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [studio]);
 
   const selectedToolbar = studio.selected && (
     <SelectedProductToolbar

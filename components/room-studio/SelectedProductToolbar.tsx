@@ -82,7 +82,10 @@ export default function SelectedProductToolbar({
                 all is still waiting for one. */}
             {product.capability !== 'VERIFIED_3D' &&
               (product.illustrativeModel ? (
-                <span className="text-[#8C9BAB]">Hình khối minh hoạ · kích thước thật</span>
+                // Just the caveat. The true dimensions are the span immediately
+                // before this one, so repeating "kích thước thật" here only
+                // makes the bar wrap and squeeze the viewport.
+                <span className="whitespace-nowrap text-[#8C9BAB]">Hình khối minh hoạ</span>
               ) : (
                 <span className="text-[#A8691F]">Mô hình 3D đang cập nhật</span>
               ))}

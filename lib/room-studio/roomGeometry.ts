@@ -135,9 +135,30 @@ export function getDefaultCameraFraming(
   const span = Math.max(length, width);
   const target: [number, number, number] = [0, height * 0.42, 0];
 
-  // The angle: slightly off-axis and just above eye level, so all three walls
-  // are readable and the room does not look like an elevation drawing.
+  // The angle: slightly off-axis and above eye level, so all three walls are
+  // readable and the room does not look like an elevation drawing.
   const direction = [length * 0.45, height * 0.85 - target[1], width * 0.5 + span * 0.9];
+
+  /**
+   * Keep the camera off the floor plane, however large the room gets.
+   *
+   * The horizontal reach above grows with the room and the vertical reach only
+   * with its ceiling, so elevation collapsed as rooms got bigger: 16° in a
+   * 3x2, 9.7° in a 5.2x5.3. That is not just a dull view. Dragging a product
+   * happens on the floor plane, and the gain from screen movement to floor
+   * movement is 1/tan(elevation) — ×3.4 at 16°, ×5.7 at 9.7°, unbounded as the
+   * camera approaches the floor. At 9.7° a 10px nudge threw the product most of
+   * a metre, which is what "khó di chuyển xa gần" was.
+   *
+   * MIN_ELEVATION_RAD is the floor. 24° gives a gain of ×2.2 — close enough to
+   * direct that the product goes where the cursor goes — while still reading as
+   * standing in the room rather than looking down into a model of it.
+   */
+  const MIN_ELEVATION_RAD = (24 * Math.PI) / 180;
+  const horizontal = Math.hypot(direction[0], direction[2]);
+  const minRise = horizontal * Math.tan(MIN_ELEVATION_RAD);
+  if (direction[1] < minRise) direction[1] = minRise;
+
   const dirLength = Math.hypot(direction[0], direction[1], direction[2]) || 1;
 
   const distance = fitDistance(dimensions, aspect);
@@ -152,6 +173,17 @@ export function getDefaultCameraFraming(
     /** Keeps the user from zooming inside a wall or flying to orbit. */
     minDistance: 0.8,
     maxDistance: span * 4 + 4,
+    /**
+     * How flat the customer may tilt the view.
+     *
+     * The old limit was a hair off horizontal, which let the floor collapse to
+     * a line. Orbiting there is fine; dragging a product there is not, because
+     * the screen-to-floor gain is 1/tan(elevation) and it runs away — at 1° it
+     * is ×57, so the product crosses the room on a twitch. 14° holds the gain
+     * at ×4, low enough to still look along a wall and high enough that the
+     * floor stays a surface you can put something on.
+     */
+    maxPolarAngle: Math.PI / 2 - (14 * Math.PI) / 180,
   };
 }
 
