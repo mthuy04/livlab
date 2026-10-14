@@ -41,6 +41,7 @@ const skuArg = args.sku;
 
 if (typeof skuArg !== 'string') {
   console.error('cần --sku, ví dụ: npm run 3d:convert -- --sku AC-1017VRN');
+  console.error('tuỳ chọn: --input <đường dẫn file nguồn> nếu file không nằm đúng chỗ quy ước');
   process.exit(2);
 }
 
@@ -60,7 +61,32 @@ if (issues.length) {
 }
 
 const stem = sourceStem(asset);
+
+/**
+ * `--input` names a file explicitly; without it the conventional path is used.
+ *
+ * An explicit path is still checked against the supported formats and still
+ * has to exist — the flag says WHERE the file is, never what it is. Pointing
+ * the converter at a `.max` would otherwise produce a confident failure deep
+ * inside Blender instead of one sentence here.
+ */
+const explicit = typeof args.input === 'string' ? path.resolve(ROOT, args.input) : null;
+
+if (explicit) {
+  const ext = path.extname(explicit).toLowerCase();
+  if (!(SUPPORTED_INPUT_FORMATS as readonly string[]).includes(ext)) {
+    console.error(`UNSUPPORTED_INPUT_FORMAT: ${ext || '(không có đuôi)'}`);
+    console.error(`nhận: ${SUPPORTED_INPUT_FORMATS.join(', ')} — .max cần 3ds Max export trước.`);
+    process.exit(1);
+  }
+  if (!existsSync(explicit)) {
+    console.error(`Không thấy file: ${explicit}`);
+    process.exit(1);
+  }
+}
+
 const source =
+  explicit ??
   SUPPORTED_INPUT_FORMATS.map((ext: string) => path.join(WORKSPACE.incoming, stem + ext)).find(existsSync) ??
   null;
 

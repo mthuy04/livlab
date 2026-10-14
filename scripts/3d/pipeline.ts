@@ -14,7 +14,12 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { allProduct3DAssets, getProduct3DAssetBySku } from '../../lib/room-studio/product3dRegistry';
 import { needsDimensionReview, dimensionReviewFor } from '../../lib/room-studio/dimensionReview';
-import type { Product3DAsset } from '../../lib/room-studio/product3dAsset';
+import {
+  QA_CHECKS,
+  checkDimensions,
+  DIMENSION_ERROR_PREFERRED_PCT,
+  type Product3DAsset,
+} from '../../lib/room-studio/product3dAsset';
 
 export const ROOT = process.cwd();
 
@@ -161,6 +166,74 @@ export function blockers(asset: Product3DAsset): string[] {
 
   if (!asset.qa.identityVerified) {
     out.push('IDENTITY_NOT_VERIFIED: chưa xác nhận file này đúng là SKU này.');
+  }
+
+  return out;
+}
+
+/* --------------------------------------------------------- activation gate */
+
+export interface GlbFacts {
+  exists: boolean;
+  inspected: boolean;
+  error?: string;
+  /** Millimetres, measured from the file's bounding box. */
+  measuredMm?: { width: number; depth: number; height: number };
+  /** The file's own bbox minimum, for the pivot check. */
+  bboxMin?: number[];
+}
+
+/**
+ * Every reason this asset may NOT be activated, as sentences.
+ *
+ * A pure function so the opening case can be tested as well as the refusals.
+ * A gate that has only ever been observed saying no is a gate nobody has
+ * checked: the useful test is that it says yes exactly when it should.
+ *
+ * It deliberately does not look at performance. A correct manufacturer mesh
+ * that is heavy is an optimisation job, and refusing it would mean the only
+ * way to ship is to decimate a model before anyone has confirmed it is the
+ * right one.
+ */
+export function activationRefusals(asset: Product3DAsset, glb: GlbFacts): string[] {
+  const out = blockers(asset);
+
+  if (!glb.exists) {
+    out.push(`NO_RUNTIME_GLB: chưa có ${runtimeUrl(asset)}`);
+  } else if (!glb.inspected) {
+    out.push(`GLB_INVALID: ${glb.error ?? 'không đọc được file'}`);
+  } else if (!glb.measuredMm) {
+    out.push('DIMENSION_UNVERIFIABLE: không đo được kích thước từ file.');
+  } else {
+    const { worstErrorPct } = checkDimensions(asset.dimensionsMm, glb.measuredMm);
+    if (worstErrorPct === null) {
+      out.push('DIMENSION_UNVERIFIABLE: không đối chiếu được kích thước.');
+    } else if (worstErrorPct > DIMENSION_ERROR_PREFERRED_PCT) {
+      // REVIEW is not good enough to put in front of a customer. The band
+      // exists so a near-miss gets looked at, not so it gets waved through.
+      out.push(
+        `DIMENSION_NOT_PASSED: sai số lớn nhất ${worstErrorPct.toFixed(2)}% > ` +
+          `${DIMENSION_ERROR_PREFERRED_PCT}%.`
+      );
+    }
+
+    if (asset.placement.pivot === 'BACK_CENTER_FLOOR' && glb.bboxMin) {
+      const [, minY, minZ] = glb.bboxMin;
+      if (Math.abs(minY) > 1e-3 || Math.abs(minZ) > 1e-3) {
+        out.push(
+          `PIVOT_NOT_NORMALISED: gốc toạ độ ở minY=${minY}, minZ=${minZ}; ` +
+            'BACK_CENTER_FLOOR cần cả hai bằng 0.'
+        );
+      }
+    }
+  }
+
+  const missing = QA_CHECKS.filter((flag) => !asset.qa[flag]);
+  if (missing.length) {
+    out.push(
+      `QA_INCOMPLETE: còn ${missing.length} cờ chưa bật — ${missing.join(', ')}. ` +
+        'Người phải xem model tại /dev/3d-assets rồi tự bật trong product3dRegistry.ts.'
+    );
   }
 
   return out;

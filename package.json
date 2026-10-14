@@ -19,7 +19,10 @@
     "3d:audit": "npx tsx scripts/3d/audit.mts",
     "3d:convert": "npx tsx scripts/3d/convert.mts",
     "3d:qa": "npx tsx scripts/3d/qa.mts",
-    "test:3d-pipeline": "npx tsx scripts/testConversionPipeline.mts"
+    "test:3d-pipeline": "npx tsx scripts/testConversionPipeline.mts",
+    "3d:handoff": "npx tsx scripts/3d/handoff.mts",
+    "3d:process": "npx tsx scripts/3d/convert.mts",
+    "3d:activate": "npx tsx scripts/3d/activate.mts"
   },
   "dependencies": {
     "@google/genai": "^2.8.0",

@@ -21,6 +21,8 @@ import {
   masterPath,
   reportPath,
   WORKSPACE,
+  activationRefusals,
+  type GlbFacts,
 } from './3d/pipeline';
 import { allProduct3DAssets } from '../lib/room-studio/product3dRegistry';
 import {
@@ -175,6 +177,119 @@ check(
 );
 check('khong co model dung chung nao duoc bat', Object.values(availableProductModels).every((v) => v === false));
 check('bo bay co QA van nguyen ven', QA_CHECKS.length === 7);
+
+/* ------------------------------------------------ F. the activation gate */
+
+console.log('\nF. cong kich hoat (§47, §48)');
+
+const official = pilot!.dimensionsMm as Required<NonNullable<typeof pilot>['dimensionsMm']>;
+const perfectMm = { width: official.width, depth: official.depth, height: official.height };
+
+/** An asset whose seven flags a person has already ticked. */
+const qaDone = {
+  ...pilot!,
+  qa: Object.fromEntries(QA_CHECKS.map((c) => [c, true])) as unknown as NonNullable<typeof pilot>['qa'],
+};
+
+const goodGlb: GlbFacts = {
+  exists: true,
+  inspected: true,
+  measuredMm: perfectMm,
+  bboxMin: [-0.2, 0, 0],
+};
+
+// The case that matters: everything right, so the gate must OPEN. A gate only
+// ever seen refusing is a gate nobody has checked.
+check('du dieu kien -> khong con ly do tu choi', activationRefusals(qaDone, goodGlb).length === 0, activationRefusals(qaDone, goodGlb));
+
+check(
+  'thieu co QA -> tu choi',
+  activationRefusals(pilot!, goodGlb).some((r) => r.startsWith('QA_INCOMPLETE'))
+);
+check(
+  'khong co file -> tu choi',
+  activationRefusals(qaDone, { exists: false, inspected: false }).some((r) => r.startsWith('NO_RUNTIME_GLB'))
+);
+check(
+  'file hong -> tu choi',
+  activationRefusals(qaDone, { exists: true, inspected: false, error: 'bad glb' }).some((r) =>
+    r.startsWith('GLB_INVALID')
+  )
+);
+
+// §18: PASS is <=2%. REVIEW (2-5%) is explicitly not enough to activate.
+const reviewBand = { ...perfectMm, depth: Math.round(official.depth * 1.03) };
+check(
+  'sai so 3% (REVIEW) van bi tu choi',
+  activationRefusals(qaDone, { ...goodGlb, measuredMm: reviewBand }).some((r) =>
+    r.startsWith('DIMENSION_NOT_PASSED')
+  )
+);
+const withinPass = { ...perfectMm, depth: Math.round(official.depth * 1.015) };
+check(
+  'sai so 1.5% van qua',
+  activationRefusals(qaDone, { ...goodGlb, measuredMm: withinPass }).length === 0
+);
+
+// §20: the pivot contract is checked against the file, not assumed.
+check(
+  'pivot khong o back-center-floor -> tu choi',
+  activationRefusals(qaDone, { ...goodGlb, bboxMin: [-0.2, 0.05, 0] }).some((r) =>
+    r.startsWith('PIVOT_NOT_NORMALISED')
+  )
+);
+check(
+  'goc toa do dung thi khong phan nan',
+  !activationRefusals(qaDone, { ...goodGlb, bboxMin: [-0.2, 0, 0] }).some((r) =>
+    r.startsWith('PIVOT_NOT_NORMALISED')
+  )
+);
+
+// §67 again, at the last gate: a disputed dimension row cannot be activated
+// even with a perfect-looking model, because the figure it was checked against
+// is the thing in doubt.
+check(
+  'SKU dang tranh chap kich thuoc -> tu choi du model dep',
+  activationRefusals({ ...qaDone, sku: 'BFV-655T-8C' }, goodGlb).some((r) =>
+    r.startsWith('DIMENSION_REVIEW_REQUIRED')
+  )
+);
+
+/* --------------------------------------------- G. handoff + maxscript (§45) */
+
+console.log('\nG. goi ban giao MAX (§7, §9, §45)');
+
+const maxScript = 'scripts/3d/max/export_product_to_fbx.ms';
+check('co MAXScript', existsSync(maxScript));
+const ms = readFileSync(maxScript, 'utf8');
+// Strip the /* */ header and -- line comments before asserting on behaviour.
+// The prose warns AGAINST rescaling, so searching the raw text for "rescale"
+// finds the warning and fails the script for saying the right thing.
+const msCode = ms
+  .replace(/\/\*[\s\S]*?\*\//g, '')
+  .split('\n')
+  .map((line) => line.replace(/--.*$/, ''))
+  .join('\n');
+
+check('MAXScript xoa camera va den', msCode.includes('cameras as array') && msCode.includes('lights as array'));
+// §8: no geometry-altering transform anywhere in the executable body.
+check(
+  'MAXScript khong scale / move / xoay hinh hoc',
+  !/\bscale\b|\bmove\b|\brotate\b|\.pos\s*=|\.pivot\s*=|resetXForm/i.test(msCode),
+  msCode.match(/\bscale\b|\bmove\b|\brotate\b|\.pos\s*=|\.pivot\s*=|resetXForm/i)?.[0]
+);
+check('MAXScript dat don vi mm va truc Y', ms.includes('"ConvertUnit" #mm') && ms.includes('"UpAxis" #y'));
+check('MAXScript nhung texture', ms.includes('"EmbedTextures" true'));
+check('MAXScript tat animation', ms.includes('"Animation" false'));
+
+const readmePath = `assets/3d/handoff/inax/${pilot!.sku}/EXPORT-README.md`;
+check('co EXPORT-README cho pilot', existsSync(readmePath));
+const readme = existsSync(readmePath) ? readFileSync(readmePath, 'utf8') : '';
+check('README neu dung ten FBX can xuat', readme.includes(`${sourceStem(pilot!)}.fbx`));
+check('README neu du ba kich thuoc hang', ['400', '805', '588'].every((n) => readme.includes(n)));
+check('README co lenh dan thang vao MAXScript', readme.includes('fileIn @"'));
+check('README canh bao khong scale lai', readme.includes('Đừng scale lại'));
+check('README dan link Box cua dung SKU', readme.includes(pilot!.source.url ?? 'KHONG_CO'));
 
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed === 0 ? 0 : 1);
