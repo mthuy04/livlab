@@ -359,6 +359,42 @@ export function checkDimensions(
  * rather than failing it, because the judgement about whether a 4MB basin is
  * worth it belongs to a person looking at the basin.
  */
+/**
+ * Which budget a placement type is judged against.
+ *
+ * The budgets are per product KIND and the placements are per installation
+ * METHOD, so there are more of the latter: a wall-hung and a floor-standing
+ * toilet are the same amount of ceramic to draw. Written out rather than
+ * derived from the string, because `SHOWER_COLUMN` and `CONCEALED_SHOWER`
+ * share a prefix with nothing and a clever substring rule would quietly send
+ * a mirror cabinet to the bathtub budget.
+ */
+export const PERFORMANCE_CATEGORY_FOR_PLACEMENT: Record<PlacementType, string> = {
+  FLOOR_TOILET: 'TOILET',
+  WALL_HUNG_TOILET: 'TOILET',
+  COUNTERTOP_BASIN: 'BASIN',
+  UNDERCOUNTER_BASIN: 'BASIN',
+  SEMI_COUNTER_BASIN: 'BASIN',
+  WALL_HUNG_BASIN: 'BASIN',
+  DECK_FAUCET: 'FAUCET',
+  WALL_FAUCET: 'FAUCET',
+  EXPOSED_SHOWER: 'SHOWER',
+  CONCEALED_SHOWER: 'SHOWER',
+  SHOWER_COLUMN: 'SHOWER',
+  FREESTANDING_BATHTUB: 'BATHTUB',
+  BUILT_IN_BATHTUB: 'BATHTUB',
+  WALL_MIRROR: 'ACCESSORY',
+  MIRROR_CABINET: 'VANITY',
+  FLOOR_VANITY: 'VANITY',
+  WALL_HUNG_VANITY: 'VANITY',
+  ACCESSORY_WALL: 'ACCESSORY',
+  ACCESSORY_FLOOR: 'ACCESSORY',
+};
+
+export function performanceTargetFor(placement: PlacementType) {
+  return PERFORMANCE_TARGETS[PERFORMANCE_CATEGORY_FOR_PLACEMENT[placement]] ?? null;
+}
+
 export const PERFORMANCE_TARGETS: Record<string, { maxBytes: number; triangles: [number, number] }> = {
   ACCESSORY: { maxBytes: 1_000_000, triangles: [5_000, 20_000] },
   FAUCET: { maxBytes: 2_000_000, triangles: [10_000, 40_000] },

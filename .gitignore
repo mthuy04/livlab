@@ -26,3 +26,9 @@ assets/3d/source/
 *.skp
 *.rfa
 *.rvt
+
+# 3D conversion workspace — raw manufacturer sources and intermediate output.
+# Reports and screenshots under assets/3d/work are deliberately NOT ignored:
+# they are the record of why an asset passed.
+assets/3d/work/incoming/
+assets/3d/work/normalized/
