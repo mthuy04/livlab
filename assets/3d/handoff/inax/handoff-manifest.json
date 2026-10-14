@@ -1,0 +1,133 @@
+{
+  "generatedAt": "2026-10-13T18:31:17Z",
+  "brand": "INAX",
+  "skuCount": 6,
+  "items": [
+    {
+      "brand": "INAX",
+      "sku": "AC-1017VRN",
+      "sourceFormat": "MAX",
+      "sourceFileName": "AC-1017VRN.max",
+      "sourceFileSizeBytes": 1003520,
+      "sourceUrl": "https://app.box.com/s/kkbn2cx6i2h4imdqvbbadivgi4mqbevb",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-1017vrn/",
+      "officialDimensionsMm": {
+        "depth": 805,
+        "width": 400,
+        "height": 588
+      },
+      "dimensionAxisNote": "INAX ghi D x W x H. depth = trước–sau, width = trái–phải, height = sàn–đỉnh.",
+      "requestedExport": "FBX",
+      "requestedOutputFileName": "inax_ac-1017vrn_source.fbx",
+      "preferredUnits": "millimeters",
+      "downloadState": "DOWNLOAD_MANUAL_REQUIRED",
+      "downloadNote": "Box trả về trang xem bằng JavaScript; /download trả 404 cho client ẩn danh. Không lách hạn chế truy cập.",
+      "exportPriority": 1
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-1008VRN",
+      "sourceFormat": "MAX",
+      "sourceFileName": "AC-1008VRN.max",
+      "sourceFileSizeBytes": 974848,
+      "sourceUrl": "https://app.box.com/s/br6ru4nr1n1ikyoi1hcjgdtwhqxx6iow",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-1008vrn/",
+      "officialDimensionsMm": {
+        "depth": 805,
+        "width": 400,
+        "height": 588
+      },
+      "dimensionAxisNote": "INAX ghi D x W x H. depth = trước–sau, width = trái–phải, height = sàn–đỉnh.",
+      "requestedExport": "FBX",
+      "requestedOutputFileName": "inax_ac-1008vrn_source.fbx",
+      "preferredUnits": "millimeters",
+      "downloadState": "DOWNLOAD_MANUAL_REQUIRED",
+      "downloadNote": "Box trả về trang xem bằng JavaScript; /download trả 404 cho client ẩn danh. Không lách hạn chế truy cập.",
+      "exportPriority": 2
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-1035VN",
+      "sourceFormat": "MAX",
+      "sourceFileName": "AC-1035VN.max",
+      "sourceFileSizeBytes": 1376256,
+      "sourceUrl": "https://app.box.com/s/93cn279dbftqfu4y4y0m431zw0mqjhze",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-1035vn/",
+      "officialDimensionsMm": {
+        "depth": 809,
+        "width": 475,
+        "height": 615
+      },
+      "dimensionAxisNote": "INAX ghi D x W x H. depth = trước–sau, width = trái–phải, height = sàn–đỉnh.",
+      "requestedExport": "FBX",
+      "requestedOutputFileName": "inax_ac-1035vn_source.fbx",
+      "preferredUnits": "millimeters",
+      "downloadState": "DOWNLOAD_MANUAL_REQUIRED",
+      "downloadNote": "Box trả về trang xem bằng JavaScript; /download trả 404 cho client ẩn danh. Không lách hạn chế truy cập.",
+      "exportPriority": 3
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-1135VN",
+      "sourceFormat": "MAX",
+      "sourceFileName": "AC-1135VN.max",
+      "sourceFileSizeBytes": 1290240,
+      "sourceUrl": "https://app.box.com/s/krjrdhfnakzse75m4zrl3cgpp5atut0s",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-1135vn/",
+      "officialDimensionsMm": {
+        "depth": 809,
+        "width": 475,
+        "height": 615
+      },
+      "dimensionAxisNote": "INAX ghi D x W x H. depth = trước–sau, width = trái–phải, height = sàn–đỉnh.",
+      "requestedExport": "FBX",
+      "requestedOutputFileName": "inax_ac-1135vn_source.fbx",
+      "preferredUnits": "millimeters",
+      "downloadState": "DOWNLOAD_MANUAL_REQUIRED",
+      "downloadNote": "Box trả về trang xem bằng JavaScript; /download trả 404 cho client ẩn danh. Không lách hạn chế truy cập.",
+      "exportPriority": 4
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-2700VN",
+      "sourceFormat": "MAX",
+      "sourceFileName": "AC-2700VN.max",
+      "sourceFileSizeBytes": 409600,
+      "sourceUrl": "https://app.box.com/s/g1jb83m9dq97a7174iqv9gvn3by3ybzp",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-2700vn/",
+      "officialDimensionsMm": {
+        "depth": 810,
+        "width": 424,
+        "height": 642
+      },
+      "dimensionAxisNote": "INAX ghi D x W x H. depth = trước–sau, width = trái–phải, height = sàn–đỉnh.",
+      "requestedExport": "FBX",
+      "requestedOutputFileName": "inax_ac-2700vn_source.fbx",
+      "preferredUnits": "millimeters",
+      "downloadState": "DOWNLOAD_MANUAL_REQUIRED",
+      "downloadNote": "Box trả về trang xem bằng JavaScript; /download trả 404 cho client ẩn danh. Không lách hạn chế truy cập.",
+      "exportPriority": 5
+    },
+    {
+      "brand": "INAX",
+      "sku": "AC-4005VN",
+      "sourceFormat": "MAX",
+      "sourceFileName": "4_-_AC_-_4005VN_-_FN.max",
+      "sourceFileSizeBytes": 11808768,
+      "sourceUrl": "https://app.box.com/s/rcqxfbjkj9ltkrlm5vviy6jjzfokfzf1",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-4005vn/",
+      "officialDimensionsMm": {
+        "depth": 780,
+        "width": 518,
+        "height": 623
+      },
+      "dimensionAxisNote": "INAX ghi D x W x H. depth = trước–sau, width = trái–phải, height = sàn–đỉnh.",
+      "requestedExport": "FBX",
+      "requestedOutputFileName": "inax_ac-4005vn_source.fbx",
+      "preferredUnits": "millimeters",
+      "downloadState": "DOWNLOAD_MANUAL_REQUIRED",
+      "downloadNote": "Box trả về trang xem bằng JavaScript; /download trả 404 cho client ẩn danh. Không lách hạn chế truy cập.",
+      "exportPriority": 6
+    }
+  ]
+}

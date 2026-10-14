@@ -63,9 +63,24 @@ export const normalizeProduct3DCategory = (product: Product): Product3DCategory 
   return 'unknown';
 };
 
+/**
+ * Which categories have a representative stand-in model. All false, and that
+ * is now a rule rather than a coincidence.
+ *
+ * `lavabo` was true, which meant every product the classifier read as a basin
+ * — any brand, any shape, any price — was placed in the customer's room as one
+ * particular 17MB `lavabo.glb`. The customer chose a TOTO console basin and
+ * the room showed something else, under the name of the thing they chose.
+ *
+ * A 2D placeholder says "no photograph yet" and is honest. A 3D stand-in says
+ * "this is your product" and is not, because the whole reason to put a model
+ * in a room is to see that product in that room. There is no middle setting,
+ * so the category path stays closed and a product gets a model only from
+ * `product3dRegistry`, keyed by its own identity.
+ */
 export const availableProductModels: Record<Product3DCategory, boolean> = {
   faucet: false,
-  lavabo: true,
+  lavabo: false,
   toilet: false,
   shower: false,
   mirror: false,

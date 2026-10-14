@@ -13,6 +13,7 @@ import type { RoomDimensions } from './roomGeometry';
 import type { SurfaceId, SurfaceStyle } from './materials';
 import type { RoomStudioProduct } from './productAdapter';
 import { loadRoomStudioProducts } from './productAdapter';
+import { isPlaceable } from './productCapability';
 import { roomStateRepository } from './roomStateRepository';
 import { calculateRoomBudget, type BudgetEstimate } from './budgetCalculator';
 import { getRealWorldSize } from './assetResolver';
@@ -68,12 +69,20 @@ export function useRoomStudio() {
 
   // Persist through the repository, debounced so dragging a product does not
   // write to storage on every pointer move.
+  //
+  // `isSaved` is reported rather than a Save button offered: the room is
+  // written on its own, so a button would either duplicate this or do nothing,
+  // and a Save that does nothing is worse than no Save at all.
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // The snapshot that reached storage, so "saved" is a comparison rather than a
+  // flag that something has to remember to clear on every edit.
+  const [savedState, setSavedState] = useState<RoomState | null>(null);
+  const isSaved = savedState === state;
   useEffect(() => {
     if (!isHydrated) return;
     if (saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(() => {
-      void roomStateRepository.save(state);
+      void roomStateRepository.save(state).then(() => setSavedState(state));
     }, SAVE_DEBOUNCE_MS);
     return () => {
       if (saveTimer.current) clearTimeout(saveTimer.current);
@@ -127,7 +136,18 @@ export function useRoomStudio() {
   }, []);
 
   /** Adds a product and returns the id of the instance that was created. */
+  /**
+   * Places a product, or refuses to.
+   *
+   * The gate is here and not only in the library panel because three callers
+   * reach this: the add button, a drop onto the canvas, and the Expert's
+   * suggestions. A product without complete dimensions can only be drawn by
+   * filling the missing axis from a category average, and a volume that is
+   * partly measured and partly assumed looks exactly like one that is not.
+   * Returning null is the honest outcome; the caller tells the customer why.
+   */
   const addProduct = useCallback((product: RoomStudioProduct, atPoint?: Vec3) => {
+    if (!isPlaceable(product.capability)) return null;
     const instanceId = ops.createInstanceId(product.id);
     setState((prev) => ops.addProduct(prev, product, { instanceId, atPoint }));
     setSelectedInstanceId(instanceId);
@@ -212,6 +232,7 @@ export function useRoomStudio() {
     budget,
     isLoadingProducts,
     isHydrated,
+    isSaved,
     loadError,
     setSelectedInstanceId,
     setDimensions,

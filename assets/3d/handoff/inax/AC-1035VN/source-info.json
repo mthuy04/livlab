@@ -1,0 +1,21 @@
+{
+  "brand": "INAX",
+  "sku": "AC-1035VN",
+  "sourceFormat": "MAX",
+  "sourceFileName": "AC-1035VN.max",
+  "sourceFileSizeBytes": 1376256,
+  "sourceUrl": "https://app.box.com/s/93cn279dbftqfu4y4y0m431zw0mqjhze",
+  "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-1035vn/",
+  "officialDimensionsMm": {
+    "depth": 809,
+    "width": 475,
+    "height": 615
+  },
+  "dimensionAxisNote": "INAX ghi D x W x H. depth = trước–sau, width = trái–phải, height = sàn–đỉnh.",
+  "requestedExport": "FBX",
+  "requestedOutputFileName": "inax_ac-1035vn_source.fbx",
+  "preferredUnits": "millimeters",
+  "downloadState": "DOWNLOAD_MANUAL_REQUIRED",
+  "downloadNote": "Box trả về trang xem bằng JavaScript; /download trả 404 cho client ẩn danh. Không lách hạn chế truy cập.",
+  "exportPriority": 3
+}

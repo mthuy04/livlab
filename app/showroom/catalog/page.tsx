@@ -1,19 +1,24 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
-import { Search } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Search, Check } from 'lucide-react';
 import {
-  PageShell, Section, StatusChip, EmptyState, MigrationNotice, money, relativeTime, type Tone,
+  PageShell, Section, EmptyState, ErrorState, MigrationNotice,
+  Table, THead, TH, TBody, TR, TD, TableSkeleton, FilterBar, FilterTabs, FootNote,
+  price, relativeTime, type Tone,
 } from '@/components/showroom/ui/primitives';
+import { CX } from '@/components/showroom/ui/tokens';
 
 /**
  * What this showroom sells, and on what terms.
  *
  * Replaces "Sản phẩm quan tâm", which promised customer-interest data that is
- * not recorded anywhere and was in fact a read-only product list. Master
- * identity and specifications stay LivLab's and are not editable here; only
- * the commercial overlay — offered, price, availability — belongs to the
- * showroom.
+ * not recorded anywhere and was really a read-only product list.
+ *
+ * The page is built around one distinction: LivLab owns product identity and
+ * specification, the showroom owns price and availability. Everything editable
+ * here is in the right-hand group of columns; nothing on the left can be
+ * changed from this screen, which is why the header says so out loud.
  */
 
 const AVAILABILITY: { value: string; label: string; tone: Tone }[] = [
@@ -23,6 +28,12 @@ const AVAILABILITY: { value: string; label: string; tone: Tone }[] = [
   { value: 'CONTACT_REQUIRED', label: 'Liên hệ xác nhận', tone: 'attention' },
   { value: 'UNKNOWN', label: 'Chưa cập nhật', tone: 'muted' },
 ];
+const AVAILABILITY_BY_VALUE = Object.fromEntries(AVAILABILITY.map((a) => [a.value, a]));
+
+const AVAILABILITY_DOT: Record<Tone, string> = {
+  positive: 'bg-[#2E7D52]', info: 'bg-[#2B7CB8]', negative: 'bg-[#C7453B]',
+  attention: 'bg-[#C98A12]', muted: 'bg-[#C3CDD6]', neutral: 'bg-[#8095A8]',
+};
 
 interface Item {
   productId: string; name: string; brand: string | null; category: string | null;
@@ -30,23 +41,32 @@ interface Item {
   showroomPrice: number | null; availability: string; updatedAt: string | null;
 }
 
+type LoadState = 'loading' | 'ready' | 'migration' | 'error';
+type Scope = 'all' | 'offered' | 'missing-price';
+
 export default function ShowroomCatalogPage() {
   const [items, setItems] = useState<Item[]>([]);
   const [query, setQuery] = useState('');
-  const [offeredOnly, setOfferedOnly] = useState(false);
-  const [state, setState] = useState<'loading' | 'ready' | 'migration' | 'error'>('loading');
+  const [scope, setScope] = useState<Scope>('all');
+  const [state, setState] = useState<LoadState>('loading');
   const [saving, setSaving] = useState<string | null>(null);
+  const [justSaved, setJustSaved] = useState<string | null>(null);
+  const [editing, setEditing] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     const params = new URLSearchParams();
     if (query.trim()) params.set('q', query.trim());
-    if (offeredOnly) params.set('offered', '1');
-    const res = await fetch(`/api/showroom/catalog?${params}`);
-    if (res.status === 503) return setState('migration');
-    if (!res.ok) return setState('error');
-    setItems((await res.json()).items ?? []);
-    setState('ready');
-  }, [query, offeredOnly]);
+    if (scope === 'offered') params.set('offered', '1');
+    try {
+      const res = await fetch(`/api/showroom/catalog?${params}`);
+      if (res.status === 503) return setState('migration');
+      if (!res.ok) return setState('error');
+      setItems((await res.json()).items ?? []);
+      setState('ready');
+    } catch {
+      setState('error');
+    }
+  }, [query, scope]);
 
   useEffect(() => {
     const t = setTimeout(load, query ? 300 : 0);
@@ -55,102 +75,219 @@ export default function ShowroomCatalogPage() {
 
   async function update(productId: string, patch: Record<string, unknown>) {
     setSaving(productId);
+    setJustSaved(null);
     try {
       await fetch('/api/showroom/catalog', {
-        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productId, ...patch }),
       });
       await load();
-    } finally { setSaving(null); }
+      setJustSaved(productId);
+      setTimeout(() => setJustSaved((id) => (id === productId ? null : id)), 1800);
+    } finally {
+      setSaving(null);
+      setEditing(null);
+    }
   }
+
+  const visible = useMemo(
+    () => (scope === 'missing-price' ? items.filter((i) => !i.showroomPrice) : items),
+    [items, scope]
+  );
+
+  const missingPriceCount = useMemo(() => items.filter((i) => !i.showroomPrice).length, [items]);
 
   return (
     <PageShell
+      width="full"
       title="Danh mục & Giá"
-      description="Giá bán và tình trạng cung ứng của showroom. Thông số kỹ thuật do LivLab quản lý."
-      actions={
-        <label className="flex items-center gap-2 text-[13px] font-semibold text-[#45586B]">
-          <input type="checkbox" checked={offeredOnly} onChange={(e) => setOfferedOnly(e.target.checked)} />
-          Chỉ sản phẩm đang bán
-        </label>
-      }
+      description="Giá bán và tình trạng cung ứng do showroom quản lý. Tên, mã và thông số kỹ thuật do LivLab quản lý và không sửa được ở đây."
     >
       {state === 'migration' ? (
         <MigrationNotice />
       ) : (
         <>
-          <label className="relative mb-4 block w-72">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#9AA9B6]" />
-            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Tìm tên hoặc thương hiệu"
-              className="w-full rounded-lg border border-[#DCE4EC] py-2 pl-9 pr-3 text-[13px] focus:outline-none focus:ring-2 focus:ring-[#C8A96A]" />
-          </label>
+          <Section flush>
+            <FilterBar
+              search={
+                <label className="relative">
+                  <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#9AA7B4]" />
+                  <input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Tìm tên hoặc thương hiệu"
+                    aria-label="Tìm sản phẩm"
+                    className={`${CX.input} w-64 pl-8`}
+                  />
+                </label>
+              }
+              filters={
+                <FilterTabs
+                  value={scope}
+                  options={[
+                    { value: 'all' as Scope, label: 'Tất cả' },
+                    { value: 'offered' as Scope, label: 'Đang bán' },
+                    { value: 'missing-price' as Scope, label: 'Thiếu giá', count: missingPriceCount || undefined },
+                  ]}
+                  onChange={setScope}
+                />
+              }
+              resultLabel={state === 'ready' ? `${visible.length} sản phẩm` : undefined}
+            />
 
-          <Section>
-            {state === 'loading' ? (
-              <div className="px-5 py-10 text-[14px] text-[#5B6B7C]">Đang tải…</div>
-            ) : items.length === 0 ? (
-              <EmptyState title="Chưa có sản phẩm" hint="Sản phẩm của showroom trong danh mục LivLab sẽ hiện ở đây." />
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-[14px]">
-                  <thead>
-                    <tr className="border-b border-[#E8EDF2] text-[12px] uppercase tracking-wide text-[#7A8795]">
-                      <th className="px-5 py-2.5 font-semibold">Sản phẩm</th>
-                      <th className="px-5 py-2.5 font-semibold">Thương hiệu</th>
-                      <th className="px-5 py-2.5 font-semibold text-right">Giá tham khảo</th>
-                      <th className="px-5 py-2.5 font-semibold text-right w-40">Giá showroom</th>
-                      <th className="px-5 py-2.5 font-semibold w-44">Tình trạng</th>
-                      <th className="px-5 py-2.5 font-semibold w-24">Đang bán</th>
-                      <th className="px-5 py-2.5 font-semibold">Cập nhật</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#F0F3F6]">
-                    {items.map((item) => (
-                      <tr key={item.productId} className={`h-[52px] ${saving === item.productId ? 'opacity-50' : ''}`}>
-                        <td className="px-5 py-2">
-                          <p className="font-semibold text-[#0B1623]">{item.name}</p>
-                          {item.category && <p className="text-[12px] text-[#7A8795]">{item.category}</p>}
-                        </td>
-                        <td className="px-5 text-[13px] text-[#45586B]">{item.brand ?? '—'}</td>
-                        <td className="px-5 text-right text-[#7A8795]">{money(item.referencePriceMin)}</td>
-                        <td className="px-5 text-right">
+            <Table minWidth={1040}>
+              <THead>
+                <TH>Sản phẩm</TH>
+                <TH width="130px">Thương hiệu</TH>
+                <TH align="right" width="130px">Giá tham khảo</TH>
+                <TH align="right" width="150px">Giá showroom</TH>
+                <TH width="180px">Tình trạng</TH>
+                <TH align="center" width="90px">Đang bán</TH>
+                <TH width="120px">Cập nhật</TH>
+              </THead>
+              {state === 'loading' ? (
+                <TableSkeleton columns={7} />
+              ) : state === 'error' ? (
+                <TBody><tr><td colSpan={7}><ErrorState title="Không tải được danh mục." onRetry={() => void load()} /></td></tr></TBody>
+              ) : visible.length === 0 ? (
+                <TBody>
+                  <tr>
+                    <td colSpan={7}>
+                      <EmptyState
+                        title={query || scope !== 'all' ? 'Không tìm thấy sản phẩm phù hợp bộ lọc' : 'Chưa có sản phẩm'}
+                        hint={
+                          query || scope !== 'all'
+                            ? undefined
+                            : 'Sản phẩm của showroom trong danh mục LivLab sẽ hiện ở đây.'
+                        }
+                        action={
+                          query || scope !== 'all' ? (
+                            <button type="button" onClick={() => { setQuery(''); setScope('all'); }} className={CX.buttonSecondary}>
+                              Xoá bộ lọc
+                            </button>
+                          ) : undefined
+                        }
+                      />
+                    </td>
+                  </tr>
+                </TBody>
+              ) : (
+                <TBody>
+                  {visible.map((item) => {
+                    const reference = price(item.referencePriceMin);
+                    const showroom = price(item.showroomPrice);
+                    const availability = AVAILABILITY_BY_VALUE[item.availability] ?? AVAILABILITY_BY_VALUE.UNKNOWN;
+                    const isSaving = saving === item.productId;
+
+                    return (
+                      <TR key={item.productId}>
+                        <TD>
+                          <span className="block max-w-[320px] truncate font-medium text-[#111A22]">{item.name}</span>
+                          {item.category && <span className="text-[12px] text-[#8795A3]">{item.category}</span>}
+                        </TD>
+                        <TD className="text-[#4F6070]">{item.brand ?? '—'}</TD>
+
+                        {/* Reference price is LivLab's figure. A stored zero means
+                            nobody entered one — printing "0đ" told a salesperson
+                            the showroom sells a mirror for nothing. */}
+                        <TD align="right">
+                          <span className={reference.isSet ? 'text-[#4F6070]' : 'text-[#9AA7B4]'}>
+                            {reference.text}
+                          </span>
+                        </TD>
+
+                        <TD align="right">
+                          {editing === item.productId ? (
+                            <input
+                              type="number"
+                              min={0}
+                              autoFocus
+                              defaultValue={item.showroomPrice ?? ''}
+                              placeholder="Chưa đặt"
+                              aria-label={`Giá showroom cho ${item.name}`}
+                              onBlur={(e) => {
+                                const next = e.target.value === '' ? null : Number(e.target.value);
+                                if (next !== item.showroomPrice) update(item.productId, { showroomPrice: next });
+                                else setEditing(null);
+                              }}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') e.currentTarget.blur();
+                                if (e.key === 'Escape') setEditing(null);
+                              }}
+                              className={`${CX.input} w-28 text-right tabular-nums`}
+                            />
+                          ) : (
+                            /* Value by default, field on click: 57 always-visible
+                               number inputs made the table read as a form. */
+                            <button
+                              type="button"
+                              onClick={() => setEditing(item.productId)}
+                              className={`inline-flex h-7 items-center gap-1.5 rounded px-2 tabular-nums transition-colors hover:bg-[#F1F5F7] ${
+                                showroom.isSet ? 'font-medium text-[#111A22]' : 'text-[#9AA7B4]'
+                              }`}
+                            >
+                              {isSaving ? 'Đang lưu…' : showroom.text}
+                              {justSaved === item.productId && <Check className="h-3.5 w-3.5 text-[#2E7D52]" />}
+                            </button>
+                          )}
+                        </TD>
+
+                        <TD>
+                          <label className="sr-only" htmlFor={`avail-${item.productId}`}>
+                            Tình trạng cung ứng cho {item.name}
+                          </label>
+                          <div className="flex items-center gap-2">
+                            {/* A bare dot, not a chip: a lozenge on every one of
+                                57 rows turns the column into stripes. */}
+                            <span
+                              className={`h-1.5 w-1.5 shrink-0 rounded-full ${AVAILABILITY_DOT[availability.tone]}`}
+                              aria-hidden
+                            />
+                            <select
+                              id={`avail-${item.productId}`}
+                              value={item.availability}
+                              disabled={isSaving}
+                              onChange={(e) => update(item.productId, { availability: e.target.value })}
+                              className="h-7 w-full rounded border border-transparent bg-transparent px-1 text-[13px] text-[#4F6070] transition-colors hover:border-[#E3E9EE] hover:bg-white focus:border-[#123C5A] focus:outline-none"
+                            >
+                              {AVAILABILITY.map((a) => (
+                                <option key={a.value} value={a.value}>{a.label}</option>
+                              ))}
+                            </select>
+                          </div>
+                        </TD>
+
+                        <TD align="center">
                           <input
-                            type="number" min={0} defaultValue={item.showroomPrice ?? ''}
-                            placeholder="Chưa đặt"
-                            onBlur={(e) => {
-                              const v = e.target.value === '' ? null : Number(e.target.value);
-                              if (v !== item.showroomPrice) update(item.productId, { showroomPrice: v });
-                            }}
-                            className="w-32 rounded border border-[#DCE4EC] px-2 py-1 text-right text-[14px]"
+                            type="checkbox"
+                            checked={item.isOffered ?? false}
+                            disabled={isSaving}
+                            aria-label={`Showroom đang bán ${item.name}`}
+                            onChange={(e) => update(item.productId, { isOffered: e.target.checked })}
+                            className="h-4 w-4 accent-[#123C5A]"
                           />
-                        </td>
-                        <td className="px-5">
-                          <select
-                            value={item.availability}
-                            onChange={(e) => update(item.productId, { availability: e.target.value })}
-                            className="w-full rounded border border-[#DCE4EC] px-2 py-1 text-[13px]"
-                          >
-                            {AVAILABILITY.map((a) => <option key={a.value} value={a.value}>{a.label}</option>)}
-                          </select>
-                        </td>
-                        <td className="px-5">
-                          <input type="checkbox" checked={item.isOffered ?? false}
-                            onChange={(e) => update(item.productId, { isOffered: e.target.checked })} />
-                        </td>
-                        <td className="px-5 text-[12px] text-[#7A8795]">
-                          {item.updatedAt ? relativeTime(item.updatedAt) : <StatusChip tone="muted">Chưa cấu hình</StatusChip>}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+                        </TD>
+
+                        <TD className="whitespace-nowrap text-[#8795A3]">
+                          {item.updatedAt ? (
+                            relativeTime(item.updatedAt)
+                          ) : (
+                            <span title="Showroom chưa đặt giá hay tình trạng cho sản phẩm này.">—</span>
+                          )}
+                        </TD>
+                      </TR>
+                    );
+                  })}
+                </TBody>
+              )}
+            </Table>
           </Section>
 
-          <p className="mt-3 text-[12px] leading-relaxed text-[#7A8795]">
-            Tình trạng cung ứng do showroom tự cập nhật, không kết nối hệ thống tồn kho — LivLab không hiển thị số lượng tồn.
-          </p>
+          <FootNote>
+            Tình trạng cung ứng do showroom tự cập nhật, không nối với hệ thống tồn kho — LivLab không hiển thị số lượng
+            tồn. “Chưa cập nhật” ở cột giá nghĩa là chưa ai nhập, không phải giá bằng 0.
+          </FootNote>
         </>
       )}
     </PageShell>

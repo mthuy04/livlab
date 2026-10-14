@@ -1,0 +1,81 @@
+{
+ "checkedAt": "2026-10-13T09:30:52Z",
+ "brands": {
+  "INAX": {
+   "attempted": 20,
+   "indexSize": 1141,
+   "matchTypes": {
+    "EXACT_SKU": 12,
+    "NO_MATCH": 8
+   },
+   "officialImagesFound": 12,
+   "technicalDrawings": 12,
+   "doc_INSTALLATION": 10,
+   "doc_TECHNICAL_SPEC": 16,
+   "galleryRejected": 200,
+   "rejected_PROMOTIONAL": 166,
+   "rejected_UNKNOWN": 22,
+   "galleryAccepted": 20,
+   "rejected_TECHNICAL_DRAWING": 12,
+   "doc_USER_MANUAL": 1
+  },
+  "JOMOO": {
+   "attempted": 47,
+   "indexSize": 802,
+   "matchTypes": {
+    "NO_MATCH": 27,
+    "NORMALIZED_SKU": 20
+   },
+   "officialImagesFound": 20,
+   "galleryAccepted": 25,
+   "galleryRejected": 273,
+   "rejected_UNKNOWN": 242,
+   "rejected_PROMOTIONAL": 21,
+   "doc_USER_MANUAL": 2,
+   "doc_TECHNICAL_SPEC": 5,
+   "rejected_RELATED_PRODUCT": 10,
+   "doc_INSTALLATION": 1
+  },
+  "TOTO": {
+   "attempted": 23,
+   "indexSize": 1747,
+   "matchTypes": {
+    "NO_MATCH": 15,
+    "EXACT_SKU": 8
+   },
+   "officialImagesFound": 8,
+   "doc_TECHNICAL_SPEC": 8,
+   "doc_INSTALLATION": 8,
+   "doc_USER_MANUAL": 5,
+   "doc_CAD": 8,
+   "galleryAccepted": 9,
+   "galleryRejected": 232,
+   "rejected_PROMOTIONAL": 168,
+   "rejected_RELATED_PRODUCT": 63,
+   "technicalDrawings": 1,
+   "rejected_TECHNICAL_DRAWING": 1
+  },
+  "Viglacera": {
+   "attempted": 1,
+   "note": "No official sitemap wired for this brand.",
+   "matchTypes": {
+    "NO_MATCH": 1
+   }
+  },
+  "Caesar": {
+   "attempted": 3,
+   "note": "No official sitemap wired for this brand.",
+   "matchTypes": {
+    "NO_MATCH": 3
+   }
+  },
+  "American Standard": {
+   "attempted": 1,
+   "note": "No official sitemap wired for this brand.",
+   "matchTypes": {
+    "NO_MATCH": 1
+   }
+  }
+ },
+ "companyWideDocumentsDemoted": 0
+}

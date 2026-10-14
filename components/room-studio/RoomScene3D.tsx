@@ -4,14 +4,17 @@ import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState, typ
 import { Canvas } from '@react-three/fiber';
 import { Environment, ContactShadows, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
-import { AlertCircle, Maximize2, RotateCcw } from 'lucide-react';
+import { AlertCircle, Eye, EyeOff, RotateCcw } from 'lucide-react';
 import type { RoomDimensions } from '@/lib/room-studio/roomGeometry';
-import { getDefaultCameraFraming } from '@/lib/room-studio/roomGeometry';
+import { DEFAULT_CAMERA_FOV } from '@/lib/room-studio/roomGeometry';
 import type { PlacedProductView } from '@/lib/room-studio/useRoomStudio';
 import type { Vec3 } from '@/lib/room-studio/placementRules';
 import RoomShell from './scene/RoomShell';
 import type { SurfaceStyle } from '@/lib/room-studio/materials';
-import PlacedProductNode from './scene/PlacedProductNode';
+import PlacedProductNode, { type measureGlbForPlacement } from './scene/PlacedProductNode';
+
+/** What `measureGlbForPlacement` returns; named so the dev prop can state it. */
+type GlbMeasurement = ReturnType<typeof measureGlbForPlacement>;
 import DragPlane from './scene/DragPlane';
 import RoomCameraControls from './scene/RoomCameraControls';
 
@@ -70,10 +73,27 @@ interface RoomScene3DProps {
   placedViews: PlacedProductView[];
   selectedInstanceId: string | null;
   showCeiling: boolean;
+  onToggleCeiling: (value: boolean) => void;
   onSelect: (instanceId: string | null) => void;
   onMove: (instanceId: string, position: Vec3) => void;
   /** Drop a product from the library onto a point on the floor. */
   onDropProduct: (productId: string, point: Vec3) => void;
+  /** Jumps the product library to a category, from the empty-room prompt. */
+  onPickCategory?: (normalizedCategory: string) => void;
+  /**
+   * Extra objects rendered INSIDE the Canvas. Used only by the dev pipeline
+   * harness at /dev/room-studio-3d-test for bounding boxes, a pivot marker and
+   * axes; the customer workspace never passes it, which is why the helpers
+   * cannot appear there by accident. It exists so the harness can exercise the
+   * real scene rather than a copy of it that could pass while this one is
+   * broken.
+   */
+  devSceneOverlay?: ReactNode;
+  /** Dev harness only: forwarded to the placed node so the QA panel can report
+   *  what the renderer measured rather than measuring the file a second way. */
+  onModelMeasured?: (measurement: GlbMeasurement) => void;
+  /** Dev harness only: a GLB that failed to load. */
+  onModelLoadError?: () => void;
 }
 
 export default function RoomScene3D({
@@ -84,17 +104,20 @@ export default function RoomScene3D({
   placedViews,
   selectedInstanceId,
   showCeiling,
+  onToggleCeiling,
   onSelect,
   onMove,
   onDropProduct,
+  onPickCategory,
+  devSceneOverlay,
+  onModelMeasured,
+  onModelLoadError,
 }: RoomScene3DProps) {
   const [resetSignal, setResetSignal] = useState(0);
   const [dragging, setDragging] = useState<{ instanceId: string; offset: Vec3 } | null>(null);
   const [isDropTarget, setIsDropTarget] = useState(false);
   const cameraRef = useRef<THREE.Camera | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  const initialCamera = useMemo(() => getDefaultCameraFraming(dimensions), [dimensions]);
 
   const draggingView = useMemo(
     () => placedViews.find((v) => v.placed.instanceId === dragging?.instanceId) ?? null,
@@ -179,34 +202,56 @@ export default function RoomScene3D({
       }}
       onDragLeave={() => setIsDropTarget(false)}
       onDrop={handleHtmlDrop}
-      // Below xl the three-column layout is stacked and a ratio keeps the
-      // canvas a sensible shape. At xl it is the main working surface, so it
-      // takes the viewport height instead: a fixed 16/10 left ~250px of screen
-      // unused and made the room smaller than the panels around it.
-      className={`relative aspect-[4/3] w-full overflow-hidden rounded-3xl border bg-[#F8FAFC] shadow-inner transition-colors md:aspect-[16/10] xl:aspect-auto xl:h-[calc(100vh-15rem)] xl:min-h-[480px] ${
-        isDropTarget ? 'border-[#C8A96A] ring-2 ring-[#C8A96A]/40' : 'border-[#D8E2EA]'
+      // Absolutely filling a positioned parent, NOT `h-full`.
+      //
+      // A percentage height needs a parent with a definite height, and every
+      // ancestor here is a flex item sized by layout — so `h-full` measured as
+      // zero on the first pass and the Canvas mounted at the HTML default
+      // 300×150, showing an empty grey box for a second before react-three-
+      // fiber's resize observer caught up. The workspace gives this component a
+      // `relative` box; filling it is unambiguous at the first measurement.
+      className={`absolute inset-0 overflow-hidden bg-[#E9EEF1] transition-colors ${
+        isDropTarget ? 'ring-2 ring-inset ring-[#C8A96A]' : ''
       }`}
     >
       {overlayTopLeft && <div className="absolute left-3 top-3 z-10 flex gap-2">{overlayTopLeft}</div>}
 
-      <div className="absolute right-3 top-3 z-10 flex gap-2">
+      <div className="absolute right-3 top-3 z-10 flex gap-1.5">
         <button
           type="button"
           onClick={() => setResetSignal((n) => n + 1)}
-          className="flex items-center gap-1.5 rounded-full border border-white/50 bg-white/90 px-3 py-1.5 text-xs font-bold text-[#0B1623] shadow-sm backdrop-blur transition-colors hover:bg-white"
+          title="Đưa góc nhìn về mặc định"
+          className="flex items-center gap-1.5 rounded border border-[#D8E2EA] bg-white/92 px-2.5 py-1.5 text-[12px] font-medium text-[#0B1623] shadow-sm backdrop-blur transition-colors hover:bg-white"
         >
-          <RotateCcw className="h-3.5 w-3.5" />
+          <RotateCcw className="h-3.5 w-3.5" aria-hidden />
           <span className="hidden sm:inline">Xem góc chuẩn</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => onToggleCeiling(!showCeiling)}
+          aria-pressed={showCeiling}
+          title={showCeiling ? 'Ẩn trần phòng' : 'Hiện trần phòng'}
+          className="flex items-center gap-1.5 rounded border border-[#D8E2EA] bg-white/92 px-2.5 py-1.5 text-[12px] font-medium text-[#0B1623] shadow-sm backdrop-blur transition-colors hover:bg-white"
+        >
+          {showCeiling ? (
+            <EyeOff className="h-3.5 w-3.5" aria-hidden />
+          ) : (
+            <Eye className="h-3.5 w-3.5" aria-hidden />
+          )}
+          <span className="hidden lg:inline">Trần</span>
         </button>
       </div>
 
-      <div className="pointer-events-none absolute bottom-3 left-3 z-10 hidden rounded-lg bg-white/85 px-2.5 py-1.5 text-[10px] font-medium text-[#627386] shadow-sm backdrop-blur sm:block">
+      <div className="pointer-events-none absolute bottom-3 left-3 z-10 hidden rounded bg-white/85 px-2.5 py-1.5 text-[12px] text-[#5B6B7A] shadow-sm backdrop-blur sm:block">
         Kéo để xoay · Cuộn để phóng to · Kéo sản phẩm để đổi vị trí
       </div>
 
       <CanvasErrorBoundary>
         <Canvas
-          camera={{ position: initialCamera.position, fov: 50 }}
+          // Position is set by RoomCameraControls on mount, where the canvas's
+          // real aspect ratio is known. Framing the room from here would mean
+          // guessing it.
+          camera={{ fov: DEFAULT_CAMERA_FOV }}
           onCreated={(state) => {
             cameraRef.current = state.camera;
           }}
@@ -251,8 +296,12 @@ export default function RoomScene3D({
               selected={placed.instanceId === selectedInstanceId}
               onSelect={onSelect}
               onDragStart={handleDragStart}
+              onMeasured={onModelMeasured}
+              onLoadError={onModelLoadError}
             />
           ))}
+
+          {devSceneOverlay}
 
           {dragging && draggingView && (
             <DragPlane
@@ -266,12 +315,31 @@ export default function RoomScene3D({
         </Canvas>
       </CanvasErrorBoundary>
 
+      {/* An empty room is a valid state, not an error — the prompt suggests the
+          three products a bathroom is actually planned around and gets out of
+          the way of the space itself. */}
       {placedViews.length === 0 && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-12 flex justify-center px-6">
-          <div className="rounded-2xl border border-[#D8E2EA] bg-white/95 px-4 py-3 text-center shadow-sm backdrop-blur">
-            <Maximize2 className="mx-auto mb-1.5 h-5 w-5 text-[#C8A96A]" />
-            <p className="text-xs font-bold text-[#0B1623]">Phòng của bạn đã sẵn sàng</p>
-            <p className="mt-0.5 text-[11px] text-[#627386]">Chọn sản phẩm từ thư viện bên dưới để đưa vào không gian.</p>
+        <div className="absolute inset-x-0 bottom-10 flex justify-center px-6">
+          <div className="rounded border border-[#D8E2EA] bg-white/95 px-4 py-3 text-center shadow-sm backdrop-blur">
+            <p className="text-[13px] font-medium text-[#0B1623]">Bắt đầu với một thiết bị chính.</p>
+            {onPickCategory && (
+              <div className="mt-2 flex justify-center gap-1.5">
+                {[
+                  { id: 'toilet', label: 'Bồn cầu' },
+                  { id: 'lavabo', label: 'Lavabo' },
+                  { id: 'shower', label: 'Sen tắm' },
+                ].map((c) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => onPickCategory(c.id)}
+                    className="rounded border border-[#D8E2EA] px-2.5 py-1 text-[12px] font-medium text-[#3F4F5C] transition-colors hover:border-[#0B2239]"
+                  >
+                    {c.label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}

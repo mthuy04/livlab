@@ -95,9 +95,11 @@ export default function QuoteDrawer() {
                     <Plus className="w-3 h-3 text-[#0B1623]" />
                   </button>
                 </div>
-                <p className="text-[10px] text-[#627386] mt-1">
-                  Có sẵn tại: <span className="text-[#0B1623] font-medium">{item.showroomName}</span>
-                </p>
+                {item.showroomName && (
+                  <p className="text-[10px] text-[#627386] mt-1">
+                    Có sẵn tại: <span className="text-[#0B1623] font-medium">{item.showroomName}</span>
+                  </p>
+                )}
               </div>
             );
           })

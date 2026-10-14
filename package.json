@@ -11,7 +11,20 @@
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "inspect:glb-materials": "node scripts/inspectGlbMaterials.mjs",
-    "test:technical": "npx tsx scripts/testTechnicalAdvisor.mts"
+    "test:technical": "npx tsx scripts/testTechnicalAdvisor.mts",
+    "test:room-studio": "npx tsx scripts/testRoomStudioCapability.mts",
+    "test:dev-glb": "npx tsx scripts/testDevGlbPipeline.mts",
+    "build:dev-glb": "node scripts/build_dev_test_glb.mjs",
+    "3d:incoming": "npx tsx scripts/3d/incoming.mts",
+    "3d:audit": "npx tsx scripts/3d/audit.mts",
+    "3d:convert": "npx tsx scripts/3d/convert.mts",
+    "3d:qa": "npx tsx scripts/3d/qa.mts",
+    "test:3d-pipeline": "npx tsx scripts/testConversionPipeline.mts",
+    "3d:handoff": "npx tsx scripts/3d/handoff.mts",
+    "3d:process": "npx tsx scripts/3d/convert.mts",
+    "3d:activate": "npx tsx scripts/3d/activate.mts",
+    "3d:inspect-dwg": "npx tsx scripts/3d/inspect_dwg.mts",
+    "3d:sources": "npx tsx scripts/3d/sources.mts"
   },
   "dependencies": {
     "@google/genai": "^2.8.0",

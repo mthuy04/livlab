@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -163,5 +163,458 @@ body {
     animation: none;
     opacity: 1;
     transform: none;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Storefront V2 design tokens
+
+   Scoped to .storefront rather than :root on purpose. The showroom workspace
+   at /showroom is operational software with its own density and type scale,
+   and a global restyle would quietly change every table and form in it. The
+   storefront shell is the only thing that carries this class.
+
+   Values are deliberately calmer than the current customer UI: warm neutrals
+   instead of blue-tinted greys, small radii instead of rounded-2xl everywhere,
+   and borders doing the work that 179 box-shadows were doing.
+   ─────────────────────────────────────────────────────────────────────────── */
+.storefront {
+  /* Surfaces — warm white, not blue-grey */
+  --sf-bg: #FCFCFB;
+  --sf-surface: #FFFFFF;
+  --sf-surface-muted: #F4F3F1;
+  --sf-surface-dark: #1A1A18;
+
+  /* Text — charcoal rather than near-black, which reads softer at large sizes */
+  --sf-text: #1A1A18;
+  --sf-text-secondary: #55534E;
+  --sf-text-muted: #8A877F;
+  --sf-text-inverse: #FCFCFB;
+
+  /* Borders carry the structure, so there are two weights and no more */
+  --sf-border: #E3E1DC;
+  --sf-border-strong: #C9C6BF;
+
+  /* Tenant accent. Overridden inline by the shell; these are the fallbacks
+     that keep the page readable if a tenant ever resolves without them. */
+  --tenant-accent: #123C5A;
+  --tenant-accent-hover: #0D2B42;
+  --tenant-accent-contrast: #FFFFFF;
+
+  /* State. Consumer UI should reach for these rarely. */
+  --sf-success: #2E7D52;
+  --sf-warning: #8A6520;
+  --sf-danger: #A33A3A;
+
+  /* Radii — small and deliberate. The old UI used 1rem–1.5rem almost
+     everywhere, which is most of why it read as a SaaS template. */
+  --sf-radius-sm: 4px;
+  --sf-radius: 6px;
+  --sf-radius-lg: 10px;
+
+  /* Rhythm */
+  --sf-gutter: 18px;
+  --sf-max-width: 1360px;
+
+  background-color: var(--sf-bg);
+  color: var(--sf-text);
+}
+
+@media (min-width: 768px) {
+  .storefront { --sf-gutter: 28px; }
+}
+
+@media (min-width: 1024px) {
+  .storefront { --sf-gutter: 40px; }
+}
+
+/* Only the 74px main header is sticky — the utility bar scrolls away — so
+   anything a link can jump to needs that much clearance plus a little air. */
+.storefront section,
+.storefront h1,
+.storefront h2,
+.storefront h3,
+.storefront [id] {
+  scroll-margin-top: 92px;
+}
+
+@media (max-width: 1023px) {
+  .storefront section,
+  .storefront h1,
+  .storefront h2,
+  .storefront h3,
+  .storefront [id] {
+    scroll-margin-top: 80px;
+  }
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Homepage layout helpers.
+
+   One container and one section rhythm, so no section states its own gutters
+   or padding and they cannot drift apart.
+   ─────────────────────────────────────────────────────────────────────────── */
+.home-container {
+  width: min(1360px, calc(100% - 80px));
+  margin-inline: auto;
+}
+
+.home-section {
+  padding-block: 104px;
+}
+
+/* A top-level navigation item. The underline wipes in from the left on hover
+   and stays put on the item for the current section; the padding makes the
+   item the full height of the 74px header, so the rule lands on its edge. */
+.home-nav {
+  position: relative;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: #282828;
+  padding-block: 27px;
+  text-transform: uppercase;
+}
+
+.home-nav::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  height: 2px;
+  background: var(--tenant-accent);
+  transition: right 180ms ease;
+}
+
+.home-nav:hover::after,
+.home-nav:focus-visible::after,
+.home-nav[data-active="true"]::after {
+  right: 0;
+}
+
+@media (max-width: 767px) {
+  .home-container {
+    width: calc(100% - 36px);
+  }
+
+  .home-section {
+    padding-block: 68px;
+  }
+}
+
+/* Editorial type scale. Clamped so a headline is large on a desktop without
+   overflowing a 390px phone, which is where most Vietnamese traffic is. */
+.sf-display { font-size: clamp(2.25rem, 1.2rem + 4.4vw, 4.25rem); line-height: 1.04; letter-spacing: -0.025em; font-weight: 600; }
+.sf-h1      { font-size: clamp(1.9rem, 1.1rem + 3.2vw, 3.25rem); line-height: 1.08; letter-spacing: -0.022em; font-weight: 600; }
+.sf-h2      { font-size: clamp(1.5rem, 1rem + 1.9vw, 2.35rem);  line-height: 1.14; letter-spacing: -0.018em; font-weight: 600; }
+.sf-h3      { font-size: clamp(1.2rem, 1rem + 0.8vw, 1.6rem);   line-height: 1.22; letter-spacing: -0.012em; font-weight: 600; }
+.sf-body-lg { font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem); line-height: 1.62; }
+.sf-body    { font-size: 1rem; line-height: 1.62; }
+.sf-caption { font-size: 0.8125rem; line-height: 1.5; letter-spacing: 0.005em; }
+
+/* The editorial link: an arrow action, not another filled button. Most of the
+   repeated CTA buttons in the old UI should become one of these. */
+.sf-link {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-weight: 500; color: var(--sf-text);
+  border-bottom: 1px solid var(--sf-border-strong);
+  padding-bottom: 2px; transition: border-color 140ms ease, color 140ms ease;
+}
+.sf-link:hover { color: var(--tenant-accent); border-color: var(--tenant-accent); }
+
+.storefront :focus-visible {
+  outline: 2px solid var(--tenant-accent);
+  outline-offset: 2px;
+}
+
+/* Motion: a fade and a small rise, nothing that draws attention to itself. */
+@media (prefers-reduced-motion: no-preference) {
+  .sf-rise { animation: sf-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+}
+@keyframes sf-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* A rail that scrolls horizontally without the browser's scrollbar sitting
+   under it. Touch and wheel scrolling are untouched. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ------------------------------------------------------------------ concepts
+   The concept grid and the interactive room.
+
+   Two rules carry the whole feature. The concept assets are authored at
+   1448x1086 — exactly 4:3 — and every frame that shows one is also 4:3, so
+   `cover` crops nothing and a hotspot written as a percentage of the asset
+   lands on the same fixture at every width. And nothing here has a radius, a
+   shadow or a surface: the photograph is the object, the text is its caption.
+*/
+
+.concepts-layout {
+  display: grid;
+  gap: 52px;
+}
+
+@media (min-width: 1024px) {
+  .concepts-layout {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+}
+
+.concepts-filter-column {
+  align-self: start;
+  position: sticky;
+  top: 112px;
+}
+
+.concepts-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 32px;
+  row-gap: 68px;
+  padding-top: 40px;
+}
+
+@media (min-width: 1100px) {
+  .concepts-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.concept-card-frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #f2f2ef;
+}
+
+.concept-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.concept-card:hover .concept-card-image {
+  transform: scale(1.02);
+}
+
+/* Visible at rest, not only on hover: on a touch screen there is no hover,
+   and the dots are how the grid says these rooms can be opened. */
+.concept-card-dot {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.42);
+  opacity: 0.55;
+  transition: opacity 220ms ease, transform 220ms ease;
+  pointer-events: none;
+}
+
+.concept-card:hover .concept-card-dot {
+  opacity: 0.95;
+  transform: scale(1.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .concept-card-image,
+  .concept-card-dot {
+    transition: none;
+  }
+  .concept-card:hover .concept-card-image {
+    transform: none;
+  }
+}
+
+/* Filter sheet, phones only. */
+.concepts-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(20, 20, 18, 0.34);
+  display: flex;
+  align-items: flex-end;
+}
+
+.concepts-sheet-panel {
+  width: 100%;
+  max-height: 86vh;
+  overflow-y: auto;
+  background: #ffffff;
+  padding: 20px 20px 28px;
+}
+
+/* ---------------------------------------------------------- concept detail */
+
+/* The stage is capped by WIDTH, never by height.
+   Capping the height instead lets `max-height` win against `aspect-ratio`:
+   the box stops being 4:3, `cover` starts cropping the top and bottom of the
+   asset, and every hotspot — positioned as a percentage of the box — slides
+   off the fixture it names. Measured at 1536x960 that was a 51px error on the
+   toilet. Constraining the width keeps the box exactly 4:3 at every size, so
+   the crop is always zero and a coordinate written once stays correct. */
+.concept-stage {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  max-width: calc((100vh - 230px) * 4 / 3);
+  margin-inline: auto;
+  overflow: hidden;
+  background: #f2f2ef;
+}
+
+@supports (height: 100svh) {
+  .concept-stage {
+    max-width: calc((100svh - 230px) * 4 / 3);
+  }
+}
+
+.concept-stage-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* The visible circle stays small so the room is never covered by its own
+   annotations; the hit area does not. A 30px target is below the 44px minimum
+   a finger needs, so the button carries an invisible 44px square through
+   ::before — the dot a reader sees and the thing a thumb lands on are
+   deliberately different sizes. */
+.concept-hotspot {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(26, 26, 24, 0.55);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  transition: transform 180ms ease, background 180ms ease;
+  display: grid;
+  place-items: center;
+}
+
+.concept-hotspot::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 767px) {
+  .concept-hotspot {
+    width: 34px;
+    height: 34px;
+    margin: -17px 0 0 -17px;
+  }
+
+  .concept-hotspot::before {
+    width: 52px;
+    height: 52px;
+  }
+}
+
+.concept-hotspot::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #1a1a18;
+  transition: transform 180ms ease;
+}
+
+.concept-hotspot:hover,
+.concept-hotspot:focus-visible,
+.concept-hotspot[aria-expanded='true'] {
+  transform: scale(1.16);
+  background: #ffffff;
+}
+
+.concept-hotspot[aria-expanded='true']::after {
+  transform: scale(1.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .concept-hotspot {
+    transition: none;
+  }
+}
+
+/* Desktop popover. Flipped by the component when it would leave the stage. */
+.concept-popover {
+  position: absolute;
+  z-index: 20;
+  width: 290px;
+  background: #ffffff;
+  border: 1px solid #e5e5e2;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  padding: 14px;
+}
+
+/* Phones get a sheet instead: a popover anchored to a point near the edge of
+   a 390px screen has nowhere to go. */
+.concept-hotspot-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(20, 20, 18, 0.34);
+  display: flex;
+  align-items: flex-end;
+}
+
+.concept-hotspot-sheet-panel {
+  width: 100%;
+  background: #ffffff;
+  padding: 18px 20px 26px;
+}
+
+/* The design-idea section: story at a readable measure, principles beside it.
+   A rule separates the two columns rather than a card around either — the
+   premium cue here is the measure and the whitespace, not a container. */
+.concept-story {
+  display: grid;
+  gap: 32px;
+  margin-top: 26px;
+}
+
+.concept-story-body {
+  max-width: 740px;
+}
+
+.concept-story-body p + p {
+  margin-top: 18px;
+}
+
+.concept-story-principles ul {
+  display: grid;
+  gap: 22px;
+}
+
+@media (min-width: 900px) {
+  .concept-story {
+    grid-template-columns: minmax(0, 740px) 340px;
+    gap: 64px;
+  }
+
+  .concept-story-principles {
+    padding-left: 40px;
+    border-left: 1px solid #e5e5e2;
   }
 }

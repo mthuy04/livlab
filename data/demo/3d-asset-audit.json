@@ -1,0 +1,1880 @@
+{
+  "generatedAt": "2026-10-13T18:23:29.936Z",
+  "tenant": "tungdang",
+  "tools": {
+    "blender": false,
+    "gltf-transform": false,
+    "gltfpack": false,
+    "assimp": false,
+    "obj2gltf": false,
+    "FBX2glTF": false,
+    "@gltf-transform/core": true
+  },
+  "formatSupport": {
+    "GLB": "DIRECT_WEB_READY",
+    "GLTF": "DIRECT_WEB_READY",
+    "FBX": "MANUAL_EXPORT_REQUIRED",
+    "OBJ": "MANUAL_EXPORT_REQUIRED",
+    "DAE": "MANUAL_EXPORT_REQUIRED",
+    "3DS": "MANUAL_EXPORT_REQUIRED",
+    "SKP": "MANUAL_EXPORT_REQUIRED",
+    "MAX": "MANUAL_EXPORT_REQUIRED",
+    "DWG": "CONVERSION_TOOL_REQUIRED",
+    "DWG_2D": "UNSUITABLE_FOR_ROOM_STUDIO_3D",
+    "DXF": "CONVERSION_TOOL_REQUIRED",
+    "RFA": "MANUAL_EXPORT_REQUIRED",
+    "RVT": "MANUAL_EXPORT_REQUIRED",
+    "STEP": "CONVERSION_TOOL_REQUIRED",
+    "IGES": "CONVERSION_TOOL_REQUIRED"
+  },
+  "summary": {
+    "catalogProducts": 99,
+    "enrichedProducts": 95,
+    "productsWithGeometrySource": 0,
+    "productsWithTechnicalSpec": 22,
+    "manufacturerFileFormats": {
+      "OTHER": 27,
+      "PDF": 29,
+      "DWG_2D": 8
+    },
+    "runtimeGlbCount": 1,
+    "registeredAssets": 0,
+    "readyAssets": 0
+  },
+  "manufacturerDiscovery": {
+    "checkedAt": "2026-10-13T18:19:52Z",
+    "activeCatalogChecked": 8,
+    "activeCatalogWith3dFile": 6,
+    "activeCatalogExactSku": 6,
+    "outsideCatalogChecked": 5,
+    "outsideCatalogWith3dFile": 5,
+    "formats": [
+      "MAX",
+      "IGES",
+      "ARCHIVE"
+    ]
+  },
+  "runtimeAssets": [
+    {
+      "path": "/models/bathroom/lavabo.glb",
+      "fileSizeBytes": 17113260,
+      "inspected": true,
+      "sceneCount": 1,
+      "nodeCount": 1,
+      "meshCount": 1,
+      "primitiveCount": 1,
+      "triangleCount": 453248,
+      "materialCount": 1,
+      "textureCount": 4,
+      "bboxUnits": {
+        "x": 1.8925,
+        "y": 1.4818,
+        "z": 1.8995
+      }
+    }
+  ],
+  "products": [
+    {
+      "key": "inax-ac-23pvn",
+      "brand": "INAX",
+      "sku": "AC-23PVN",
+      "officialSku": "AC-23PVN",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-23pvn/",
+      "fileCount": 3,
+      "files": [
+        {
+          "type": "INSTALLATION",
+          "label": "File hướng dẫn lắp đặt bồn cầu treo tường AC-23PVN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1tPFdy3ajn4ahDTBQYsqa9pKKro545xBb/view",
+          "sourceSection": "Bản vẽ lắp đặt bồn cầu treo tường AC-23PVN"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "AC-23PVN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1Qtwpy5BzlaznAFv9D3pDipJ-06fbz4zp/view?usp=sharing",
+          "sourceSection": "Thông số kỹ thuật bồn cầu treo tường AC-23PVN"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "AC-23PVN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1tPFdy3ajn4ahDTBQYsqa9pKKro545xBb/view?usp=sharing",
+          "sourceSection": "Thông số kỹ thuật bồn cầu treo tường AC-23PVN"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-ac-918vrn",
+      "brand": "INAX",
+      "sku": "AC-918VRN",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-ac-912vn",
+      "brand": "INAX",
+      "sku": "AC-912VN",
+      "officialSku": "AC-912VN",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-912vn/",
+      "fileCount": 1,
+      "files": [
+        {
+          "type": "INSTALLATION",
+          "label": "Hướng dẫn cách lắp đặt bồn cầu AC-912VN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1R6SL1b9eiyf2v-RdjhAEDZngaagFMds0/view?usp=sharing",
+          "sourceSection": "Hướng dẫn lắp đặt bồn cầu 1 khối AC-912VN"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-ac-909vrn-1",
+      "brand": "INAX",
+      "sku": "AC-909VRN-1",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-ac-909vrn",
+      "brand": "INAX",
+      "sku": "AC-909VRN",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-ac-900vrn-2",
+      "brand": "INAX",
+      "sku": "AC-900VRN-2",
+      "officialSku": "AC-900VRN-2",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-900vrn-2/",
+      "fileCount": 1,
+      "files": [
+        {
+          "type": "INSTALLATION",
+          "label": "tại đây",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1F1nzplAkIANok-rf6aBNn8N53pjzNrNc/view",
+          "sourceSection": "Hướng dẫn lắp đặt bồn cầu 1 khối AC-900VRN-2"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-ac-1008vrn",
+      "brand": "INAX",
+      "sku": "AC-1008VRN",
+      "officialSku": "AC-1008VRN",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-1008vrn/",
+      "fileCount": 3,
+      "files": [
+        {
+          "type": "INSTALLATION",
+          "label": "File hướng dẫn lắp đặt bồn cầu 1 khối AC-1008VRN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1h72oJgxHceelp7z1SMZ7UpE2jfNv3h0G/view",
+          "sourceSection": "Bản vẽ lắp đặt bồn cầu 1 khối AC-1008VRN"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "AC-1008VRN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1xAOVxgTghzNJM2gPLhK8IqqMAWo9XGjL/view?usp=sharing",
+          "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1008VRN"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "AC-1008VRN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1h72oJgxHceelp7z1SMZ7UpE2jfNv3h0G/view?usp=sharing",
+          "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1008VRN"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-ac-4005vn",
+      "brand": "INAX",
+      "sku": "AC-4005VN",
+      "officialSku": "AC-4005VN",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-4005vn/",
+      "fileCount": 3,
+      "files": [
+        {
+          "type": "INSTALLATION",
+          "label": "File hướng dẫn lắp đặt bồn cầu 1 khối AC-4005VN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1tli8_cdn4ITGyotzrzX2o8Aa5RG-QXpp/view",
+          "sourceSection": "Bản vẽ lắp đặt bồn cầu 1 khối AC-4005VN"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "AC-4005VN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1eOGAqgWoIcptr-_XiUq65XLqJWf7-r-E/view?usp=sharing",
+          "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-4005VN"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "AC-4005VN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1tli8_cdn4ITGyotzrzX2o8Aa5RG-QXpp/view?usp=sharing",
+          "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-4005VN"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-ac-2700vn",
+      "brand": "INAX",
+      "sku": "AC-2700VN",
+      "officialSku": "AC-2700VN",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-2700vn/",
+      "fileCount": 3,
+      "files": [
+        {
+          "type": "INSTALLATION",
+          "label": "File hướng dẫn lắp đặt bồn cầu 1 khối AC-2700VN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1-Ip3tM2jdBmhXpAtnH_DwzxMbFdELnG4/view",
+          "sourceSection": "Bản vẽ lắp đặt bồn cầu 1 khối AC-2700VN"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "AC-2700VN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1Qj76pGzZZjxYo90mMnslYjIidAQBbf4j/view?usp=sharing",
+          "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-2700VN"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "AC-2700VN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1-Ip3tM2jdBmhXpAtnH_DwzxMbFdELnG4/view?usp=sharing",
+          "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-2700VN"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-ac-1135vn",
+      "brand": "INAX",
+      "sku": "AC-1135VN",
+      "officialSku": "AC-1135VN",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-1135vn/",
+      "fileCount": 3,
+      "files": [
+        {
+          "type": "INSTALLATION",
+          "label": "File hướng dẫn lắp đặt bồn cầu 1 khối AC-1135VN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1_KY5iDRWvOF5Uegu9_VC2BE1EP7okFPU/view",
+          "sourceSection": "Bản vẽ lắp đặt bồn cầu 1 khối AC-1135VN"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "AC-1135VN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1sGe1P0Q0dR3KSxMGy6Af5oMECwAnuOOq/view?usp=sharing",
+          "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1135VN"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "AC-1135VN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1_KY5iDRWvOF5Uegu9_VC2BE1EP7okFPU/view?usp=sharing",
+          "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1135VN"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-ac-1035vn",
+      "brand": "INAX",
+      "sku": "AC-1035VN",
+      "officialSku": "AC-1035VN",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-1035vn/",
+      "fileCount": 3,
+      "files": [
+        {
+          "type": "INSTALLATION",
+          "label": "File hướng dẫn lắp đặt bồn cầu 1 khối AC-1035VN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1_KY5iDRWvOF5Uegu9_VC2BE1EP7okFPU/view",
+          "sourceSection": "Bản vẽ lắp đặt bồn cầu 1 khối AC-1035VN"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "AC-1035VN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1sGe1P0Q0dR3KSxMGy6Af5oMECwAnuOOq/view?usp=sharing",
+          "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1035VN"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "AC-1035VN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1_KY5iDRWvOF5Uegu9_VC2BE1EP7okFPU/view?usp=sharing",
+          "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1035VN"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-ac-1032vn",
+      "brand": "INAX",
+      "sku": "AC-1032VN",
+      "officialSku": "AC-1032VN",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-1032vn/",
+      "fileCount": 2,
+      "files": [
+        {
+          "type": "INSTALLATION",
+          "label": "File hướng dẫn lắp đặt bồn cầu 1 khối AC-1032VN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1cMMXimxMA3QCDyyHqbak9mqX_JVfXZg-/view",
+          "sourceSection": "Bản vẽ lắp đặt bồn cầu 1 khối AC-1032VN"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "AC-1032VN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1cMMXimxMA3QCDyyHqbak9mqX_JVfXZg-/view?usp=sharing",
+          "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1032VN"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-ac-1017vrn",
+      "brand": "INAX",
+      "sku": "AC-1017VRN",
+      "officialSku": "AC-1017VRN",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/toilet/ac-1017vrn/",
+      "fileCount": 3,
+      "files": [
+        {
+          "type": "INSTALLATION",
+          "label": "File hướng dẫn lắp đặt bồn cầu 1 khối AC-1017VRN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1h72oJgxHceelp7z1SMZ7UpE2jfNv3h0G/view",
+          "sourceSection": "Bản vẽ lắp đặt bồn cầu 1 khối AC-1017VRN"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "AC-1017VRN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1xAOVxgTghzNJM2gPLhK8IqqMAWo9XGjL/view?usp=sharing",
+          "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1017VRN"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "AC-1017VRN",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1h72oJgxHceelp7z1SMZ7UpE2jfNv3h0G/view?usp=sharing",
+          "sourceSection": "Thông số kỹ thuật bồn cầu 1 khối AC-1017VRN"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-lfv-6002s",
+      "brand": "INAX",
+      "sku": "LFV-6002S",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-lfv-502sh",
+      "brand": "INAX",
+      "sku": "LFV-502SH",
+      "officialSku": "LFV-502SH",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/bathroom-faucet/lfv-502sh/",
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-lfv-112sh",
+      "brand": "INAX",
+      "sku": "LFV-112SH",
+      "officialSku": "LFV-112SH",
+      "manufacturerProductUrl": "https://www.inax.com.vn/products/bathroom-faucet/lfv-112sh/",
+      "fileCount": 2,
+      "files": [
+        {
+          "type": "USER_MANUAL",
+          "label": "User manual_UM-0177(LFV-112SH)_V2_25Sep2020.pdf",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1VTuoomyy8MAwkfhSGpDwJzCFknY7xfrF/view",
+          "sourceSection": "Bản vẽ sen vòi đơn LFV-112SH"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "LFV-112SH",
+          "format": "OTHER",
+          "sourceUrl": "https://drive.google.com/file/d/1VTuoomyy8MAwkfhSGpDwJzCFknY7xfrF/view?usp=sharing",
+          "sourceSection": "Thông số kỹ thuật"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-lfv-1001s",
+      "brand": "INAX",
+      "sku": "LFV-1001S",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-lf-14-13",
+      "brand": "INAX",
+      "sku": "LF-14-13",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-lf-12-13",
+      "brand": "INAX",
+      "sku": "LF-12-13",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "inax-smbv-1000",
+      "brand": "INAX",
+      "sku": "SMBV-1000",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-zd7202-so-cjm305",
+      "brand": "JOMOO",
+      "sku": "ZD7202-SO-CJM305",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-zd7220-sa-cjm305",
+      "brand": "JOMOO",
+      "sku": "ZD7220-SA-CJM305",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-zd6310-sa-ido305",
+      "brand": "JOMOO",
+      "sku": "ZD6310-SA-IDO305",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-zd7300-s2-ido305",
+      "brand": "JOMOO",
+      "sku": "ZD7300-S2-IDO305",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-zd8610-sa-ido305",
+      "brand": "JOMOO",
+      "sku": "ZD8610-SA-IDO305",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-zd8920-sa-cjm305",
+      "brand": "JOMOO",
+      "sku": "ZD8920-SA-CJM305",
+      "officialSku": "ZD8920-SA-CJM305",
+      "manufacturerProductUrl": "https://jomoo.vn/products/smart-toilet-zd8920-sa-cjm305",
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-11369-2-231ka",
+      "brand": "JOMOO",
+      "sku": "11369-2-231KA",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-11416-2-231k",
+      "brand": "JOMOO",
+      "sku": "11416-2-231K",
+      "officialSku": "11416-2-2/31K-I011",
+      "manufacturerProductUrl": "https://jomoo.vn/products/ban-cau-mot-khoi-11416-2-2-31k-i011",
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-11411-2-231k-1",
+      "brand": "JOMOO",
+      "sku": "11411-2-231K-1",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-11246-2-231z",
+      "brand": "JOMOO",
+      "sku": "11246-2-231Z",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-11413-2-211k",
+      "brand": "JOMOO",
+      "sku": "11413-2-211K",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-11213-2-1-31z-i011",
+      "brand": "JOMOO",
+      "sku": "11213-2-1/31Z-I011",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-12661-1-01k",
+      "brand": "JOMOO",
+      "sku": "12661-1/01K",
+      "officialSku": "12661-1/01K-I011",
+      "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12661-1-01k-i011",
+      "fileCount": 2,
+      "files": [
+        {
+          "type": "USER_MANUAL",
+          "label": "Hướng dẫn lắp đặt Tải về",
+          "format": "PDF",
+          "sourceUrl": "https://cdn.hstatic.net/files/200000913817/file/basins_instruction_manual.pdf",
+          "sourceSection": "Chậu rửa đặt bàn 12661-1/01K-I011"
+        },
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "Thông số kỹ thuật Tải về",
+          "format": "PDF",
+          "sourceUrl": "https://cdn.hstatic.net/files/200000913817/file/12661-1-01k-i011.pdf",
+          "sourceSection": "Chậu rửa đặt bàn 12661-1/01K-I011"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-p12679-1-11z",
+      "brand": "JOMOO",
+      "sku": "P12679-1/11Z",
+      "officialSku": "P12679-1/11Z-1",
+      "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-dat-ban-p12679-1-11z-1",
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-12138-1-01z",
+      "brand": "JOMOO",
+      "sku": "12138-1/01Z",
+      "officialSku": "12138-1/01Z-I011",
+      "manufacturerProductUrl": "https://jomoo.vn/products/above-counter-sink-12138-101z-i011",
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-12497-1-11z",
+      "brand": "JOMOO",
+      "sku": "12497-1/11Z",
+      "officialSku": "12497-1/11Z-I011",
+      "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-duong-vanh-12497-1-11z-i011",
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-12409-1-11z",
+      "brand": "JOMOO",
+      "sku": "12409-1/11Z",
+      "officialSku": "12409-1/11Z-I011",
+      "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-duong-vanh-12409-1-11z-i011",
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-p12663-1-01z-1",
+      "brand": "JOMOO",
+      "sku": "P12663-1/01Z-1",
+      "officialSku": "P12663-1/01Z-1",
+      "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-duong-vanh-p12663-1-01z-1",
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-p12748-1-11p-1",
+      "brand": "JOMOO",
+      "sku": "P12748-1/11P-1",
+      "officialSku": "P12748-1/11P-1",
+      "manufacturerProductUrl": "https://jomoo.vn/products/wall-mounted-sink-p12748-111p-1",
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-p12702-1-01k-2",
+      "brand": "JOMOO",
+      "sku": "P12702-1/01K-2",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-12683-1-01k-i011",
+      "brand": "JOMOO",
+      "sku": "12683-1/01K-I011",
+      "officialSku": "12683-1/01K-I011",
+      "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-am-ban-12683-1-01k-i011",
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-1296-1-01z",
+      "brand": "JOMOO",
+      "sku": "1296-1/01Z",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-1293-1-01z",
+      "brand": "JOMOO",
+      "sku": "1293-1/01Z",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-12145-1-01z",
+      "brand": "JOMOO",
+      "sku": "12145-1/01Z",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-12161-1-01p",
+      "brand": "JOMOO",
+      "sku": "12161-1/01P",
+      "officialSku": "12161-1/01P-I011",
+      "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12161-1-01p-i011",
+      "fileCount": 2,
+      "files": [
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "Thông số kỹ thuật Tải về",
+          "format": "PDF",
+          "sourceUrl": "https://cdn.hstatic.net/files/200000913817/file/12161-1-01p-i011.pdf",
+          "sourceSection": "slider-feature owl-carousel"
+        },
+        {
+          "type": "USER_MANUAL",
+          "label": "Hướng dẫn lắp đặt Tải về",
+          "format": "PDF",
+          "sourceUrl": "https://cdn.hstatic.net/files/200000913817/file/12161-1_01p-i011_instruction_manual.pdf",
+          "sourceSection": "slider-feature owl-carousel"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-12703-1-01p",
+      "brand": "JOMOO",
+      "sku": "12703-1/01P",
+      "officialSku": "12703-1/01P-I011",
+      "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12703-1-01p-i011",
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-12132-1-01z",
+      "brand": "JOMOO",
+      "sku": "12132-1/01Z",
+      "officialSku": "12132-1/01Z-I011",
+      "manufacturerProductUrl": "https://jomoo.vn/products/chau-rua-dat-ban-12132-1-01z-i011",
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-37311-636-dbc-1",
+      "brand": "JOMOO",
+      "sku": "37311-636/DBC-1",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-36473-463-hbs-1",
+      "brand": "JOMOO",
+      "sku": "36473-463/HBS-1",
+      "officialSku": "36473-463/HBS-1",
+      "manufacturerProductUrl": "https://jomoo.vn/products/sen-cay-tu-dong-tay-can-kem-voi-xit-36473-463-hbs-1",
+      "fileCount": 1,
+      "files": [
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "Thông số kỹ thuật Tải về",
+          "format": "PDF",
+          "sourceUrl": "https://cdn.hstatic.net/files/200000913817/file/36473-463-hbs-i011.pdf",
+          "sourceSection": "slider-feature owl-carousel"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-35279-477-1b-i011",
+      "brand": "JOMOO",
+      "sku": "35279-477/1B-I011",
+      "officialSku": "35279-477/1B-I011",
+      "manufacturerProductUrl": "https://jomoo.vn/products/sen-tam-35279-477-1b-i011",
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-p36412-484-1b-1",
+      "brand": "JOMOO",
+      "sku": "P36412-484/1B-1",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-36619-146-1c-i011",
+      "brand": "JOMOO",
+      "sku": "36619-146/1C-I011",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-p36411-484-1b-1",
+      "brand": "JOMOO",
+      "sku": "P36411-484/1B-1",
+      "officialSku": "P36411-484/1B-1",
+      "manufacturerProductUrl": "https://jomoo.vn/products/sen-cay-p36411-484-1b-1",
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-36558-576-1b-i011",
+      "brand": "JOMOO",
+      "sku": "36558-576/1B-I011",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-36437-477-1b-i011",
+      "brand": "JOMOO",
+      "sku": "36437-477/1B-I011",
+      "officialSku": "36437-477/1B-I011",
+      "manufacturerProductUrl": "https://jomoo.vn/products/sen-cay-36437-477-1b-i011",
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-36457-592-hbs-1",
+      "brand": "JOMOO",
+      "sku": "36457-592/HBS-1",
+      "officialSku": "36457-592/HBS-1",
+      "manufacturerProductUrl": "https://jomoo.vn/products/sen-cay-chong-bong-36457-592-hbs-1",
+      "fileCount": 1,
+      "files": [
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "Thông số kỹ thuật Tải về",
+          "format": "PDF",
+          "sourceUrl": "https://cdn.hstatic.net/files/200000913817/file/36457-592-hbs-1.pdf",
+          "sourceSection": "slider-feature owl-carousel"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-36473-463-1b-1",
+      "brand": "JOMOO",
+      "sku": "36473-463/1B-1",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-26135-531-1b-1",
+      "brand": "JOMOO",
+      "sku": "26135-531/1B-1",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-26163-644-1b-i011",
+      "brand": "JOMOO",
+      "sku": "26163-644/1B-I011",
+      "officialSku": "26163-644/1B-I011",
+      "manufacturerProductUrl": "https://jomoo.vn/products/sen-cay-on-nhiet-tu-dong-tay-can-kem-voi-xit-26163-644-1b-i011",
+      "fileCount": 2,
+      "files": [
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "Thông số kỹ thuật Tải về",
+          "format": "PDF",
+          "sourceUrl": "https://cdn.hstatic.net/files/200000913817/file/26163-644-1b-i011.pdf",
+          "sourceSection": "slider-feature owl-carousel"
+        },
+        {
+          "type": "INSTALLATION",
+          "label": "Hướng dẫn lắp đặt Tải về",
+          "format": "PDF",
+          "sourceUrl": "https://cdn.hstatic.net/files/200000913817/file/1606107461-001_26163-644-1b-1____.pdf",
+          "sourceSection": "slider-feature owl-carousel"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-36510-122-1b-1",
+      "brand": "JOMOO",
+      "sku": "36510-122/1B-1",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-26140-533-1b-1",
+      "brand": "JOMOO",
+      "sku": "26140-533/1B-1",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-26178-624-1b-1",
+      "brand": "JOMOO",
+      "sku": "26178-624/1B-1",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-26161-624-1b-1",
+      "brand": "JOMOO",
+      "sku": "26161-624/1B-1",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-26161-624-hb-1",
+      "brand": "JOMOO",
+      "sku": "26161-624/HB-1",
+      "officialSku": "26161-624/HB-1",
+      "manufacturerProductUrl": "https://jomoo.vn/products/sen-cay-on-nhiet-26161-624-hb-1",
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-p37271-240-1b",
+      "brand": "JOMOO",
+      "sku": "P37271-240/1B",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-p37272-445-1b-1",
+      "brand": "JOMOO",
+      "sku": "P37272-445/1B-1",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "jomoo-37311-636-1b-1",
+      "brand": "JOMOO",
+      "sku": "37311-636/1B-1",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-cw553-tcf34320gaa-wh172at-mb174p",
+      "brand": "TOTO",
+      "sku": "CW553/TCF34320GAA/WH172AT/MB174P",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-cs911vt-tcf87120gaa-t53p100vr",
+      "brand": "TOTO",
+      "sku": "CS911VT/TCF87120GAA/T53P100VR",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-cs921vt-tcf83410gaa-t53p100vr",
+      "brand": "TOTO",
+      "sku": "CS921VT/TCF83410GAA/T53P100VR",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-ms366w14",
+      "brand": "TOTO",
+      "sku": "MS366W14",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-cw822ra-tcf23410aaa-wh172a",
+      "brand": "TOTO",
+      "sku": "CW822RA/TCF23410AAA/WH172A",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-cs838dw11",
+      "brand": "TOTO",
+      "sku": "CS838DW11",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-ms855cdw12",
+      "brand": "TOTO",
+      "sku": "MS855CDW12",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-cs767crw15",
+      "brand": "TOTO",
+      "sku": "CS767CRW15",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-cs900kvt-nw1-t53p100vr",
+      "brand": "TOTO",
+      "sku": "CS900KVT#NW1/T53P100VR",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-cs838dt10",
+      "brand": "TOTO",
+      "sku": "CS838DT10",
+      "officialSku": "CS838DT10",
+      "manufacturerProductUrl": "https://vn.toto.com/cs838dt10/",
+      "fileCount": 4,
+      "files": [
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "Thông số kỹ thuật",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2025/04/TSKT_Ban_cau_hai_khoi_CS838DT10_Rv01.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "INSTALLATION",
+          "label": "Hướng dẫn lắp đặt",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDLD_0IM079405N1_CS767_CS769_CS986_CS838_Rv06.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "USER_MANUAL",
+          "label": "Hướng dẫn sử dụng",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDSD_Ban_cau_0IM067301S1_Rv06.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "CAD",
+          "label": "Bản vẽ 2D",
+          "format": "DWG_2D",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/CAD_CS838D_Rv02.dwg",
+          "sourceSection": "Tải xuống PDF"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-ms855dw7",
+      "brand": "TOTO",
+      "sku": "MS855DW7",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-ms688t2",
+      "brand": "TOTO",
+      "sku": "MS688T2",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-ms885dt3",
+      "brand": "TOTO",
+      "sku": "MS885DT3",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-cs769drt8",
+      "brand": "TOTO",
+      "sku": "CS769DRT8",
+      "officialSku": "CS769DRT8",
+      "manufacturerProductUrl": "https://vn.toto.com/cs769drt8/",
+      "fileCount": 4,
+      "files": [
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "Thông số kỹ thuật",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/TSKT_Ban_cau_hai_khoi_CS769D_CS769DR_CS986G_Rv07.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "INSTALLATION",
+          "label": "Hướng dẫn lắp đặt",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDLD_0IM079405N1_CS767_CS769_CS986_CS838_Rv06.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "USER_MANUAL",
+          "label": "Hướng dẫn sử dụng",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDSD_Ban_cau_0IM067301S1_Rv06.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "CAD",
+          "label": "Bản vẽ 2D",
+          "format": "DWG_2D",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/CAD_CS769D_CS769DR_CS986G_Rv07.dwg",
+          "sourceSection": "Tải xuống PDF"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-ms636dt8",
+      "brand": "TOTO",
+      "sku": "MS636DT8",
+      "officialSku": "MS636DT8",
+      "manufacturerProductUrl": "https://vn.toto.com/ms636dt8/",
+      "fileCount": 4,
+      "files": [
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "Thông số kỹ thuật",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/TSKT_Ban_cau_mot_khoi_MS636_Rv09.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "INSTALLATION",
+          "label": "Hướng dẫn lắp đặt",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDLD_Ban_cau_mot_khoi_0IM062502N_MS636D_Rv05.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "USER_MANUAL",
+          "label": "Hướng dẫn sử dụng",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDSD_Ban_cau_0IM067301S1_Rv06.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "CAD",
+          "label": "Bản vẽ 2D",
+          "format": "DWG_2D",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/CAD_MS636_Rv09.dwg",
+          "sourceSection": "Tải xuống PDF"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-ms889drt8",
+      "brand": "TOTO",
+      "sku": "MS889DRT8",
+      "officialSku": "MS889DRT8",
+      "manufacturerProductUrl": "https://vn.toto.com/ms889drt8/",
+      "fileCount": 4,
+      "files": [
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "Thông số kỹ thuật",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/TSKT_Ban_cau_mot_khoi_MS889DR_Rv03.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "INSTALLATION",
+          "label": "Hướng dẫn lắp đặt",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDLD_Ban_cau_mot_khoi_0IM080503R1_MS887_MS889_Rv04.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "USER_MANUAL",
+          "label": "Hướng dẫn sử dụng",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDSD_Ban_cau_0IM067301S1_Rv06.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "CAD",
+          "label": "Bản vẽ 2D",
+          "format": "DWG_2D",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/CAD_MS889DR_Rv03.dwg",
+          "sourceSection": "Tải xuống PDF"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-lt4715mtg17-cmw",
+      "brand": "TOTO",
+      "sku": "LT4715MTG17#CMW",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-ppy1560hpe-p-tvbf411",
+      "brand": "TOTO",
+      "sku": "PPY1560HPE#P/TVBF411",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-pay1725vc-tvbf411",
+      "brand": "TOTO",
+      "sku": "PAY1725VC/TVBF411",
+      "officialSku": "PAY1725VC/TVBF411",
+      "manufacturerProductUrl": "https://vn.toto.com/pay1725vc-tvbf411/",
+      "fileCount": 3,
+      "files": [
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "Thông số kỹ thuật",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/TSKT_Bon_tam_PAY1725VC_PAY1725HVC_TVBF411_Rev01.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "INSTALLATION",
+          "label": "Hướng dẫn lắp đặt",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/SDLD_0IMI175002_bon_tam_Rev04.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "CAD",
+          "label": "Bản vẽ 2D",
+          "format": "DWG_2D",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/CAD_PAY1725VC_PAY1725HVC_TVBF411_Rev01.dwg",
+          "sourceSection": "Tải xuống PDF"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-pay1720hv-tvbf411",
+      "brand": "TOTO",
+      "sku": "PAY1720HV/TVBF411",
+      "officialSku": "PAY1720HV/TVBF411",
+      "manufacturerProductUrl": "https://vn.toto.com/pay1720hv-tvbf411/",
+      "fileCount": 3,
+      "files": [
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "Thông số kỹ thuật",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/TSKT_Bon_tam_PAY1720V_PAY1720HV_TVBF411_Rev01.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "INSTALLATION",
+          "label": "Hướng dẫn lắp đặt",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/SDLD_0IMI174902_bon_tam_khong_yem_Rev03.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "CAD",
+          "label": "Bản vẽ 2D",
+          "format": "DWG_2D",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/CAD_PAY1720V_PAY1720HV_TVBF411_Rev01.dwg",
+          "sourceSection": "Tải xuống PDF"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-pay1780d-db501r-2b",
+      "brand": "TOTO",
+      "sku": "PAY1780D/DB501R-2B",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-pay1735hvc-tvbf411",
+      "brand": "TOTO",
+      "sku": "PAY1735HVC/TVBF411",
+      "officialSku": "PAY1735HVC/TVBF411",
+      "manufacturerProductUrl": "https://vn.toto.com/pay1735hvc-tvbf411/",
+      "fileCount": 3,
+      "files": [
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "Thông số kỹ thuật",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/TSKT_Bon_tam_PAY1735VC_PAY1735HVC_TVBF411_Rev02.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "INSTALLATION",
+          "label": "Hướng dẫn lắp đặt",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/SDLD_0IMI175002_bon_tam_Rev04.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "CAD",
+          "label": "Bản vẽ 2D",
+          "format": "DWG_2D",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/CAD_PAY1735VC_PAY1735HVC_TVBF411_Rev02.dwg",
+          "sourceSection": "Tải xuống PDF"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "toto-pjyd2200pwe-gw",
+      "brand": "TOTO",
+      "sku": "PJYD2200PWE#GW",
+      "officialSku": "PJYD2200PWE#GW",
+      "manufacturerProductUrl": "https://vn.toto.com/pjyd2200pwegw/",
+      "fileCount": 4,
+      "files": [
+        {
+          "type": "TECHNICAL_SPEC",
+          "label": "Thông số kỹ thuật",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/TSKT_Bon_tam_PJYD2200PWE_GW_Rev01.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "INSTALLATION",
+          "label": "Hướng dẫn lắp đặt",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDLD_NTE181_PJYD2200PWE.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "USER_MANUAL",
+          "label": "Hướng dẫn sử dụng",
+          "format": "PDF",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/HDSD_NTE182_PJYD2200PWE.pdf",
+          "sourceSection": "Tải xuống PDF"
+        },
+        {
+          "type": "CAD",
+          "label": "Bản vẽ 2D",
+          "format": "DWG_2D",
+          "sourceUrl": "https://vn.toto.com/wp-content/uploads/2024/tldk/CAD_PJYD2200PWE_GW.Rev01.dwg",
+          "sourceSection": "Tải xuống PDF"
+        }
+      ],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": true,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "viglacera-p-61-320",
+      "brand": "Viglacera",
+      "sku": "P.61.320",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "caesar-at7135",
+      "brand": "Caesar",
+      "sku": "AT7135",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "caesar-at3350l-r",
+      "brand": "Caesar",
+      "sku": "AT3350L/R",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "caesar-mt5165",
+      "brand": "Caesar",
+      "sku": "MT5165",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "key": "american-standard-70280-wt",
+      "brand": "American Standard",
+      "sku": "70280-WT",
+      "officialSku": null,
+      "manufacturerProductUrl": null,
+      "fileCount": 0,
+      "files": [],
+      "geometrySourceCount": 0,
+      "geometryFormats": [],
+      "conversionCapability": [],
+      "hasTechnicalSpec": false,
+      "status": "SOURCE_UNAVAILABLE"
+    }
+  ]
+}

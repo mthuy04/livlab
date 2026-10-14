@@ -18,8 +18,31 @@ import { SESSION_COOKIE, verifySession } from '@/lib/auth/sessionToken';
  * sign-in time, and every API route still resolves the real role and showroom
  * through getSessionUser(). Authorization must not depend on this file alone.
  */
+/**
+ * Internal QA pages: a GLB inspector, a hotspot calibrator, an image audit.
+ * They are tools for building the product, not parts of it, and nothing in the
+ * product links to them — but a route that exists is a route strangers can
+ * open, and these read like staff pages to anyone who finds one.
+ *
+ * In production they 404, which is what a page that should not be there looks
+ * like from outside. In development they are untouched. Only the routes are
+ * gated: the runtime they exercise — the 3D resolver, the image helpers — is
+ * ordinary product code and is not affected.
+ */
+const DEV_ONLY_ROUTES = ['/dev', '/image-check'];
+
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  const isDevOnly = DEV_ONLY_ROUTES.some(
+    (base) => pathname === base || pathname.startsWith(`${base}/`)
+  );
+  if (isDevOnly) {
+    if (process.env.NODE_ENV === 'production') {
+      return new NextResponse(null, { status: 404 });
+    }
+    return NextResponse.next();
+  }
 
   const token = request.cookies.get(SESSION_COOKIE)?.value;
   const session = token ? await verifySession(token) : null;
@@ -50,5 +73,5 @@ function redirectToLogin(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/showroom/:path*'],
+  matcher: ['/admin/:path*', '/showroom/:path*', '/dev/:path*', '/image-check'],
 };

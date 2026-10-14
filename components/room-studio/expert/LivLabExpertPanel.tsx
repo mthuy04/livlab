@@ -7,6 +7,7 @@ import type { RoomState } from '@/lib/room-studio/roomState';
 import type { BudgetEstimate } from '@/lib/room-studio/budgetCalculator';
 import type { PlacedProductView } from '@/lib/room-studio/useRoomStudio';
 import type { RoomStudioProduct } from '@/lib/room-studio/productAdapter';
+import { isPlaceable } from '@/lib/room-studio/productCapability';
 import { buildExpertContext } from '@/lib/room-studio/expertContextBuilder';
 import { buildIntentPrompt, type ExpertIntent } from '@/lib/room-studio/expertNudges';
 import { useLivLabExpert } from './useLivLabExpert';
@@ -82,6 +83,10 @@ export default function LivLabExpertPanel({
       const product = resolveProduct(productId);
       if (!product) {
         setActionNotice('Sản phẩm này hiện chưa có trong danh mục đang tải.');
+        return;
+      }
+      if (!isPlaceable(product.capability)) {
+        setActionNotice(`${product.name} chưa có kích thước thật nên chưa đặt được vào phòng.`);
         return;
       }
       onAddProductToRoom(product);

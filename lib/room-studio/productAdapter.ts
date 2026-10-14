@@ -10,11 +10,26 @@
 
 import { Product } from '@/lib/types';
 import { normalizeCategory } from '@/lib/visualStudioHelpers';
+import { normalizeSku } from '@/lib/storefront/catalogTypes';
 import { getModelMetadata } from './modelMetadata';
+import { findProduct3DAssetForKeys } from './product3dRegistry';
+import { deriveCapability, type RoomStudioCapability } from './productCapability';
 import type { PlacementType } from './placementRules';
 
 export interface RoomStudioProduct {
   id: string;
+  /**
+   * SKU with separators dropped — the key the 3D registry is reached by.
+   *
+   * There is deliberately no `catalogProductId` here. `Product` does not carry
+   * one, and the canonical identity is built server-side in
+   * `lib/storefront/catalog` from the tenant, which this client-side CSV path
+   * does not know. Synthesising one here would produce a second identity that
+   * looks canonical and is not, so Room Studio asks the registry with the keys
+   * it genuinely holds — the same `{ id, normalizedSku }` pair the storefront's
+   * own `roomStudioReady` gate uses.
+   */
+  normalizedSku?: string;
   sku?: string;
   slug?: string;
   name: string;
@@ -35,6 +50,8 @@ export interface RoomStudioProduct {
   dimensionsLabel?: string;
   model3dUrl?: string;
   modelScale?: number;
+  /** What Room Studio may claim about this product. The one badge/gate source. */
+  capability: RoomStudioCapability;
   placementType: PlacementType;
   /** The original record, so existing flows (quote basket) keep working as-is. */
   source: Product;
@@ -45,6 +62,14 @@ export interface RoomStudioProduct {
  * Handles the shapes actually present in livlab_verified_products_master.csv,
  * e.g. "550 x 380 x 125 mm", "1200x600mm", "Ø420 mm". Returns undefined fields
  * rather than guesses when the string cannot be read.
+ *
+ * A string carrying more than three numbers is read as nothing at all. Two
+ * rows in the catalogue state two different measurements in one field —
+ * "Bề mặt 40 x 40 cm; lỗ khoét 29.5 x 29.5 cm" is a ceiling heater's face
+ * and its cutout — and taking the first three numbers turned that into a
+ * 400×400×295 box that is not any dimension of the product. A plausible
+ * wrong size is worse than a missing one, because nothing downstream can tell
+ * it is wrong.
  */
 export function parseDimensionsToMeters(raw?: string): {
   width?: number;
@@ -63,6 +88,7 @@ export function parseDimensionsToMeters(raw?: string): {
     .filter((n) => Number.isFinite(n) && n > 0);
 
   if (numbers.length === 0) return {};
+  if (numbers.length > 3) return {};
 
   const toMeters = (value: number) => {
     if (isMeters) return value;
@@ -103,6 +129,11 @@ function derivePlacementType(product: Product, normalized: string): PlacementTyp
     // counter height reads correctly even before a vanity is placed under them.
     case 'lavabo':
       return 'counter';
+    // Bathroom accessories hang: shelves, rails, hooks, a wall water heater.
+    // The old default dropped every one of them on the floor, which the
+    // placement types were never wrong about — nothing had asked them.
+    case 'accessory':
+      return 'wall';
     default:
       return 'floor';
   }
@@ -110,11 +141,14 @@ function derivePlacementType(product: Product, normalized: string): PlacementTyp
 
 export function toRoomStudioProduct(product: Product): RoomStudioProduct {
   const normalizedCategory = normalizeCategory(product.category);
+  const normalizedSku = normalizeSku(product.sku) || undefined;
   const parsed = parseDimensionsToMeters(product.dimensions || product.size);
   const metadata = getModelMetadata(product, normalizedCategory);
+  const asset = findProduct3DAssetForKeys(product.id, normalizedSku);
 
   return {
     id: product.id,
+    normalizedSku,
     sku: product.sku || undefined,
     slug: product.slug,
     name: product.name,
@@ -131,6 +165,7 @@ export function toRoomStudioProduct(product: Product): RoomStudioProduct {
     dimensionsLabel: product.dimensions || product.size || undefined,
     model3dUrl: metadata.model3dUrl,
     modelScale: metadata.modelScale,
+    capability: deriveCapability(asset, parsed),
     placementType: derivePlacementType(product, normalizedCategory),
     source: product,
   };

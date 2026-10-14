@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense, useMemo, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useGLTF, Html } from '@react-three/drei';
 import type { ThreeEvent } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -24,14 +24,49 @@ function tintFor(category: string): string {
 }
 
 /**
+ * What the renderer does to a loaded GLB before drawing it.
+ *
+ * Exported because the dev pipeline harness reports these numbers, and a
+ * harness that measures the asset its own way can pass while the renderer is
+ * wrong. `rawSize` is the file as authored, `scale` normalises its largest
+ * dimension to the product's largest real-world dimension — so a .glb authored
+ * in millimetres and one authored in metres both come out correct — and
+ * `offset` re-centres it on its own bounding box, which is why the stored
+ * position always means "centre of the product" whatever pivot the asset was
+ * authored with.
+ */
+export function measureGlbForPlacement(
+  instance: THREE.Object3D,
+  product: RoomStudioProduct
+): { rawSize: THREE.Vector3; scale: number; renderedSize: THREE.Vector3; offset: THREE.Vector3 } {
+  const box = new THREE.Box3().setFromObject(instance);
+  const rawSize = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
+  const scale = resolveModelScale(product, { x: rawSize.x, y: rawSize.y, z: rawSize.z });
+  return {
+    rawSize,
+    scale,
+    renderedSize: rawSize.clone().multiplyScalar(scale),
+    offset: center.clone().multiplyScalar(-scale),
+  };
+}
+
+/**
  * A GLB rendered at true real-world scale.
  *
- * The asset is measured, then scaled so its largest dimension matches the
- * product's real-world largest dimension — so a .glb authored in millimetres and
- * one authored in metres both come out correct. The scale factor itself is
- * computed by assetResolver; nothing here hardcodes a number.
+ * The scale factor itself is computed by assetResolver; nothing here hardcodes
+ * a number.
  */
-function GlbProduct({ product, selected }: { product: RoomStudioProduct; selected: boolean }) {
+function GlbProduct({
+  product,
+  selected,
+  onMeasured,
+}: {
+  product: RoomStudioProduct;
+  selected: boolean;
+  /** Dev harness only. Undefined in the customer workspace. */
+  onMeasured?: (measurement: ReturnType<typeof measureGlbForPlacement>) => void;
+}) {
   const { scene } = useGLTF(product.model3dUrl!);
 
   // One clone per instance so two copies of the same SKU can be placed and moved
@@ -39,15 +74,12 @@ function GlbProduct({ product, selected }: { product: RoomStudioProduct; selecte
   // purpose — disposing them here would blank out every other instance.
   const instance = useMemo(() => scene.clone(true), [scene]);
 
-  const { scale, yOffset } = useMemo(() => {
-    const box = new THREE.Box3().setFromObject(instance);
-    const size = box.getSize(new THREE.Vector3());
-    const center = box.getCenter(new THREE.Vector3());
-    const s = resolveModelScale(product, { x: size.x, y: size.y, z: size.z });
-    // Re-centre on the model's own bounding box so the stored position always
-    // means "centre of the product", whatever pivot the asset was authored with.
-    return { scale: s, yOffset: center.clone().multiplyScalar(-s) };
-  }, [instance, product]);
+  const measurement = useMemo(() => measureGlbForPlacement(instance, product), [instance, product]);
+  const { scale, offset: yOffset } = measurement;
+
+  useEffect(() => {
+    onMeasured?.(measurement);
+  }, [measurement, onMeasured]);
 
   return (
     <group>
@@ -95,6 +127,70 @@ function ProductPlaceholder({ product, selected }: { product: RoomStudioProduct;
   );
 }
 
+/**
+ * The in-scene label.
+ *
+ * Hovering gives the name. Selecting also gives the brand, the SKU and the
+ * measured size, and — where there is no runtime model — says in words that the
+ * volume is a size and not a shape. That sentence is the whole reason the label
+ * grew: a grey cuboid standing where a toilet should be is read as the product
+ * unless something says otherwise, and the scene is where the customer is
+ * looking, not the panel.
+ */
+function ProductLabel({
+  product,
+  detailed,
+  loadFailed = false,
+}: {
+  product: RoomStudioProduct;
+  detailed: boolean;
+  loadFailed?: boolean;
+}) {
+  const size = getRealWorldSize(product);
+  const mm = (metres: number) => Math.round(metres * 1000);
+  const isPlaceholder = !product.model3dUrl;
+
+  return (
+    // No `distanceFactor`: the label is chrome, not geometry, so it keeps one
+    // readable size instead of growing as the camera pulls back. With a scale
+    // factor it reached half the height of the room when the viewport became
+    // the dominant column, which is the opposite of a subtle annotation.
+    //
+    // Anchored by its bottom edge rather than `center`, because a label the
+    // size of a basin, centred on a point just above a basin, covers the basin.
+    <Html position={[0, size.height / 2 + 0.06, 0]} pointerEvents="none" zIndexRange={[20, 0]}>
+      <div
+        style={{ transform: 'translate(-50%, -100%)' }}
+        className="pointer-events-none w-max max-w-[200px] rounded bg-[#0B1623]/92 px-2 py-1 text-center text-white shadow-md"
+      >
+        {detailed && (product.brand || product.sku) && (
+          <p className="text-[10px] uppercase tracking-[0.08em] text-white/60">
+            {[product.brand, product.sku].filter(Boolean).join(' · ')}
+          </p>
+        )}
+        <p className="text-[11px] font-medium leading-snug">
+          {product.name.length > 34 ? `${product.name.slice(0, 34)}…` : product.name}
+        </p>
+        {detailed && (
+          <p className="mt-0.5 text-[10px] tabular-nums text-white/70">
+            {mm(size.width)} × {mm(size.depth)} × {mm(size.height)} mm
+          </p>
+        )}
+        {/* Three different situations, three different sentences. A model that
+            failed to load is not a model that does not exist yet, and telling
+            the customer it is "đang cập nhật" would hide a bug behind a
+            roadmap. */}
+        {detailed && loadFailed && (
+          <p className="mt-0.5 text-[10px] text-[#E8A33D]">Mô hình 3D hiện chưa khả dụng.</p>
+        )}
+        {detailed && !loadFailed && isPlaceholder && (
+          <p className="mt-0.5 text-[10px] text-[#E2C98B]">Mô hình 3D đang cập nhật</p>
+        )}
+      </div>
+    </Html>
+  );
+}
+
 /** Shown while a GLB downloads, at the size the product will end up occupying. */
 function LoadingVolume({ product }: { product: RoomStudioProduct }) {
   const size = getRealWorldSize(product);
@@ -106,9 +202,15 @@ function LoadingVolume({ product }: { product: RoomStudioProduct }) {
   );
 }
 
-/** Keeps one failed asset from taking the whole Canvas down with it. */
+/**
+ * Keeps one failed asset from taking the whole Canvas down with it.
+ *
+ * It reports the failure upward as well as swallowing it: the product still
+ * draws as its true-size volume, which is the right fallback, but the label has
+ * to be able to say that the model failed rather than that it does not exist.
+ */
 class ModelBoundary extends React.Component<
-  { fallback: React.ReactNode; children: React.ReactNode },
+  { fallback: React.ReactNode; children: React.ReactNode; onError: () => void },
   { hasError: boolean }
 > {
   state = { hasError: false };
@@ -117,6 +219,7 @@ class ModelBoundary extends React.Component<
   }
   componentDidCatch(error: unknown) {
     console.error('[Room Studio] model failed to load:', error);
+    this.props.onError();
   }
   render() {
     return this.state.hasError ? this.props.fallback : this.props.children;
@@ -129,6 +232,10 @@ interface PlacedProductNodeProps {
   selected: boolean;
   onSelect: (instanceId: string) => void;
   onDragStart: (instanceId: string, grabOffset: [number, number, number]) => void;
+  /** Dev harness only (see /dev/room-studio-3d-test). Undefined in the workspace. */
+  onMeasured?: (measurement: ReturnType<typeof measureGlbForPlacement>) => void;
+  /** Dev harness only. Reports a GLB that failed to load. */
+  onLoadError?: () => void;
 }
 
 export default function PlacedProductNode({
@@ -137,8 +244,23 @@ export default function PlacedProductNode({
   selected,
   onSelect,
   onDragStart,
+  onMeasured,
+  onLoadError,
 }: PlacedProductNodeProps) {
   const [hovered, setHovered] = useState(false);
+  /**
+   * WHICH url failed, not whether one did.
+   *
+   * An error boundary latches: once `getDerivedStateFromError` fires it renders
+   * its fallback forever, so a product whose model failed once stayed broken
+   * even after the url changed to one that works. Recording the url makes the
+   * failure derived — it stops applying the moment the product points at a
+   * different asset — and keying the boundary on the url gives it a fresh
+   * instance to go with it.
+   */
+  const [failedUrl, setFailedUrl] = useState<string | null>(null);
+  const modelUrl = product.model3dUrl;
+  const modelFailed = failedUrl !== null && failedUrl === modelUrl;
   const groupRef = useRef<THREE.Group>(null);
 
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
@@ -167,29 +289,24 @@ export default function PlacedProductNode({
       }}
       onPointerOut={() => setHovered(false)}
     >
-      {product.model3dUrl ? (
-        <ModelBoundary fallback={<ProductPlaceholder product={product} selected={selected} />}>
+      {modelUrl ? (
+        <ModelBoundary
+          key={modelUrl}
+          fallback={<ProductPlaceholder product={product} selected={selected} />}
+          onError={() => {
+            setFailedUrl(modelUrl);
+            onLoadError?.();
+          }}
+        >
           <Suspense fallback={<LoadingVolume product={product} />}>
-            <GlbProduct product={product} selected={selected} />
+            <GlbProduct product={product} selected={selected} onMeasured={onMeasured} />
           </Suspense>
         </ModelBoundary>
       ) : (
         <ProductPlaceholder product={product} selected={selected} />
       )}
 
-      {showLabel && (
-        <Html
-          position={[0, getRealWorldSize(product).height / 2 + 0.12, 0]}
-          center
-          distanceFactor={4}
-          pointerEvents="none"
-          zIndexRange={[20, 0]}
-        >
-          <div className="pointer-events-none whitespace-nowrap rounded-lg bg-[#0B1623]/90 px-2 py-1 text-[10px] font-bold text-white shadow-lg">
-            {product.name.length > 34 ? `${product.name.slice(0, 34)}…` : product.name}
-          </div>
-        </Html>
-      )}
+      {showLabel && <ProductLabel product={product} detailed={selected} loadFailed={modelFailed} />}
     </group>
   );
 }

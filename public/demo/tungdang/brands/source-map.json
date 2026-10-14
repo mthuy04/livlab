@@ -1,0 +1,20 @@
+{
+  "notice": "Brand wordmarks collected from a public source page for an INTERNAL LivLab demo only. LivLab does not own these marks. Rights must be cleared before any public commercial use.",
+  "logos": {
+    "TOTO": {
+      "file": "/demo/tungdang/brands/toto.png",
+      "sourceUrl": "https://beptungdang.vn/wp-content/uploads/2022/01/logo-thiet-bi-ve-sinh-toto.png",
+      "bytes": 135329
+    },
+    "INAX": {
+      "file": "/demo/tungdang/brands/inax.png",
+      "sourceUrl": "https://beptungdang.vn/wp-content/uploads/2023/03/NEW-INAX.png",
+      "bytes": 11462
+    },
+    "Huge": {
+      "file": "/demo/tungdang/brands/huge.png",
+      "sourceUrl": "https://beptungdang.vn/wp-content/uploads/2021/12/huge.png",
+      "bytes": 128068
+    }
+  }
+}

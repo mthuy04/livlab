@@ -10,3 +10,35 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 public/images/products-raw/
+
+# 3D asset pipeline — source and working files, never the repository's job.
+#
+# A manufacturer .max or an exported .fbx is production input: large, binary,
+# and reproducible from the share URL recorded in the handoff manifest. Only
+# the reviewed runtime GLB under public/assets/3d/ is the app's to carry, and
+# only after it has passed QA.
+assets/3d/received/
+assets/3d/workspace/
+assets/3d/source/
+*.max
+*.fbx
+*.3ds
+*.skp
+*.rfa
+*.rvt
+
+# 3D conversion workspace — raw manufacturer sources and intermediate output.
+# Reports and screenshots under assets/3d/work are deliberately NOT ignored:
+# they are the record of why an asset passed.
+assets/3d/work/incoming/
+assets/3d/work/normalized/
+
+# Raw manufacturer geometry sources. Kept out of the repo for size and because
+# redistribution terms for manufacturer planning assets are not established
+# (see §73/§74 licence review). data/3d/manufacturer-sources.json records each
+# file's hash, size and inspection verdict, which is the part worth keeping.
+assets/3d/sources/
+
+# Python bytecode from the 3D pipeline scripts
+__pycache__/
+*.pyc

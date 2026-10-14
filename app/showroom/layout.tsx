@@ -6,52 +6,54 @@ import type { Route } from 'next';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/lib/context/AuthContext';
 import {
-  LayoutDashboard,
-  FileText,
-  Inbox,
-  Tags,
-  Users,
-  BarChart,
-  Settings,
-  ExternalLink,
-  AlertCircle,
-  LogOut,
+  LayoutDashboard, FileText, Inbox, Tags, Users, BarChart3, Settings,
+  ExternalLink, AlertCircle, LogOut, ChevronDown,
 } from 'lucide-react';
+import { CX } from '@/components/showroom/ui/tokens';
 
 /**
  * One workspace, one vocabulary.
  *
- * "Yêu cầu báo giá" and "Khách hàng / Leads" used to be separate entries that
- * showed overlapping data, so a salesperson had to guess which one held the
- * request they were looking for — Leads is now the single inbox.
+ * "Yêu cầu báo giá" and "Khách hàng / Leads" used to be separate entries over
+ * overlapping data, so a salesperson had to guess which one held the request
+ * they wanted — Leads is the single inbox now. "Sản phẩm quan tâm" promised
+ * interest data that does not exist and was really a read-only catalogue, so
+ * it is named for what it is.
  *
- * "Sản phẩm quan tâm" promised customer interest data that does not exist
- * anywhere; it was really a read-only catalogue, so it is named for what it is
- * and given the commercial controls that make it useful.
- *
- * Concepts is gone from the top level: it had no showroom data behind it.
- * Concept information still travels with a lead, where it has meaning.
+ * Grouped into three because seven flat items gave equal weight to the four
+ * screens used hourly and the three used occasionally. The labels are quiet
+ * enough not to become a second level of navigation.
  */
-const navItems = [
-  { href: '/showroom', label: 'Tổng quan', icon: LayoutDashboard, exact: true },
-  { href: '/showroom/leads', label: 'Leads', icon: Inbox, exact: false },
-  { href: '/showroom/quotes', label: 'Báo giá', icon: FileText, exact: false },
-  { href: '/showroom/catalog', label: 'Danh mục & Giá', icon: Tags, exact: false },
-  { href: '/showroom/customers', label: 'Khách hàng', icon: Users, exact: false },
-  { href: '/showroom/reports', label: 'Báo cáo', icon: BarChart, exact: false },
-  { href: '/showroom/settings', label: 'Cài đặt', icon: Settings, exact: false },
+const NAV_GROUPS: { label: string; items: { href: string; label: string; icon: typeof Inbox; exact?: boolean }[] }[] = [
+  {
+    label: 'Vận hành',
+    items: [
+      { href: '/showroom', label: 'Tổng quan', icon: LayoutDashboard, exact: true },
+      { href: '/showroom/leads', label: 'Leads', icon: Inbox },
+      { href: '/showroom/quotes', label: 'Báo giá', icon: FileText },
+      { href: '/showroom/customers', label: 'Khách hàng', icon: Users },
+    ],
+  },
+  {
+    label: 'Kinh doanh',
+    items: [
+      { href: '/showroom/catalog', label: 'Danh mục & Giá', icon: Tags },
+      { href: '/showroom/reports', label: 'Báo cáo', icon: BarChart3 },
+    ],
+  },
+  {
+    label: 'Hệ thống',
+    items: [{ href: '/showroom/settings', label: 'Cài đặt', icon: Settings }],
+  },
 ];
+
+const ALL_ITEMS = NAV_GROUPS.flatMap((g) => g.items);
 
 export default function ShowroomLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { user, loading, logout } = useAuth();
-
-  const currentPageLabel =
-    [...navItems].reverse().find((item) => isActive(item.href, item.exact))?.label ?? 'Bảng điều khiển';
-  // Real name, so the header is not hardcoded to one partner the way it used
-  // to read "Luxbath Showroom" for every showroom.
-  const [showroomName, setShowroomName] = useState('Showroom');
-  const initials = (user?.name || user?.email || '?').slice(0, 2).toUpperCase();
+  const [showroomName, setShowroomName] = useState<string | null>(null);
+  const [accountOpen, setAccountOpen] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -59,148 +61,220 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => data?.showroom?.name && setShowroomName(data.showroom.name))
       .catch(() => {
-        // Header falls back to the generic label; not worth surfacing.
+        /* The sidebar falls back to a generic label; not worth surfacing. */
       });
   }, [user]);
 
-  function isActive(href: string, exact: boolean) {
-    if (exact) return pathname === href;
-    return pathname.startsWith(href);
+  function isActive(href: string, exact?: boolean) {
+    return exact ? pathname === href : pathname.startsWith(href);
   }
 
   if (loading) {
-    return <div className="min-h-screen bg-[#F3F7FA] flex items-center justify-center">Đang tải...</div>;
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#F7F9FA]">
+        <span className="h-5 w-5 animate-spin rounded-full border-2 border-[#CFD9E1] border-t-[#123C5A]" />
+      </div>
+    );
   }
 
-  // Valid credentials, correct role, but no showroom assigned. Distinguished
-  // from "access denied" on purpose: telling a legitimate partner they lack
-  // permission would send them to re-login forever, when what they need is for
-  // an admin to finish setting the account up. Before this, they simply saw an
-  // empty dashboard and reported the login as broken.
+  // Valid credentials and the right role, but no showroom assigned.
+  // Distinguished from "access denied" deliberately: telling a legitimate
+  // partner they lack permission sends them to re-login forever, when what
+  // they need is for an admin to finish setting the account up.
   if (user && user.role === 'SHOWROOM' && !user.showroomId) {
     return (
-      <div className="min-h-screen bg-[#F3F7FA] flex items-center justify-center p-6">
-        <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-[#D8E2EA] shadow-sm text-center">
-          <div className="w-16 h-16 rounded-2xl bg-amber-50 flex items-center justify-center mx-auto mb-6">
-            <AlertCircle className="w-8 h-8 text-[#C8A96A]" />
-          </div>
-          <h2 className="text-2xl font-bold text-[#0B1623] mb-2">Tài khoản chưa được gán showroom</h2>
-          <p className="text-[#627386] text-sm mb-8 leading-relaxed">
-            Bạn đã đăng nhập thành công với tư cách Showroom Partner, nhưng tài khoản
-            <span className="font-semibold text-[#0B1623]"> {user.email} </span>
-            chưa được gán vào showroom nào. Vui lòng liên hệ LivLab để được cấp quyền truy cập.
-          </p>
-          <div className="space-y-3">
-            <Link href="/" className="flex items-center justify-center w-full py-3.5 bg-[#123C5A] text-white font-semibold rounded-2xl hover:bg-[#0D2B42] transition-colors text-sm">
-              Quay lại trang chủ
-            </Link>
-            <button
-              onClick={logout}
-              className="flex items-center justify-center w-full py-3.5 bg-white text-[#0B1623] font-semibold rounded-2xl border border-[#D8E2EA] hover:border-[#0B1623] transition-colors text-sm"
-            >
-              Đăng xuất
-            </button>
-          </div>
-        </div>
-      </div>
+      <Gate
+        tone="warning"
+        title="Tài khoản chưa được gán showroom"
+        body={
+          <>
+            Bạn đã đăng nhập với tư cách Showroom Partner, nhưng tài khoản{' '}
+            <span className="font-medium text-[#111A22]">{user.email}</span> chưa được gán vào showroom nào. Liên hệ
+            LivLab để được cấp quyền.
+          </>
+        }
+        onLogout={logout}
+      />
     );
   }
 
-  if (!user || user.role !== 'SHOWROOM' && user.role !== 'ADMIN') {
+  if (!user || (user.role !== 'SHOWROOM' && user.role !== 'ADMIN')) {
     return (
-      <div className="min-h-screen bg-[#F3F7FA] flex items-center justify-center p-6">
-        <div className="bg-white rounded-3xl p-8 max-w-md w-full border border-[#D8E2EA] shadow-sm text-center">
-          <div className="w-16 h-16 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-6">
-            <AlertCircle className="w-8 h-8 text-red-500" />
-          </div>
-          <h2 className="text-2xl font-bold text-[#0B1623] mb-2">Truy cập bị từ chối</h2>
-          <p className="text-[#627386] text-sm mb-8 leading-relaxed">
-            Bạn cần đăng nhập với tư cách Showroom Partner để xem trang này.
-          </p>
-          <div className="space-y-3">
-            <Link href="/login" className="flex items-center justify-center w-full py-3.5 bg-[#123C5A] text-white font-semibold rounded-2xl hover:bg-[#123C5A] transition-colors text-sm">
-              Đăng nhập
-            </Link>
-            <Link href="/" className="flex items-center justify-center w-full py-3.5 bg-white text-[#0B1623] font-semibold rounded-2xl border border-[#D8E2EA] hover:border-[#0B1623] transition-colors text-sm">
-              Quay lại trang chủ
-            </Link>
-          </div>
-        </div>
-      </div>
+      <Gate
+        tone="danger"
+        title="Truy cập bị từ chối"
+        body="Bạn cần đăng nhập với tư cách Showroom Partner để xem trang này."
+        loginHref="/login"
+      />
     );
   }
+
+  const initials = (user.name || user.email || '?').slice(0, 2).toUpperCase();
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F3F7FA] text-[#0B1623] antialiased print-wrapper">
-        {/* Top bar: identity and the current page, nothing else. "Xuất CSV"
-            lived here and exported leads regardless of which page you were on,
-            which is a Leads action, not a global one — it now sits on Leads. */}
-        <header className="h-14 bg-white border-b border-[#DCE4EC] flex items-center justify-between px-6 z-30 flex-shrink-0 print-hide">
-          <div className="flex items-center gap-3 min-w-0">
-            <span className="text-[15px] font-bold text-[#123C5A] truncate">{showroomName}</span>
-            <span className="text-[#DCE4EC]">/</span>
-            <span className="text-[14px] text-[#5B6B7C] font-medium truncate">{currentPageLabel}</span>
+    <div className="flex min-h-screen bg-[#F7F9FA] text-[#111A22] antialiased print-wrapper">
+      {/* The sidebar recedes: same background family as the canvas, one hairline
+          border, no filled pills. Content is what should hold the eye. */}
+      <aside className="sticky top-0 hidden h-screen w-[232px] shrink-0 flex-col border-r border-[#E3E9EE] bg-[#FCFDFD] lg:flex print-hide">
+        <div className="flex h-[52px] shrink-0 items-center gap-2 border-b border-[#EDF1F4] px-4">
+          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-[#123C5A] text-[11px] font-semibold text-white">
+            L
+          </span>
+          <div className="min-w-0">
+            <p className="truncate text-[13px] font-semibold leading-tight text-[#111A22]">
+              {showroomName ?? 'Showroom'}
+            </p>
           </div>
-          <Link
-            href="/"
-            className="flex items-center gap-1.5 text-[13px] text-[#5B6B7C] hover:text-[#123C5A] transition-colors font-medium"
-          >
-            <ExternalLink className="w-3.5 h-3.5" />
-            Về trang chính
-          </Link>
-        </header>
+        </div>
 
-        <div className="flex flex-1 overflow-hidden">
-          {/* Sidebar */}
-          <aside className="w-64 bg-white border-r border-[#D8E2EA] flex flex-col flex-shrink-0 h-[calc(100vh-3.5rem)] sticky top-14 print-hide">
-            <nav className="flex-1 px-4 py-4 space-y-1">
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                const active = isActive(item.href, item.exact);
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href as Route}
-                    className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-colors ${
-                      active
-                        ? 'bg-[#123C5A] text-white'
-                        : 'text-[#627386] hover:bg-[#EEF4F7] hover:text-[#0B1623]'
-                    }`}
-                  >
-                    <Icon className="w-5 h-5 flex-shrink-0" />
-                    {item.label}
-                  </Link>
-                );
-              })}
-            </nav>
-
-            <div className="px-4 py-3 border-t border-[#E8EDF2]">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#123C5A] text-white flex items-center justify-center font-bold text-[12px] shrink-0">
-                  {initials}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-[13px] font-semibold text-[#0B1623] truncate">{user.name || user.email}</p>
-                  <p className="text-[11px] text-[#7A8795] truncate">
-                    {user.role === 'ADMIN' ? 'Quản trị LivLab' : 'Showroom Partner'}
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={logout}
-                className="mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg border border-[#DCE4EC] py-2 text-[12px] font-semibold text-[#5B6B7C] transition-colors hover:border-[#B9C9D8] hover:text-[#0B1623]"
-              >
-                <LogOut className="w-3.5 h-3.5" />
-                Đăng xuất
-              </button>
+        <nav className="flex-1 overflow-y-auto px-2 py-3">
+          {NAV_GROUPS.map((group) => (
+            <div key={group.label} className="mb-4 last:mb-0">
+              <p className="px-2.5 pb-1 text-[11px] font-semibold uppercase tracking-[0.07em] text-[#9AA7B4]">
+                {group.label}
+              </p>
+              <ul className="space-y-px">
+                {group.items.map((item) => {
+                  const Icon = item.icon;
+                  const active = isActive(item.href, item.exact);
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href as Route}
+                        aria-current={active ? 'page' : undefined}
+                        className={`flex h-8 items-center gap-2.5 rounded px-2.5 text-[13px] transition-colors ${
+                          active
+                            ? 'bg-[#EAF1F6] font-medium text-[#123C5A]'
+                            : 'text-[#4F6070] hover:bg-[#F1F5F7] hover:text-[#111A22]'
+                        }`}
+                      >
+                        <Icon className={`h-4 w-4 shrink-0 ${active ? 'text-[#123C5A]' : 'text-[#8795A3]'}`} />
+                        {item.label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
-          </aside>
+          ))}
+        </nav>
 
-          {/* Main content */}
-          <main className="flex-1 overflow-y-auto h-[calc(100vh-3.5rem)] relative print-main">
-            {children}
-          </main>
+        <div className="shrink-0 border-t border-[#EDF1F4] p-2">
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setAccountOpen((v) => !v)}
+              aria-expanded={accountOpen}
+              className="flex w-full items-center gap-2.5 rounded px-2 py-1.5 text-left transition-colors hover:bg-[#F1F5F7]"
+            >
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-[#123C5A] text-[11px] font-semibold text-white">
+                {initials}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[13px] font-medium leading-tight text-[#111A22]">
+                  {user.name || user.email}
+                </span>
+                <span className="block truncate text-[11px] text-[#8795A3]">
+                  {user.role === 'ADMIN' ? 'Quản trị LivLab' : 'Showroom Partner'}
+                </span>
+              </span>
+              <ChevronDown className={`h-3.5 w-3.5 shrink-0 text-[#8795A3] transition-transform ${accountOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {accountOpen && (
+              <>
+                <div className="fixed inset-0 z-10" aria-hidden onClick={() => setAccountOpen(false)} />
+                <div className="absolute bottom-full left-0 z-20 mb-1 w-full rounded-md border border-[#E3E9EE] bg-white p-1 shadow-lg">
+                  <Link
+                    href="/"
+                    className="flex h-8 items-center gap-2 rounded px-2 text-[13px] text-[#4F6070] transition-colors hover:bg-[#F1F5F7] hover:text-[#111A22]"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    Về trang chính
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={logout}
+                    className="flex h-8 w-full items-center gap-2 rounded px-2 text-[13px] text-[#4F6070] transition-colors hover:bg-[#F1F5F7] hover:text-[#111A22]"
+                  >
+                    <LogOut className="h-3.5 w-3.5" />
+                    Đăng xuất
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </aside>
+
+      {/* Narrow widths get the nav as a scrolling strip rather than a drawer:
+          this is a desktop tool, and a hamburger would hide the only way
+          between seven screens behind an extra tap. */}
+      <nav className="fixed inset-x-0 top-0 z-30 flex h-12 items-center gap-1 overflow-x-auto border-b border-[#E3E9EE] bg-white px-3 lg:hidden print-hide">
+        {ALL_ITEMS.map((item) => {
+          const active = isActive(item.href, item.exact);
+          return (
+            <Link
+              key={item.href}
+              href={item.href as Route}
+              aria-current={active ? 'page' : undefined}
+              className={`shrink-0 rounded px-2.5 py-1.5 text-[13px] transition-colors ${
+                active ? 'bg-[#EAF1F6] font-medium text-[#123C5A]' : 'text-[#5A6977]'
+              }`}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+      </nav>
+
+      <main className="min-w-0 flex-1 pt-12 lg:pt-0 print-main">{children}</main>
+    </div>
+  );
+}
+
+/** Full-page access notice. One component for both gates. */
+function Gate({
+  tone,
+  title,
+  body,
+  loginHref,
+  onLogout,
+}: {
+  tone: 'warning' | 'danger';
+  title: string;
+  body: React.ReactNode;
+  loginHref?: string;
+  onLogout?: () => void;
+}) {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-[#F7F9FA] p-6">
+      <div className="w-full max-w-md rounded-md border border-[#E3E9EE] bg-white p-7 text-center">
+        <span
+          className={`mx-auto mb-5 flex h-10 w-10 items-center justify-center rounded-md ${
+            tone === 'danger' ? 'bg-[#FBEDEC]' : 'bg-[#FBF3E3]'
+          }`}
+        >
+          <AlertCircle className={`h-5 w-5 ${tone === 'danger' ? 'text-[#B4322A]' : 'text-[#946200]'}`} />
+        </span>
+        <h2 className="text-[17px] font-semibold text-[#111A22]">{title}</h2>
+        <p className="mx-auto mt-2 max-w-sm text-[13px] leading-relaxed text-[#5A6977]">{body}</p>
+        <div className="mt-6 flex flex-col gap-2">
+          {loginHref && (
+            <Link href={loginHref as Route} className={`${CX.buttonPrimary} justify-center`}>
+              Đăng nhập
+            </Link>
+          )}
+          <Link href="/" className={`${CX.buttonSecondary} justify-center`}>
+            Quay lại trang chủ
+          </Link>
+          {onLogout && (
+            <button type="button" onClick={onLogout} className={`${CX.buttonSecondary} justify-center`}>
+              Đăng xuất
+            </button>
+          )}
         </div>
       </div>
+    </div>
   );
 }

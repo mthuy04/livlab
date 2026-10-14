@@ -25,20 +25,22 @@ interface RoomCameraControlsProps {
 export default function RoomCameraControls({ dimensions, enabled, resetSignal }: RoomCameraControlsProps) {
   const controlsRef = useRef<OrbitControlsImpl>(null);
   const camera = useThree((s) => s.camera);
-  const framing = getDefaultCameraFraming(dimensions);
+  const size = useThree((s) => s.size);
+  const aspect = size.height > 0 ? size.width / size.height : undefined;
+  const framing = getDefaultCameraFraming(dimensions, aspect);
 
   // Re-frame on explicit reset, and whenever the room's proportions change
   // enough that the previous framing would no longer show the whole room.
   useEffect(() => {
     const controls = controlsRef.current;
     if (!controls) return;
-    const { position, target } = getDefaultCameraFraming(dimensions);
+    const { position, target } = getDefaultCameraFraming(dimensions, aspect);
     camera.position.set(position[0], position[1], position[2]);
     controls.target.set(target[0], target[1], target[2]);
     controls.update();
-    // `dimensions` is intentionally excluded: resizing the room should not yank
-    // the camera away from the angle the customer chose. Only an explicit reset
-    // re-frames.
+    // `dimensions` and `aspect` are intentionally excluded: resizing the room,
+    // or the window, should not yank the camera away from the angle the
+    // customer chose. Only mount and an explicit reset re-frame.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resetSignal]);
 

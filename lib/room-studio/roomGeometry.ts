@@ -121,16 +121,58 @@ export function getRoomBounds(dimensions: RoomDimensions) {
  * initial camera and the reset-view button so they can never drift apart.
  * Scales with the room so a 1m closet and a 6m master bathroom both fill frame.
  */
-export function getDefaultCameraFraming(dimensions: RoomDimensions) {
+export const DEFAULT_CAMERA_FOV = 50;
+
+export function getDefaultCameraFraming(
+  dimensions: RoomDimensions,
+  /**
+   * Viewport width / height. Optional only so existing callers that frame
+   * before a canvas exists keep working; pass it whenever it is known.
+   */
+  aspect?: number
+) {
   const { length, width, height } = dimensions;
   const span = Math.max(length, width);
+  const target: [number, number, number] = [0, height * 0.42, 0];
+
+  // The angle: slightly off-axis and just above eye level, so all three walls
+  // are readable and the room does not look like an elevation drawing.
+  const direction = [length * 0.45, height * 0.85 - target[1], width * 0.5 + span * 0.9];
+  const dirLength = Math.hypot(direction[0], direction[1], direction[2]) || 1;
+
+  const distance = fitDistance(dimensions, aspect);
+
   return {
-    // Slightly off-axis and just above eye level, pulled back far enough to see
-    // all three walls but close enough that the room fills the frame.
-    position: [length * 0.45, height * 0.85, width * 0.5 + span * 0.9] as [number, number, number],
-    target: [0, height * 0.42, 0] as [number, number, number],
+    position: [
+      target[0] + (direction[0] / dirLength) * distance,
+      target[1] + (direction[1] / dirLength) * distance,
+      target[2] + (direction[2] / dirLength) * distance,
+    ] as [number, number, number],
+    target,
     /** Keeps the user from zooming inside a wall or flying to orbit. */
     minDistance: 0.8,
     maxDistance: span * 4 + 4,
   };
+}
+
+/**
+ * How far back the camera has to be for the whole room to fit the frame.
+ *
+ * The old framing used a distance derived from the room alone, which was
+ * correct for exactly one viewport shape. Once the canvas became the dominant
+ * column its aspect ratio changed, and the same distance cropped the room —
+ * the camera was not wrong about the room, it was never asked about the
+ * window it was looking through.
+ *
+ * The room is fitted as its bounding sphere, which is slightly conservative
+ * (a sphere around a box is bigger than the box) and is why the margin is
+ * small. The narrower of the two fields of view decides, so a tall narrow
+ * canvas pulls back rather than cropping the side walls.
+ */
+export function fitDistance(dimensions: RoomDimensions, aspect?: number): number {
+  const radius = Math.hypot(dimensions.length / 2, dimensions.height / 2, dimensions.width / 2);
+  const vFov = (DEFAULT_CAMERA_FOV * Math.PI) / 180;
+  const hFov = aspect && aspect > 0 ? 2 * Math.atan(Math.tan(vFov / 2) * aspect) : vFov;
+  const limiting = Math.min(vFov, hFov);
+  return (radius / Math.sin(limiting / 2)) * 1.04;
 }

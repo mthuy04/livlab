@@ -184,6 +184,24 @@ export interface Concept {
 
 export interface QuoteItem {
   productId: string;
+
+  /**
+   * The storefront's canonical identity for this product, and where it came
+   * from. Optional because items added before the storefront catalogue
+   * existed carry none, and back-filling them would be a guess.
+   *
+   * `productId` remains the key the basket de-duplicates on. These travel
+   * with the request so the showroom can tell a database SKU from a demo
+   * fixture row, and so a line can be traced back to the exact catalogue
+   * record the customer was looking at.
+   */
+  catalogProductId?: string;
+  sourceType?: 'DATABASE' | 'DEMO_FIXTURE';
+  tenantId?: string;
+  /** Where the line was added from, e.g. PRODUCT_DETAIL. */
+  sourceContext?: string;
+  /** What the showroom was asking at the moment the customer added it. */
+  priceSnapshot?: number | null;
   name: string;
   category: string;
   brand: string;
