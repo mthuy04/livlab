@@ -210,7 +210,11 @@ export default function RoomScene3D({
       // 300×150, showing an empty grey box for a second before react-three-
       // fiber's resize observer caught up. The workspace gives this component a
       // `relative` box; filling it is unambiguous at the first measurement.
-      className={`absolute inset-0 overflow-hidden bg-[#E9EEF1] transition-colors ${
+      // `select-none`: a drag across the viewport is a gesture, not a text
+      // selection. Without it the hint strip and the labels sitting over the
+      // canvas highlight blue mid-drag, which reads as the drag having gone
+      // wrong at exactly the moment it is going right.
+      className={`absolute inset-0 select-none overflow-hidden bg-[#E9EEF1] transition-colors ${
         isDropTarget ? 'ring-2 ring-inset ring-[#C8A96A]' : ''
       }`}
     >

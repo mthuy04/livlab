@@ -2,7 +2,7 @@
 
 import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useGLTF, Html } from '@react-three/drei';
-import type { ThreeEvent } from '@react-three/fiber';
+import { useThree, type ThreeEvent } from '@react-three/fiber';
 import * as THREE from 'three';
 import type { RoomStudioProduct } from '@/lib/room-studio/productAdapter';
 import type { PlacedProduct } from '@/lib/room-studio/roomState';
@@ -248,6 +248,8 @@ export default function PlacedProductNode({
   onLoadError,
 }: PlacedProductNodeProps) {
   const [hovered, setHovered] = useState(false);
+  // `makeDefault` on OrbitControls publishes the instance here.
+  const controls = useThree((state) => state.controls) as { enabled: boolean } | null;
   /**
    * WHICH url failed, not whether one did.
    *
@@ -265,6 +267,37 @@ export default function PlacedProductNode({
 
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
     e.stopPropagation();
+
+    /**
+     * Stop the camera in this event, not in the next render.
+     *
+     * `RoomCameraControls` takes `enabled={!dragging}`, and `dragging` is React
+     * state: by the time that prop reaches OrbitControls the browser has
+     * already delivered this same pointerdown to OrbitControls' own listener on
+     * the canvas, and it has begun an orbit. r3f's `stopPropagation` does not
+     * help — it stops the raycast chain, not a DOM listener on a sibling.
+     *
+     * The result was the thing that made the product feel stuck: the first
+     * gesture rotated the room, and because damping is on it kept rotating
+     * afterwards. Setting `enabled` on the instance here runs inside the same
+     * event, before OrbitControls reads it, so one gesture does one thing. The
+     * `enabled` prop then re-asserts the same value on the next render, and
+     * restores it when the drag ends.
+     */
+    if (controls) controls.enabled = false;
+
+    // Keep receiving moves even when the pointer leaves the product — or the
+    // canvas — so a quick drag cannot outrun its own hit target.
+    const target = e.nativeEvent.target as Element | null;
+    if (target && 'setPointerCapture' in target) {
+      try {
+        target.setPointerCapture(e.nativeEvent.pointerId);
+      } catch {
+        // Safari throws when the pointer is already released. Nothing to do:
+        // the window-level pointerup in RoomScene3D still ends the drag.
+      }
+    }
+
     onSelect(placed.instanceId);
     // Remember where inside the product the customer grabbed it, so it does not
     // snap its centre to the cursor the moment the drag begins.
@@ -306,7 +339,40 @@ export default function PlacedProductNode({
         <ProductPlaceholder product={product} selected={selected} />
       )}
 
+      <GrabVolume product={product} />
+
       {showLabel && <ProductLabel product={product} detailed={selected} loadFailed={modelFailed} />}
     </group>
+  );
+}
+
+/**
+ * The thing the pointer actually has to hit.
+ *
+ * Without it the grab target is the mesh itself, and a basin is 125mm tall in a
+ * five-metre room — a few pixels of silhouette, with gaps you can see straight
+ * through. Missing it did not do nothing, which is the real problem: the click
+ * fell through to the room and became an orbit, so trying to move a product
+ * spun the space instead.
+ *
+ * So every product carries an invisible box at its real size, never smaller
+ * than 18cm on a side, which is about a fingertip at normal zoom. It is only a
+ * pointer target: transparent, no depth write, and behind the model in render
+ * order, so it changes what you can grab and nothing about what you see.
+ */
+function GrabVolume({ product }: { product: RoomStudioProduct }) {
+  const size = getRealWorldSize(product);
+  const MIN = 0.18;
+  return (
+    <mesh renderOrder={-1}>
+      <boxGeometry
+        args={[
+          Math.max(size.width, MIN),
+          Math.max(size.height, MIN),
+          Math.max(size.depth, MIN),
+        ]}
+      />
+      <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+    </mesh>
   );
 }

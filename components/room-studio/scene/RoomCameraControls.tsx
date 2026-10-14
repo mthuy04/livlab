@@ -29,6 +29,20 @@ export default function RoomCameraControls({ dimensions, enabled, resetSignal }:
   const aspect = size.height > 0 ? size.width / size.height : undefined;
   const framing = getDefaultCameraFraming(dimensions, aspect);
 
+  /**
+   * Put `enabled` back on the instance whenever it changes.
+   *
+   * `PlacedProductNode` switches this off imperatively at pointerdown, because
+   * waiting for this prop to arrive gives OrbitControls time to start an orbit
+   * in the same gesture. That write is invisible to React, so this effect is
+   * what guarantees the camera comes back when the drag ends rather than
+   * relying on drei re-applying a prop whose value it already believes it has.
+   */
+  useEffect(() => {
+    const controls = controlsRef.current;
+    if (controls) controls.enabled = enabled;
+  }, [enabled]);
+
   // Re-frame on explicit reset, and whenever the room's proportions change
   // enough that the previous framing would no longer show the whole room.
   useEffect(() => {

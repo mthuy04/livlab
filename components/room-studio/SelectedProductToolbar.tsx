@@ -74,9 +74,18 @@ export default function SelectedProductToolbar({
             <span className="tabular-nums">
               {mm(size.width)} × {mm(size.depth)} × {mm(size.height)} mm
             </span>
-            {product.capability !== 'VERIFIED_3D' && (
-              <span className="text-[#A8691F]">Mô hình 3D đang cập nhật</span>
-            )}
+            {/* Three states, not two. "Đang cập nhật" was shown for everything
+                that is not VERIFIED_3D, which became wrong the moment a product
+                could carry a stand-in: the customer reads "the 3D model is
+                being updated" while a 3D model is on screen in front of them.
+                A stand-in says what it is; only a product with no geometry at
+                all is still waiting for one. */}
+            {product.capability !== 'VERIFIED_3D' &&
+              (product.illustrativeModel ? (
+                <span className="text-[#8C9BAB]">Hình khối minh hoạ · kích thước thật</span>
+              ) : (
+                <span className="text-[#A8691F]">Mô hình 3D đang cập nhật</span>
+              ))}
           </p>
         </div>
       </div>
