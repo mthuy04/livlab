@@ -11,7 +11,10 @@ import type { PlacedProductView } from '@/lib/room-studio/useRoomStudio';
 import type { Vec3 } from '@/lib/room-studio/placementRules';
 import RoomShell from './scene/RoomShell';
 import type { SurfaceStyle } from '@/lib/room-studio/materials';
-import PlacedProductNode from './scene/PlacedProductNode';
+import PlacedProductNode, { type measureGlbForPlacement } from './scene/PlacedProductNode';
+
+/** What `measureGlbForPlacement` returns; named so the dev prop can state it. */
+type GlbMeasurement = ReturnType<typeof measureGlbForPlacement>;
 import DragPlane from './scene/DragPlane';
 import RoomCameraControls from './scene/RoomCameraControls';
 
@@ -77,6 +80,20 @@ interface RoomScene3DProps {
   onDropProduct: (productId: string, point: Vec3) => void;
   /** Jumps the product library to a category, from the empty-room prompt. */
   onPickCategory?: (normalizedCategory: string) => void;
+  /**
+   * Extra objects rendered INSIDE the Canvas. Used only by the dev pipeline
+   * harness at /dev/room-studio-3d-test for bounding boxes, a pivot marker and
+   * axes; the customer workspace never passes it, which is why the helpers
+   * cannot appear there by accident. It exists so the harness can exercise the
+   * real scene rather than a copy of it that could pass while this one is
+   * broken.
+   */
+  devSceneOverlay?: ReactNode;
+  /** Dev harness only: forwarded to the placed node so the QA panel can report
+   *  what the renderer measured rather than measuring the file a second way. */
+  onModelMeasured?: (measurement: GlbMeasurement) => void;
+  /** Dev harness only: a GLB that failed to load. */
+  onModelLoadError?: () => void;
 }
 
 export default function RoomScene3D({
@@ -92,6 +109,9 @@ export default function RoomScene3D({
   onMove,
   onDropProduct,
   onPickCategory,
+  devSceneOverlay,
+  onModelMeasured,
+  onModelLoadError,
 }: RoomScene3DProps) {
   const [resetSignal, setResetSignal] = useState(0);
   const [dragging, setDragging] = useState<{ instanceId: string; offset: Vec3 } | null>(null);
@@ -276,8 +296,12 @@ export default function RoomScene3D({
               selected={placed.instanceId === selectedInstanceId}
               onSelect={onSelect}
               onDragStart={handleDragStart}
+              onMeasured={onModelMeasured}
+              onLoadError={onModelLoadError}
             />
           ))}
+
+          {devSceneOverlay}
 
           {dragging && draggingView && (
             <DragPlane

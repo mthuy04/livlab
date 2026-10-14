@@ -12,7 +12,9 @@
     "db:seed": "tsx prisma/seed.ts",
     "inspect:glb-materials": "node scripts/inspectGlbMaterials.mjs",
     "test:technical": "npx tsx scripts/testTechnicalAdvisor.mts",
-    "test:room-studio": "npx tsx scripts/testRoomStudioCapability.mts"
+    "test:room-studio": "npx tsx scripts/testRoomStudioCapability.mts",
+    "test:dev-glb": "npx tsx scripts/testDevGlbPipeline.mts",
+    "build:dev-glb": "node scripts/build_dev_test_glb.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.8.0",

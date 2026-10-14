@@ -21,9 +21,11 @@ import TenantFooter from './TenantFooter';
 /**
  * `/pub/tool` is a manufacturer simulator wrapper: it carries its own minimal
  * header and gives the rest of the viewport to the tool, so the storefront
- * chrome would be a second header stacked on a first.
+ * chrome would be a second header stacked on a first. `/dev` is internal QA
+ * tooling for the same reason — a showroom's navigation above a bounding-box
+ * inspector is noise, and it costs the tool a sixth of the screen.
  */
-const NON_STOREFRONT_PREFIXES = ['/showroom', '/admin', '/pub/tool'];
+const NON_STOREFRONT_PREFIXES = ['/showroom', '/admin', '/pub/tool', '/dev'];
 
 /**
  * Storefront chrome, application behaviour.

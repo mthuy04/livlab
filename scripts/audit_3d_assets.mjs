@@ -22,6 +22,7 @@ import { existsSync } from 'node:fs';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import path from 'node:path';
+import { inspectGlb } from './lib/glbMetrics.mjs';
 
 const exec = promisify(execFile);
 const ROOT = process.cwd();
@@ -127,65 +128,19 @@ const GEOMETRY_FORMATS = new Set([
 /* ----------------------------------------------------------- GLB metrics */
 
 /**
- * Measures an existing GLB. Uses @gltf-transform when it is installed and
- * falls back to the file size alone when it is not, because a smaller report
- * is better than an invented one.
+ * Measures an existing GLB.
+ *
+ * The measurement itself lives in `scripts/lib/glbMetrics.mjs` so the dev
+ * pipeline harness reports the same numbers from the same code. This wrapper
+ * only adds the tool-availability guard: without @gltf-transform a smaller
+ * report is better than an invented one.
  */
-async function inspectGlb(absPath, tools) {
-  const { size } = await stat(absPath);
-  const metrics = { fileSizeBytes: size };
-  if (!tools['@gltf-transform/core']) return { ...metrics, inspected: false };
-
-  try {
-    const { NodeIO } = await import('@gltf-transform/core');
-    const doc = await new NodeIO().read(absPath);
-    const root = doc.getRoot();
-
-    let triangles = 0;
-    let primitives = 0;
-    for (const mesh of root.listMeshes()) {
-      for (const prim of mesh.listPrimitives()) {
-        primitives += 1;
-        const indices = prim.getIndices();
-        const position = prim.getAttribute('POSITION');
-        const count = indices ? indices.getCount() : position ? position.getCount() : 0;
-        triangles += Math.floor(count / 3);
-      }
-    }
-
-    // Bounding box in the file's own units; the unit itself is unknown until a
-    // person says so, which is exactly why scale is a separate QA check.
-    let min = [Infinity, Infinity, Infinity];
-    let max = [-Infinity, -Infinity, -Infinity];
-    for (const mesh of root.listMeshes()) {
-      for (const prim of mesh.listPrimitives()) {
-        const pos = prim.getAttribute('POSITION');
-        if (!pos) continue;
-        const pmin = pos.getMin([0, 0, 0]);
-        const pmax = pos.getMax([0, 0, 0]);
-        min = min.map((v, i) => Math.min(v, pmin[i]));
-        max = max.map((v, i) => Math.max(v, pmax[i]));
-      }
-    }
-    const bbox = min.every(Number.isFinite)
-      ? { x: +(max[0] - min[0]).toFixed(4), y: +(max[1] - min[1]).toFixed(4), z: +(max[2] - min[2]).toFixed(4) }
-      : undefined;
-
-    return {
-      ...metrics,
-      inspected: true,
-      sceneCount: root.listScenes().length,
-      nodeCount: root.listNodes().length,
-      meshCount: root.listMeshes().length,
-      primitiveCount: primitives,
-      triangleCount: triangles,
-      materialCount: root.listMaterials().length,
-      textureCount: root.listTextures().length,
-      bboxUnits: bbox,
-    };
-  } catch (err) {
-    return { ...metrics, inspected: false, error: String(err).slice(0, 200) };
+async function inspectGlbFile(absPath, tools) {
+  if (!tools['@gltf-transform/core']) {
+    const { size } = await stat(absPath);
+    return { fileSizeBytes: size, inspected: false };
   }
+  return inspectGlb(absPath);
 }
 
 async function findGlbFiles(dir, acc = []) {
@@ -251,7 +206,7 @@ async function main() {
   for (const file of glbFiles) {
     runtimeAssets.push({
       path: '/' + path.relative(path.join(ROOT, 'public'), file).split(path.sep).join('/'),
-      ...(await inspectGlb(file, tools)),
+      ...(await inspectGlbFile(file, tools)),
     });
   }
 
