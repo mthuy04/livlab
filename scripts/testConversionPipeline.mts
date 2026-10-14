@@ -291,5 +291,51 @@ check('README co lenh dan thang vao MAXScript', readme.includes('fileIn @"'));
 check('README canh bao khong scale lai', readme.includes('Đừng scale lại'));
 check('README dan link Box cua dung SKU', readme.includes(pilot!.source.url ?? 'KHONG_CO'));
 
+/* ------------------------------------------- H. multibrand source manifest */
+
+console.log('\nH. kho nguon da hang (§12, §67)');
+
+const manifestPath = 'data/3d/manufacturer-sources.json';
+check('co manifest nguon', existsSync(manifestPath));
+const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as {
+  records: Array<{
+    brand: string; sku: string; sourceFormat: string; sourceStatus: string;
+    rejectionReason?: string | null; blocker?: string | null;
+    geometryInspection?: { verdict: string; threeDEntities: number } | null;
+    sourceSha256?: string | null;
+  }>;
+};
+
+check('manifest co ban ghi', manifest.records.length > 0, manifest.records.length);
+
+// §67: a 2D drawing must never be recorded as usable geometry, whatever the
+// manufacturer filed it under.
+const twoD = manifest.records.filter((r) => r.geometryInspection?.verdict === 'TWO_D_DRAWING_ONLY');
+check('ban ve 2D bi danh dau REJECTED', twoD.every((r) => r.sourceStatus === 'REJECTED'), twoD.map((r) => r.sourceStatus));
+check('ban ve 2D ghi ro ly do SOURCE_NOT_3D', twoD.every((r) => r.rejectionReason === 'SOURCE_NOT_3D'));
+check('ban ve 2D that su co 0 thuc the 3D', twoD.every((r) => r.geometryInspection!.threeDEntities === 0));
+
+// Nothing in the manifest may claim usable geometry today.
+const usable = manifest.records.filter((r) => r.geometryInspection?.verdict === 'HAS_3D_GEOMETRY');
+check('chua co nguon nao dung duoc lam model', usable.length === 0, usable.map((r) => r.sku));
+
+// Every record states where it is blocked, rather than just "not ready".
+check(
+  'moi ban ghi chua READY deu neu blocker cu the',
+  manifest.records.every((r) => r.sourceStatus === 'READY' || r.rejectionReason || r.blocker),
+  manifest.records.filter((r) => !r.rejectionReason && !r.blocker).map((r) => r.sku)
+);
+
+// Downloaded files are hashed, so a later re-download can be compared.
+const downloaded = manifest.records.filter((r) => r.geometryInspection);
+check('file da tai deu co sha256', downloaded.every((r) => typeof r.sourceSha256 === 'string' && r.sourceSha256.length === 64));
+
+// §11: raw manufacturer geometry stays out of the repository.
+check('assets/3d/sources/ bi gitignore', readFileSync('.gitignore', 'utf8').includes('assets/3d/sources/'));
+
+// The six INAX records in the manifest must agree with the registry, not drift.
+const inaxManifest = manifest.records.filter((r) => r.brand === 'INAX').map((r) => r.sku).sort();
+check('manifest va registry khop sau SKU INAX', JSON.stringify(inaxManifest) === JSON.stringify(skus), inaxManifest);
+
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed === 0 ? 0 : 1);

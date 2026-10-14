@@ -32,3 +32,9 @@ assets/3d/source/
 # they are the record of why an asset passed.
 assets/3d/work/incoming/
 assets/3d/work/normalized/
+
+# Raw manufacturer geometry sources. Kept out of the repo for size and because
+# redistribution terms for manufacturer planning assets are not established
+# (see §73/§74 licence review). data/3d/manufacturer-sources.json records each
+# file's hash, size and inspection verdict, which is the part worth keeping.
+assets/3d/sources/

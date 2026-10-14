@@ -22,7 +22,9 @@
     "test:3d-pipeline": "npx tsx scripts/testConversionPipeline.mts",
     "3d:handoff": "npx tsx scripts/3d/handoff.mts",
     "3d:process": "npx tsx scripts/3d/convert.mts",
-    "3d:activate": "npx tsx scripts/3d/activate.mts"
+    "3d:activate": "npx tsx scripts/3d/activate.mts",
+    "3d:inspect-dwg": "npx tsx scripts/3d/inspect_dwg.mts",
+    "3d:sources": "npx tsx scripts/3d/sources.mts"
   },
   "dependencies": {
     "@google/genai": "^2.8.0",
