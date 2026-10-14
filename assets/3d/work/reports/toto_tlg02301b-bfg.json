@@ -1,0 +1,129 @@
+{
+  "schema": "livlab.3d.qa/1",
+  "generatedAt": "2026-10-14T08:23:11+00:00",
+  "status": "BLOCKED_AWAITING_SOURCE",
+  "identity": {
+    "manufacturer": "TOTO",
+    "commercialSku": "TLG02301B#BFG",
+    "baseGeometrySku": "TLG02301B",
+    "finishCode": "BFG",
+    "finishName": "Brushed French Gold / Vàng Pháp Mờ",
+    "catalogProductId": "llv-fau-toto-tlg02301b-bfg",
+    "identityVerified": false,
+    "flag": "IDENTITY_VARIANT_REVIEW_REQUIRED",
+    "evidence": {
+      "baseGeometrySkuConfirmed": true,
+      "baseGeometrySkuSource": "https://www.toto.com.cn/cn/products/categories/faucet/lava_tory/single_hole_single_handle_lava_tory/product/TLG02301B.html",
+      "officialProductName": "铜合金台式单柄双控洗面器水嘴（单孔）(GR系列)",
+      "officialProductNameEn": "Brass deck-mounted single-handle dual-control lavatory faucet (single hole), GR series",
+      "finishSuffixConfirmed": false,
+      "finishFindings": [
+        "Official TOTO China page for TLG02301B names the model 43 times and documents NO finish/colour codes at all.",
+        "#PFG = Polished French Gold is well attested across the TOTO TLG range (dealer listings).",
+        "Nearest attested brushed gold code is #BRG = Brushed ROSE Gold — a different finish.",
+        "#BFG found in no reachable TOTO or dealer documentation.",
+        "LivLab catalogue carries both TLG02301B#BFG (Vàng Pháp Mờ) and TLG02301B#PFG (Vàng Pháp Bóng); the Mờ/Bóng pair is internally consistent with brushed/polished but is LivLab naming, not TOTO documentation."
+      ],
+      "conclusion": "Geometry identity (TLG02301B) is confirmed. Finish-only nature of #BFG is NOT confirmed by manufacturer documentation. Per §2, activation is withheld."
+    }
+  },
+  "officialDimensions": {
+    "source": "TOTO China official dimensional drawing size_x.jpg (300dpi), linked from the product page",
+    "sourceSha256": "1dfc536147addc7042e0be9f8ef5a10cef41b8c535a639bd8fcaf4e6f6799f6b",
+    "unit": "mm",
+    "heightMm": 133.2,
+    "depthMm": 117.2,
+    "widthMm": null,
+    "widthNote": "NOT DIMENSIONED by the manufacturer. The drawing gives height (133.2) and spout reach (117.2) only; the body is a slim cylinder and no width figure is published. cad.dwg is 2D-only (0 3D entities) and carries no extractable width. Width therefore cannot be QA-scored against manufacturer data and must not be invented.",
+    "otherOfficialFigures": {
+      "spoutOutletHeightMm": 78,
+      "handleOpenAngleDeg": 22,
+      "handleSwingDegEachWay": 50,
+      "supplyHoseLengthMm": 394,
+      "maxDeckThicknessMm": 53.5,
+      "mountingHoleDiameterMm": 35,
+      "popUpDrainHeightMm": 202,
+      "popUpDrainMaxMm": 285,
+      "drainPipeDiameterMm": 31.75,
+      "supplyConnection": "G1/2"
+    },
+    "bboxScopeWarning": "Supply hoses (394mm) and the pop-up drain assembly (202/285mm) are BELOW-COUNTER accessories. The official page states 排水配件：已配 (drain included), so the archive may contain them. They must be excluded from the Room Studio bbox or the height QA will be wrong by a factor of ~4."
+  },
+  "catalogDimensionConflict": {
+    "conflict": false,
+    "note": "Catalogue record carries no dimensions (empty), so manufacturer figures fill a gap rather than contradict one. No CATALOG_DIMENSION_CONFLICT."
+  },
+  "placement": {
+    "type": "DECK_FAUCET",
+    "pivot": "BOTTOM_CENTER",
+    "pivotRationale": "PIVOT_FOR_PLACEMENT.DECK_FAUCET in lib/room-studio/product3dAsset.ts — the existing equivalent of §12's MOUNT_BASE_CENTER.",
+    "evidence": "Official product name 台式 (deck-mounted) 单孔 (single hole), and the drawing's Ø35 mounting hole with max 53.5mm deck thickness.",
+    "catalogAdapterMismatch": "lib/room-studio/productAdapter derives placementType 'wall' for this product. That is wrong for a deck-mounted faucet; it should be counter-based. Reported, not changed — it is a shared code path affecting every faucet."
+  },
+  "source": {
+    "sourcePage": "https://www.toto.com.cn/cn/products/categories/faucet/lava_tory/single_hole_single_handle_lava_tory/product/TLG02301B.html",
+    "sourceArchiveUrl": "https://www.toto.com.cn/cn/down.php?f=/cn/resource/3D/20170803/tlg02301.rar",
+    "sourceArchive": null,
+    "sourceArchiveSha256": null,
+    "sourceArchiveSizeBytes": null,
+    "sourceFbx": null,
+    "sourceFbxSha256": null,
+    "blocker": "DOWNLOAD_REQUIRES_LOGIN",
+    "blockerDetail": "down.php returns 302 -> /cn/common/login.html carrying username/password/verificationCode (CAPTCHA). Expected archive ~61824 bytes.",
+    "officialDocsRetrieved": [
+      {
+        "file": "size_x.jpg",
+        "bytes": 151825,
+        "sha256": "1dfc536147addc7042e0be9f8ef5a10cef41b8c535a639bd8fcaf4e6f6799f6b",
+        "role": "official dimensions"
+      },
+      {
+        "file": "cad.dwg",
+        "bytes": 534304,
+        "sha256": "db31c8c81de5a063f9786d8368e30a4c3225e548abe2ee768cc59486ff5f9bdd",
+        "role": "2D drawing, rejected as geometry"
+      },
+      {
+        "file": "l.jpg",
+        "bytes": 57736,
+        "sha256": "c49c627227fdff96691a70d15178f37e4b8708971bb969ca87f786b76c9e4ef4",
+        "role": "official product imagery"
+      }
+    ]
+  },
+  "geometry": {
+    "rawBBox": null,
+    "normalizedBBox": null,
+    "dimensionErrors": null,
+    "unitScale": null,
+    "axisTransform": null,
+    "meshCount": null,
+    "triangleCount": null,
+    "materialCount": null,
+    "textureCount": null,
+    "runtimeFileSize": null
+  },
+  "qaFlags": {
+    "identityVerified": false,
+    "dimensionsVerified": false,
+    "scaleVerified": false,
+    "orientationVerified": false,
+    "pivotVerified": false,
+    "materialsVerified": false,
+    "performanceVerified": false,
+    "runtimeLoadVerified": false
+  },
+  "ready": false,
+  "roomStudioReady": false,
+  "readyBlockers": [
+    "DOWNLOAD_REQUIRES_LOGIN",
+    "IDENTITY_VARIANT_REVIEW_REQUIRED"
+  ],
+  "toolchain": {
+    "blender": "Blender 5.2.2 LTS",
+    "blenderPath": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "extractor": "unar 1.10.8",
+    "converter": "scripts/3d/blender_convert_product.py",
+    "converterAxisFix": "Converter measured the Blender-space (Z-up) bbox with Y-up axis order; height and depth were transposed. Fixed and locked by a regression test."
+  }
+}

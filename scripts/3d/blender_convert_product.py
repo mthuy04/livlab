@@ -273,12 +273,12 @@ def choose_orientation(dims, official_m, warnings):
     `None` means it could not be decided, which becomes ORIENTATION_QA_REQUIRED
     rather than a guess.
     """
-    want_w, want_d = official_m.x, official_m.z
+    want_w, want_d = official_m.x, official_m.y
 
     candidates = []
     for turns in (0, 1, 2, 3):
         # A quarter turn swaps the two horizontal extents.
-        w, d = (dims.x, dims.z) if turns % 2 == 0 else (dims.z, dims.x)
+        w, d = (dims.x, dims.y) if turns % 2 == 0 else (dims.y, dims.x)
         ew, ed = error_pct(w, want_w), error_pct(d, want_d)
         if ew is None or ed is None:
             continue
@@ -335,7 +335,7 @@ def rotate_quarter_turns(meshes, turns):
     if turns % 4 == 0:
         return
     select_only(meshes)
-    bpy.ops.transform.rotate(value=math.radians(90 * turns), orient_axis="Y")
+    bpy.ops.transform.rotate(value=math.radians(90 * turns), orient_axis="Z")
     apply_transforms(meshes)
 
 
@@ -356,7 +356,7 @@ def move_to_pivot(meshes, pivot):
     if pivot == "BACK_CENTER_FLOOR":
         anchor = Vector((centre_x, lo.y, lo.z))
     elif pivot == "BOTTOM_CENTER":
-        anchor = Vector((centre_x, lo.y, (lo.z + hi.z) / 2.0))
+        anchor = Vector((centre_x, (lo.y + hi.y) / 2.0, lo.z))
     elif pivot == "CENTER":
         anchor = Vector((centre_x, (lo.y + hi.y) / 2.0, (lo.z + hi.z) / 2.0))
     else:
@@ -525,7 +525,12 @@ def main():
         "depth": float(require(args, "depth-mm")),
         "height": float(require(args, "height-mm")),
     }
-    official_m = Vector((official_mm["width"] / 1000.0, official_mm["height"] / 1000.0, official_mm["depth"] / 1000.0))
+    # Blender space, not glTF space. `import_scene.fbx` lands geometry in
+    # Blender's native Z-up world and `export_scene.gltf(export_yup=True)`
+    # rotates it to glTF's Y-up on the way out, so everything between those
+    # two points is measured as X=width, Y=depth, Z=height. AXIS_UP="+Y"
+    # describes the exported GLB, which is what Room Studio loads.
+    official_m = Vector((official_mm["width"] / 1000.0, official_mm["depth"] / 1000.0, official_mm["height"] / 1000.0))
 
     warnings = []
     failures = []
@@ -673,8 +678,8 @@ def main():
     final = dims_of(lo, hi)
     actual_mm = {
         "width": final.x * 1000.0,
-        "depth": final.z * 1000.0,
-        "height": final.y * 1000.0,
+        "depth": final.y * 1000.0,
+        "height": final.z * 1000.0,
     }
     errors = {k: error_pct(actual_mm[k], official_mm[k]) for k in ("width", "depth", "height")}
     worst = max(e for e in errors.values() if e is not None)

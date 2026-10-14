@@ -10,7 +10,9 @@
  * Run with:  npm run test:3d-pipeline
  */
 
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import {
   SUPPORTED_INPUT_FORMATS,
@@ -22,6 +24,7 @@ import {
   reportPath,
   WORKSPACE,
   activationRefusals,
+  findBlender,
   type GlbFacts,
 } from './3d/pipeline';
 import { allProduct3DAssets } from '../lib/room-studio/product3dRegistry';
@@ -336,6 +339,97 @@ check('assets/3d/sources/ bi gitignore', readFileSync('.gitignore', 'utf8').incl
 // The six INAX records in the manifest must agree with the registry, not drift.
 const inaxManifest = manifest.records.filter((r) => r.brand === 'INAX').map((r) => r.sku).sort();
 check('manifest va registry khop sau SKU INAX', JSON.stringify(inaxManifest) === JSON.stringify(skus), inaxManifest);
+
+/* ------------------------------------------- I. the axis convention (§11) */
+
+/**
+ * Blender is Z-up; glTF is Y-up. `import_scene.fbx` lands geometry in
+ * Blender's world and `export_scene.gltf(export_yup=True)` rotates it on the
+ * way out, so the converter measures X=width, Y=depth, Z=height and the GLB
+ * comes out X=width, Y=height, Z=depth.
+ *
+ * Reading one of those spaces with the other's axis order is silent: a model
+ * whose height and depth are close enough still converts, and ships lying on
+ * its side with its pivot on the wrong face. The only thing that catches it is
+ * running the converter and measuring what came out, so this section does that
+ * when Blender is available and says so plainly when it is not.
+ */
+const blenderForAxis = findBlender();
+if (!blenderForAxis) {
+  console.log('\nI. quy uoc truc (§11)\n  SKIP  khong co Blender — bo qua kiem tra truc');
+} else {
+  const tmp = mkdtempSync(path.join(tmpdir(), 'livlab-axis-'));
+  // Three clearly different extents, so no two axes can be confused.
+  const W = 40, D = 117.2, H = 133.2;
+  const mk = path.join(tmp, 'mk.py');
+  writeFileSync(
+    mk,
+    'import bpy,sys\n' +
+      'out=sys.argv[sys.argv.index("--")+1]\n' +
+      'bpy.ops.wm.read_factory_settings(use_empty=True)\n' +
+      'bpy.ops.mesh.primitive_cube_add(size=1)\n' +
+      'o=bpy.context.active_object\n' +
+      `o.scale=(${W}/1000,${D}/1000,${H}/1000)\n` +
+      'bpy.ops.object.transform_apply(scale=True)\n' +
+      'bpy.ops.export_scene.fbx(filepath=out)\n'
+  );
+  const fbx = path.join(tmp, 'box.fbx');
+  const glb = path.join(tmp, 'box.glb');
+  const rep = path.join(tmp, 'box.json');
+  const run = (args: string[]) =>
+    spawnSync(blenderForAxis.path, ['--background', ...args], { encoding: 'utf8', timeout: 180_000 });
+
+  run(['--python', mk, '--', fbx]);
+  check('dung duoc FBX thu nghiem', existsSync(fbx));
+
+  run([
+    '--python', path.join('scripts/3d/blender_convert_product.py'), '--',
+    '--input', fbx, '--output', glb, '--report', rep,
+    '--brand', 'TEST', '--sku', 'AXIS-FIXTURE',
+    '--width-mm', String(W), '--depth-mm', String(D), '--height-mm', String(H),
+    '--placement', 'DECK_FAUCET', '--pivot', 'BOTTOM_CENTER',
+  ]);
+
+  check('convert chay ra report', existsSync(rep));
+  if (existsSync(rep)) {
+    const r = JSON.parse(readFileSync(rep, 'utf8'));
+    // Geometry that matches the spec sheet exactly must not be rejected.
+    check('kich thuoc dung thi CONVERTED', r.status === 'CONVERTED', r.failures);
+    const errs = r.dimensionErrorsPct ?? {};
+    check(
+      'sai so ca ba truc ~ 0%',
+      ['width', 'depth', 'height'].every((k) => (errs[k] ?? 99) < 0.01),
+      errs
+    );
+  }
+
+  check('convert xuat ra GLB', existsSync(glb));
+  if (existsSync(glb)) {
+    // Read the GLB's own POSITION bounds — the number Room Studio will load.
+    const buf = readFileSync(glb);
+    let off = 12;
+    let json: { accessors?: { min?: number[]; max?: number[] }[] } = {};
+    while (off < buf.length) {
+      const clen = buf.readUInt32LE(off);
+      const ctype = buf.readUInt32LE(off + 4);
+      off += 8;
+      if (ctype === 0x4e4f534a) json = JSON.parse(buf.subarray(off, off + clen).toString('utf8'));
+      off += clen;
+    }
+    const pos = (json.accessors ?? []).find((a) => a.min?.length === 3 && a.max?.length === 3);
+    check('GLB co POSITION bounds', !!pos);
+    if (pos && pos.min && pos.max) {
+      const ext = [0, 1, 2].map((i) => (pos.max![i] - pos.min![i]) * 1000);
+      check('GLB: chieu cao nam tren truc Y (Y-up)', Math.abs(ext[1] - H) < 0.5, ext);
+      check('GLB: chieu rong nam tren truc X', Math.abs(ext[0] - W) < 0.5, ext);
+      check('GLB: chieu sau nam tren truc Z', Math.abs(ext[2] - D) < 0.5, ext);
+      // BOTTOM_CENTER: the product sits ON its mounting plane, not through it.
+      check('GLB: BOTTOM_CENTER dat day o goc toa do', Math.abs(pos.min[1]) < 1e-4, pos.min);
+      check('GLB: can giua theo X', Math.abs(pos.min[0] + pos.max[0]) < 1e-4, pos.min);
+    }
+  }
+  rmSync(tmp, { recursive: true, force: true });
+}
 
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed === 0 ? 0 : 1);

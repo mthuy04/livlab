@@ -1,6 +1,6 @@
 {
   "schema": "livlab.3d.sources/1",
-  "generatedAt": "2026-10-14T07:15:39+00:00",
+  "generatedAt": "2026-10-14T08:22:25+00:00",
   "note": "Nguồn hình học 3D của hãng cho sản phẩm trong danh mục hiện tại. Một dòng = một file thật đã kiểm, không phải một khả năng.",
   "records": [
     {
@@ -186,6 +186,53 @@
       "sourceSizeBytes": null,
       "geometryInspection": null,
       "notes": "Box phục vụ trang xem JavaScript; /download trả 404 cho client ẩn danh. Cần 3ds Max trên Windows export sang FBX — xem assets/3d/handoff/."
+    },
+    {
+      "brand": "TOTO",
+      "sku": "TLG02301B",
+      "normalizedSku": "TLG02301B",
+      "catalogProductId": "llv-fau-toto-tlg02301b-bfg",
+      "productName": "Vòi Chậu Rửa Mặt TOTO TLG02301B#BFG Vàng Pháp Mờ",
+      "sourceProvider": "MANUFACTURER_OFFICIAL",
+      "sourcePageUrl": "https://www.toto.com.cn/cn/products/categories/faucet/lava_tory/single_hole_single_handle_lava_tory/product/TLG02301B.html",
+      "downloadUrl": "https://www.toto.com.cn/cn/resource/images/product/TLG02301B/cad.dwg",
+      "sourceFormat": "DWG",
+      "sourceFilename": "cad.dwg",
+      "manufacturerOwned": true,
+      "identityConfidence": "OFFICIAL_PRODUCT_PAGE_ASSET",
+      "sourceStatus": "REJECTED",
+      "rejectionReason": "SOURCE_NOT_3D",
+      "downloadedAt": "2026-10-14T08:22:25+00:00",
+      "sourceSha256": "db31c8c81de5a063f9786d8368e30a4c3225e548abe2ee768cc59486ff5f9bdd",
+      "sourceSizeBytes": 534304,
+      "geometryInspection": {
+        "tool": "scripts/3d/inspect_dwg.mts",
+        "threeDEntities": 0,
+        "twoDEntities": 4078,
+        "verdict": "TWO_D_DRAWING_ONLY"
+      },
+      "notes": "Bản vẽ 2D của TOTO China. Dùng làm NGUỒN KÍCH THƯỚC chính thức (size_x.jpg cùng thư mục), không dùng làm geometry."
+    },
+    {
+      "brand": "TOTO",
+      "sku": "TLG02301B",
+      "normalizedSku": "TLG02301B",
+      "catalogProductId": "llv-fau-toto-tlg02301b-bfg",
+      "productName": "Vòi Chậu Rửa Mặt TOTO TLG02301B#BFG Vàng Pháp Mờ",
+      "sourceProvider": "MANUFACTURER_OFFICIAL",
+      "sourcePageUrl": "https://www.toto.com.cn/cn/products/categories/faucet/lava_tory/single_hole_single_handle_lava_tory/product/TLG02301B.html",
+      "downloadUrl": "https://www.toto.com.cn/cn/down.php?f=/cn/resource/3D/20170803/tlg02301.rar",
+      "sourceFormat": "RAR",
+      "sourceFilename": "tlg02301.rar",
+      "manufacturerOwned": true,
+      "identityConfidence": "OFFICIAL_PRODUCT_PAGE_3D_ASSET",
+      "sourceStatus": "AWAITING_SOURCE",
+      "blocker": "DOWNLOAD_REQUIRES_LOGIN",
+      "downloadedAt": null,
+      "sourceSha256": null,
+      "sourceSizeBytes": null,
+      "geometryInspection": null,
+      "notes": "Link 3D素材 của trang chính thức trả 302 -> /cn/common/login.html (form username/password/verificationCode). Hãng yêu cầu đăng nhập; không tự tạo tài khoản hay giải CAPTCHA. Chờ người dùng tải thủ công đặt tại assets/3d/sources/toto/tlg02301b/tlg02301.rar (~61.824 bytes)."
     }
   ]
 }
