@@ -1,6 +1,7 @@
 import type { LeadStage, LeadRequestType } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { resolveStage, STAGE_ORDER, isOpenStage } from './leadStage';
+import { isTestRecord } from './testRecords';
 import { withSchemaGuard } from './guards';
 
 /**
@@ -52,6 +53,15 @@ export interface LeadListItem {
   createdAt: Date;
   /** Hours since creation with no contact yet; null once contacted. */
   uncontactedHours: number | null;
+  /**
+   * A record created by QA rather than by a customer.
+   *
+   * Flagged, never deleted: these rows live in a database other environments
+   * share, and "xoa duoc" in someone's test name is their note to themselves,
+   * not permission. The workspace hides them from operational views by default
+   * and says how many it hid.
+   */
+  isTestRecord: boolean;
 }
 
 function hoursSince(date: Date): number {
@@ -146,6 +156,7 @@ export async function listLeads(params: {
         assigneeName: lead.assignedTo?.name ?? lead.assignedTo?.email ?? null,
         createdAt: lead.createdAt,
         uncontactedHours: lead.firstContactAt ? null : hoursSince(lead.createdAt),
+        isTestRecord: isTestRecord({ customerName: lead.customerName, phone: lead.phone }),
       }))
       // Stage is partly derived, so it cannot be filtered in SQL without
       // backfilling. The page size is small and bounded, so filtering here is
@@ -188,6 +199,8 @@ export interface DashboardViewModel {
   /** Open opportunity value. Explicitly NOT revenue — nothing here is closed. */
   pipelineValue: number;
   pipeline: { stage: LeadStage; label: string; count: number; value: number }[];
+  /** QA rows excluded from every figure above; shown as a note, not a number. */
+  hiddenTestRecords: number;
   actionQueue: LeadListItem[];
 }
 
@@ -199,7 +212,13 @@ export interface DashboardViewModel {
  */
 export async function getDashboard(showroomId: string): Promise<DashboardViewModel> {
   return withSchemaGuard(async () => {
-    const { items } = await listLeads({ showroomId, take: 500 });
+    const { items: allItems } = await listLeads({ showroomId, take: 500 });
+
+    // Test rows are excluded from every figure on this screen. A dashboard that
+    // counts QA records is a dashboard the partner learns to distrust, and one
+    // wrong number is enough to make them doubt the rest.
+    const items = allItems.filter((l) => !l.isTestRecord);
+    const hiddenTestRecords = allItems.length - items.length;
 
     const open = items.filter((l) => isOpenStage(l.stage));
     const now = Date.now();
@@ -235,6 +254,7 @@ export async function getDashboard(showroomId: string): Promise<DashboardViewMod
       pipelineValue: open.reduce((sum, l) => sum + (l.estimatedValue ?? 0), 0),
       pipeline,
       actionQueue,
+      hiddenTestRecords,
     };
   });
 }
@@ -297,6 +317,8 @@ export async function listCustomers(showroomId: string) {
 
 export interface ReportViewModel {
   funnel: { label: string; count: number; rate: number | null }[];
+  /** QA rows excluded from every figure here, as on the dashboard. */
+  hiddenTestRecords: number;
   medianFirstResponseHours: number | null;
   uncontacted24h: number;
   quotesSent: number;
@@ -317,10 +339,17 @@ export interface ReportViewModel {
  */
 export async function getReports(showroomId: string): Promise<ReportViewModel> {
   return withSchemaGuard(async () => {
-    const leads = await prisma.quoteLead.findMany({
+    const allLeads = await prisma.quoteLead.findMany({
       where: { showroomId },
-      select: { id: true, status: true, stage: true, createdAt: true, firstContactAt: true },
+      select: {
+        id: true, status: true, stage: true, createdAt: true, firstContactAt: true,
+        customerName: true, phone: true,
+      },
     });
+    // Excluded here for the same reason as on the dashboard: a funnel whose
+    // top number counts QA rows makes every conversion rate below it wrong,
+    // and the two screens must not disagree about how many leads exist.
+    const leads = allLeads.filter((l) => !isTestRecord({ customerName: l.customerName, phone: l.phone }));
     const quotes = await prisma.quote.findMany({
       where: { showroomId },
       select: { status: true, total: true, sentAt: true },
@@ -338,7 +367,12 @@ export async function getReports(showroomId: string): Promise<ReportViewModel> {
       { label: 'Lead', count: total, rate: total === 0 ? null : 100 },
       { label: 'Đã liên hệ', count: contacted, rate: rate(contacted) },
       { label: 'Đã xác định nhu cầu', count: qualified, rate: rate(qualified) },
-      { label: 'Đã gửi báo giá', count: quoted, rate: rate(quoted) },
+      // Leads that REACHED this stage — not quote documents that were sent.
+      // The two are genuinely different and used to be reported under names
+      // close enough to read as a contradiction: the funnel said 2 while
+      // "Báo giá đã gửi" said 0, because two leads were marked as quoted
+      // without a Quote record ever being issued.
+      { label: 'Lead tới giai đoạn báo giá', count: quoted, rate: rate(quoted) },
       { label: 'Đã chốt', count: won, rate: rate(won) },
     ];
 
@@ -366,6 +400,7 @@ export async function getReports(showroomId: string): Promise<ReportViewModel> {
 
     return {
       funnel,
+      hiddenTestRecords: allLeads.length - leads.length,
       medianFirstResponseHours,
       uncontacted24h: leads.filter(
         (l) => !l.firstContactAt && Date.now() - l.createdAt.getTime() > 86_400_000
