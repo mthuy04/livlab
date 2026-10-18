@@ -1,0 +1,14 @@
+{
+  "tenant": "giangson",
+  "notice": "Public digital-showroom demonstration. No partnership or endorsement is implied.",
+  "assets": [
+    {
+      "path": "/demo/giangson/logo.png",
+      "description": "Original Giang Son logo supplied by the user for this storefront implementation."
+    },
+    {
+      "path": "/images/room-studio-ui.png",
+      "description": "Screenshot of the running LivLab Room Studio already maintained in the repository."
+    }
+  ]
+}

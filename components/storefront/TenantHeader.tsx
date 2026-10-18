@@ -30,6 +30,8 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
    */
   const retail = tenant.experience.variants.header === 'retail';
   const { copy } = tenant.experience;
+  const header = copy.header;
+  const collapseAtXl = header?.collapseAt === 'xl';
   /**
    * The menu is open for a specific route. Navigating changes the pathname,
    * which closes it by derivation — no effect watching for route changes, and
@@ -106,7 +108,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
               )}
             </Link>
 
-            <nav aria-label="Điều hướng chính" className="hidden lg:block">
+            <nav aria-label="Điều hướng chính" className={collapseAtXl ? 'hidden xl:block' : 'hidden lg:block'}>
               <ul
                 className={`flex items-stretch ${retail ? 'gap-5 xl:gap-10' : 'gap-11'}`}
                 // The retail header carries more beside the nav; see globals.css.
@@ -180,12 +182,20 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
             </nav>
 
             <div className="flex shrink-0 items-center gap-1">
-              <Link href="/products" aria-label="Tìm sản phẩm" className="p-2.5 transition-opacity hover:opacity-60">
-                <Search className="h-[18px] w-[18px]" strokeWidth={1.6} />
-              </Link>
-              <Link href="/saved" aria-label="Đã lưu" className="hidden p-2.5 transition-opacity hover:opacity-60 sm:block">
-                <Bookmark className="h-[18px] w-[18px]" strokeWidth={1.6} />
-              </Link>
+              {header?.showSearch !== false && (
+                <Link
+                  href={(header?.searchHref ?? '/products') as Route}
+                  aria-label="Tìm sản phẩm"
+                  className="p-2.5 transition-opacity hover:opacity-60"
+                >
+                  <Search className="h-[18px] w-[18px]" strokeWidth={1.6} />
+                </Link>
+              )}
+              {header?.showSaved !== false && (
+                <Link href="/saved" aria-label="Đã lưu" className="hidden p-2.5 transition-opacity hover:opacity-60 sm:block">
+                  <Bookmark className="h-[18px] w-[18px]" strokeWidth={1.6} />
+                </Link>
+              )}
 
               {retail && tenant.features.quotations && (
                 <Link
@@ -197,7 +207,17 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                 </Link>
               )}
 
-              {tenant.features.quotations && (
+              {header?.primaryCta ? (
+                <Link
+                  href={header.primaryCta.href as Route}
+                  className={`ml-3 h-[42px] items-center whitespace-nowrap bg-[color:var(--tenant-accent)] px-4 text-[12px] font-semibold tracking-[.1em] text-[color:var(--tenant-accent-contrast)] transition-colors hover:bg-[color:var(--tenant-accent-hover)] xl:px-5 ${
+                    collapseAtXl ? 'hidden xl:inline-flex' : 'hidden lg:inline-flex'
+                  }`}
+                  style={{ borderRadius: retail ? 'var(--tenant-radius)' : undefined }}
+                >
+                  {header.primaryCta.label}
+                </Link>
+              ) : tenant.features.quotations ? (
                 <button
                   onClick={toggleDrawer}
                   className={`ml-2 hidden items-center gap-2 text-[12px] lg:inline-flex ${
@@ -218,13 +238,13 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                   {copy.quote.cta}
                   {count > 0 && <span className="opacity-75">({count})</span>}
                 </button>
-              )}
+              ) : null}
 
               <button
                 onClick={() => setMenuOpen(true)}
                 aria-label="Mở menu"
                 aria-expanded={menuOpen}
-                className="p-2.5 lg:hidden"
+                className={`p-2.5 ${collapseAtXl ? 'xl:hidden' : 'lg:hidden'}`}
               >
                 <Menu className="h-[21px] w-[21px]" strokeWidth={1.6} />
               </button>
@@ -235,7 +255,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
 
       {menuOpen && (
         <div
-          className="fixed inset-0 z-[60] lg:hidden"
+          className={`fixed inset-0 z-[60] ${collapseAtXl ? 'xl:hidden' : 'lg:hidden'}`}
           role="dialog"
           aria-modal="true"
           aria-label="Menu"
@@ -267,7 +287,11 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                         <ul className="mt-1">
                           {item.children.map((child) => (
                             <li key={child.href}>
-                              <Link href={child.href as Route} className="block py-2.5 text-[19px] font-medium tracking-tight">
+                              <Link
+                                href={child.href as Route}
+                                onClick={() => setMenuOpen(false)}
+                                className="block py-2.5 text-[19px] font-medium tracking-tight"
+                              >
                                 {child.label}
                               </Link>
                             </li>
@@ -275,21 +299,40 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                         </ul>
                       </div>
                     ) : (
-                      <Link href={item.href as Route} className="block py-5 text-[22px] font-medium tracking-tight">
+                      <Link
+                        href={item.href as Route}
+                        onClick={() => setMenuOpen(false)}
+                        className="block py-5 text-[22px] font-medium tracking-tight"
+                      >
                         {item.label}
                       </Link>
                     )}
                   </li>
                 ))}
-                <li style={{ borderBottom: '1px solid var(--sf-border)' }}>
-                  <Link href="/saved" className="block py-5 text-[22px] font-medium tracking-tight">
-                    Đã lưu
-                  </Link>
-                </li>
+                {header?.showSaved !== false && (
+                  <li style={{ borderBottom: '1px solid var(--sf-border)' }}>
+                    <Link href="/saved" onClick={() => setMenuOpen(false)} className="block py-5 text-[22px] font-medium tracking-tight">
+                      Đã lưu
+                    </Link>
+                  </li>
+                )}
               </ul>
             </nav>
 
-            {tenant.features.quotations && (
+            {header?.primaryCta ? (
+              <Link
+                href={header.primaryCta.href as Route}
+                onClick={() => setMenuOpen(false)}
+                className="mt-8 block w-full py-4 text-center text-[15px] font-medium"
+                style={{
+                  backgroundColor: 'var(--tenant-accent)',
+                  color: 'var(--tenant-accent-contrast)',
+                  borderRadius: retail ? 'var(--tenant-radius)' : 2,
+                }}
+              >
+                {header.primaryCta.label}
+              </Link>
+            ) : tenant.features.quotations ? (
               <button
                 onClick={() => { setMenuOpen(false); toggleDrawer(); }}
                 className="mt-8 w-full py-4 text-[15px] font-medium"
@@ -301,7 +344,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
               >
                 Yêu cầu báo giá{count > 0 ? ` (${count})` : ''}
               </button>
-            )}
+            ) : null}
 
             {retail && tenant.contact?.phone && (
               <a

@@ -9,6 +9,7 @@ import FeaturedProducts from '@/components/storefront/home/FeaturedProducts';
 import RoomStudioFeature from '@/components/storefront/home/RoomStudioFeature';
 import ShowroomConsultation from '@/components/storefront/home/ShowroomConsultation';
 import CatalogHome from '@/components/storefront/home/CatalogHome';
+import ArchitecturalLanding from '@/components/storefront/home/ArchitecturalLanding';
 import { SectionHeader, ArrowLink, TEXT, TEXT_MUTED } from '@/components/storefront/home/editorial';
 
 /**
@@ -23,6 +24,9 @@ import { SectionHeader, ArrowLink, TEXT, TEXT_MUTED } from '@/components/storefr
  */
 export default async function HomePage() {
   const tenant = await resolveTenant();
+  if (tenant.experience.home.layout === 'architecturalLanding') {
+    return <ArchitecturalLanding tenant={tenant} />;
+  }
   if (tenant.experience.home.layout === 'catalog') return <CatalogHome tenant={tenant} />;
 
   const { categories, featured, featuredProducts, collections } = await getHomepageData();

@@ -16,38 +16,51 @@ import { TEXT, TEXT_MUTED } from './home/editorial';
  * so the footer carries the destinations a customer actually looks for here.
  */
 
-const EXPLORE: [string, string][] = [
-  ['Không gian', '/concepts'],
-  ['Bộ sưu tập', '/concepts'],
-  ['Sản phẩm', '/products'],
-  ['Room Studio', '/room-studio'],
+type FooterItem = { label: string; href: string };
+
+const EXPLORE: FooterItem[] = [
+  { label: 'Không gian', href: '/concepts' },
+  { label: 'Bộ sưu tập', href: '/concepts' },
+  { label: 'Sản phẩm', href: '/products' },
+  { label: 'Room Studio', href: '/room-studio' },
 ];
 
-const SUPPORT: [string, string][] = [
-  ['Tư vấn showroom', '/contact'],
-  ['Yêu cầu báo giá', '/quote'],
-  ['Tra cứu báo giá', '/track-quote'],
-  ['Cẩm nang', '/blog'],
+const SUPPORT: FooterItem[] = [
+  { label: 'Tư vấn showroom', href: '/contact' },
+  { label: 'Yêu cầu báo giá', href: '/quote' },
+  { label: 'Tra cứu báo giá', href: '/track-quote' },
+  { label: 'Cẩm nang', href: '/blog' },
 ];
 
 const COLUMN_TITLE = { fontSize: 12, fontWeight: 600, letterSpacing: '.12em', color: TEXT } as const;
 const BODY = { fontSize: 14, lineHeight: 1.75, color: TEXT_MUTED } as const;
 
-function FooterColumn({ title, items }: { title: string; items: [string, string][] }) {
+function FooterColumn({ title, items }: { title: string; items: FooterItem[] }) {
   return (
     <div>
       <p style={COLUMN_TITLE}>{title}</p>
       <div className="mt-6 flex flex-col gap-4">
-        {items.map(([label, href]) => (
-          <Link
-            key={label}
-            href={href as Route}
-            className="transition-colors hover:text-black"
-            style={{ fontSize: 14, color: TEXT_MUTED }}
-          >
-            {label}
-          </Link>
-        ))}
+        {items.map(({ label, href }) =>
+          href.startsWith('/') ? (
+            <Link
+              key={label}
+              href={href as Route}
+              className="transition-colors hover:text-black"
+              style={{ fontSize: 14, color: TEXT_MUTED }}
+            >
+              {label}
+            </Link>
+          ) : (
+            <a
+              key={label}
+              href={href}
+              className="transition-colors hover:text-black"
+              style={{ fontSize: 14, color: TEXT_MUTED }}
+            >
+              {label}
+            </a>
+          )
+        )}
       </div>
     </div>
   );
@@ -57,7 +70,10 @@ export default function TenantFooter({ tenant }: { tenant: TenantStorefrontConfi
   const { brand, contact, features, experience } = tenant;
   const retail = experience.variants.header === 'retail';
   const hasContact = Boolean(contact?.phone || contact?.email || contact?.address);
-  const support = features.quotations ? SUPPORT : SUPPORT.filter(([, href]) => !href.includes('quote'));
+  const explore = experience.copy.footer?.explore ?? EXPLORE;
+  const support = experience.copy.footer?.support ?? (
+    features.quotations ? SUPPORT : SUPPORT.filter(({ href }) => !href.includes('quote'))
+  );
 
   return (
     <footer style={{ backgroundColor: '#F2F2F0' }}>
@@ -74,7 +90,7 @@ export default function TenantFooter({ tenant }: { tenant: TenantStorefrontConfi
           </p>
         </div>
 
-        <FooterColumn title="KHÁM PHÁ" items={EXPLORE} />
+        <FooterColumn title="KHÁM PHÁ" items={explore} />
         <FooterColumn title="HỖ TRỢ" items={support} />
 
         {/* Rendered only when the showroom actually has details on file. */}

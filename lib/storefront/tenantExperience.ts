@@ -136,7 +136,58 @@ export interface TenantVariants {
  * the order `sections` gives — so what a showroom's homepage shows is always
  * something it actually sells.
  */
-export type HomeLayout = 'showcase' | 'catalog';
+export type HomeLayout = 'showcase' | 'catalog' | 'architecturalLanding';
+
+export interface LandingImage {
+  src: string;
+  alt: string;
+}
+
+export interface LandingHotspot {
+  label: string;
+  detail: string;
+  href: string;
+  xPct: number;
+  yPct: number;
+}
+
+export interface ArchitecturalLandingContent {
+  hero: {
+    image: LandingImage;
+    hotspots: LandingHotspot[];
+  };
+  categories: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    items: Array<{ id: string; name: string; note: string; image: LandingImage; href: string }>;
+  };
+  concepts: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    cta: CtaCopy;
+    items: Array<{ title: string; note: string; image: LandingImage; href: string }>;
+  };
+  roomStudio: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    cta: CtaCopy;
+    image: LandingImage;
+  };
+  about: {
+    eyebrow: string;
+    title: string;
+    body: string;
+  };
+  contact: {
+    title: string;
+    body: string;
+    cta: CtaCopy;
+    phone: string;
+  };
+}
 
 export type HomeSection =
   | 'hero'
@@ -151,6 +202,8 @@ export interface TenantHome {
   layout: HomeLayout;
   /** Only read for the `catalog` layout. */
   sections: HomeSection[];
+  /** Static, database-independent content for a public architectural landing. */
+  landing?: ArchitecturalLandingContent;
 }
 
 /* ── Merchandising ───────────────────────────────────────────────────────── */
@@ -188,6 +241,15 @@ export interface TenantCopy {
    * LivLab, not the showroom's own site and not a partnership.
    */
   demoNotice?: string;
+  header?: {
+    /** A real destination used when the quote workflow is not part of this release. */
+    primaryCta?: CtaCopy;
+    searchHref?: string;
+    showSearch?: boolean;
+    showSaved?: boolean;
+    /** Collapse to the drawer early when the logo and four primary items need more room. */
+    collapseAt?: 'lg' | 'xl';
+  };
   hero: {
     eyebrow?: string;
     kicker?: string;
@@ -223,6 +285,10 @@ export interface TenantCopy {
     primaryCta: string;
   };
   footerBlurb: string;
+  footer?: {
+    explore: Array<{ label: string; href: string }>;
+    support: Array<{ label: string; href: string }>;
+  };
   /** The `commerce` concept detail page. */
   concept?: {
     productsTitle: string;

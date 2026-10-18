@@ -479,8 +479,294 @@ export const DEMO_TUNGDANG_TENANT: TenantStorefrontConfig = {
   },
 };
 
+const GIANGSON_EXPERIENCE: TenantExperience = {
+  theme: {
+    ink: '#123F62',
+    inkContrast: '#FFFFFF',
+    accentInk: '#006B91',
+    panel: '#123F62',
+    panelContrast: '#FFFFFF',
+    surfaceMuted: '#F2F7F8',
+    radius: 4,
+    headingTracking: '.035em',
+    font: 'beVietnamPro',
+    uiPrimary: '#007BAA',
+    uiPrimaryHover: '#00648B',
+    uiPrimaryContrast: '#FFFFFF',
+    uiSelected: '#12A7A0',
+    uiSelectedContrast: '#FFFFFF',
+    uiSoft: '#E5F5F4',
+    uiSoftContrast: '#075E5B',
+    uiLink: '#006B91',
+    uiSurface: '#F2F7F8',
+    uiInk: '#123F62',
+  },
+  variants: {
+    header: 'retail',
+    hero: 'commerce',
+    categoryNav: 'stage',
+    productCard: 'editorial',
+    conceptDetail: 'editorial',
+    hotspot: 'accent',
+  },
+  home: {
+    layout: 'architecturalLanding',
+    sections: [],
+    landing: {
+      hero: {
+        image: {
+          src: '/concepts/serene-modern-stone-spa-bathroom.webp',
+          alt: 'Không gian phòng tắm hiện đại với bề mặt đá sáng, lavabo, bồn cầu và khu tắm kính',
+        },
+        hotspots: [
+          {
+            label: 'Lavabo & sen vòi',
+            detail: 'Tìm nhóm thiết bị phù hợp với khu vực rửa mặt.',
+            href: '/#contact-giangson',
+            xPct: 23,
+            yPct: 55,
+          },
+          {
+            label: 'Thiết bị vệ sinh',
+            detail: 'Trao đổi nhu cầu để được hỗ trợ lựa chọn.',
+            href: '/#contact-giangson',
+            xPct: 52,
+            yPct: 64,
+          },
+          {
+            label: 'Gạch & vật liệu',
+            detail: 'Tham khảo cách phối bề mặt trong cùng không gian.',
+            href: '/#contact-giangson',
+            xPct: 82,
+            yPct: 36,
+          },
+        ],
+      },
+      categories: {
+        eyebrow: 'DANH MỤC SẢN PHẨM',
+        title: 'Lựa chọn phù hợp cho từng không gian.',
+        description:
+          'Từ bồn cầu, lavabo, sen vòi đến gạch ốp lát và vật liệu hoàn thiện — tìm hiểu các nhóm sản phẩm theo nhu cầu của bạn.',
+        items: [
+          {
+            id: 'bon-cau',
+            name: 'Bồn cầu',
+            note: 'Thiết bị vệ sinh cho nhà ở và công trình',
+            image: {
+              src: '/concepts/serene-modern-stone-spa-bathroom.webp',
+              alt: 'Bồn cầu trong không gian phòng tắm đá xám hiện đại',
+            },
+            href: '/#contact-giangson',
+          },
+          {
+            id: 'lavabo',
+            name: 'Lavabo & chậu rửa',
+            note: 'Giải pháp cho khu vực rửa mặt',
+            image: {
+              src: '/concepts/coastal-minimalist-spa-bathroom.webp',
+              alt: 'Lavabo đặt bàn trong không gian phòng tắm xanh xám',
+            },
+            href: '/#contact-giangson',
+          },
+          {
+            id: 'sen-voi',
+            name: 'Sen vòi',
+            note: 'Thiết bị cho khu tắm và lavabo',
+            image: {
+              src: '/concepts/luxurious-modern-stone-spa-bathroom.webp',
+              alt: 'Khu tắm kính với thiết bị sen vòi trong phòng tắm hiện đại',
+            },
+            href: '/#contact-giangson',
+          },
+          {
+            id: 'gach-op-lat',
+            name: 'Gạch ốp lát',
+            note: 'Bề mặt nền và tường cho từng phong cách',
+            image: {
+              src: '/concepts/monochrome-marble-spa-bathroom.webp',
+              alt: 'Bề mặt gạch và đá vân mây trong phòng tắm đơn sắc',
+            },
+            href: '/#contact-giangson',
+          },
+          {
+            id: 'vat-lieu-hoan-thien',
+            name: 'Vật liệu hoàn thiện',
+            note: 'Nhóm vật liệu hỗ trợ hoàn thiện không gian',
+            image: {
+              src: '/concepts/warm-luxury-spa-bathroom.webp',
+              alt: 'Vật liệu hoàn thiện tông ấm trong không gian phòng tắm',
+            },
+            href: '/#contact-giangson',
+          },
+        ],
+      },
+      concepts: {
+        eyebrow: 'KHÔNG GIAN GỢI Ý',
+        title: 'Thấy không gian yêu thích. Khám phá sản phẩm ngay.',
+        description:
+          'Mỗi không gian là một gợi ý về cách phối hợp thiết bị và vật liệu. Chạm vào sản phẩm để tìm hiểu thêm mà không cần tìm kiếm lại từ đầu.',
+        cta: { label: 'KHÁM PHÁ KHÔNG GIAN', href: '/concepts' },
+        items: [
+          {
+            title: 'Đá sáng hiện đại',
+            note: 'Thiết bị tối giản · Bề mặt đá trung tính',
+            image: {
+              src: '/concepts/serene-modern-stone-spa-bathroom.webp',
+              alt: 'Phòng tắm đá xám sáng với các vùng chức năng rõ ràng',
+            },
+            href: '/#contact-giangson',
+          },
+          {
+            title: 'Sắc xanh thư giãn',
+            note: 'Lavabo đặt bàn · Phối màu xanh xám',
+            image: {
+              src: '/concepts/coastal-minimalist-spa-bathroom.webp',
+              alt: 'Phòng tắm xanh xám thoáng sáng với lavabo đặt bàn',
+            },
+            href: '/#contact-giangson',
+          },
+          {
+            title: 'Không gian ấm áp',
+            note: 'Vật liệu tông ấm · Ánh sáng dịu',
+            image: {
+              src: '/concepts/warm-luxury-spa-bathroom.webp',
+              alt: 'Phòng tắm hiện đại với bảng vật liệu tông ấm',
+            },
+            href: '/#contact-giangson',
+          },
+        ],
+      },
+      roomStudio: {
+        eyebrow: 'THIẾT KẾ TRỰC QUAN 3D',
+        title: 'Thử thiết kế trước khi quyết định.',
+        description:
+          'Thiết lập kích thước phòng, thử bố trí thiết bị, thay đổi vật liệu và quan sát không gian từ nhiều góc độ.',
+        cta: { label: 'MỞ ROOM STUDIO', href: '/room-studio' },
+        image: {
+          src: '/images/room-studio-ui.png',
+          alt: 'Giao diện Room Studio đang chạy với phòng 3D, bảng vật liệu và thư viện sản phẩm',
+        },
+      },
+      about: {
+        eyebrow: 'VỀ GIANG SƠN',
+        title: 'Thiết bị và vật liệu cho không gian hoàn thiện.',
+        body:
+          'Giang Sơn Việt Nam hoạt động trong lĩnh vực thương mại thiết bị vệ sinh, gạch ốp lát và vật liệu hoàn thiện, đáp ứng nhu cầu tìm hiểu sản phẩm cho nhà ở và công trình.',
+      },
+      contact: {
+        title: 'Bạn đang tìm giải pháp cho không gian của mình?',
+        body: 'Khám phá sản phẩm hoặc chia sẻ nhu cầu để được hỗ trợ lựa chọn phù hợp.',
+        cta: { label: 'LIÊN HỆ TƯ VẤN', href: 'tel:0395279360' },
+        phone: '0395 279 360',
+      },
+    },
+  },
+  copy: {
+    utility: ['Thiết bị & vật liệu hoàn thiện'],
+    demoNotice: 'Bản trình diễn showroom số LivLab, sử dụng thông tin từ nguồn công khai',
+    header: {
+      primaryCta: { label: 'YÊU CẦU BÁO GIÁ', href: '/#contact-giangson' },
+      showSearch: false,
+      showSaved: false,
+      collapseAt: 'xl',
+    },
+    hero: {
+      eyebrow: 'GIANG SƠN · THIẾT BỊ & VẬT LIỆU HOÀN THIỆN',
+      titleLines: ['Hoàn thiện không gian,', 'bắt đầu từ lựa chọn đúng.'],
+      body:
+        'Khám phá thiết bị vệ sinh và vật liệu hoàn thiện, tìm cảm hứng từ những không gian đẹp và thử thiết kế phòng tắm theo nhu cầu của bạn.',
+      primaryCta: { label: 'KHÁM PHÁ SẢN PHẨM', href: '/#categories' },
+      secondaryCta: { label: 'TRẢI NGHIỆM ROOM STUDIO', href: '/room-studio' },
+    },
+    sections: {
+      categoriesTitle: 'DANH MỤC SẢN PHẨM',
+      conceptsEyebrow: 'KHÔNG GIAN GỢI Ý',
+      conceptsTitle: 'Thấy không gian yêu thích. Khám phá sản phẩm ngay.',
+      productsTitle: 'SẢN PHẨM',
+      brandsTitle: 'THƯƠNG HIỆU',
+    },
+    quote: {
+      cta: 'YÊU CẦU BÁO GIÁ',
+      trackLabel: 'TRA CỨU BÁO GIÁ',
+      drawerTitle: 'Yêu cầu báo giá',
+      submit: 'Gửi yêu cầu',
+      addToQuote: 'YÊU CẦU BÁO GIÁ',
+    },
+    roomStudio: { libraryTitle: 'Sản phẩm', primaryCta: 'Liên hệ tư vấn' },
+    footerBlurb:
+      'Thiết bị vệ sinh, gạch ốp lát và vật liệu hoàn thiện cho nhu cầu nhà ở và công trình.',
+    footer: {
+      explore: [
+        { label: 'Không gian gợi ý', href: '/#concept-showcase' },
+        { label: 'Danh mục sản phẩm', href: '/#categories' },
+        { label: 'Room Studio', href: '/room-studio' },
+      ],
+      support: [
+        { label: 'Về Giang Sơn', href: '/#about-giangson' },
+        { label: 'Liên hệ tư vấn', href: '/#contact-giangson' },
+        { label: 'Hotline / Zalo 0395 279 360', href: 'tel:0395279360' },
+      ],
+    },
+  },
+  roomStudioCatalog: 'livlab',
+};
+
+export const DEMO_GIANGSON_TENANT: TenantStorefrontConfig = {
+  id: 'giangson',
+  slug: 'giangson',
+  brand: {
+    name: 'Giang Sơn Việt Nam',
+    tagline: 'Trường tồn với thời gian',
+    logo: '/demo/giangson/logo.png',
+    logoAlt: 'Giang Sơn — Trường tồn với thời gian',
+    accent: '#007BAA',
+    accentHover: '#00648B',
+    accentContrast: '#FFFFFF',
+  },
+  navigation: [
+    { href: '/#concept-showcase', label: 'Không gian' },
+    {
+      href: '/#categories',
+      label: 'Sản phẩm',
+      children: [
+        { href: '/#bon-cau', label: 'Bồn cầu' },
+        { href: '/#lavabo', label: 'Lavabo & chậu rửa' },
+        { href: '/#sen-voi', label: 'Sen vòi' },
+        { href: '/#gach-op-lat', label: 'Gạch ốp lát' },
+        { href: '/#vat-lieu-hoan-thien', label: 'Vật liệu hoàn thiện' },
+      ],
+    },
+    { href: '/room-studio', label: 'Room Studio' },
+    {
+      href: '/#contact-giangson',
+      label: 'Báo giá',
+      children: [
+        { href: '/#contact-giangson', label: 'Yêu cầu báo giá' },
+        { href: 'tel:0395279360', label: 'Gọi 0395 279 360' },
+      ],
+    },
+  ],
+  contact: { phone: '0395 279 360' },
+  catalogScope: { showroomId: null, categories: [] },
+  features: {
+    roomStudio: true,
+    expert: true,
+    consultation: true,
+    quotations: false,
+  },
+  poweredByLivLab: true,
+  publicDemo: true,
+  experience: GIANGSON_EXPERIENCE,
+  seo: {
+    title: 'Giang Sơn — Thiết bị & vật liệu hoàn thiện',
+    description:
+      'Khám phá thiết bị vệ sinh, gạch ốp lát, vật liệu hoàn thiện và thử thiết kế phòng tắm trên Room Studio.',
+  },
+};
+
 export const TENANTS: Record<string, TenantStorefrontConfig> = {
   [LIVLAB_TENANT.slug]: LIVLAB_TENANT,
   [DEMO_SHOWROOM_TENANT.slug]: DEMO_SHOWROOM_TENANT,
   [DEMO_TUNGDANG_TENANT.slug]: DEMO_TUNGDANG_TENANT,
+  [DEMO_GIANGSON_TENANT.slug]: DEMO_GIANGSON_TENANT,
 };
