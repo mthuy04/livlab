@@ -1,0 +1,31 @@
+.shell {
+  display: block;
+}
+
+.trust {
+  margin-top: 1.25rem;
+}
+
+/*
+ * The retail utility bar is 32px and the desktop header is 75px including its
+ * divider. The commerce hero owns the remaining first screen: its main row
+ * absorbs extra height and vertically centres both columns, while the service
+ * facts form the quiet closing row. Tablets and phones keep natural height.
+ */
+@media (min-width: 1280px) {
+  .shell {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    min-height: calc(100vh - 107px);
+    min-height: calc(100dvh - 107px);
+  }
+
+  .main {
+    align-self: stretch;
+    padding-block: clamp(1rem, 2.2dvh, 1.75rem);
+  }
+
+  .trust {
+    margin-top: 0;
+  }
+}
