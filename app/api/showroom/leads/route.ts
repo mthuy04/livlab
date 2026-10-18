@@ -18,6 +18,11 @@ export async function GET(request: Request) {
     const params = new URL(request.url).searchParams;
     const stage = params.get('stage');
     const requestType = params.get('requestType');
+    const parseDate = (value: string | null, endOfDay = false) => {
+      if (!value) return null;
+      const date = new Date(`${value}T${endOfDay ? '23:59:59.999' : '00:00:00.000'}+07:00`);
+      return Number.isNaN(date.getTime()) ? null : date;
+    };
 
     const result = await listLeads({
       showroomId: ctx.showroomId,
@@ -27,6 +32,10 @@ export async function GET(request: Request) {
           ? (requestType as LeadRequestType)
           : null,
       search: params.get('q'),
+      from: parseDate(params.get('from')),
+      to: parseDate(params.get('to'), true),
+      uncontactedOnly: params.get('uncontacted') === '1',
+      overdueOnly: params.get('overdue') === '1',
       take: Math.min(Number(params.get('take')) || 50, 200),
       skip: Math.max(Number(params.get('skip')) || 0, 0),
     });

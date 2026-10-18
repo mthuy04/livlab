@@ -16,7 +16,7 @@ const STAGE_TONE: Record<string, Tone> = {
   NEW: 'info', CONTACTED: 'info', QUALIFIED: 'info', QUOTING: 'attention',
   QUOTE_SENT: 'attention', FOLLOW_UP: 'attention', WON: 'positive', LOST: 'muted',
 };
-const PERIODS = [{ value: 7, label: '7 ngày' }, { value: 30, label: '30 ngày' }, { value: 90, label: '90 ngày' }];
+const PERIODS = [{ value: 7, label: '7 ngày' }, { value: 30, label: '30 ngày' }, { value: 90, label: '90 ngày' }, { value: 0, label: 'Tất cả' }];
 
 async function fetchDashboard(days: number): Promise<{ state: 'ready' | 'migration' | 'error'; data: DashboardViewModel | null }> {
   try {
@@ -55,8 +55,8 @@ export default function ShowroomDashboard() {
 
   return (
     <PageShell
-      title="Tổng quan showroom"
-      description="Theo dõi yêu cầu khách hàng, tiến độ tư vấn và giá trị báo giá từ một nguồn dữ liệu."
+      title="Tổng quan kinh doanh"
+      description="Theo dõi hoạt động và những việc cần xử lý."
       actions={
         <div className="flex items-center gap-2">
           <div className="flex rounded-[10px] bg-[#F0F0EB] p-1">
@@ -81,14 +81,14 @@ export default function ShowroomDashboard() {
           </section>
 
           <div className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <MetricCard tone="violet" icon={<Inbox />} label="Yêu cầu nhận" value={data.totalRequests} note={`${period} ngày gần nhất`} />
-            <MetricCard tone="green" icon={<Phone />} label="Đã liên hệ" value={data.contacted} note={data.totalRequests ? `${Math.round(data.contacted / data.totalRequests * 100)}% yêu cầu` : 'Chưa có yêu cầu'} />
+            <MetricCard tone="violet" icon={<Inbox />} label="Yêu cầu đã nhận" value={data.totalRequests} note={period ? `${period} ngày gần nhất` : 'Toàn bộ thời gian'} />
+            <MetricCard tone="green" icon={<Phone />} label="Khách chưa liên hệ" value={data.uncontacted} note={data.uncontactedOverdue ? `${data.uncontactedOverdue} khách quá 24 giờ` : 'Không có khách quá hạn'} />
             <MetricCard tone="peach" icon={<FileText />} label="Báo giá đã gửi" value={data.quotesSent} note="Tính từ chứng từ đã phát hành" />
             <MetricCard tone="amber" icon={<WalletCards />} label="Giá trị được duyệt" value={money(data.acceptedValue)} note="Không đồng nghĩa doanh thu" />
           </div>
 
           <div className="mb-5 grid grid-cols-1 gap-4 xl:grid-cols-[1.56fr_1fr]">
-            <Section title="Nhịp tiếp nhận yêu cầu" description={`So sánh yêu cầu nhận và đã liên hệ trong ${period} ngày.`}>
+            <Section title="Nhịp độ kinh doanh" description={period ? `Yêu cầu và báo giá đã gửi trong ${period} ngày.` : 'Yêu cầu và báo giá đã gửi trong toàn bộ thời gian.'}>
               <TrendChart values={data.trend} />
             </Section>
             <Section title="Phân bổ pipeline" description="Trạng thái hiện tại của yêu cầu trong kỳ.">
@@ -126,9 +126,9 @@ function MetricCard({ tone, icon, label, value, note }: { tone: string; icon: Re
 }
 
 function TrendChart({ values }: { values: DashboardViewModel['trend'] }) {
-  const max = Math.max(...values.flatMap((value) => [value.requests, value.contacted]), 1);
-  const points = (key: 'requests' | 'contacted') => values.map((value, index) => `${index * (600 / Math.max(values.length - 1, 1))},${180 - value[key] / max * 140}`).join(' ');
-  return <div className="pt-2"><div className="mb-4 flex gap-5 text-[11px] text-[#7E807A]"><span className="flex items-center gap-2"><i className="h-2 w-2 rounded-full bg-[#E9A52C]" /> Yêu cầu nhận</span><span className="flex items-center gap-2"><i className="h-2 w-2 rounded-full bg-[#62B49D]" /> Đã liên hệ</span></div><svg viewBox="0 0 600 215" className="h-auto max-h-[230px] w-full" role="img" aria-label="Biểu đồ yêu cầu theo thời gian">{[40,80,120,160].map((y) => <line key={y} x1="0" x2="600" y1={y} y2={y} stroke="#EEEDE8" strokeWidth="1" />)}<polyline fill="none" stroke="#E9A52C" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" points={points('requests')} /><polyline fill="none" stroke="#62B49D" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" points={points('contacted')} />{values.map((value, index) => <text key={value.label} x={index * (600 / Math.max(values.length - 1, 1))} y="207" textAnchor={index === 0 ? 'start' : index === values.length - 1 ? 'end' : 'middle'} fontSize="10" fill="#AAA9A5">{value.label}</text>)}</svg></div>;
+  const max = Math.max(...values.flatMap((value) => [value.requests, value.quotesSent]), 1);
+  const points = (key: 'requests' | 'quotesSent') => values.map((value, index) => `${index * (600 / Math.max(values.length - 1, 1))},${180 - value[key] / max * 140}`).join(' ');
+  return <div className="pt-2"><div className="mb-4 flex gap-5 text-[11px] text-[#7E807A]"><span className="flex items-center gap-2"><i className="h-2 w-2 rounded-full bg-[#E9A52C]" /> Yêu cầu mới</span><span className="flex items-center gap-2"><i className="h-2 w-2 rounded-full bg-[#62B49D]" /> Báo giá đã gửi</span></div><svg viewBox="0 0 600 215" className="h-auto max-h-[230px] w-full" role="img" aria-label="Biểu đồ nhịp độ kinh doanh theo thời gian">{[40,80,120,160].map((y) => <line key={y} x1="0" x2="600" y1={y} y2={y} stroke="#EEEDE8" strokeWidth="1" />)}<polyline fill="none" stroke="#E9A52C" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" points={points('requests')} /><polyline fill="none" stroke="#62B49D" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" points={points('quotesSent')} />{values.map((value, index) => <text key={value.label} x={index * (600 / Math.max(values.length - 1, 1))} y="207" textAnchor={index === 0 ? 'start' : index === values.length - 1 ? 'end' : 'middle'} fontSize="10" fill="#AAA9A5">{value.label}</text>)}</svg></div>;
 }
 
 function PipelineBreakdown({ data, total }: { data: DashboardViewModel['pipeline']; total: number }) {

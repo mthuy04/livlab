@@ -2,9 +2,10 @@
 
 import './showroom.css';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Route } from 'next';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAuth } from '@/lib/context/AuthContext';
 import {
   LayoutDashboard, FileText, Inbox, Tags, Users, BarChart3, Settings,
@@ -36,24 +37,39 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
   const pathname = usePathname();
   const router = useRouter();
   const { user, loading, logout } = useAuth();
-  const [showroomName, setShowroomName] = useState<string | null>(null);
+  const [showroom, setShowroom] = useState<{ name: string; tenantKey: string | null; workspaceKind: 'LIVE' | 'DEMO' } | null>(null);
   const [accountOpen, setAccountOpen] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileMenuPath, setMobileMenuPath] = useState<string | null>(null);
   const [search, setSearch] = useState('');
+  const menuTriggerRef = useRef<HTMLButtonElement>(null);
+  const menuCloseRef = useRef<HTMLButtonElement>(null);
+  const mobileOpen = mobileMenuPath === pathname;
 
   useEffect(() => {
     if (!user) return;
     fetch('/api/showroom/profile')
       .then((res) => (res.ok ? res.json() : null))
-      .then((data) => data?.showroom?.name && setShowroomName(data.showroom.name))
+      .then((data) => data?.showroom?.name && setShowroom(data.showroom))
       .catch(() => undefined);
   }, [user]);
 
   useEffect(() => {
-    const close = (event: KeyboardEvent) => event.key === 'Escape' && setMobileOpen(false);
+    if (!mobileOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    menuCloseRef.current?.focus();
+    const close = (event: KeyboardEvent) => event.key === 'Escape' && setMobileMenuPath(null);
     window.addEventListener('keydown', close);
-    return () => window.removeEventListener('keydown', close);
-  }, []);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', close);
+    };
+  }, [mobileOpen]);
+
+  function closeMobileMenu({ restoreFocus = false } = {}) {
+    setMobileMenuPath(null);
+    if (restoreFocus) requestAnimationFrame(() => menuTriggerRef.current?.focus());
+  }
 
   if (loading) {
     return <div className="grid min-h-screen place-items-center bg-[#F7F6F2]"><span className="h-6 w-6 animate-spin rounded-full border-2 border-[#E5D7B7] border-t-[#EF9F00]" /></div>;
@@ -65,17 +81,22 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
     return <Gate tone="danger" title="Truy cập bị từ chối" body="Bạn cần đăng nhập với tài khoản Showroom Partner." loginHref="/login" />;
   }
 
-  const displayName = showroomName?.replace(' — Demo Workspace', '') || 'Showroom';
+  const isTungDang = showroom?.tenantKey === 'tungdang';
+  const isDemo = showroom?.workspaceKind === 'DEMO';
+  const displayName = isTungDang ? 'BẾP TÙNG ĐĂNG' : showroom?.name?.replace(' — Demo Workspace', '') || 'Showroom';
   const initials = (user.name || user.email || '?').slice(0, 2).toUpperCase();
   const active = (href: string, exact?: boolean) => exact ? pathname === href : pathname.startsWith(href);
 
   const sidebar = (
     <>
       <div className="showroom-brand">
-        <span className="showroom-brand-mark">TĐ</span>
+        {isTungDang ? (
+          <span className="showroom-brand-logo"><Image src="/demo/tungdang/logo.png" alt="Bếp Tùng Đăng" width={38} height={38} className="h-full w-full object-contain" /></span>
+        ) : <span className="showroom-brand-mark">LL</span>}
         <div className="min-w-0">
           <p className="truncate text-[15px] font-extrabold tracking-[0.01em] text-[#2E2D2B]">{displayName}</p>
-          <p className="mt-0.5 text-[9px] font-bold uppercase tracking-[0.16em] text-[#A2A099]">LivLab Showroom</p>
+          <p className="mt-0.5 text-[9px] font-bold uppercase tracking-[0.16em] text-[#A2A099]">Showroom Workspace · Powered by LivLab</p>
+          {isDemo && <span className="mt-1.5 inline-flex rounded-full bg-[#FFF1D6] px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-[0.12em] text-[#8D530B]">Demo workspace</span>}
         </div>
       </div>
       <nav className="showroom-nav" aria-label="Điều hướng showroom">
@@ -88,7 +109,7 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
                 const selected = active(item.href, item.exact);
                 return (
                   <li key={item.href}>
-                    <Link href={item.href as Route} onClick={() => setMobileOpen(false)} aria-current={selected ? 'page' : undefined} className={`showroom-nav-link ${selected ? 'active' : ''}`}>
+                    <Link href={item.href as Route} onClick={() => closeMobileMenu()} aria-current={selected ? 'page' : undefined} className={`showroom-nav-link ${selected ? 'active' : ''}`}>
                       <Icon className="h-[18px] w-[18px]" />
                       <span>{item.label}</span>
                     </Link>
@@ -116,9 +137,9 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
       <aside className="showroom-sidebar print-hide">{sidebar}</aside>
       {mobileOpen && (
         <>
-          <button aria-label="Đóng menu" className="fixed inset-0 z-40 bg-[#2E2D2B]/35 backdrop-blur-[2px] lg:hidden" onClick={() => setMobileOpen(false)} />
+          <button aria-label="Đóng menu" className="showroom-mobile-backdrop fixed inset-0 z-40 bg-[#2E2D2B]/35 backdrop-blur-[2px]" onClick={() => closeMobileMenu({ restoreFocus: true })} />
           <aside className="showroom-mobile-sidebar print-hide">
-            <button type="button" aria-label="Đóng menu" onClick={() => setMobileOpen(false)} className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-lg text-[#74736E] hover:bg-[#F5F3ED]"><X className="h-5 w-5" /></button>
+            <button ref={menuCloseRef} type="button" aria-label="Đóng menu" onClick={() => closeMobileMenu({ restoreFocus: true })} className="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-lg text-[#74736E] hover:bg-[#F5F3ED]"><X className="h-5 w-5" /></button>
             {sidebar}
           </aside>
         </>
@@ -127,13 +148,13 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
       <div className="showroom-workspace">
         <header className="showroom-topbar print-hide">
           <div className="flex min-w-0 items-center gap-3">
-            <button type="button" aria-label="Mở menu" className="showroom-icon-btn lg:hidden" onClick={() => setMobileOpen(true)}><Menu className="h-5 w-5" /></button>
+            <button ref={menuTriggerRef} type="button" aria-label="Mở menu" aria-expanded={mobileOpen} className="showroom-icon-btn lg:hidden" onClick={() => setMobileMenuPath(pathname)}><Menu className="h-5 w-5" /></button>
             <span className="hidden text-[11px] font-extrabold uppercase tracking-[0.13em] text-[#93948D] sm:inline">Showroom Workspace</span>
             <span className="hidden h-[18px] w-px bg-[#ECEAE4] sm:block" />
             <span className="truncate text-[12px] text-[#696D69]">{NAV_GROUPS.flatMap((g) => g.items).find((item) => active(item.href, item.exact))?.label || 'Tổng quan'}</span>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
-            <form onSubmit={(event) => { event.preventDefault(); if (search.trim()) router.push(`/showroom/leads?q=${encodeURIComponent(search.trim())}`); }} className="showroom-global-search">
+            <form onSubmit={(event) => { event.preventDefault(); if (search.trim()) { closeMobileMenu(); router.push(`/showroom/leads?q=${encodeURIComponent(search.trim())}`); } }} className="showroom-global-search">
               <Search className="h-4 w-4" /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Tìm khách hàng..." aria-label="Tìm khách hàng" />
             </form>
             <button type="button" aria-label="Thông báo" className="showroom-icon-btn"><Bell className="h-[19px] w-[19px]" /><span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-[#EA9553] ring-1 ring-white" /></button>

@@ -6,7 +6,7 @@ import { Download, Search, X } from 'lucide-react';
 import {
   PageShell, Section, Status, EmptyState, ErrorState, MigrationNotice,
   Table, THead, TH, TBody, TR, TD, TableSkeleton, FilterBar, FilterTabs, FootNote,
-  money, relativeTime, uncontactedFor, dueIn, type Tone,
+  money, relativeTime, shortDate, uncontactedFor, dueIn, type Tone,
 } from '@/components/showroom/ui/primitives';
 import { CX } from '@/components/showroom/ui/tokens';
 import { STAGE_LABEL } from '@/lib/showroom/leadStage';
@@ -48,6 +48,9 @@ function LeadsWorkspace() {
   const [tab, setTab] = useState(() => searchParams.get('requestType') ?? '');
   const [stage, setStage] = useState(() => searchParams.get('stage') ?? '');
   const [overdueOnly, setOverdueOnly] = useState(() => searchParams.get('overdue') === '1');
+  const [uncontactedOnly, setUncontactedOnly] = useState(() => searchParams.get('uncontacted') === '1');
+  const [from, setFrom] = useState(() => searchParams.get('from') ?? '');
+  const [to, setTo] = useState(() => searchParams.get('to') ?? '');
   const [query, setQuery] = useState(() => searchParams.get('q') ?? '');
   const [showTestRecords, setShowTestRecords] = useState(false);
   const [state, setState] = useState<LoadState>('loading');
@@ -63,6 +66,10 @@ function LeadsWorkspace() {
       if (tab) params.set('requestType', tab);
       if (stage) params.set('stage', stage);
       if (query.trim()) params.set('q', query.trim());
+      if (overdueOnly) params.set('overdue', '1');
+      if (uncontactedOnly) params.set('uncontacted', '1');
+      if (from) params.set('from', from);
+      if (to) params.set('to', to);
       try {
         const res = await fetch(`/api/showroom/leads?${params}`);
         if (cancelled) return;
@@ -80,7 +87,7 @@ function LeadsWorkspace() {
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [tab, stage, query, refreshKey]);
+  }, [tab, stage, query, overdueOnly, uncontactedOnly, from, to, refreshKey]);
 
   /** What this lead is waiting on — a scheduled action outranks an age. */
   const waitingOn = (lead: LeadListItem) =>
@@ -89,10 +96,8 @@ function LeadsWorkspace() {
   const { visible, hiddenTestCount, summary } = useMemo(() => {
     const real = items.filter((l) => !l.isTestRecord);
     const base = showTestRecords ? items : real;
-    const filtered = overdueOnly ? base.filter((l) => waitingOn(l).urgency === 'overdue') : base;
-
     return {
-      visible: filtered,
+      visible: base,
       hiddenTestCount: items.length - real.length,
       summary: {
         total: real.length,
@@ -101,9 +106,9 @@ function LeadsWorkspace() {
         following: real.filter((l) => l.stage === 'QUOTE_SENT' || l.stage === 'FOLLOW_UP').length,
       },
     };
-  }, [items, showTestRecords, overdueOnly]);
+  }, [items, showTestRecords]);
 
-  const hasFilter = Boolean(tab || stage || query.trim() || overdueOnly);
+  const hasFilter = Boolean(tab || stage || query.trim() || overdueOnly || uncontactedOnly || from || to);
 
   return (
     <PageShell
@@ -146,7 +151,7 @@ function LeadsWorkspace() {
                   <input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Tìm tên hoặc số điện thoại"
+                    placeholder="Tên, điện thoại hoặc mã yêu cầu"
                     aria-label="Tìm lead"
                     className={`${CX.input} w-60 pl-8`}
                   />
@@ -155,6 +160,9 @@ function LeadsWorkspace() {
               filters={
                 <>
                   <FilterTabs value={tab} options={REQUEST_TABS} onChange={setTab} />
+                  <label className="flex items-center gap-1.5 text-[11px] text-[#777A75]">Từ <input type="date" value={from} onChange={(event) => setFrom(event.target.value)} className={`${CX.input} w-[128px]`} /></label>
+                  <label className="flex items-center gap-1.5 text-[11px] text-[#777A75]">Đến <input type="date" value={to} onChange={(event) => setTo(event.target.value)} className={`${CX.input} w-[128px]`} /></label>
+                  <button type="button" onClick={() => setUncontactedOnly((value) => !value)} aria-pressed={uncontactedOnly} className={`h-8 rounded-lg border px-2.5 text-[11px] font-bold ${uncontactedOnly ? 'border-[#E7B454] bg-[#FFF1D6] text-[#8D530B]' : 'border-[#E5E4DF] bg-white text-[#777A75]'}`}>Chưa liên hệ</button>
                   {stage && (
                     <button
                       type="button"
@@ -177,25 +185,26 @@ function LeadsWorkspace() {
                   )}
                 </>
               }
-              resultLabel={state === 'ready' ? `${visible.length} lead` : undefined}
+              resultLabel={state === 'ready' ? `${visible.length} yêu cầu` : undefined}
             />
 
-            <Table minWidth={1180}>
+            <Table minWidth={1480}>
               <THead>
+                <TH>Mã yêu cầu</TH>
                 <TH>Khách hàng</TH>
-                <TH>Yêu cầu</TH>
-                <TH>Bối cảnh LivLab</TH>
-                <TH align="right">Giá trị</TH>
-                <TH>Giai đoạn</TH>
-                <TH>Việc tiếp theo</TH>
-                <TH>Tạo lúc</TH>
+                <TH>Loại yêu cầu</TH>
+                <TH>Không gian / sản phẩm</TH>
+                <TH>Ngân sách / giá trị</TH>
+                <TH>Giai đoạn / phụ trách</TH>
+                <TH>Theo dõi tiếp</TH>
+                <TH>Ngày gửi</TH>
               </THead>
               {state === 'loading' ? (
-                <TableSkeleton columns={7} />
+                <TableSkeleton columns={8} />
               ) : state === 'error' ? (
                 <TBody>
                   <tr>
-                    <td colSpan={7}>
+                    <td colSpan={8}>
                       <ErrorState title="Không tải được danh sách lead." />
                     </td>
                   </tr>
@@ -203,7 +212,7 @@ function LeadsWorkspace() {
               ) : visible.length === 0 ? (
                 <TBody>
                   <tr>
-                    <td colSpan={7}>
+                    <td colSpan={8}>
                       <EmptyState
                         title={hasFilter ? 'Không có lead khớp bộ lọc' : 'Chưa có lead nào'}
                         hint={
@@ -215,7 +224,7 @@ function LeadsWorkspace() {
                           hasFilter ? (
                             <button
                               type="button"
-                              onClick={() => { setTab(''); setStage(''); setQuery(''); setOverdueOnly(false); }}
+                              onClick={() => { setTab(''); setStage(''); setQuery(''); setOverdueOnly(false); setUncontactedOnly(false); setFrom(''); setTo(''); }}
                               className={CX.buttonSecondary}
                             >
                               Xoá bộ lọc
@@ -232,6 +241,7 @@ function LeadsWorkspace() {
                     const waiting = waitingOn(lead);
                     return (
                       <TR key={lead.id} muted={lead.isTestRecord}>
+                        <TD><button type="button" onClick={() => setSelectedLeadId(lead.id)} className="whitespace-nowrap text-[11px] font-extrabold text-[#B97F20] hover:underline">{lead.requestCode ?? 'Yêu cầu cũ'}</button></TD>
                         <TD>
                           <button
                             type="button"
@@ -240,9 +250,6 @@ function LeadsWorkspace() {
                           >
                             {lead.customerName}
                           </button>
-                          <p className="mt-0.5 text-[10px] font-bold tracking-[0.03em] text-[#B97F20]">
-                            {lead.requestCode ?? 'Yêu cầu cũ'}
-                          </p>
                           {/* Phone sits under the name on purpose: it is the
                               identifier customers are grouped by, so two rows
                               with one name are told apart here. */}
@@ -258,15 +265,14 @@ function LeadsWorkspace() {
                             ? REQUEST_TABS.find((t) => t.value === lead.requestType)?.label ?? lead.requestType
                             : '—'}
                         </TD>
-                        <TD className="max-w-[260px] truncate text-[#4F6070]">{lead.contextSummary ?? '—'}</TD>
-                        <TD align="right">
+                        <TD className="max-w-[260px] text-[#4F6070]"><span className="block truncate">{lead.contextSummary ?? '—'}</span><span className="mt-1 block text-[10px] text-[#999B95]">{lead.productCount} sản phẩm</span></TD>
+                        <TD>
+                          <span className="block text-[11px] text-[#777A75]">{lead.budgetRange || (lead.targetBudget ? `Tới ${money(lead.targetBudget)}` : 'Chưa nêu ngân sách')}</span>
                           <span className="font-medium text-[#111A22]">{money(lead.estimatedValue)}</span>
-                          {lead.targetBudget !== null && lead.targetBudget !== undefined && (
-                            <p className="text-[12px] text-[#8795A3]">mục tiêu {money(lead.targetBudget)}</p>
-                          )}
                         </TD>
                         <TD>
                           <Status tone={STAGE_TONE[lead.stage]}>{STAGE_LABEL[lead.stage]}</Status>
+                          <p className="mt-1 text-[10px] text-[#999B95]">{lead.assigneeName || 'Chưa phân công'}</p>
                         </TD>
                         <TD>
                           {lead.nextActionAt ? (
@@ -290,7 +296,7 @@ function LeadsWorkspace() {
                             </span>
                           )}
                         </TD>
-                        <TD className="text-[#8795A3]">{relativeTime(lead.createdAt)}</TD>
+                        <TD className="text-[#8795A3]"><span className="block">{shortDate(lead.createdAt)}</span><span className="text-[10px]">{relativeTime(lead.createdAt)}</span></TD>
                       </TR>
                     );
                   })}

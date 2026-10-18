@@ -11,7 +11,13 @@ export async function GET() {
   const ctx = await requireShowroomContext();
   if ('error' in ctx) return ctx.error;
   try {
-    const showroom = await prisma.showroom.findUnique({ where: { id: ctx.showroomId } });
+    const showroom = await prisma.showroom.findUnique({
+      where: { id: ctx.showroomId },
+      select: {
+        id: true, name: true, contactName: true, email: true, phone: true, address: true,
+        tenantKey: true, workspaceKind: true, status: true,
+      },
+    });
     if (!showroom) return NextResponse.json({ error: 'Không tìm thấy showroom.' }, { status: 404 });
     return NextResponse.json({ showroom });
   } catch (error) {
@@ -31,7 +37,14 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: 'Không có trường hợp lệ nào để cập nhật.' }, { status: 400 });
     }
     // Scoped by the session's showroom, never by an id from the payload.
-    const showroom = await prisma.showroom.update({ where: { id: ctx.showroomId }, data });
+    const showroom = await prisma.showroom.update({
+      where: { id: ctx.showroomId },
+      data,
+      select: {
+        id: true, name: true, contactName: true, email: true, phone: true, address: true,
+        tenantKey: true, workspaceKind: true, status: true,
+      },
+    });
     return NextResponse.json({ showroom });
   } catch (error) {
     return handleShowroomError(error);

@@ -8,6 +8,7 @@ import { CX } from '@/components/showroom/ui/tokens';
 interface Showroom {
   id: string; name: string; contactName: string | null;
   email: string | null; phone: string | null; address: string | null;
+  tenantKey: string | null; workspaceKind: 'LIVE' | 'DEMO'; status: string;
 }
 
 /**
@@ -135,6 +136,13 @@ export default function ShowroomSettingsPage() {
       title="Cài đặt"
       description="Thông tin showroom hiển thị cho LivLab và khách hàng."
     >
+      <section className="mb-6 rounded-[14px] border border-[#EFE4CE] bg-[#FFF9EC] px-5 py-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div><p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#A6782F]">Kết nối storefront</p><p className="mt-1 text-sm font-bold text-[#2E2D2B]">{draft.tenantKey === 'tungdang' ? 'Bếp Tùng Đăng' : draft.tenantKey || 'Chưa cấu hình tenant'}</p></div>
+          <span className="rounded-full bg-white px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.1em] text-[#8D530B]">{draft.workspaceKind === 'DEMO' ? 'Demo workspace' : 'Live workspace'}</span>
+        </div>
+        <p className="mt-2 text-[11px] leading-5 text-[#8A7B65]">Tenant và loại workspace do LivLab cấu hình, không thể chỉnh từ trang này để tránh chuyển nhầm dữ liệu giữa các showroom.</p>
+      </section>
       <div className="space-y-6">
         {GROUPS.map((group) => (
           <section key={group.title} className="grid grid-cols-1 gap-4 sm:grid-cols-[220px_1fr]">

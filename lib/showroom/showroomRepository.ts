@@ -1,4 +1,4 @@
-import type { LeadStage, LeadRequestType } from '@prisma/client';
+import type { LeadStage, LeadRequestType, LeadStatus, Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { resolveStage, STAGE_ORDER, isOpenStage } from './leadStage';
 import { isTestRecord } from './testRecords';
@@ -49,6 +49,7 @@ export interface LeadListItem {
   contextSummary: string | null;
   estimatedValue: number | null;
   targetBudget: number | null;
+  budgetRange: string | null;
   nextActionAt: Date | null;
   nextActionNote: string | null;
   firstContactAt: Date | null;
@@ -104,23 +105,51 @@ export async function listLeads(params: {
   stage?: LeadStage | null;
   requestType?: LeadRequestType | null;
   search?: string | null;
-  take?: number;
+  from?: Date | null;
+  to?: Date | null;
+  uncontactedOnly?: boolean;
+  overdueOnly?: boolean;
+  /** Null is reserved for trusted aggregate callers that need the full set. */
+  take?: number | null;
   skip?: number;
 }): Promise<{ items: LeadListItem[]; total: number }> {
-  const { showroomId, stage, requestType, search, take = 50, skip = 0 } = params;
+  const {
+    showroomId, stage, requestType, search, from, to,
+    uncontactedOnly = false, overdueOnly = false, take = 50, skip = 0,
+  } = params;
 
   return withSchemaGuard(async () => {
-    const where = {
+    const legacyByStage: Partial<Record<LeadStage, LeadStatus>> = {
+      NEW: 'NEW', CONTACTED: 'CONTACTED', QUOTE_SENT: 'QUOTED', WON: 'WON', LOST: 'LOST',
+    };
+    const legacy = stage ? legacyByStage[stage] : undefined;
+    const now = new Date();
+    const uncontactedCutoff = new Date(now.getTime() - 86_400_000);
+    const filters: Prisma.QuoteLeadWhereInput[] = [];
+    if (stage) filters.push({ OR: [{ stage }, ...(legacy ? [{ stage: null, status: legacy }] : [])] });
+    if (from || to) filters.push({ createdAt: { ...(from ? { gte: from } : {}), ...(to ? { lte: to } : {}) } });
+    if (uncontactedOnly) filters.push({ firstContactAt: null });
+    if (overdueOnly) {
+      filters.push({
+        OR: [
+          { nextActionAt: { lt: now } },
+          { firstContactAt: null, nextActionAt: null, createdAt: { lt: uncontactedCutoff } },
+        ],
+      });
+    }
+    if (search) {
+      filters.push({
+        OR: [
+          { customerName: { contains: search, mode: 'insensitive' } },
+          { phone: { contains: search } },
+          { requestCode: { contains: search, mode: 'insensitive' } },
+        ],
+      });
+    }
+    const where: Prisma.QuoteLeadWhereInput = {
       showroomId,
       ...(requestType ? { requestType } : {}),
-      ...(search
-        ? {
-            OR: [
-              { customerName: { contains: search, mode: 'insensitive' as const } },
-              { phone: { contains: search } },
-            ],
-          }
-        : {}),
+      ...(filters.length > 0 ? { AND: filters } : {}),
     };
 
     const [rows, total] = await Promise.all([
@@ -132,7 +161,7 @@ export async function listLeads(params: {
           assignedTo: { select: { name: true, email: true } },
         },
         orderBy: { createdAt: 'desc' },
-        take,
+        take: take ?? undefined,
         skip,
       }),
       prisma.quoteLead.count({ where }),
@@ -155,6 +184,7 @@ export async function listLeads(params: {
         }),
         estimatedValue: lead.estimatedValue,
         targetBudget: lead.budgetMax ?? lead.budgetMin,
+        budgetRange: lead.budgetRange,
         nextActionAt: lead.nextActionAt,
         nextActionNote: lead.nextActionNote,
         firstContactAt: lead.firstContactAt,
@@ -162,13 +192,9 @@ export async function listLeads(params: {
         createdAt: lead.createdAt,
         uncontactedHours: lead.firstContactAt ? null : hoursSince(lead.createdAt),
         isTestRecord: isTestRecord({ customerName: lead.customerName, phone: lead.phone }),
-      }))
-      // Stage is partly derived, so it cannot be filtered in SQL without
-      // backfilling. The page size is small and bounded, so filtering here is
-      // cheaper than writing data we promised not to touch.
-      .filter((lead) => (stage ? lead.stage === stage : true));
+      }));
 
-    return { items, total: stage ? items.length : total };
+    return { items, total };
   });
 }
 
@@ -212,7 +238,7 @@ export interface DashboardViewModel {
   /** QA rows excluded from every figure above; shown as a note, not a number. */
   hiddenTestRecords: number;
   actionQueue: LeadListItem[];
-  trend: { label: string; requests: number; contacted: number }[];
+  trend: { label: string; requests: number; quotesSent: number }[];
   recentActivities: {
     id: string;
     type: string;
@@ -230,14 +256,14 @@ export interface DashboardViewModel {
  */
 export async function getDashboard(showroomId: string, periodDays = 30): Promise<DashboardViewModel> {
   return withSchemaGuard(async () => {
-    const { items: allItems } = await listLeads({ showroomId, take: 500 });
+    const { items: allItems } = await listLeads({ showroomId, take: null });
 
     // Test rows are excluded from every figure on this screen. A dashboard that
     // counts QA records is a dashboard the partner learns to distrust, and one
     // wrong number is enough to make them doubt the rest.
     const realItems = allItems.filter((l) => !l.isTestRecord);
     const hiddenTestRecords = allItems.length - realItems.length;
-    const cutoff = new Date(Date.now() - periodDays * 86_400_000);
+    const cutoff = periodDays > 0 ? new Date(Date.now() - periodDays * 86_400_000) : new Date(0);
     const items = realItems.filter((lead) => new Date(lead.createdAt) >= cutoff);
 
     const open = items.filter((l) => isOpenStage(l.stage));
@@ -280,9 +306,12 @@ export async function getDashboard(showroomId: string, periodDays = 30): Promise
     ]);
 
     const bucketCount = 7;
-    const bucketMs = (periodDays * 86_400_000) / bucketCount;
+    const trendStart = periodDays > 0
+      ? cutoff.getTime()
+      : Math.min(...items.map((lead) => new Date(lead.createdAt).getTime()), Date.now());
+    const bucketMs = Math.max((Date.now() - trendStart) / bucketCount, 86_400_000);
     const trend = Array.from({ length: bucketCount }, (_, index) => {
-      const start = cutoff.getTime() + index * bucketMs;
+      const start = trendStart + index * bucketMs;
       const end = start + bucketMs;
       const inBucket = items.filter((lead) => {
         const at = new Date(lead.createdAt).getTime();
@@ -291,7 +320,10 @@ export async function getDashboard(showroomId: string, periodDays = 30): Promise
       return {
         label: new Date(start).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' }),
         requests: inBucket.length,
-        contacted: inBucket.filter((lead) => lead.firstContactAt !== null).length,
+        quotesSent: quotes.filter((quote) => {
+          const at = quote.sentAt?.getTime();
+          return at !== undefined && at >= start && at < end;
+        }).length,
       };
     });
 

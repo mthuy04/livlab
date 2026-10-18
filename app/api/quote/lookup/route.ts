@@ -4,6 +4,7 @@ import { normalizePhone, isPlausiblePhone } from '@/lib/contact/normalizePhone';
 import { prisma } from '@/lib/prisma';
 import { isMissingSchemaError } from '@/lib/showroom/guards';
 import { resolveStage } from '@/lib/showroom/leadStage';
+import { checkPublicLookupRateLimit } from '@/lib/security/publicLookupRateLimiter';
 
 const PUBLIC_QUOTE_STATUSES: QuoteStatus[] = ['SENT', 'ACCEPTED', 'REJECTED', 'EXPIRED'];
 
@@ -14,6 +15,16 @@ const PUBLIC_QUOTE_STATUSES: QuoteStatus[] = ['SENT', 'ACCEPTED', 'REJECTED', 'E
  */
 export async function POST(request: Request) {
   try {
+    const forwarded = request.headers.get('x-forwarded-for');
+    const clientKey = (forwarded?.split(',')[0] || request.headers.get('x-real-ip') || 'anonymous').trim();
+    const rate = checkPublicLookupRateLimit(clientKey);
+    if (!rate.allowed) {
+      return NextResponse.json(
+        { error: 'Bạn đã thử quá nhiều lần. Vui lòng đợi rồi thử lại.', code: 'RATE_LIMITED' },
+        { status: 429, headers: { 'retry-after': String(rate.retryAfterSeconds) } }
+      );
+    }
+
     const body = (await request.json()) as { requestCode?: string; phone?: string };
     const requestCode = body.requestCode?.trim().toUpperCase();
     const phone = body.phone?.trim() ?? '';

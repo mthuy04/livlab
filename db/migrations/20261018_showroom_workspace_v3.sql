@@ -8,23 +8,29 @@
 
 BEGIN;
 
-CREATE TYPE "WorkspaceKind" AS ENUM ('LIVE', 'DEMO');
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'WorkspaceKind') THEN
+    CREATE TYPE "WorkspaceKind" AS ENUM ('LIVE', 'DEMO');
+  END IF;
+END;
+$$;
 
 ALTER TABLE "Showroom"
-  ADD COLUMN "tenantKey" TEXT,
-  ADD COLUMN "workspaceKind" "WorkspaceKind" NOT NULL DEFAULT 'LIVE';
+  ADD COLUMN IF NOT EXISTS "tenantKey" TEXT,
+  ADD COLUMN IF NOT EXISTS "workspaceKind" "WorkspaceKind" NOT NULL DEFAULT 'LIVE';
 
 ALTER TABLE "QuoteLead"
-  ADD COLUMN "requestCode" TEXT,
-  ADD COLUMN "normalizedPhone" TEXT,
-  ADD COLUMN "sourceTenantId" TEXT,
-  ADD COLUMN "submissionKey" TEXT;
+  ADD COLUMN IF NOT EXISTS "requestCode" TEXT,
+  ADD COLUMN IF NOT EXISTS "normalizedPhone" TEXT,
+  ADD COLUMN IF NOT EXISTS "sourceTenantId" TEXT,
+  ADD COLUMN IF NOT EXISTS "submissionKey" TEXT;
 
-CREATE UNIQUE INDEX "Showroom_tenantKey_key" ON "Showroom"("tenantKey");
-CREATE UNIQUE INDEX "QuoteLead_requestCode_key" ON "QuoteLead"("requestCode");
-CREATE UNIQUE INDEX "QuoteLead_submissionKey_key" ON "QuoteLead"("submissionKey");
-CREATE INDEX "QuoteLead_requestCode_normalizedPhone_idx" ON "QuoteLead"("requestCode", "normalizedPhone");
-CREATE INDEX "QuoteLead_sourceTenantId_createdAt_idx" ON "QuoteLead"("sourceTenantId", "createdAt");
+CREATE UNIQUE INDEX IF NOT EXISTS "Showroom_tenantKey_key" ON "Showroom"("tenantKey");
+CREATE UNIQUE INDEX IF NOT EXISTS "QuoteLead_requestCode_key" ON "QuoteLead"("requestCode");
+CREATE UNIQUE INDEX IF NOT EXISTS "QuoteLead_submissionKey_key" ON "QuoteLead"("submissionKey");
+CREATE INDEX IF NOT EXISTS "QuoteLead_requestCode_normalizedPhone_idx" ON "QuoteLead"("requestCode", "normalizedPhone");
+CREATE INDEX IF NOT EXISTS "QuoteLead_sourceTenantId_createdAt_idx" ON "QuoteLead"("sourceTenantId", "createdAt");
 
 -- Configuration row, not operational seed data. The stable id and tenantKey
 -- make the Tùng Đăng public demo route explicit; it can never fall through to
@@ -41,8 +47,10 @@ INSERT INTO "Showroom" (
   CURRENT_TIMESTAMP
 )
 ON CONFLICT ("id") DO UPDATE SET
+  "name" = EXCLUDED."name",
   "tenantKey" = EXCLUDED."tenantKey",
   "workspaceKind" = EXCLUDED."workspaceKind",
-  "updatedAt" = CURRENT_TIMESTAMP;
+  "updatedAt" = CURRENT_TIMESTAMP
+WHERE "Showroom"."workspaceKind" = 'DEMO' OR "Showroom"."tenantKey" IS NULL;
 
 COMMIT;
