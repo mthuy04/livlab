@@ -3283,7 +3283,7 @@
       "primaryImage": "/models/inax/BF-1656V/preview.png",
       "additionalImages": [],
       "technicalDrawing": null,
-      "referencePrice": 41750000,
+      "referencePrice": 46880000,
       "showroomPrice": 35180000,
       "dimensions": null,
       "dimensionsRaw": null,
@@ -3302,7 +3302,7 @@
       "shortDescription": "Bồn tắm acrylic đặt sàn, dài 1,6 m.",
       "priceSource": {
         "note": "Not on beptungdang.vn. Added for the Room Studio 3D demo at market price.",
-        "referencePrice": "https://www.inax.com.vn/vi/products/bathtub/bon-tam-dat-san-bf-1656v/",
+        "referencePrice": "https://www.inax.com.vn/vi/products/bathtub/bon-tam-dat-san-bf-1656v/ (46.880.000đ, checked 2026-10-19)",
         "showroomPrice": "https://thietbivesinhthienloc.com/bon-tam-inax-bf-1656v-dat-san-16m"
       }
     },
@@ -3317,7 +3317,7 @@
       "primaryImage": "/models/inax/BFV-70S/preview.png",
       "additionalImages": [],
       "technicalDrawing": null,
-      "referencePrice": 15270000,
+      "referencePrice": 18420000,
       "showroomPrice": 11908000,
       "dimensions": null,
       "dimensionsRaw": null,
@@ -3336,7 +3336,7 @@
       "shortDescription": "Sen cây nóng lạnh, bát sen lớn và tay sen.",
       "priceSource": {
         "note": "Not on beptungdang.vn. Added for the Room Studio 3D demo at market price.",
-        "referencePrice": "https://www.inax.com.vn/vi/news/gia-voi-hoa-sen/",
+        "referencePrice": "https://www.inax.com.vn/products/shower/bfv-70s/ (18.420.000đ, checked 2026-10-19)",
         "showroomPrice": "https://inaxmiennam.vn/san-pham/voi-sen-cay-tam-inax-bfv-70s-nong-lanh/"
       }
     },
