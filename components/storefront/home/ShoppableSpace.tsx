@@ -107,7 +107,7 @@ function QuickView({ product }: { product: RoomHotspot }) {
           <Link
             href={'/room-studio' as Route}
             className="transition-opacity hover:opacity-60"
-            style={{ color: 'var(--tenant-accent)' }}
+            style={{ color: 'var(--tenant-accent-ink)' }}
           >
             THÊM VÀO PHÒNG
           </Link>

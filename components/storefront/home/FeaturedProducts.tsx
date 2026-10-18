@@ -8,13 +8,19 @@ import { SectionHeader, ProductStage, TEXT } from './editorial';
  * catalogue does not carry it, and a SKU column does not exist on the model —
  * neither is invented here.
  */
-export default function FeaturedProducts({ products }: { products: FeaturedProduct[] }) {
+export default function FeaturedProducts({
+  products,
+  title = 'SẢN PHẨM NỔI BẬT',
+}: {
+  products: FeaturedProduct[];
+  title?: string;
+}) {
   if (products.length === 0) return null;
 
   return (
     <section className="home-section">
       <div className="home-container">
-        <SectionHeader title="SẢN PHẨM NỔI BẬT" href={'/products' as Route} />
+        <SectionHeader title={title} href={'/products' as Route} />
 
         <div className="grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-4 md:gap-7">
           {products.map((product) => {

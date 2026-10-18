@@ -17,6 +17,8 @@ interface CommandBarProps {
   onOpenTechnical: () => void;
   onSaveDesign: () => void;
   onRequestQuote: () => void;
+  /** The primary action's words, from the tenant's copy. */
+  requestQuoteLabel?: string;
   onResetRoom: () => void;
 }
 
@@ -39,6 +41,7 @@ export default function CommandBar({
   onOpenTechnical,
   onSaveDesign,
   onRequestQuote,
+  requestQuoteLabel = 'Yêu cầu báo giá',
   onResetRoom,
 }: CommandBarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -110,7 +113,7 @@ export default function CommandBar({
           <button
             type="button"
             onClick={onOpenBudget}
-            className="shrink-0 text-[13px] font-medium text-[#0F3D5C] underline decoration-[#C8D5DE] underline-offset-4 transition-colors hover:decoration-[#0F3D5C]"
+            className="shrink-0 text-[13px] font-medium text-[color:var(--tenant-ui-link,#0F3D5C)] underline decoration-[#C8D5DE] underline-offset-4 transition-colors hover:decoration-current"
           >
             {targetBudget ? `Ngân sách ${formatVnd(targetBudget)}` : '+ Đặt ngân sách'}
           </button>
@@ -209,9 +212,9 @@ export default function CommandBar({
           <button
             type="button"
             onClick={onRequestQuote}
-            className="flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded bg-[#0B2239] px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-[#061827] lg:flex-none"
+            className="flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-[var(--tenant-ui-radius,0.25rem)] bg-[color:var(--tenant-ui-primary,#0B2239)] px-4 py-2 text-[13px] font-semibold text-[color:var(--tenant-ui-primary-contrast,#FFFFFF)] transition-colors hover:bg-[color:var(--tenant-ui-primary-hover,#061827)] lg:flex-none"
           >
-            Yêu cầu báo giá
+            {requestQuoteLabel}
             <ArrowRight className="h-4 w-4" aria-hidden />
           </button>
         </div>

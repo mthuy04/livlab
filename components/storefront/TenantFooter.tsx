@@ -54,7 +54,8 @@ function FooterColumn({ title, items }: { title: string; items: [string, string]
 }
 
 export default function TenantFooter({ tenant }: { tenant: TenantStorefrontConfig }) {
-  const { brand, contact, features } = tenant;
+  const { brand, contact, features, experience } = tenant;
+  const retail = experience.variants.header === 'retail';
   const hasContact = Boolean(contact?.phone || contact?.email || contact?.address);
   const support = features.quotations ? SUPPORT : SUPPORT.filter(([, href]) => !href.includes('quote'));
 
@@ -62,9 +63,14 @@ export default function TenantFooter({ tenant }: { tenant: TenantStorefrontConfi
     <footer style={{ backgroundColor: '#F2F2F0' }}>
       <div className="home-container grid gap-12 py-16 md:grid-cols-4">
         <div>
-          <p style={{ ...COLUMN_TITLE, fontSize: 13 }}>{brand.name.toUpperCase()}</p>
+          {retail && brand.logo ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={brand.logo} alt={brand.logoAlt ?? brand.name} className="h-11 w-auto" loading="lazy" />
+          ) : (
+            <p style={{ ...COLUMN_TITLE, fontSize: 13 }}>{brand.name.toUpperCase()}</p>
+          )}
           <p className="mt-6 max-w-[270px]" style={BODY}>
-            Khám phá, phối thử và lựa chọn thiết bị phòng tắm trước khi quyết định.
+            {experience.copy.footerBlurb}
           </p>
         </div>
 
@@ -111,8 +117,12 @@ export default function TenantFooter({ tenant }: { tenant: TenantStorefrontConfi
           </div>
 
           {/* Quiet by design, and off for the LivLab storefront itself. It is a
-              credit line, never a claim that the showroom is a partner. */}
-          <span>{tenant.poweredByLivLab ? 'Powered by LivLab' : 'Visual commerce for showrooms'}</span>
+              credit line, never a claim that the showroom is a partner. A demo
+              storefront also says it is one. */}
+          <span>
+            {experience.copy.demoNotice && <>{experience.copy.demoNotice} · </>}
+            {tenant.poweredByLivLab ? 'Powered by LivLab' : 'Visual commerce for showrooms'}
+          </span>
         </div>
       </div>
     </footer>

@@ -308,7 +308,7 @@ export function Simulation({ vm }: { vm: ProductDetailViewModel }) {
                 <Link
                   href={roomStudio.href as Route}
                   className="transition-opacity duration-150 hover:opacity-60"
-                  style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.09em', color: 'var(--tenant-accent)' }}
+                  style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.09em', color: 'var(--tenant-accent-ink)' }}
                 >
                   THỬ TRONG ROOM STUDIO →
                 </Link>
@@ -333,7 +333,7 @@ export function Simulation({ vm }: { vm: ProductDetailViewModel }) {
                   href={manufacturerSimulator.href}
                   {...(manufacturerSimulator.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                   className="transition-opacity duration-150 hover:opacity-60"
-                  style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.09em', color: 'var(--tenant-accent)' }}
+                  style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.09em', color: 'var(--tenant-accent-ink)' }}
                 >
                   MỞ MÔ PHỎNG →
                 </a>
@@ -444,7 +444,7 @@ export function Consultation({ quotations }: { quotations: boolean }) {
   return (
     // Identified so the sticky product bar can stand down while this is on
     // screen: it already offers the same two actions.
-    <section id="tu-van" style={{ backgroundColor: 'var(--tenant-accent)', color: '#FFFFFF' }}>
+    <section id="tu-van" style={{ backgroundColor: 'var(--tenant-panel)', color: 'var(--tenant-panel-contrast)' }}>
       <div className="home-container" style={{ paddingBlock: 'clamp(48px, 4.4vw, 72px)' }}>
         <div className="max-w-[620px]">
           <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.15em', color: 'rgba(255,255,255,.65)' }}>
@@ -466,7 +466,7 @@ export function Consultation({ quotations }: { quotations: boolean }) {
                 height: 46,
                 paddingInline: 26,
                 backgroundColor: '#FFFFFF',
-                color: 'var(--tenant-accent)',
+                color: 'var(--tenant-panel)',
                 fontSize: 12,
                 fontWeight: 600,
                 letterSpacing: '.10em',

@@ -1,10 +1,11 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { CheckCircle, Layers, Package, Wrench } from 'lucide-react';
 import { useQuote } from '@/lib/context/QuoteContext';
+import { useTenant } from '@/components/storefront/TenantContext';
 import { useRoomStudio, type PlacedProductView } from '@/lib/room-studio/useRoomStudio';
 import { useIsDesktop } from '@/lib/room-studio/useIsDesktop';
 import type { RoomStudioProduct } from '@/lib/room-studio/productAdapter';
@@ -64,8 +65,23 @@ type MobilePanel = 'none' | 'tools' | 'products';
  * fraction of its own.
  */
 export default function RoomStudioClient() {
-  const studio = useRoomStudio();
-  const { addItem, hasItem, items: quoteItems } = useQuote();
+  const tenant = useTenant();
+  const studio = useRoomStudio(tenant.experience.roomStudioCatalog);
+  const { addItem, addCatalogItem, hasItem, items: quoteItems } = useQuote();
+
+  /**
+   * One door into the basket for every caller here. A storefront-catalogue
+   * product goes in as the catalogue entry the product page would add, so the
+   * showroom receives its tenant and price snapshot; a LivLab CSV product goes
+   * in exactly as before.
+   */
+  const addToQuote = useCallback(
+    (product: RoomStudioProduct) => {
+      if (product.quoteEntry) addCatalogItem(product.quoteEntry);
+      else addItem(product.source);
+    },
+    [addItem, addCatalogItem]
+  );
   const isDesktop = useIsDesktop();
 
   const [showCeiling, setShowCeiling] = useState(false);
@@ -149,10 +165,10 @@ export default function RoomStudioClient() {
     (view: PlacedProductView) => {
       // Reuses the existing quote basket wholesale — Room Studio adds no second
       // quote system, it just feeds the one LivLab already has.
-      addItem(view.product.source);
+      addToQuote(view.product);
       showToast('Đã thêm vào giỏ báo giá.');
     },
-    [addItem, showToast]
+    [addToQuote, showToast]
   );
 
   /**
@@ -167,10 +183,10 @@ export default function RoomStudioClient() {
     studio.placedViews.forEach(({ product }) => {
       if (seen.has(product.id)) return;
       seen.add(product.id);
-      addItem(product.source);
+      addToQuote(product);
     });
     showToast(`Đã lưu ${seen.size} sản phẩm vào giỏ báo giá.`);
-  }, [studio.placedViews, addItem, showToast]);
+  }, [studio.placedViews, addToQuote, showToast]);
 
   const handleOpenCombo = useCallback(() => {
     setExpertRequest({
@@ -203,6 +219,26 @@ export default function RoomStudioClient() {
     setToolTab('technical');
     if (!isDesktop) setMobilePanel('tools');
   }, [isDesktop]);
+
+  /**
+   * `/room-studio?demo=1` opens the tenant's demonstration room, once.
+   *
+   * Waits for both the catalogue and the saved room, so the preset is not
+   * overwritten by a late hydrate and never references a product that has not
+   * loaded. The parameter is then removed from the address, so a refresh, a
+   * bookmark or the back button returns to the customer's own room behaviour.
+   */
+  const demoApplied = useRef(false);
+  const demoRoom = tenant.experience.roomStudioDemo;
+  useEffect(() => {
+    if (demoApplied.current || !demoRoom || studio.isLoadingProducts || !studio.isHydrated) return;
+    const url = new URL(window.location.href);
+    if (url.searchParams.get('demo') !== '1') return;
+    demoApplied.current = true;
+    studio.loadPresetRoom(demoRoom);
+    url.searchParams.delete('demo');
+    window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+  }, [demoRoom, studio]);
 
   /* ----------------------------------------------------------- the panels */
 
@@ -259,6 +295,7 @@ export default function RoomStudioClient() {
 
   const libraryPanel = (
     <ProductLibraryPanel
+      title={tenant.experience.copy.roomStudio.libraryTitle}
       products={studio.products}
       isLoading={studio.isLoadingProducts}
       placedProductIds={placedProductIds}
@@ -448,6 +485,7 @@ export default function RoomStudioClient() {
         onOpenTechnical={showTechnicalFindings}
         onSaveDesign={handleSaveDesign}
         onRequestQuote={() => openImplementation()}
+        requestQuoteLabel={tenant.experience.copy.roomStudio.primaryCta}
         onResetRoom={studio.resetRoom}
       />
 
@@ -548,7 +586,7 @@ export default function RoomStudioClient() {
         products={studio.products}
         quoteItems={quoteItems}
         onAddProductToRoom={studio.addProduct}
-        onAddProductToQuote={(product) => addItem(product.source)}
+        onAddProductToQuote={addToQuote}
       />
 
       {/* Top-right, clear of both bars. At the bottom it landed on the
@@ -557,7 +595,7 @@ export default function RoomStudioClient() {
       {toast && (
         <div
           role="status"
-          className="fixed right-4 top-28 z-[80] flex items-center gap-2 rounded bg-[#123C5A] px-4 py-2.5 text-white shadow-xl"
+          className="fixed right-4 top-28 z-[80] flex items-center gap-2 rounded bg-[color:var(--tenant-ui-ink,#123C5A)] px-4 py-2.5 text-white shadow-xl"
         >
           <CheckCircle className="h-4 w-4 text-[#DCEBF5]" aria-hidden />
           <span className="text-[13px] font-medium">{toast}</span>

@@ -9,7 +9,7 @@ import TenantFooter from './TenantFooter';
 /**
  * Owns tenant theming and the customer-facing chrome.
  *
- * Pages never build navigation or read tenant colours themselves. The accent
+ * Pages never build navigation or read tenant colours themselves. The theme
  * is applied once here as CSS custom properties, so adding a showroom is a
  * configuration change and touches no component.
  *
@@ -41,9 +41,12 @@ const APP_SURFACE_PREFIXES = ['/room-studio'];
 
 export default function StorefrontShell({
   tenant,
+  cssVars,
   children,
 }: {
   tenant: TenantStorefrontConfig;
+  /** From `tenantCssVars`, computed on the server with the tenant. */
+  cssVars: Record<string, string>;
   children: ReactNode;
 }) {
   const pathname = usePathname();
@@ -60,13 +63,9 @@ export default function StorefrontShell({
         isAppSurface ? 'h-[100svh] overflow-hidden' : 'min-h-screen'
       }`}
       data-tenant={tenant.slug}
-      style={
-        {
-          '--tenant-accent': tenant.brand.accent,
-          '--tenant-accent-hover': tenant.brand.accentHover,
-          '--tenant-accent-contrast': tenant.brand.accentContrast,
-        } as React.CSSProperties
-      }
+      // Present only when the tenant chose a typeface; see globals.css.
+      data-tenant-font={cssVars['--tenant-font-family'] ? '' : undefined}
+      style={cssVars as React.CSSProperties}
     >
       <TenantHeader tenant={tenant} />
       {/* `min-h-0` lets an app surface's `h-full` resolve to the leftover space

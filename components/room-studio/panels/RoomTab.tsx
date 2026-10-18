@@ -116,7 +116,7 @@ export default function RoomTab({
           <button
             type="button"
             onClick={onOpenPresets}
-            className="text-[13px] font-medium text-[#0F3D5C] underline decoration-[#C8D5DE] underline-offset-4 transition-colors hover:decoration-[#0F3D5C]"
+            className="text-[13px] font-medium text-[color:var(--tenant-ui-link,#0F3D5C)] underline decoration-[#C8D5DE] underline-offset-4 transition-colors hover:decoration-current"
           >
             Kích thước mẫu
           </button>
@@ -142,7 +142,7 @@ export default function RoomTab({
                     aria-invalid={Boolean(error)}
                     aria-label={`${label}, mét (${min}–${max})`}
                     className={`w-full rounded border bg-white py-2 pl-2.5 pr-6 text-[14px] text-[#0B1623] transition-colors focus:outline-none ${
-                      error ? 'border-red-400 focus:border-red-500' : 'border-[#D8E2EA] focus:border-[#0F3D5C]'
+                      error ? 'border-red-400 focus:border-red-500' : 'border-[#D8E2EA] focus:border-[color:var(--tenant-ui-selected,#0F3D5C)]'
                     }`}
                   />
                   <span
@@ -195,7 +195,7 @@ export default function RoomTab({
             type="checkbox"
             checked={showCeiling}
             onChange={(e) => onToggleCeiling(e.target.checked)}
-            className="h-4 w-4 accent-[#0F3D5C]"
+            className="h-4 w-4 accent-[color:var(--tenant-ui-selected,#0F3D5C)]"
           />
         </label>
       </section>
@@ -204,7 +204,7 @@ export default function RoomTab({
         <button
           type="button"
           onClick={onOpenReferenceImage}
-          className="text-left text-[13px] font-medium text-[#0F3D5C] underline decoration-[#C8D5DE] underline-offset-4 transition-colors hover:decoration-[#0F3D5C]"
+          className="text-left text-[13px] font-medium text-[color:var(--tenant-ui-link,#0F3D5C)] underline decoration-[#C8D5DE] underline-offset-4 transition-colors hover:decoration-current"
         >
           {hasReferenceImage ? 'Ảnh tham chiếu đã chọn' : 'Ảnh tham chiếu phong cách'}
         </button>

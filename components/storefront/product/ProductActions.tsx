@@ -118,7 +118,7 @@ export default function ProductActions({ vm }: { vm: ProductDetailViewModel }) {
               ? { target: '_blank', rel: 'noopener noreferrer' }
               : {})}
             className="transition-opacity hover:opacity-60"
-            style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.08em', color: 'var(--tenant-accent)' }}
+            style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.08em', color: 'var(--tenant-accent-ink)' }}
           >
             MÔ PHỎNG SẢN PHẨM →
           </a>

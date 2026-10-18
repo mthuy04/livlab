@@ -51,7 +51,7 @@ export default function ToolFrame({
               height: 43,
               paddingInline: 24,
               backgroundColor: 'var(--tenant-accent, #123F5D)',
-              color: '#FFFFFF',
+              color: 'var(--tenant-accent-contrast, #FFFFFF)',
               fontSize: 12,
               fontWeight: 600,
               letterSpacing: '.08em',

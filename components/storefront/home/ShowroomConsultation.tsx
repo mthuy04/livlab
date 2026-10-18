@@ -26,8 +26,8 @@ export default function ShowroomConsultation({ quotations }: { quotations: boole
       </div>
 
       <div
-        className="flex items-center px-6 py-14 text-white sm:px-12 md:px-[70px]"
-        style={{ backgroundColor: 'var(--tenant-accent)' }}
+        className="flex items-center px-6 py-14 sm:px-12 md:px-[70px]"
+        style={{ backgroundColor: 'var(--tenant-panel)', color: 'var(--tenant-panel-contrast)' }}
       >
         <div className="max-w-[510px]">
           <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.15em', color: 'rgba(255,255,255,0.65)' }}>
@@ -46,7 +46,7 @@ export default function ShowroomConsultation({ quotations }: { quotations: boole
             để tư vấn tiếp và lập báo giá.
           </p>
 
-          <div className="mt-8 flex items-center gap-8 max-sm:flex-col max-sm:items-start max-sm:gap-5">
+          <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-5 max-sm:flex-col max-sm:items-start">
             <SolidLink href="/contact" tone="white">NHỜ SHOWROOM TƯ VẤN</SolidLink>
             {quotations && <ArrowLink href="/quote" tone="light">YÊU CẦU BÁO GIÁ</ArrowLink>}
           </div>

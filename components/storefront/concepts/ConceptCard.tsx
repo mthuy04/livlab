@@ -21,11 +21,15 @@ import { CONCEPT_IMAGE_HEIGHT, CONCEPT_IMAGE_WIDTH } from '@/lib/storefront/conc
 export default function ConceptCard({
   concept,
   priority,
+  headingLevel = 'h2',
 }: {
   concept: ConceptCardModel;
   priority: boolean;
+  /** `h3` where the grid sits under a section heading, as on a homepage. */
+  headingLevel?: 'h2' | 'h3';
 }) {
   const href = `/concepts/${concept.slug}` as Route;
+  const Heading = headingLevel;
   const { estimate } = concept;
 
   return (
@@ -66,7 +70,7 @@ export default function ConceptCard({
         {STYLE_FACET_LABEL[concept.styleFacet]} · {concept.areaLabel || AREA_BAND_LABEL.MEDIUM}
       </p>
 
-      <h2
+      <Heading
         style={{
           marginTop: 9,
           fontSize: 23,
@@ -79,7 +83,7 @@ export default function ConceptCard({
         <Link href={href} className="transition-opacity hover:opacity-70">
           {concept.titleVi}
         </Link>
-      </h2>
+      </Heading>
 
       {/* The card's share of the editorial copy: one sentence on why the room
           is like this. The full story belongs on the detail page — a card that

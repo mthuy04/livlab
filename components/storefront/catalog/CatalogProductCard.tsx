@@ -89,7 +89,7 @@ export default function CatalogProductCard({
 
       <div className="mt-2.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
         {product.showroomPrice ? (
-          <span style={{ fontSize: 16, fontWeight: 600, color: TEXT }}>{formatVnd(product.showroomPrice)}</span>
+          <span style={{ fontSize: 16, fontWeight: 600, color: `var(--tenant-price, ${TEXT})` }}>{formatVnd(product.showroomPrice)}</span>
         ) : (
           <span style={{ fontSize: 14, color: TEXT_FAINT }}>Liên hệ</span>
         )}
@@ -101,7 +101,7 @@ export default function CatalogProductCard({
         )}
         {/* Quiet on purpose: a saving is information, not a shout. */}
         {discount !== null && discount > 0 && (
-          <span style={{ fontSize: 11, fontWeight: 500, color: '#597080' }}>−{discount}%</span>
+          <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--tenant-discount, #597080)' }}>−{discount}%</span>
         )}
       </div>
 
@@ -109,7 +109,7 @@ export default function CatalogProductCard({
         <Link
           href={'/room-studio' as Route}
           className="mt-3 inline-block self-start transition-opacity hover:opacity-60"
-          style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.07em', color: 'var(--tenant-accent)' }}
+          style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.07em', color: 'var(--tenant-accent-ink)' }}
         >
           THỬ TRONG PHÒNG →
         </Link>

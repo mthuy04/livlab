@@ -11,7 +11,14 @@
  */
 
 import { readFileSync } from 'node:fs';
-import { parseDimensionsToMeters, toRoomStudioProduct } from '../lib/room-studio/productAdapter';
+import {
+  catalogProductToRoomStudio,
+  parseDimensionsToMeters,
+  toRoomStudioProduct,
+} from '../lib/room-studio/productAdapter';
+import type { CatalogProduct } from '../lib/storefront/catalogTypes';
+import { themeCssVars } from '../lib/storefront/tenantExperience';
+import { TENANTS } from '../lib/storefront/tenantConfig';
 import {
   deriveCapability,
   hasCompleteDimensions,
@@ -226,6 +233,83 @@ console.log('\ndanh mục thật (CSV seed)');
   }
   check('tra registry theo SKU không khớp sai',
     findProduct3DAssetForKeys('KHONGTONTAI') === null);
+}
+
+/* ------------------------------------------------- a storefront's catalogue */
+
+console.log('\ndanh mục của showroom trong Room Studio');
+{
+  // The fields the adapter reads; everything else a catalogue row carries is
+  // irrelevant to placement and left out of the fixture.
+  const row = (over: Partial<CatalogProduct>): CatalogProduct =>
+    ({
+      id: 'x', catalogProductId: 'demo:tungdang:X:X', sourceType: 'DEMO_FIXTURE', href: '/products/x',
+      sku: null, name: 'x', brand: 'X', category: 'Lavabo', image: '/x.webp',
+      showroomPrice: 1_000_000, referencePrice: null, dimensions: null,
+      material: null, finish: null, color: null, installationType: null, warranty: null, origin: null,
+      shortDescription: null, ...over,
+    }) as CatalogProduct;
+
+  const toilet = catalogProductToRoomStudio(
+    row({ id: 't', category: 'Bồn cầu', sku: 'ZD7202-SO-CJM305', dimensions: { length: 669, width: 423, height: 503, unit: 'mm' } }),
+    'tungdang'
+  );
+  check('bồn cầu: "dài" là chiều sâu từ tường, không phải bề ngang',
+    toilet.width === 0.423 && toilet.depth === 0.669 && toilet.height === 0.503,
+    [toilet.width, toilet.depth, toilet.height]);
+
+  const basin = catalogProductToRoomStudio(
+    row({ id: 'b', category: 'Lavabo', sku: '12138-1/01Z', dimensions: { length: 595, width: 380, height: 200, unit: 'mm' } }),
+    'tungdang'
+  );
+  check('lavabo: "dài" chạy dọc tường', basin.width === 0.595 && basin.depth === 0.38, [basin.width, basin.depth]);
+
+  // The INAX pilot SKUs have no size in the retailer's listing, but the
+  // registry holds verified manufacturer figures. Those must reach the scene,
+  // or EXACT_DIMENSIONS would be drawn as a category-average box.
+  const inax = catalogProductToRoomStudio(
+    row({ id: 'inax-ac-1008vrn', catalogProductId: 'demo:tungdang:INAX:AC1008VRN', category: 'Bồn cầu', brand: 'INAX', sku: 'AC-1008VRN' }),
+    'tungdang'
+  );
+  check('kích thước hãng đã xác minh đi tới sản phẩm',
+    inax.capability === 'EXACT_DIMENSIONS' && inax.width === 0.4 && inax.depth === 0.805 && inax.height === 0.588,
+    [inax.capability, inax.width, inax.depth, inax.height]);
+
+  const bare = catalogProductToRoomStudio(row({ id: 'n', category: 'Sen tắm', sku: 'P36412-484/1B-1' }), 'tungdang');
+  check('không có kích thước thì không đặt được', !isPlaceable(bare.capability), bare.capability);
+
+  check('không dòng nào của showroom được gắn 3D VERIFIED',
+    [toilet, basin, inax, bare].every((p) => p.capability !== 'VERIFIED_3D'));
+
+  check('giỏ báo giá nhận đúng mục danh mục của showroom',
+    toilet.quoteEntry?.tenantId === 'tungdang' &&
+      toilet.quoteEntry.catalogProductId === 'demo:tungdang:X:X' &&
+      toilet.quoteEntry.sourceContext === 'ROOM_STUDIO',
+    toilet.quoteEntry);
+  check('một giá chào, không nới thành khoảng giá',
+    toilet.priceMin === 1_000_000 && toilet.priceMax === 1_000_000, [toilet.priceMin, toilet.priceMax]);
+}
+
+/* ------------------------------------------------------------ tenant theme */
+
+console.log('\ngiao diện theo showroom');
+{
+  const livlab = TENANTS.livlab;
+  const vars = themeCssVars(livlab.brand, livlab.experience.theme);
+  // Room Studio and the quote drawer keep LivLab's colours as var()
+  // fallbacks; emitting any workspace token for LivLab would override them.
+  check('LivLab không phát token workspace nào', !Object.keys(vars).some((k) => k.startsWith('--tenant-ui-')), vars);
+  check('LivLab: màu chữ nhấn = màu nhấn', vars['--tenant-accent-ink'] === livlab.brand.accent);
+  check('LivLab giữ trang chủ showcase', livlab.experience.home.layout === 'showcase');
+
+  // A library may carry the showroom's name only when it IS the showroom's
+  // catalogue — otherwise the heading describes products it does not sell.
+  for (const tenant of Object.values(TENANTS)) {
+    const title = tenant.experience.copy.roomStudio.libraryTitle;
+    const namesShowroom = title.toLowerCase().includes(tenant.brand.name.toLowerCase());
+    check(`${tenant.id}: tiêu đề thư viện chỉ nêu tên showroom khi là danh mục của showroom`,
+      !namesShowroom || tenant.experience.roomStudioCatalog === 'tenant', title);
+  }
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

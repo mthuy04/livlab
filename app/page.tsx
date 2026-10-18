@@ -8,15 +8,23 @@ import HomeCollections from '@/components/storefront/home/HomeCollections';
 import FeaturedProducts from '@/components/storefront/home/FeaturedProducts';
 import RoomStudioFeature from '@/components/storefront/home/RoomStudioFeature';
 import ShowroomConsultation from '@/components/storefront/home/ShowroomConsultation';
+import CatalogHome from '@/components/storefront/home/CatalogHome';
 import { SectionHeader, ArrowLink, TEXT, TEXT_MUTED } from '@/components/storefront/home/editorial';
 
 /**
- * The storefront homepage: hero, products, space, collections, featured
- * products, Room Studio, consultation. Nothing else — no feature grid, no
- * metrics, no process diagram.
+ * The storefront homepage.
+ *
+ * A tenant whose experience asks for the `catalog` layout gets a homepage
+ * composed from its own catalogue and concept library (see CatalogHome).
+ * Everyone else — LivLab itself included — gets the `showcase` page below,
+ * unchanged: hero, products, space, collections, featured products, Room
+ * Studio, consultation. Nothing else — no feature grid, no metrics, no
+ * process diagram.
  */
 export default async function HomePage() {
   const tenant = await resolveTenant();
+  if (tenant.experience.home.layout === 'catalog') return <CatalogHome tenant={tenant} />;
+
   const { categories, featured, featuredProducts, collections } = await getHomepageData();
 
   const money = (v: number) =>

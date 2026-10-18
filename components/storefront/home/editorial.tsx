@@ -90,7 +90,9 @@ export function SolidLink({
         height: 43,
         paddingInline: 20,
         backgroundColor: onWhite ? '#FFFFFF' : 'var(--tenant-accent)',
-        color: onWhite ? 'var(--tenant-accent)' : 'var(--tenant-accent-contrast)',
+        // On white the label takes the panel colour: the button sits on the
+        // brand panel, and a bright accent as text on white can fail contrast.
+        color: onWhite ? 'var(--tenant-panel)' : 'var(--tenant-accent-contrast)',
         fontSize: 12,
         fontWeight: 600,
         letterSpacing: '.09em',

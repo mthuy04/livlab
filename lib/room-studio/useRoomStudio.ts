@@ -21,6 +21,7 @@ import { clampToRoom, type Vec3 } from './placementRules';
 import * as ops from './roomState';
 import type { PlacedProduct, RoomState } from './roomState';
 import type { UtilityPoint } from '@/lib/technical-advisor/types';
+import type { RoomStudioCatalog, RoomStudioDemoRoom } from '@/lib/storefront/tenantExperience';
 
 const SAVE_DEBOUNCE_MS = 400;
 
@@ -29,7 +30,12 @@ export interface PlacedProductView {
   product: RoomStudioProduct;
 }
 
-export function useRoomStudio() {
+/**
+ * `catalog` picks the product library: LivLab's own, or the storefront's
+ * catalogue. It is fixed for the life of the page — the tenant does not change
+ * under an open workspace.
+ */
+export function useRoomStudio(catalog: RoomStudioCatalog = 'livlab') {
   const [state, setState] = useState<RoomState>(ops.createInitialRoomState);
   const [products, setProducts] = useState<RoomStudioProduct[]>([]);
   const [selectedInstanceId, setSelectedInstanceId] = useState<string | null>(null);
@@ -41,7 +47,7 @@ export function useRoomStudio() {
   useEffect(() => {
     let cancelled = false;
 
-    loadRoomStudioProducts()
+    loadRoomStudioProducts(catalog)
       .then((loaded) => {
         if (!cancelled) setProducts(loaded);
       })
@@ -65,7 +71,7 @@ export function useRoomStudio() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [catalog]);
 
   // Persist through the repository, debounced so dragging a product does not
   // write to storage on every pointer move.
@@ -217,6 +223,41 @@ export function useRoomStudio() {
     setState((prev) => ops.removeUtilityPoint(prev, id));
   }, []);
 
+  /**
+   * Replaces the room with a demonstration room in one state update: size,
+   * finishes, then each product placed by the ordinary placement rules — at
+   * its `at` point as a drop would place it, or where "+ THÊM" would. A
+   * product that is missing or cannot be placed is skipped. Returns how many
+   * products were placed.
+   */
+  const loadPresetRoom = useCallback(
+    (preset: RoomStudioDemoRoom): number => {
+      const chosen = preset.products
+        .map((entry) => ({ entry, product: productById.get(entry.id) }))
+        .filter(
+          (c): c is { entry: (typeof preset.products)[number]; product: RoomStudioProduct } =>
+            Boolean(c.product) && isPlaceable(c.product!.capability)
+        );
+
+      let next = ops.clearProducts(ops.setDimensions(ops.createInitialRoomState(), preset.dimensions));
+      if (preset.floor) next = ops.setSurfaceStyle(next, 'floor', preset.floor as Partial<SurfaceStyle>);
+      if (preset.walls) next = ops.setSurfaceStyle(next, 'walls', preset.walls as Partial<SurfaceStyle>);
+
+      let selectedId: string | null = null;
+      for (const { entry, product } of chosen) {
+        const instanceId = ops.createInstanceId(product.id);
+        const atPoint: Vec3 | undefined = entry.at ? [entry.at[0], 0, entry.at[1]] : undefined;
+        next = ops.addProduct(next, product, { instanceId, atPoint });
+        if (product.id === preset.selectProductId || selectedId === null) selectedId = instanceId;
+      }
+
+      setState(next);
+      setSelectedInstanceId(selectedId);
+      return chosen.length;
+    },
+    [productById]
+  );
+
   const resetRoom = useCallback(() => {
     setState(ops.createInitialRoomState());
     setSelectedInstanceId(null);
@@ -248,6 +289,7 @@ export function useRoomStudio() {
     setStylePreferences,
     addUtilityPoint,
     removeUtilityPoint,
+    loadPresetRoom,
     resetRoom,
   };
 }

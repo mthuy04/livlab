@@ -265,7 +265,7 @@ export default function CompareView({ products }: { products: CatalogProduct[] }
                   </div>
                   {/* A caption, not a badge — and only when it says something. */}
                   {lowestPrice !== null && p.showroomPrice === lowestPrice && (
-                    <p className="mt-1.5" style={{ fontSize: 11, color: 'var(--tenant-accent)' }}>
+                    <p className="mt-1.5" style={{ fontSize: 11, color: 'var(--tenant-accent-ink)' }}>
                       Giá thấp hơn trong nhóm so sánh
                     </p>
                   )}
@@ -273,7 +273,7 @@ export default function CompareView({ products }: { products: CatalogProduct[] }
                   <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2" style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.07em' }}>
                     <Link href={p.href as Route} style={{ color: TEXT }}>XEM CHI TIẾT →</Link>
                     {p.roomStudioReady && (
-                      <Link href={'/room-studio' as Route} style={{ color: 'var(--tenant-accent)' }}>THỬ TRONG PHÒNG →</Link>
+                      <Link href={'/room-studio' as Route} style={{ color: 'var(--tenant-accent-ink)' }}>THỬ TRONG PHÒNG →</Link>
                     )}
                   </div>
                 </div>
@@ -283,7 +283,7 @@ export default function CompareView({ products }: { products: CatalogProduct[] }
             {groups.map((group) => (
               <div key={group.title}>
                 <div style={{ paddingTop: 28, paddingBottom: 10, borderBottom: `1px solid ${BORDER}` }}>
-                  <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.10em', color: 'var(--tenant-accent)' }}>
+                  <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.10em', color: 'var(--tenant-accent-ink)' }}>
                     {group.title}
                   </p>
                 </div>

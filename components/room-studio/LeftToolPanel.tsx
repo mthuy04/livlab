@@ -54,9 +54,9 @@ export default function LeftToolPanel({ active, onChange, counts, children }: Le
                 if (e.key === 'ArrowRight') onChange(TOOL_TABS[(index + 1) % TOOL_TABS.length].id);
                 if (e.key === 'ArrowLeft') onChange(TOOL_TABS[(index - 1 + TOOL_TABS.length) % TOOL_TABS.length].id);
               }}
-              className={`flex flex-1 items-center justify-center gap-1.5 px-2 py-3 text-[13px] font-semibold uppercase tracking-[0.08em] transition-colors ${
+              className={`flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap px-1 py-3 text-[13px] font-semibold uppercase tracking-[0.08em] transition-colors ${
                 isActive
-                  ? 'border-b-2 border-[#0B2239] text-[#0B1623]'
+                  ? 'border-b-2 border-[color:var(--tenant-ui-selected,#0B2239)] text-[#0B1623]'
                   : 'border-b-2 border-transparent text-[#8C9BAB] hover:text-[#3F4F5C]'
               }`}
             >

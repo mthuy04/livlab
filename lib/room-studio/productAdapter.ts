@@ -10,7 +10,9 @@
 
 import { Product } from '@/lib/types';
 import { normalizeCategory } from '@/lib/visualStudioHelpers';
-import { normalizeSku } from '@/lib/storefront/catalogTypes';
+import { normalizeSku, type CatalogProduct } from '@/lib/storefront/catalogTypes';
+import type { RoomStudioCatalog } from '@/lib/storefront/tenantExperience';
+import type { CatalogQuoteEntry } from '@/lib/context/QuoteContext';
 import { getModelMetadata } from './modelMetadata';
 import { findProduct3DAssetForKeys } from './product3dRegistry';
 import { deriveCapability, type RoomStudioCapability } from './productCapability';
@@ -63,6 +65,12 @@ export interface RoomStudioProduct {
   placementType: PlacementType;
   /** The original record, so existing flows (quote basket) keep working as-is. */
   source: Product;
+  /**
+   * Present when the product came from a storefront catalogue. The basket then
+   * takes the catalogue's own entry — tenant, catalogue identity and price
+   * snapshot — exactly as the product page does, instead of the legacy shape.
+   */
+  quoteEntry?: CatalogQuoteEntry;
 }
 
 /**
@@ -183,14 +191,121 @@ export function toRoomStudioProduct(product: Product): RoomStudioProduct {
 /**
  * The ONLY place Room Studio reaches for catalogue data.
  *
- * Today: the verified-products CSV, parsed client-side and cached in
+ * `livlab`: the verified-products CSV, parsed client-side and cached in
  * localStorage by lib/importVerifiedProducts (the same source Visual Studio
  * uses, so both studios always show the same catalogue).
- * Later: replace this body with a Supabase/`/api/products` fetch — no component
- * changes required.
+ *
+ * `tenant`: the storefront's own catalogue, from the same tenant-scoped API
+ * the product grid reads. A showroom's Room Studio then offers exactly what
+ * that showroom sells, and nothing another catalogue holds.
  */
-export async function loadRoomStudioProducts(): Promise<RoomStudioProduct[]> {
+export async function loadRoomStudioProducts(
+  catalog: RoomStudioCatalog = 'livlab'
+): Promise<RoomStudioProduct[]> {
+  if (catalog === 'tenant') return loadTenantCatalogProducts();
   const { importVerifiedProductsFromCsv } = await import('@/lib/importVerifiedProducts');
   const products = await importVerifiedProductsFromCsv(true);
   return (products || []).map(toRoomStudioProduct);
+}
+
+/**
+ * Categories the tenant catalogue sells that Room Studio cannot place yet.
+ *
+ * A bathtub has no placement category here: the classifier files it under
+ * accessories, which hang on a wall. Listing tubs would put a 1.7m bath on
+ * the wall at shelf height, so they stay on the product pages until Room
+ * Studio has a floor-standing bath placement of its own.
+ */
+const NOT_PLACEABLE_IN_ROOM_STUDIO = new Set(['Bồn tắm']);
+
+/**
+ * A catalogue size as Room Studio's "width × depth × height".
+ *
+ * A Vietnamese retailer lists "dài × rộng × cao", where dài is the longest
+ * horizontal side. For a basin or a tub that side runs along the wall; for a
+ * floor toilet it runs FROM the wall, so the two horizontal figures swap.
+ * Nothing is estimated: three figures or none.
+ */
+function catalogueSize(p: CatalogProduct, normalizedCategory: string): string | undefined {
+  const d = p.dimensions;
+  if (!d || !(d.length > 0) || !(d.width > 0) || !(d.height > 0)) return undefined;
+  const long = Math.max(d.length, d.width);
+  const short = Math.min(d.length, d.width);
+  const [along, deep] = normalizedCategory === 'toilet' ? [short, long] : [long, short];
+  return `${along} x ${deep} x ${d.height} ${d.unit || 'mm'}`;
+}
+
+const formatVnd = (v: number) => `${v.toLocaleString('vi-VN')}đ`;
+
+export function catalogProductToRoomStudio(p: CatalogProduct, tenantId: string): RoomStudioProduct {
+  const normalizedCategory = normalizeCategory(p.category);
+  const normalizedSku = normalizeSku(p.sku) || undefined;
+  const asset = findProduct3DAssetForKeys(p.catalogProductId, p.id, normalizedSku);
+
+  // The manufacturer's verified figures win over the retailer's listing, as
+  // they do in `deriveCapability`. Without this the capability would read
+  // EXACT_DIMENSIONS from the asset while the scene drew a category-average
+  // box, because the size itself would never have reached the product.
+  const verified = asset?.qa.dimensionsVerified ? asset.dimensionsMm : null;
+  const size =
+    verified?.width && verified.depth && verified.height
+      ? `${verified.width} x ${verified.depth} x ${verified.height} mm`
+      : catalogueSize(p, normalizedCategory);
+
+  const price = p.showroomPrice ?? 0;
+  const source: Product = {
+    id: p.id,
+    slug: p.href.replace(/^\/products\//, ''),
+    name: p.name,
+    category: p.category,
+    brand: p.brand,
+    sku: p.sku ?? '',
+    // One asking price, as the basket records it — never widened into a range.
+    priceMin: price,
+    priceMax: price,
+    priceRange: p.showroomPrice ? formatVnd(p.showroomPrice) : 'Liên hệ',
+    material: p.material ?? undefined,
+    finish: p.finish ?? undefined,
+    color: p.color ?? undefined,
+    dimensions: size,
+    installationType: p.installationType ?? undefined,
+    warranty: p.warranty ?? undefined,
+    origin: p.origin ?? undefined,
+    image: p.image,
+    description: p.shortDescription ?? '',
+    // Required by the legacy shape and read by nothing in Room Studio. The
+    // catalogue carries no stock or seller facts, so none are written in.
+    availability: '',
+    status: '' as Product['status'],
+    showroomName: '',
+    showroomLocation: '',
+    sellerType: '',
+  };
+
+  return {
+    ...toRoomStudioProduct(source),
+    quoteEntry: {
+      catalogProductId: p.catalogProductId,
+      productId: p.id,
+      sourceType: p.sourceType,
+      tenantId,
+      name: p.name,
+      brand: p.brand,
+      category: p.category,
+      sku: p.sku,
+      image: p.image,
+      showroomPrice: p.showroomPrice,
+      referencePrice: p.referencePrice,
+      sourceContext: 'ROOM_STUDIO',
+    },
+  };
+}
+
+async function loadTenantCatalogProducts(): Promise<RoomStudioProduct[]> {
+  const res = await fetch('/api/storefront/products');
+  if (!res.ok) throw new Error(`catalogue ${res.status}`);
+  const data = (await res.json()) as { tenantId: string; products: CatalogProduct[] };
+  return (data.products ?? [])
+    .filter((p) => !NOT_PLACEABLE_IN_ROOM_STUDIO.has(p.category))
+    .map((p) => catalogProductToRoomStudio(p, data.tenantId));
 }

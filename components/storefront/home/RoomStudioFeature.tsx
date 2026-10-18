@@ -16,7 +16,17 @@ const ROWS = [
   'Ngân sách và lưu ý kỹ thuật theo lựa chọn',
 ];
 
-export default function RoomStudioFeature() {
+export default function RoomStudioFeature({
+  image = ROOM_STUDIO_SCREENSHOT,
+  imageAlt = 'Giao diện Room Studio: nhập kích thước phòng, chọn vật liệu và thư viện sản phẩm',
+}: {
+  /**
+   * A capture of THIS storefront's Room Studio. A showroom's homepage must not
+   * show LivLab's own workspace, whose library is a different catalogue.
+   */
+  image?: string;
+  imageAlt?: string;
+} = {}) {
   return (
     <section className="py-16 md:py-[104px]" style={{ backgroundColor: '#F4F4F1' }}>
       <div className="home-container grid items-center gap-14 md:grid-cols-[1.7fr_1fr] md:gap-20">
@@ -25,8 +35,8 @@ export default function RoomStudioFeature() {
           style={{ border: '1px solid #E4E4E2' }}
         >
           <Image
-            src={ROOM_STUDIO_SCREENSHOT}
-            alt="Giao diện Room Studio: nhập kích thước phòng, chọn vật liệu và thư viện sản phẩm"
+            src={image}
+            alt={imageAlt}
             fill
             sizes="(max-width: 768px) 100vw, 65vw"
             className="object-cover object-left-top"

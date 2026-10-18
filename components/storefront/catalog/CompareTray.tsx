@@ -30,7 +30,7 @@ export default function CompareTray({
       style={{ borderTop: '1px solid #DCDCD9', boxShadow: '0 -2px 10px rgba(0,0,0,.05)' }}
     >
       <div className="home-container flex items-center gap-x-6 overflow-x-auto py-3 no-scrollbar" style={{ minHeight: 72 }}>
-        <p className="shrink-0" style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.09em', color: 'var(--tenant-accent)' }}>
+        <p className="shrink-0" style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.09em', color: 'var(--tenant-accent-ink)' }}>
           SO SÁNH · {products.length}
         </p>
 

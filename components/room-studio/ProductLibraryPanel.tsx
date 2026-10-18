@@ -14,6 +14,11 @@ import {
 } from '@/lib/room-studio/productCapability';
 
 interface ProductLibraryPanelProps {
+  /**
+   * The library's heading. A showroom's storefront names itself here only when
+   * the library is its own catalogue — see `TenantCopy.roomStudio`.
+   */
+  title?: string;
   products: RoomStudioProduct[];
   isLoading: boolean;
   placedProductIds: Set<string>;
@@ -58,6 +63,7 @@ const CAPABILITY_RANK: Record<string, number> = {
 const PAGE_SIZE = 18;
 
 export default function ProductLibraryPanel({
+  title = 'Sản phẩm',
   products,
   isLoading,
   placedProductIds,
@@ -135,14 +141,14 @@ export default function ProductLibraryPanel({
       <div className="shrink-0 border-b border-[#E1E8ED] px-4 pb-3 pt-4">
         <div className="mb-3 flex items-baseline justify-between gap-2">
           <h2 className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[#0B1623]">
-            Sản phẩm
+            {title}
           </h2>
           {/* §41: the Expert is requested, not resident. The floating card used
               to sit over the viewport and the command bar at all times. */}
           <button
             type="button"
             onClick={onSuggestCombo}
-            className="flex items-center gap-1 text-[13px] font-medium text-[#0F3D5C] transition-colors hover:text-[#C8A96A]"
+            className="flex shrink-0 items-center gap-1 text-[13px] font-medium text-[color:var(--tenant-ui-link,#0F3D5C)] transition-colors hover:text-[#C8A96A]"
           >
             <Sparkles className="h-3.5 w-3.5" aria-hidden />
             Gợi ý combo
@@ -163,7 +169,7 @@ export default function ProductLibraryPanel({
             }}
             placeholder="Tìm sản phẩm hoặc thương hiệu"
             aria-label="Tìm sản phẩm"
-            className="w-full rounded border border-[#D8E2EA] bg-white py-2 pl-8.5 pr-3 text-[13px] text-[#0B1623] focus:border-[#0F3D5C] focus:outline-none"
+            className="w-full rounded border border-[#D8E2EA] bg-white py-2 pl-8.5 pr-3 text-[13px] text-[#0B1623] focus:border-[color:var(--tenant-ui-selected,#0F3D5C)] focus:outline-none"
             style={{ paddingLeft: 34 }}
           />
         </div>
@@ -180,7 +186,7 @@ export default function ProductLibraryPanel({
               aria-pressed={activeTab === tab.id}
               className={`whitespace-nowrap rounded border px-2.5 py-1.5 text-[12px] font-medium transition-colors ${
                 activeTab === tab.id
-                  ? 'border-[#0B2239] bg-[#0B2239] text-white'
+                  ? 'border-[color:var(--tenant-ui-selected,#0B2239)] bg-[color:var(--tenant-ui-selected,#0B2239)] text-[color:var(--tenant-ui-selected-contrast,#FFFFFF)]'
                   : 'border-[#D8E2EA] bg-white text-[#5B6B7A] hover:border-[#9AA9B6]'
               }`}
             >
@@ -212,7 +218,7 @@ export default function ProductLibraryPanel({
             <button
               type="button"
               onClick={resetFilters}
-              className="mt-2 text-[13px] font-medium text-[#0F3D5C] underline decoration-[#C8D5DE] underline-offset-4"
+              className="mt-2 text-[13px] font-medium text-[color:var(--tenant-ui-link,#0F3D5C)] underline decoration-[#C8D5DE] underline-offset-4"
             >
               Xoá bộ lọc
             </button>
@@ -328,8 +334,8 @@ export default function ProductLibraryPanel({
                       !placeable
                         ? 'cursor-not-allowed bg-[#F1F5F7] text-[#B4C0C9]'
                         : isPlaced
-                          ? 'bg-[#DCEBF5] text-[#123C5A]'
-                          : 'bg-[#0B3A55] text-white hover:bg-[#082B40]'
+                          ? 'bg-[color:var(--tenant-ui-soft,#DCEBF5)] text-[color:var(--tenant-ui-soft-contrast,#123C5A)]'
+                          : 'bg-[color:var(--tenant-ui-primary,#0B3A55)] text-[color:var(--tenant-ui-primary-contrast,#FFFFFF)] hover:bg-[color:var(--tenant-ui-primary-hover,#082B40)]'
                     }`}
                   >
                     {isPlaced ? 'ĐÃ CÓ' : '+ THÊM'}

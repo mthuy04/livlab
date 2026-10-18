@@ -123,7 +123,7 @@ export default function SelectedProductToolbar({
         <button
           type="button"
           onClick={() => onAddToQuote(selection)}
-          className="flex h-9 items-center gap-1.5 rounded bg-[#123C5A] px-3 text-[12px] font-semibold text-white transition-colors hover:bg-[#0D2B42]"
+          className="flex h-9 items-center gap-1.5 rounded bg-[color:var(--tenant-ui-primary,#123C5A)] px-3 text-[12px] font-semibold text-[color:var(--tenant-ui-primary-contrast,#FFFFFF)] transition-colors hover:bg-[color:var(--tenant-ui-primary-hover,#0D2B42)]"
         >
           <Wallet className="h-4 w-4" aria-hidden />
           {isInQuote ? 'Đã trong giỏ' : 'Vào giỏ'}

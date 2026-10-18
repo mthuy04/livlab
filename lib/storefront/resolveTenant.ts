@@ -5,6 +5,8 @@ import {
   TENANTS,
   type TenantStorefrontConfig,
 } from './tenantConfig';
+import { themeCssVars } from './tenantExperience';
+import { tenantFont } from './tenantFonts';
 
 /**
  * Decides which storefront a request is looking at.
@@ -127,13 +129,18 @@ export async function resolveTenant(): Promise<TenantStorefrontConfig> {
  * The CSS custom properties a tenant controls.
  *
  * Applied once, on the storefront shell, so no component inlines a tenant
- * colour. Everything downstream reads var(--tenant-accent) and a new tenant
- * needs no component changes at all.
+ * colour. Everything downstream reads `var(--tenant-*)` and a new tenant
+ * needs no component changes at all. The token set is defined beside the
+ * experience types, in `tenantExperience.ts`.
  */
 export function tenantCssVars(tenant: TenantStorefrontConfig): Record<string, string> {
-  return {
-    '--tenant-accent': tenant.brand.accent,
-    '--tenant-accent-hover': tenant.brand.accentHover,
-    '--tenant-accent-contrast': tenant.brand.accentContrast,
-  };
+  const vars = themeCssVars(tenant.brand, tenant.experience.theme);
+  const font = tenantFont(tenant.experience.theme.font);
+  if (font) vars['--tenant-font-family'] = font.family;
+  return vars;
+}
+
+/** The class that declares the tenant's font, for <html>. Empty for the default. */
+export function tenantFontClass(tenant: TenantStorefrontConfig): string {
+  return tenantFont(tenant.experience.theme.font)?.className ?? '';
 }

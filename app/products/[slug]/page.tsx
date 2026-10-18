@@ -153,7 +153,7 @@ export default async function ProductDetailPage({ params }: Props) {
                 </p>
                 <div className="mt-2.5 flex flex-wrap items-baseline gap-x-4 gap-y-1">
                   {pricing.showroomPrice ? (
-                    <span style={{ fontSize: 'clamp(24px, 1.2rem + .7vw, 30px)', fontWeight: 600, color: TEXT }}>
+                    <span style={{ fontSize: 'clamp(24px, 1.2rem + .7vw, 30px)', fontWeight: 600, color: `var(--tenant-price, ${TEXT})` }}>
                       {formatVnd(pricing.showroomPrice)}
                     </span>
                   ) : (
@@ -167,7 +167,7 @@ export default async function ProductDetailPage({ params }: Props) {
                     </span>
                   )}
                   {pricing.discountPercent !== null && pricing.discountPercent > 0 && (
-                    <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--tenant-accent)' }}>
+                    <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--tenant-discount, var(--tenant-accent))' }}>
                       −{pricing.discountPercent}%
                     </span>
                   )}

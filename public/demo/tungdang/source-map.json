@@ -1,0 +1,16 @@
+{
+  "notice": "The showroom's own logo, collected from its public website for a LivLab visual-commerce DEMO. LivLab does not own this mark and has no partnership with the showroom. Rights must be cleared before any commercial use.",
+  "logo": {
+    "file": "/demo/tungdang/logo.png",
+    "sourceUrl": "https://beptungdang.vn/wp-content/themes/banbep/frontend/img/logo.png",
+    "collectedAt": "2026-10-18",
+    "pixels": "1096x290",
+    "bytes": 19350,
+    "note": "Unmodified original: transparent PNG, grey #6C6C6D and gold #BFA552, tagline 'Thiết bị bếp - Phòng tắm nhập khẩu' is part of the artwork."
+  },
+  "roomStudioCapture": {
+    "file": "/demo/tungdang/room-studio.webp",
+    "source": "LivLab's own UI: /room-studio?demo=1 on the Tùng Đăng storefront, captured 2026-10-18 at 1440x1097 and cropped below the site header.",
+    "note": "Products are drawn as true-size volumes from catalogue or verified manufacturer dimensions; no manufacturer 3D geometry is shown."
+  }
+}

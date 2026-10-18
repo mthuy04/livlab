@@ -173,7 +173,7 @@ export default function SurfaceMaterialPanel({
                 aria-pressed={isActive}
                 className={`flex items-center gap-2 rounded border p-2 text-left transition-colors ${
                   isActive
-                    ? 'border-[#0F3D5C] bg-[#F3F7FA] shadow-sm'
+                    ? 'border-[color:var(--tenant-ui-selected,#0F3D5C)] bg-[#F3F7FA] shadow-sm'
                     : 'border-[#E6EDF2] bg-white hover:border-[#C8A96A]/70'
                 }`}
               >
@@ -214,7 +214,7 @@ export default function SurfaceMaterialPanel({
                 aria-pressed={isActive}
                 className={`aspect-square rounded-full border-2 transition-all ${
                   isActive
-                    ? 'border-[#0F3D5C] ring-2 ring-[#0F3D5C]/15 ring-offset-1'
+                    ? 'border-[color:var(--tenant-ui-selected,#0F3D5C)] ring-2 ring-[#0F3D5C]/15 ring-offset-1'
                     : 'border-black/10 hover:border-[#C8A96A]'
                 }`}
                 style={{ backgroundColor: color.hex }}
@@ -242,7 +242,7 @@ export default function SurfaceMaterialPanel({
                 title={antiSlip ? 'Bề mặt nhám — tăng độ chống trơn cho sàn ướt' : finish.name}
                 className={`rounded border px-3 py-1.5 text-[12px] font-medium transition-colors ${
                   isActive
-                    ? 'border-[#0F3D5C] bg-[#0F3D5C] text-white'
+                    ? 'border-[color:var(--tenant-ui-selected,#0F3D5C)] bg-[color:var(--tenant-ui-selected,#0F3D5C)] text-[color:var(--tenant-ui-selected-contrast,#FFFFFF)]'
                     : 'border-[#E6EDF2] bg-white text-[#627386] hover:border-[#C8A96A]'
                 }`}
               >

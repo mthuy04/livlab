@@ -174,7 +174,7 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
                     onClick={() => update({ category: selected ? null : entry.key, subcategories: [] })}
                     aria-pressed={selected}
                     className="relative flex shrink-0 flex-col items-center justify-center gap-2.5 pb-5 pt-4"
-                    style={{ width: 112, color: selected ? 'var(--tenant-accent)' : '#343434' }}
+                    style={{ width: 112, color: selected ? 'var(--tenant-accent-ink)' : '#343434' }}
                   >
                     <span className="grid place-items-center" style={{ width: 32, height: 32 }}>
                       <Icon style={{ width: 27, height: 27 }} />
@@ -313,7 +313,7 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
             {compareIds.length > 0 ? (
               <Link
                 href={`/compare?ids=${compareIds.join(',')}` as Route}
-                style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.09em', color: 'var(--tenant-accent)' }}
+                style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.09em', color: 'var(--tenant-accent-ink)' }}
               >
                 SO SÁNH · {compareIds.length}
               </Link>

@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import type { TenantCopy } from '@/lib/storefront/tenantExperience';
+import { EDITORIAL_EXPERIENCE } from '@/lib/storefront/tenantExperience';
 import { ArrowLink, SolidLink } from './editorial';
 
 /**
@@ -9,7 +11,14 @@ import { ArrowLink, SolidLink } from './editorial';
  */
 export const HERO_IMAGE = '/images/hero-bathroom-luxury.png';
 
-export default function HomeHero({ roomStudio }: { roomStudio: boolean }) {
+export default function HomeHero({
+  roomStudio,
+  copy = EDITORIAL_EXPERIENCE.copy.hero,
+}: {
+  roomStudio: boolean;
+  /** Defaults to the LivLab storefront's own words. */
+  copy?: TenantCopy['hero'];
+}) {
   return (
     <section className="relative h-[650px] overflow-hidden max-md:h-[72svh] max-md:min-h-[580px]">
       <Image
@@ -28,18 +37,23 @@ export default function HomeHero({ roomStudio }: { roomStudio: boolean }) {
             className="text-[40px] leading-[1.1] md:text-[44px]"
             style={{ fontWeight: 500, letterSpacing: '-0.025em' }}
           >
-            Thấy trước không gian.
-            <br />
-            Chọn đúng thiết bị.
+            {copy.titleLines.map((line, i) => (
+              <span key={line}>
+                {i > 0 && <br />}
+                {line}
+              </span>
+            ))}
           </h1>
 
           <p className="mt-6 max-w-[460px] text-[16px] leading-[1.7] text-white/85">
-            Khám phá thiết bị thật trong từng không gian và thử trực tiếp với kích thước phòng của bạn.
+            {copy.body}
           </p>
 
           <div className="mt-8 flex items-center gap-8 max-sm:flex-col max-sm:items-start max-sm:gap-5">
-            <SolidLink href="/concepts" tone="white">KHÁM PHÁ KHÔNG GIAN</SolidLink>
-            {roomStudio && <ArrowLink href="/room-studio" tone="light">MỞ ROOM STUDIO</ArrowLink>}
+            <SolidLink href={copy.primaryCta.href} tone="white">{copy.primaryCta.label}</SolidLink>
+            {roomStudio && copy.secondaryCta && (
+              <ArrowLink href={copy.secondaryCta.href} tone="light">{copy.secondaryCta.label}</ArrowLink>
+            )}
           </div>
         </div>
       </div>

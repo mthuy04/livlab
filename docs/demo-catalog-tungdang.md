@@ -1,8 +1,14 @@
 # Tùng Đăng sanitaryware demo catalogue
 
-Internal demo data for an **unsigned** showroom. Nothing in the product, the
-code or the copy claims a partnership, and the tenant it feeds is named
-"Showroom Demo" rather than the source's brand.
+Demo data for an **unsigned** showroom. Nothing in the product, the code or the
+copy claims a partnership.
+
+Since 2026-10-18 the `tungdang` tenant is presented as a white-label
+demonstration under the showroom's own name and logo (stored locally, provenance
+in `public/demo/tungdang/source-map.json`), with its public hotline. Every page
+carries "Trải nghiệm showroom số trên LivLab" and the Powered-by credit, and no
+copy uses partnership or endorsement wording. Before this it was shown as
+"Showroom Demo".
 
 ## Running the import
 

@@ -48,3 +48,29 @@ showroom goes live:
   storefronts would carry a basket across brands.
 - `GET /api/products` — returns the whole catalogue with no showroom filter.
   `TenantCatalogScope` already records the intent; nothing reads it yet.
+
+## The experience layer
+
+`TenantStorefrontConfig.experience` (`lib/storefront/tenantExperience.ts`) is
+what lets two showrooms differ in more than a logo and a colour. It is plain
+data in four parts, and no component branches on a tenant id:
+
+| Part | What it controls |
+|---|---|
+| `theme` | Tokens emitted once as `--tenant-*` CSS variables: ink, accent-as-text (`accentInk`), brand panel, price and discount colours, radius, heading tracking, typeface. `--tenant-ui-*` drive Room Studio and the quote drawer, and are only emitted when set, so LivLab keeps its original colours as `var()` fallbacks. |
+| `variants` | `header` (`editorial` / `retail`), `hero` (`editorial` / `commerce`), `categoryNav` (`stage` / `iconRail`), `productCard` (`editorial` / `priceLed`). Names describe a treatment, never a showroom. |
+| `home` | `showcase` (LivLab's own homepage, unchanged) or `catalog`: the listed sections, in order, built from the tenant's catalogue and concept library by `CatalogHome`. |
+| `copy`, `merchandising` | Customer-facing strings (hero, sections, quote, Room Studio) and the showroom's picks: featured product ids, the hero concept, a Room Studio capture. |
+
+Plus `roomStudioCatalog` (`livlab` CSV or the `tenant` catalogue) and an optional
+`roomStudioDemo`, opened with `/room-studio?demo=1`.
+
+**A second showroom** is a new `TenantStorefrontConfig` with its own values —
+for an architectural, editorial showroom: `variants` of `editorial` / `editorial`
+/ `stage` / `editorial`, a `home.sections` list without `brands`, dark ink and an
+ivory surface in `theme`, its own `font`, and copy that leads with collections
+rather than prices. A new typeface is one registration in `tenantFonts.ts`.
+Nothing is forked and no page is duplicated.
+
+Persisting this later means one `Json` column (`experience`) validated against
+the TypeScript type, plus the logo upload already listed above.
