@@ -233,8 +233,13 @@ console.log('\nF. danh mục Tùng Đăng');
   );
   const td = rows.map((r) => catalogProductToRoomStudio(r, 'tungdang'));
   const with3d = td.filter((p) => p.reconstruction);
-  check('chỉ AC-1017VRN và AC-912VN có mô hình (đúng các mã showroom bán)',
-    with3d.map((p) => p.sku).sort().join() === ['AC-1017VRN', 'AC-912VN'].join(), with3d.map((p) => p.sku));
+  check('cả năm mã INAX tái tạo có mô hình (đúng các mã showroom bán)',
+    with3d.map((p) => p.sku).sort().join() === ['AC-1017VRN', 'AC-912VN', 'BF-1656V', 'BFV-70S', 'L-293V'].join(), with3d.map((p) => p.sku));
+  check('bồn tắm, sen và lavabo INAX mang giá showroom, không phải "Liên hệ"',
+    ['BF-1656V', 'BFV-70S', 'L-293V'].every((sku) => {
+      const entry = td.find((p) => p.sku === sku);
+      return Boolean(entry?.quoteEntry?.showroomPrice && entry.quoteEntry.tenantId === 'tungdang');
+    }));
   check('không sản phẩm JOMOO/TOTO/CAESAR/VIGLACERA nào nhận mô hình INAX',
     td.filter((p) => p.brand !== 'INAX').every((p) => !p.reconstruction));
   const ac1017 = td.find((p) => p.sku === 'AC-1017VRN')!;

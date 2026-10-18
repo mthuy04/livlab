@@ -20,9 +20,9 @@ AC-1017VRN, AC-912VN, BF-1656V, BFV-70S and L-293V(FC). Source package:
 |---|---|---|---|---|
 | AC-1017VRN web | 400 × 805 × 588 | 57 264 | floor, 20 mm wall gap (LivLab default) | Tùng Đăng fixture; LivLab library entry |
 | AC-912VN web | 372 × 721 × 680 | 13 876 | floor, 15 mm wall gap (drawing) | Tùng Đăng fixture; LivLab library entry |
-| BF-1656V web | 1600 × 800 × 560 | 13 012 | floor, 20 mm | LivLab library entry only |
-| BFV-70S web | 294 × 523.5 × 1638 (envelope) | 17 140 | wall, mixer 1000 mm (800–1200) | LivLab library entry only |
-| L-293V basin_only | 500 × 450 × 155 | 4 418 | countertop 800 mm (700–950) | LivLab library entry only |
+| BF-1656V web | 1600 × 800 × 560 | 13 012 | floor, 20 mm | Tùng Đăng fixture (market price, added 2026-10-19 for the demo); LivLab library entry |
+| BFV-70S web | 294 × 523.5 × 1638 (envelope) | 17 140 | wall, mixer 1000 mm (800–1200) | Tùng Đăng fixture (market price, added 2026-10-19 for the demo); LivLab library entry |
+| L-293V basin_only | 500 × 450 × 155 | 4 418 | countertop 800 mm (700–950) | Tùng Đăng fixture (market price, added 2026-10-19 for the demo); LivLab library entry |
 | L-293V web (illustrative tap) | 500 × 450 × 278.75 | 4 250 | countertop | variant switch |
 
 Renderer scale is exactly 1 and the worst dimension error is 4.8e-6 %. All seven
