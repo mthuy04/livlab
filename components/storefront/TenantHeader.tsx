@@ -91,6 +91,8 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                 <img
                   src={tenant.brand.logo}
                   alt={tenant.brand.logoAlt ?? tenant.brand.name}
+                  width={tenant.brand.logoWidth}
+                  height={tenant.brand.logoHeight}
                   // A lockup with its descriptor set inside it needs the height
                   // to stay legible; a bare wordmark does not.
                   className={retail ? 'h-10 w-auto lg:h-[40px] xl:h-[50px]' : 'h-9 w-auto lg:h-[40px]'}
@@ -245,7 +247,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
             <div className="flex h-16 items-center justify-between">
               {tenant.brand.logo && !logoFailed ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={tenant.brand.logo} alt={tenant.brand.logoAlt ?? tenant.brand.name} className="h-9 w-auto" />
+                <img src={tenant.brand.logo} alt={tenant.brand.logoAlt ?? tenant.brand.name} width={tenant.brand.logoWidth} height={tenant.brand.logoHeight} className="h-9 w-auto" />
               ) : (
                 <span className="text-[19px] font-semibold tracking-tight">{tenant.brand.name}</span>
               )}

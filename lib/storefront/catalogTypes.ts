@@ -68,6 +68,11 @@ export interface CatalogDimensions {
 /** Which adapter produced a row. The page never branches on it; dedupe does. */
 export type ProductSourceType = 'DATABASE' | 'DEMO_FIXTURE';
 
+/** Whether a row is a purchasable identity or only a sourced catalogue type. */
+export type CatalogRecordType = 'PRODUCT_TYPE' | 'VERIFIED_SKU';
+export type VerificationStatus = 'SOURCE_EXTRACTED' | 'SOURCE_VERIFIED' | 'UNVERIFIED';
+export type CatalogPriceType = 'SHOWROOM_OFFER' | 'MARKET_REFERENCE' | 'CATEGORY_REFERENCE' | 'NONE';
+
 export interface CatalogProduct {
   /**
    * The storefront key: route segment, save/compare id, quote line id.
@@ -100,6 +105,15 @@ export interface CatalogProduct {
   category: string;
   subcategory: string | null;
 
+  /** Product types are browse/RFQ records and must never be presented as SKUs. */
+  recordType: CatalogRecordType;
+  verificationStatus: VerificationStatus;
+  originalSourceLabel: string | null;
+  rightsStatus: string | null;
+  /** Research evidence only; never used as the rendered product image. */
+  sourceImageEvidenceUrl: string | null;
+  sourceImageMatchCount: number | null;
+
   image: string;
   additionalImages: string[];
   technicalDrawing: string | null;
@@ -108,6 +122,13 @@ export interface CatalogProduct {
   showroomPrice: number | null;
   /** List/reference price, shown struck through only when it is higher. */
   referencePrice: number | null;
+  /** Independent external reference; never a Giang Sơn selling price. */
+  marketReferencePrice: number | null;
+  priceType: CatalogPriceType;
+  priceUnit: string | null;
+  priceSourceName: string | null;
+  priceSourceUrl: string | null;
+  priceCheckedAt: string | null;
 
   dimensions: CatalogDimensions | null;
   dimensionsRaw: string | null;

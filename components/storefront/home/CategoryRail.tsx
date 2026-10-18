@@ -18,10 +18,12 @@ export default function CategoryRail({
   title,
   categories,
   productCount,
+  itemNoun = 'sản phẩm',
 }: {
   title: string;
   categories: HomeCategory[];
   productCount: number;
+  itemNoun?: string;
 }) {
   if (categories.length === 0) return null;
 
@@ -40,7 +42,7 @@ export default function CategoryRail({
             className="transition-colors hover:text-[color:var(--tenant-accent-ink)]"
             style={{ fontSize: 11.5, fontWeight: 600, letterSpacing: '.1em', color: '#5E5C58' }}
           >
-            XEM TẤT CẢ {productCount} SẢN PHẨM →
+            XEM TẤT CẢ {productCount} {itemNoun.toUpperCase()} →
           </Link>
         </div>
 
@@ -54,10 +56,11 @@ export default function CategoryRail({
               href={category.href}
               label={category.name}
               count={category.count}
+              itemNoun={itemNoun}
               Icon={iconFor(category.name)}
             />
           ))}
-          <RailItem href="/products" label="Tất cả" count={productCount} Icon={AllIcon} />
+          <RailItem href="/products" label="Tất cả" count={productCount} itemNoun={itemNoun} Icon={AllIcon} />
         </ul>
       </div>
     </section>
@@ -69,10 +72,12 @@ function RailItem({
   label,
   count,
   Icon,
+  itemNoun = 'sản phẩm',
 }: {
   href: string;
   label: string;
   count: number;
+  itemNoun?: string;
   Icon: ReturnType<typeof iconFor>;
 }) {
   return (
@@ -93,7 +98,7 @@ function RailItem({
           {label.toUpperCase()}
         </span>
         <span className="mt-1" style={{ fontSize: 12, color: '#8A8782' }}>
-          {count} sản phẩm
+          {count} {itemNoun}
         </span>
         {/* The accent arrives on hover, as a rule along the item's foot. */}
         <span

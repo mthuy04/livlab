@@ -91,17 +91,34 @@ interface DemoFixture {
     roughIn: string | null;
     technologies: string[];
     shortDescription: string | null;
+    recordType?: CatalogProduct['recordType'];
+    verificationStatus?: CatalogProduct['verificationStatus'];
+    originalSourceLabel?: string | null;
+    rightsStatus?: string | null;
+    sourceImageEvidenceUrl?: string | null;
+    sourceImageMatchCount?: number | null;
+    marketReferencePrice?: number | null;
+    priceType?: CatalogProduct['priceType'];
+    priceUnit?: string | null;
+    priceSourceName?: string | null;
+    priceSourceUrl?: string | null;
+    priceCheckedAt?: string | null;
+    manufacturerUrl?: string | null;
+    manufacturerReferencePrice?: number | null;
+    imageSource?: ImageSource;
   }[];
 }
 
-let fixtureCache: DemoFixture | null = null;
+const fixtureCache = new Map<string, DemoFixture>();
 
 async function loadFixture(file: string): Promise<DemoFixture | null> {
-  if (fixtureCache) return fixtureCache;
+  const cached = fixtureCache.get(file);
+  if (cached) return cached;
   try {
     const raw = await readFile(join(process.cwd(), 'data', 'demo', file), 'utf8');
-    fixtureCache = JSON.parse(raw) as DemoFixture;
-    return fixtureCache;
+    const parsed = JSON.parse(raw) as DemoFixture;
+    fixtureCache.set(file, parsed);
+    return parsed;
   } catch {
     return null;
   }
@@ -121,8 +138,16 @@ async function fromFixture(tenant: TenantStorefrontConfig, file: string): Promis
   const verdicts = await imageVerdicts(tenant.id);
 
   const products: CatalogProduct[] = fixture.products
-    // §39: a card needs a name, a brand, a category and an image.
-    .filter((p) => p.name && p.brand && p.category && p.primaryImage && isSanitaryware(p.category))
+    // A row needs enough information to remain usable. Tenant categories are
+    // the scope: Giang Sơn intentionally extends beyond sanitaryware.
+    .filter(
+      (p) =>
+        p.name &&
+        p.brand &&
+        p.category &&
+        p.primaryImage &&
+        (tenant.catalogScope.categories.length === 0 || tenant.catalogScope.categories.includes(p.category))
+    )
     .map((p) => {
       const id = fixtureId(p.brand, p.sku, p.name);
       const verdict = verdicts.get(id);
@@ -148,14 +173,20 @@ async function fromFixture(tenant: TenantStorefrontConfig, file: string): Promis
         brand,
         category: p.category,
         subcategory: p.subcategory,
+        recordType: p.recordType ?? 'VERIFIED_SKU',
+        verificationStatus: p.verificationStatus ?? 'SOURCE_VERIFIED',
+        originalSourceLabel: p.originalSourceLabel ?? p.name,
+        rightsStatus: p.rightsStatus ?? null,
+        sourceImageEvidenceUrl: p.sourceImageEvidenceUrl ?? null,
+        sourceImageMatchCount: p.sourceImageMatchCount ?? null,
         // The audit may have found a cleaner sibling than the one the
         // importer picked; prefer it.
         image: verdict?.replacementImage ?? (p.primaryImage as string),
         imageStatus: status,
         imagePresentable: !isRejected(status),
-        imageSource: 'RETAILER' as ImageSource,
-        manufacturerUrl: null,
-        manufacturerReferencePrice: null,
+        imageSource: p.imageSource ?? ('RETAILER' as ImageSource),
+        manufacturerUrl: p.manufacturerUrl ?? null,
+        manufacturerReferencePrice: p.manufacturerReferencePrice ?? null,
         documents: [],
         galleryImages: [],
         compatibleSkus: [],
@@ -168,6 +199,12 @@ async function fromFixture(tenant: TenantStorefrontConfig, file: string): Promis
           p.referencePrice && p.showroomPrice && p.referencePrice > p.showroomPrice
             ? p.referencePrice
             : null,
+        marketReferencePrice: p.marketReferencePrice ?? null,
+        priceType: p.priceType ?? (p.showroomPrice ? 'SHOWROOM_OFFER' : 'NONE'),
+        priceUnit: p.priceUnit ?? null,
+        priceSourceName: p.priceSourceName ?? null,
+        priceSourceUrl: p.priceSourceUrl ?? null,
+        priceCheckedAt: p.priceCheckedAt ?? null,
         dimensions: p.dimensions,
         dimensionsRaw: p.dimensionsRaw,
         color: p.color,
@@ -272,6 +309,12 @@ async function fromDatabase(tenant: TenantStorefrontConfig): Promise<Catalog> {
         brand,
         category: normaliseCategory(p.category) as string,
         subcategory: null,
+        recordType: 'VERIFIED_SKU',
+        verificationStatus: 'SOURCE_VERIFIED',
+        originalSourceLabel: p.name,
+        rightsStatus: null,
+        sourceImageEvidenceUrl: null,
+        sourceImageMatchCount: null,
         image: verdict?.replacementImage ?? (p.imageUrl as string),
         imageStatus: status,
         imagePresentable: !isRejected(status),
@@ -286,6 +329,12 @@ async function fromDatabase(tenant: TenantStorefrontConfig): Promise<Catalog> {
         technicalDrawing: null,
         showroomPrice,
         referencePrice: reference && showroomPrice && reference > showroomPrice ? reference : null,
+        marketReferencePrice: null,
+        priceType: showroomPrice ? 'SHOWROOM_OFFER' : 'NONE',
+        priceUnit: 'sản phẩm',
+        priceSourceName: null,
+        priceSourceUrl: null,
+        priceCheckedAt: null,
         dimensions: null,
         dimensionsRaw: p.dimensions,
         color: null,
@@ -365,6 +414,7 @@ function withManufacturer(product: CatalogProduct, record: ManufacturerRecord | 
 /** Fixture-backed tenants, by tenant id. Everything else reads the database. */
 const FIXTURE_TENANTS: Record<string, string> = {
   tungdang: 'tungdang-sanitaryware.json',
+  giangson: 'giangson-catalog.json',
 };
 
 /**

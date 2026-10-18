@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Plus } from 'lucide-react';
 import {
   describeSurfaceStyle,
@@ -12,11 +12,14 @@ import {
   type SurfaceId,
   type SurfaceStyle,
 } from '@/lib/room-studio/materials';
+import type { RoomDimensions } from '@/lib/room-studio/roomGeometry';
+import { estimateSurfaceMaterial } from '@/lib/room-studio/materialEstimate';
 
 interface SurfaceMaterialPanelProps {
   surfaceStyles: Record<SurfaceId, SurfaceStyle>;
   /** Patches ONE axis at a time; the state layer re-normalises the rest. */
   onStyleChange: (surface: SurfaceId, patch: Partial<SurfaceStyle>) => void;
+  dimensions: RoomDimensions;
 }
 
 const SURFACES: { id: SurfaceId; label: string }[] = [
@@ -95,13 +98,19 @@ function patternBackground(material: Pick<MaterialOption, 'pattern' | 'realWorld
 export default function SurfaceMaterialPanel({
   surfaceStyles,
   onStyleChange,
+  dimensions,
 }: SurfaceMaterialPanelProps) {
   const [activeSurface, setActiveSurface] = useState<SurfaceId>('floor');
   const [showAllMaterials, setShowAllMaterials] = useState(false);
   const [showAllColors, setShowAllColors] = useState(false);
+  const [wastage, setWastage] = useState(10);
 
   const style = surfaceStyles[activeSurface];
   const resolved = resolveSurfaceMaterial(style);
+  const estimate = useMemo(
+    () => estimateSurfaceMaterial(activeSurface, dimensions, wastage),
+    [activeSurface, dimensions, wastage]
+  );
 
   const materials = getMaterialsForSurface(activeSurface);
   const colors = getColorsForMaterial(style.material);
@@ -251,6 +260,23 @@ export default function SurfaceMaterialPanel({
               </button>
             );
           })}
+        </div>
+      </Section>
+
+      <Section label="Ước tính vật liệu sơ bộ">
+        <div className="rounded border border-[#D8E4E7] bg-[#F7FAFA] p-3.5">
+          <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-[12px]">
+            <dt className="text-[#75848B]">Diện tích bề mặt</dt><dd className="text-right font-semibold text-[#243746]">{estimate.surfaceAreaM2.toLocaleString('vi-VN')} m²</dd>
+            <dt className="text-[#75848B]">Vật liệu dự kiến</dt><dd className="text-right font-semibold text-[#105F95]">{estimate.estimatedMaterialM2.toLocaleString('vi-VN')} m²</dd>
+          </dl>
+          <label className="mt-3 flex items-center justify-between gap-3 text-[12px] text-[#5E6A70]">
+            Hao hụt dự kiến
+            <span className="flex items-center gap-1"><input type="number" min="0" max="30" step="1" value={wastage} onChange={(event) => setWastage(Number(event.target.value) || 0)} className="h-8 w-16 border border-[#C9D6D9] bg-white px-2 text-right outline-none focus:border-[#105F95]" />%</span>
+          </label>
+          <p className="mt-3 text-[11px] leading-5 text-[#75848B]">
+            {activeSurface === 'walls' ? 'Tường tính theo chu vi × chiều cao; V1 chưa trừ cửa hoặc ô mở.' : 'Sàn tính theo chiều dài × chiều rộng.'} Đây là ước tính quy hoạch, không phải BOQ thi công.
+          </p>
+          <p className="mt-2 text-[11px] leading-5 text-[#75848B]">Preset vật liệu là kiểu hiển thị, chưa phải SKU. Không tính số hộp hoặc giá khi chưa có quy cách đóng gói và giá có nguồn.</p>
         </div>
       </Section>
 

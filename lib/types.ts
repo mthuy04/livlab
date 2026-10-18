@@ -202,6 +202,9 @@ export interface QuoteItem {
   sourceContext?: string;
   /** What the showroom was asking at the moment the customer added it. */
   priceSnapshot?: number | null;
+  /** Classification retained so an external reference never becomes an offer. */
+  priceType?: 'SHOWROOM_OFFER' | 'MARKET_REFERENCE' | 'CATEGORY_REFERENCE' | 'NONE';
+  priceUnit?: string | null;
   name: string;
   category: string;
   brand: string;

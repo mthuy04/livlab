@@ -104,14 +104,51 @@ export function MirrorIcon(props: IconProps) {
   );
 }
 
+/** Finishing tile: four laid modules with two grout axes. */
+export function TileIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M4 4h16v16H4zM12 4v16M4 12h16" />
+      <path d="m6.5 9 2.5-2.5L11 8.5M14 17l2.5-2.5 1.5 1.5" />
+    </svg>
+  );
+}
+
+/** Electrical range: a restrained bolt inside the circuit boundary. */
+export function ElectricalIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <rect x="4" y="3.5" width="16" height="17" rx="2" />
+      <path d="m13.5 6-5 7H12l-1.5 5 5-7H12l1.5-5Z" />
+    </svg>
+  );
+}
+
+/** Water-industry material: pipe elbow and controlled drop. */
+export function WaterMaterialIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M4 5h7v5a4 4 0 0 0 4 4h2" />
+      <path d="M2.5 3v4M5.5 3v4M17 11.5h4v5h-4z" />
+      <path d="M19 18.5s-1.5 1.4-1.5 2.2a1.5 1.5 0 0 0 3 0c0-.8-1.5-2.2-1.5-2.2Z" />
+    </svg>
+  );
+}
+
 /** Which icon a category label gets. Unknown labels fall back to the grid. */
 export const CATEGORY_ICONS: Record<string, (props: IconProps) => React.ReactElement> = {
   'Bồn cầu': ToiletIcon,
   Lavabo: BasinIcon,
+  'Chậu rửa': BasinIcon,
   'Vòi lavabo': FaucetIcon,
+  'Vòi nước': FaucetIcon,
   'Sen tắm': ShowerIcon,
+  'Vòi sen': ShowerIcon,
   'Bồn tắm': BathtubIcon,
   'Gương & phụ kiện': MirrorIcon,
+  'Gạch ốp lát': TileIcon,
+  'Thiết bị điện': ElectricalIcon,
+  'Vật liệu ngành nước': WaterMaterialIcon,
 };
 
 export const iconFor = (category: string) => CATEGORY_ICONS[category] ?? AllIcon;

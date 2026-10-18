@@ -8,6 +8,7 @@ import Link from 'next/link';
 
 export default function QuoteSummary() {
   const { items, removeItem, clearAll, increase, decrease, totalMin, totalMax } = useQuote();
+  const unknownPriceCount = items.filter((item) => !item.priceMin || item.priceMin <= 0).length;
 
   const fmtVnd   = (n: number) => n.toLocaleString('vi-VN') + 'đ';
 
@@ -99,10 +100,11 @@ export default function QuoteSummary() {
 
       {items.length > 0 && (
         <div className="bg-[#EEF4F7] rounded-2xl p-4 mb-5">
-          <p className="text-xs text-[#627386] mb-1">Tổng giá tham khảo</p>
-          <p className="text-xl font-bold text-[#0B1623]">{fmtVnd(totalMin)} – {fmtVnd(totalMax)}</p>
+          <p className="text-xs text-[#627386] mb-1">{unknownPriceCount ? 'Tạm tính các mục đã có giá tham khảo' : 'Tổng giá tham khảo'}</p>
+          <p className="text-xl font-bold text-[#0B1623]">{totalMax > 0 ? `${fmtVnd(totalMin)} – ${fmtVnd(totalMax)}` : 'Cần xác nhận giá'}</p>
+          {unknownPriceCount > 0 && <p className="mt-1 text-[11px] font-medium text-[#8A5A23]">+ {unknownPriceCount} mục chưa có giá</p>}
           <p className="text-[11px] text-[#627386] mt-2 leading-relaxed">
-            Đây là giá tham khảo. Báo giá cuối sẽ được LivLab/showroom xác nhận sau khi kiểm tra tồn kho, diện tích và phương án lắp đặt.
+            Giá thị trường/tham khảo không phải báo giá chính thức. Giá cuối được đơn vị tiếp nhận xác nhận sau khi kiểm tra nhu cầu và phương án cung ứng.
           </p>
         </div>
       )}

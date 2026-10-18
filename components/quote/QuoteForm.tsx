@@ -7,6 +7,7 @@ import BudgetFitCard from '@/components/budget/BudgetFitCard';
 import { CheckCircle, Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/lib/context/AuthContext';
+import { useTenant } from '@/components/storefront/TenantContext';
 
 interface QuoteFormProps {
   quoteItems: QuoteItem[];
@@ -61,6 +62,7 @@ const labelCls = 'block text-xs font-bold text-[#627386] uppercase tracking-wide
 export default function QuoteForm({ quoteItems, onSuccess }: QuoteFormProps) {
   const searchParams = useSearchParams();
   const { user } = useAuth();
+  const tenant = useTenant();
   
   const isCustomer = user?.role === 'CUSTOMER';
 
@@ -148,7 +150,7 @@ export default function QuoteForm({ quoteItems, onSuccess }: QuoteFormProps) {
           budgetMin: parsedMin,
           budgetMax: parsedMax,
           conceptName: form.selectedConcept,
-          requestType: 'QUOTATION',
+          requestType: tenant.id === 'giangson' ? 'RETAIL_RFQ' : 'QUOTATION',
           context: {
             version: 3,
             source: 'QUOTE_FORM',
@@ -156,6 +158,10 @@ export default function QuoteForm({ quoteItems, onSuccess }: QuoteFormProps) {
             style: form.style || null,
             timeline: form.timeline || null,
             needsInstallation: form.needsInstallation,
+            priceDisclosure:
+              tenant.id === 'giangson'
+                ? 'External reference prices are not official Giang Son offers.'
+                : null,
           },
           notes: form.notes + (form.timeline ? `\nTimeline: ${form.timeline}` : '') + (form.needsInstallation ? `\nNeeds Installation: Yes` : ''),
           items: quoteItems,

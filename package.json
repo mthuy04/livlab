@@ -17,6 +17,7 @@
     "check:showroom-db": "node --experimental-strip-types scripts/checkShowroomDbReadiness.mts",
     "configure:tungdang-demo": "node --experimental-strip-types scripts/configureTungDangDemoWorkspace.mts",
     "test:showroom-v3": "node --experimental-strip-types scripts/testShowroomV3.mts",
+    "test:giangson": "node --experimental-strip-types scripts/testGiangsonShowroom.mts",
     "test:concepts": "npx tsx scripts/testConceptLibrary.mts",
     "test:dev-glb": "npx tsx scripts/testDevGlbPipeline.mts",
     "build:dev-glb": "node scripts/build_dev_test_glb.mjs",

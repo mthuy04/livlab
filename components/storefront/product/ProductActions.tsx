@@ -46,6 +46,9 @@ export default function ProductActions({ vm }: { vm: ProductDetailViewModel }) {
       image: vm.media.primary?.url ?? null,
       showroomPrice: pricing.showroomPrice,
       referencePrice: pricing.showroomReferencePrice,
+      marketReferencePrice: pricing.marketReferencePrice,
+      priceType: pricing.priceType,
+      priceUnit: pricing.priceUnit,
       sourceContext: 'PRODUCT_DETAIL',
     });
   };

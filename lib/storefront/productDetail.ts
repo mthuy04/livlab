@@ -562,10 +562,21 @@ export async function getProductDetail(
 
     pricing: {
       showroomPrice: product.showroomPrice,
+      marketReferencePrice: product.marketReferencePrice,
+      priceType: product.priceType,
+      priceUnit: product.priceUnit,
+      sourceName: product.priceSourceName,
+      sourceUrl: product.priceSourceUrl,
+      checkedAt: product.priceCheckedAt,
       promotionPrice: null,
       showroomReferencePrice: product.referencePrice,
       manufacturerReferencePrice: product.manufacturerReferencePrice,
-      displayPriceLabel: commercialConfirmed ? 'GIÁ SHOWROOM' : 'GIÁ THAM KHẢO',
+      displayPriceLabel:
+        product.priceType === 'MARKET_REFERENCE' || product.priceType === 'CATEGORY_REFERENCE'
+          ? 'GIÁ THAM KHẢO NGOÀI'
+          : commercialConfirmed
+            ? 'GIÁ SHOWROOM'
+            : 'GIÁ THAM KHẢO',
       // One reference figure beside the headline, never three competing ones.
       // The showroom's own list price is the relevant comparison; the
       // manufacturer's is only used when the showroom states none.
@@ -576,9 +587,11 @@ export async function getProductDetail(
           ? `Giá niêm yết ${product.brand}`
           : null,
       discountPercent: product.referencePrice ? discount : null,
-      note: product.showroomPrice
-        ? 'Giá cuối cùng được showroom xác nhận theo tình trạng cung ứng và phương án lắp đặt.'
-        : null,
+      note: product.marketReferencePrice
+        ? 'Giá từ nguồn độc lập để tham khảo, không phải giá bán hoặc báo giá chính thức của Giang Sơn.'
+        : product.showroomPrice
+          ? 'Giá cuối cùng được showroom xác nhận theo tình trạng cung ứng và phương án lắp đặt.'
+          : null,
     },
 
     commercial: {

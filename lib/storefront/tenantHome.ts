@@ -38,6 +38,11 @@ export interface HomeProductView {
   showroomPrice: number | null;
   /** Only a genuinely higher list price the catalogue holds; never derived. */
   referencePrice: number | null;
+  marketReferencePrice: number | null;
+  priceType: CatalogProduct['priceType'];
+  priceUnit: string | null;
+  recordType: CatalogProduct['recordType'];
+  verificationStatus: CatalogProduct['verificationStatus'];
 }
 
 export interface HomeCategory {
@@ -74,6 +79,8 @@ export interface HomeFeaturedConcept {
 export interface CatalogHomeData {
   tenantId: string;
   productCount: number;
+  productTypeCount: number;
+  verifiedSkuCount: number;
   categories: HomeCategory[];
   brands: HomeBrand[];
   featured: HomeProductView[];
@@ -97,6 +104,11 @@ export function toHomeProductView(p: CatalogProduct): HomeProductView {
     image: p.image,
     showroomPrice: p.showroomPrice,
     referencePrice: p.referencePrice,
+    marketReferencePrice: p.marketReferencePrice,
+    priceType: p.priceType,
+    priceUnit: p.priceUnit,
+    recordType: p.recordType,
+    verificationStatus: p.verificationStatus,
   };
 }
 
@@ -114,7 +126,7 @@ function chooseFeatured(products: CatalogProduct[], picks: string[]): CatalogPro
   for (const category of sortCategories([...new Set(products.map((p) => p.category))])) {
     if (chosen.length >= FEATURED_COUNT) break;
     if (covered.has(category)) continue;
-    const candidate = products.find((p) => p.category === category && p.showroomPrice);
+    const candidate = products.find((p) => p.category === category && (p.showroomPrice || p.marketReferencePrice));
     if (candidate) {
       chosen.push(candidate);
       covered.add(category);
@@ -142,7 +154,10 @@ export async function getCatalogHomeData(tenant: TenantStorefrontConfig): Promis
   }
 
   const categoryCounts = tally(products.map((p) => p.category));
-  const categories: HomeCategory[] = sortCategories([...categoryCounts.keys()]).map((name) => ({
+  const categoryOrder = tenant.catalogScope.categories.length
+    ? tenant.catalogScope.categories.filter((name) => categoryCounts.has(name))
+    : sortCategories([...categoryCounts.keys()]);
+  const categories: HomeCategory[] = categoryOrder.map((name) => ({
     name,
     count: categoryCounts.get(name) ?? 0,
     href: `/products?category=${encodeURIComponent(name)}`,
@@ -210,6 +225,8 @@ export async function getCatalogHomeData(tenant: TenantStorefrontConfig): Promis
   return {
     tenantId: tenant.id,
     productCount: products.length,
+    productTypeCount: products.filter((product) => product.recordType === 'PRODUCT_TYPE').length,
+    verifiedSkuCount: products.filter((product) => product.recordType === 'VERIFIED_SKU').length,
     categories,
     brands,
     featured,

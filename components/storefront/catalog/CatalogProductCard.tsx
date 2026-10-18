@@ -33,6 +33,7 @@ export default function CatalogProductCard({
   onToggleCompare: (product: CatalogProduct) => void;
   onQuickView: (product: CatalogProduct) => void;
 }) {
+  const displayPrice = product.showroomPrice ?? product.marketReferencePrice;
   const discount =
     product.referencePrice && product.showroomPrice
       ? Math.round((1 - product.showroomPrice / product.referencePrice) * 100)
@@ -68,7 +69,7 @@ export default function CatalogProductCard({
       </div>
 
       <p className="mt-4" style={{ fontSize: 10, fontWeight: 600, letterSpacing: '.10em', color: '#808080' }}>
-        {product.brand.toUpperCase()}
+        {product.recordType === 'PRODUCT_TYPE' ? 'LOẠI SẢN PHẨM' : product.brand.toUpperCase()}
       </p>
 
       <h3 className="mt-2">
@@ -88,8 +89,8 @@ export default function CatalogProductCard({
       )}
 
       <div className="mt-2.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        {product.showroomPrice ? (
-          <span style={{ fontSize: 16, fontWeight: 600, color: `var(--tenant-price, ${TEXT})` }}>{formatVnd(product.showroomPrice)}</span>
+        {displayPrice ? (
+          <span style={{ fontSize: 16, fontWeight: 600, color: `var(--tenant-price, ${TEXT})` }}>{formatVnd(displayPrice)}{product.priceUnit ? ` / ${product.priceUnit}` : ''}</span>
         ) : (
           <span style={{ fontSize: 14, color: TEXT_FAINT }}>Liên hệ</span>
         )}
@@ -104,6 +105,9 @@ export default function CatalogProductCard({
           <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--tenant-discount, #597080)' }}>−{discount}%</span>
         )}
       </div>
+      {displayPrice && product.priceType !== 'SHOWROOM_OFFER' && (
+        <p className="mt-1 text-[11px] text-[#7B8588]">Tham khảo ngoài · cần xác nhận báo giá</p>
+      )}
 
       {product.roomStudioReady && (
         <Link

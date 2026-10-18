@@ -46,6 +46,9 @@ export interface CatalogQuoteEntry {
   image: string | null;
   showroomPrice: number | null;
   referencePrice: number | null;
+  marketReferencePrice?: number | null;
+  priceType?: 'SHOWROOM_OFFER' | 'MARKET_REFERENCE' | 'CATEGORY_REFERENCE' | 'NONE';
+  priceUnit?: string | null;
   sourceContext: string;
 }
 
@@ -56,7 +59,11 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
-    setItemsState(getQuoteItems());
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (!cancelled) setItemsState(getQuoteItems());
+    });
+    return () => { cancelled = true; };
   }, []);
 
   const addItem = useCallback((product: Product, conceptId?: string) => {
@@ -95,21 +102,25 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
    * client-supplied showroom name is not evidence of who owns the lead.
    */
   const addCatalogItem = useCallback((entry: CatalogQuoteEntry) => {
-    const price = entry.showroomPrice ?? 0;
+    const price = entry.showroomPrice ?? entry.marketReferencePrice ?? 0;
     const quoteItem: QuoteItem = {
       productId: entry.productId,
       catalogProductId: entry.catalogProductId,
       sourceType: entry.sourceType,
       tenantId: entry.tenantId,
       sourceContext: entry.sourceContext,
-      priceSnapshot: entry.showroomPrice,
+      priceSnapshot: price || null,
+      priceType: entry.priceType,
+      priceUnit: entry.priceUnit,
       name: entry.name,
       category: entry.category,
       brand: entry.brand,
       sku: entry.sku ?? entry.productId,
       priceMin: price,
       priceMax: entry.referencePrice ?? price,
-      priceRange: entry.showroomPrice ? `${entry.showroomPrice.toLocaleString('vi-VN')}đ` : 'Liên hệ',
+      priceRange: price
+        ? `${price.toLocaleString('vi-VN')}đ${entry.priceUnit ? ` / ${entry.priceUnit}` : ''}`
+        : 'Liên hệ',
       quantity: 1,
       image: entry.image,
       // Resolved server-side from the tenant; the client does not assert it.

@@ -81,6 +81,12 @@ export interface ProductMedia {
 
 export interface ProductPricing {
   showroomPrice: number | null;
+  marketReferencePrice: number | null;
+  priceType: 'SHOWROOM_OFFER' | 'MARKET_REFERENCE' | 'CATEGORY_REFERENCE' | 'NONE';
+  priceUnit: string | null;
+  sourceName: string | null;
+  sourceUrl: string | null;
+  checkedAt: string | null;
   promotionPrice: number | null;
   showroomReferencePrice: number | null;
   /** The manufacturer's list price. Never promoted into `showroomPrice`. */

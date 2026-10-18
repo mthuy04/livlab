@@ -35,6 +35,8 @@ export default function CommerceHero({
   productCount,
   brandCount,
   categoryCount,
+  productTypeCount,
+  verifiedSkuCount,
   roomStudio,
 }: {
   copy: TenantCopy['hero'];
@@ -42,13 +44,21 @@ export default function CommerceHero({
   productCount: number;
   brandCount: number;
   categoryCount: number;
+  productTypeCount?: number;
+  verifiedSkuCount?: number;
   roomStudio: boolean;
 }) {
-  const stats = [
-    { value: productCount, label: 'THIẾT BỊ' },
-    { value: brandCount, label: 'THƯƠNG HIỆU' },
-    { value: categoryCount, label: 'DANH MỤC' },
-  ].filter((s) => s.value > 0);
+  const stats = productTypeCount
+    ? [
+        { value: productTypeCount, label: 'LOẠI SẢN PHẨM' },
+        { value: verifiedSkuCount ?? 0, label: 'SKU ĐỐI CHIẾU' },
+        { value: categoryCount, label: 'NHÓM NGÀNH' },
+      ]
+    : [
+        { value: productCount, label: 'THIẾT BỊ' },
+        { value: brandCount, label: 'THƯƠNG HIỆU' },
+        { value: categoryCount, label: 'DANH MỤC' },
+      ].filter((s) => s.value > 0);
 
   return (
     <section className={`${styles.shell} bg-white`} data-commerce-hero>
@@ -193,7 +203,7 @@ export default function CommerceHero({
  * pin stays on the fixture it names.
  */
 function HeroRoom({ room }: { room: HomeHeroRoom }) {
-  const pins = room.hotspots.filter((h) => h.product.showroomPrice).slice(0, 3);
+  const pins = room.hotspots.filter((h) => h.product.showroomPrice || h.product.marketReferencePrice).slice(0, 3);
 
   return (
     <div
@@ -218,7 +228,7 @@ function HeroRoom({ room }: { room: HomeHeroRoom }) {
           <Link
             key={pin.id}
             href={pin.product.href as Route}
-            aria-label={`${pin.product.name} — ${formatVnd(pin.product.showroomPrice!)}`}
+            aria-label={`${pin.product.name} — giá tham khảo ${formatVnd((pin.product.showroomPrice ?? pin.product.marketReferencePrice)!)}`}
             className="group absolute z-10 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full"
             style={{ left: `${pin.xPct}%`, top: `${pin.yPct}%` }}
             data-hero-hotspot
@@ -254,8 +264,12 @@ function HeroRoom({ room }: { room: HomeHeroRoom }) {
                 {pin.product.sku ?? pin.product.name}
               </span>
               <span className="mt-0.5 block" style={{ fontSize: 14, fontWeight: 600, color: 'var(--tenant-price, var(--tenant-ink))' }}>
-                {formatVnd(pin.product.showroomPrice!)}
+                {formatVnd((pin.product.showroomPrice ?? pin.product.marketReferencePrice)!)}
+                {pin.product.priceUnit ? ` / ${pin.product.priceUnit}` : ''}
               </span>
+              {pin.product.priceType !== 'SHOWROOM_OFFER' && (
+                <span className="mt-0.5 block" style={{ fontSize: 9.5, color: FAINT }}>THAM KHẢO NGOÀI · KHÔNG PHẢI BÁO GIÁ</span>
+              )}
             </span>
           </Link>
         );

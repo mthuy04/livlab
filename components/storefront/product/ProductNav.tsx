@@ -143,7 +143,7 @@ export default function ProductNav({
     };
   }, [sections]);
 
-  const price = vm.pricing.showroomPrice;
+  const price = vm.pricing.showroomPrice ?? vm.pricing.marketReferencePrice;
 
   return (
     <>
@@ -215,6 +215,9 @@ function StickyBar({ vm, price }: { vm: ProductDetailViewModel; price: number | 
       image: media.primary?.url ?? null,
       showroomPrice: vm.pricing.showroomPrice,
       referencePrice: vm.pricing.showroomReferencePrice,
+      marketReferencePrice: vm.pricing.marketReferencePrice,
+      priceType: vm.pricing.priceType,
+      priceUnit: vm.pricing.priceUnit,
       sourceContext: 'PRODUCT_DETAIL',
     });
   };

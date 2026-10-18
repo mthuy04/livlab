@@ -16,6 +16,7 @@ export default function QuickView({
   onClose: () => void;
 }) {
   if (!product) return null;
+  const displayPrice = product.showroomPrice ?? product.marketReferencePrice;
 
   const specs: [string, string][] = (
     [
@@ -67,8 +68,8 @@ export default function QuickView({
             )}
 
             <div className="mt-5 flex flex-wrap items-baseline gap-x-3">
-              {product.showroomPrice ? (
-                <span style={{ fontSize: 20, fontWeight: 600, color: TEXT }}>{formatVnd(product.showroomPrice)}</span>
+              {displayPrice ? (
+                <span style={{ fontSize: 20, fontWeight: 600, color: TEXT }}>{formatVnd(displayPrice)}{product.priceUnit ? ` / ${product.priceUnit}` : ''}</span>
               ) : (
                 <span style={{ fontSize: 15, color: '#777777' }}>Liên hệ</span>
               )}
@@ -79,7 +80,7 @@ export default function QuickView({
               )}
             </div>
             <p className="mt-1" style={{ fontSize: 12, color: '#777777' }}>
-              Giá tham khảo
+              {product.priceType === 'SHOWROOM_OFFER' ? 'Giá showroom tham khảo' : 'Tham khảo ngoài · không phải báo giá Giang Sơn'}
             </p>
 
             {specs.length > 0 && (

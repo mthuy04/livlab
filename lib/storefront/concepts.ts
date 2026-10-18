@@ -33,7 +33,12 @@ import {
 /** Cheap per-request memo; `getCatalog` is the expensive half. */
 async function catalogIndex(tenant: TenantStorefrontConfig): Promise<Map<string, CatalogProduct>> {
   const { products } = await getCatalog(tenant);
-  return new Map(products.map((p) => [p.catalogProductId, p]));
+  const index = new Map<string, CatalogProduct>();
+  for (const product of products) {
+    index.set(product.catalogProductId, product);
+    index.set(`id:${product.id}`, product);
+  }
+  return index;
 }
 
 /**
@@ -81,13 +86,22 @@ function estimate(products: CatalogProduct[]): ConceptEstimate {
 
 function resolve(
   concept: StorefrontConcept,
-  index: Map<string, CatalogProduct>
+  index: Map<string, CatalogProduct>,
+  tenant: TenantStorefrontConfig
 ): ResolvedConcept {
   const hotspots = concept.hotspots
     .filter(isCustomerFacing)
     .map((h) => {
-      const product = index.get(h.catalogProductId!);
-      return product ? { ...h, product } : null;
+      const replacementId = tenant.experience.merchandising?.conceptProductMap?.[h.targetType];
+      const product = index.get(h.catalogProductId!) ?? (replacementId ? index.get(`id:${replacementId}`) : undefined);
+      return product
+        ? {
+            ...h,
+            catalogProductId: product.catalogProductId,
+            matchConfidence: replacementId ? ('CURATED_SUGGESTION' as const) : h.matchConfidence,
+            product,
+          }
+        : null;
     })
     .filter((h): h is NonNullable<typeof h> => h !== null);
 
@@ -124,7 +138,7 @@ export async function getPublishedConcepts(
   return CONCEPT_LIBRARY.filter(
     (c) => c.publicationStatus === 'PUBLISHED_VERIFIED' && visibleTo(c, tenant)
   )
-    .map((c) => resolve(c, index))
+    .map((c) => resolve(c, index, tenant))
     .filter(meetsPublicationBar);
 }
 
@@ -144,7 +158,7 @@ export async function getConceptBySlug(
   if (!concept || concept.publicationStatus !== 'PUBLISHED_VERIFIED') return null;
   if (!visibleTo(concept, tenant)) return null;
 
-  const resolved = resolve(concept, await catalogIndex(tenant));
+  const resolved = resolve(concept, await catalogIndex(tenant), tenant);
   return meetsPublicationBar(resolved) ? resolved : null;
 }
 

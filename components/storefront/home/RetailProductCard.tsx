@@ -49,6 +49,7 @@ export default function RetailProductCard({
     product.referencePrice && product.showroomPrice && product.referencePrice > product.showroomPrice
       ? Math.round((1 - product.showroomPrice / product.referencePrice) * 100)
       : null;
+  const displayPrice = product.showroomPrice ?? product.marketReferencePrice;
 
   const addToQuote = () =>
     addCatalogItem({
@@ -63,6 +64,9 @@ export default function RetailProductCard({
       image: product.image,
       showroomPrice: product.showroomPrice,
       referencePrice: product.referencePrice,
+      marketReferencePrice: product.marketReferencePrice,
+      priceType: product.priceType,
+      priceUnit: product.priceUnit,
       sourceContext,
     });
 
@@ -106,7 +110,7 @@ export default function RetailProductCard({
 
       <div className="flex flex-1 flex-col px-4 pb-4 pt-4 md:px-5">
         <p className="truncate" style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.1em', color: '#8A8782' }}>
-          {product.brand.toUpperCase()}
+          {product.recordType === 'PRODUCT_TYPE' ? 'LOẠI SẢN PHẨM' : product.brand.toUpperCase()}
           {product.sku && <span style={{ letterSpacing: '.04em' }}> · {product.sku}</span>}
         </p>
 
@@ -121,9 +125,9 @@ export default function RetailProductCard({
         </h3>
 
         <div className="mt-3 flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-          {product.showroomPrice ? (
+          {displayPrice ? (
             <span style={{ fontSize: 19, fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--tenant-price, var(--tenant-ink))' }}>
-              {formatVnd(product.showroomPrice)}
+              {formatVnd(displayPrice)}{product.priceUnit ? ` / ${product.priceUnit}` : ''}
             </span>
           ) : (
             <span style={{ fontSize: 15, fontWeight: 500, color: 'var(--tenant-ink)' }}>Liên hệ báo giá</span>
@@ -139,9 +143,9 @@ export default function RetailProductCard({
             </>
           )}
         </div>
-        {product.showroomPrice && (
+        {displayPrice && (
           <p className="mt-1" style={{ fontSize: 11.5, color: '#8A8782' }}>
-            Giá tham khảo
+            {product.priceType === 'SHOWROOM_OFFER' ? 'Giá showroom tham khảo' : 'Tham khảo ngoài · cần xác nhận báo giá'}
           </p>
         )}
 

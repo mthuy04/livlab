@@ -44,6 +44,9 @@ export default function ConceptQuoteActions({
         image: p.image,
         showroomPrice: p.showroomPrice,
         referencePrice: p.referencePrice,
+        marketReferencePrice: p.marketReferencePrice,
+        priceType: p.priceType,
+        priceUnit: p.priceUnit,
         sourceContext: `CONCEPT:${conceptSlug}`,
       });
     }

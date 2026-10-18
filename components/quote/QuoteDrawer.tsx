@@ -16,6 +16,7 @@ import { useTenant } from '@/components/storefront/TenantContext';
  */
 export default function QuoteDrawer() {
   const { items, isDrawerOpen, closeDrawer, removeItem, updateQty, clearAll, totalMin, totalMax } = useQuote();
+  const unknownPriceCount = items.filter((item) => !item.priceMin || item.priceMin <= 0).length;
   const { copy } = useTenant().experience;
 
   const fmtVnd = (n: number) => n.toLocaleString('vi-VN') + 'đ';
@@ -135,9 +136,9 @@ export default function QuoteDrawer() {
         {items.length > 0 && (
           <div className="border-t border-[#D8E2EA] px-5 py-5 space-y-3">
             <div className="bg-[color:var(--tenant-ui-surface,#EEF4F7)] rounded-[var(--tenant-ui-radius,1rem)] p-4">
-              <p className="text-[11px] text-[#627386] uppercase tracking-wider mb-1">Tổng giá tham khảo</p>
-              <p className="text-lg font-bold text-[#0B1623]">{fmtVnd(totalMin)} – {fmtVnd(totalMax)}</p>
-              <p className="text-[10px] text-[#627386] mt-0.5">{items.length} sản phẩm</p>
+              <p className="text-[11px] text-[#627386] uppercase tracking-wider mb-1">{unknownPriceCount ? 'Tạm tính phần có giá' : 'Tổng giá tham khảo'}</p>
+              <p className="text-lg font-bold text-[#0B1623]">{totalMax > 0 ? `${fmtVnd(totalMin)} – ${fmtVnd(totalMax)}` : 'Cần xác nhận giá'}</p>
+              <p className="text-[10px] text-[#627386] mt-0.5">{items.length} mục{unknownPriceCount ? ` · ${unknownPriceCount} mục chưa có giá` : ''}</p>
             </div>
             <Link
               href="/quote"

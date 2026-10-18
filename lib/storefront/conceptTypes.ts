@@ -502,6 +502,11 @@ export interface ConceptProductView {
   showroomPrice: number | null;
   /** Only a list price the catalogue genuinely holds above the showroom's. */
   referencePrice: number | null;
+  marketReferencePrice: number | null;
+  priceType: CatalogProduct['priceType'];
+  priceUnit: string | null;
+  recordType: CatalogProduct['recordType'];
+  verificationStatus: CatalogProduct['verificationStatus'];
   /** One stated fact for a compact preview — the size, else the type. Never invented. */
   keyFact: string | null;
 }
@@ -556,6 +561,11 @@ const productView = (p: CatalogProduct): ConceptProductView => ({
   imagePresentable: p.imagePresentable && !isTechnicalDrawing(p),
   showroomPrice: p.showroomPrice,
   referencePrice: p.referencePrice,
+  marketReferencePrice: p.marketReferencePrice,
+  priceType: p.priceType,
+  priceUnit: p.priceUnit,
+  recordType: p.recordType,
+  verificationStatus: p.verificationStatus,
   keyFact: p.dimensionsRaw ?? p.subcategory ?? null,
 });
 

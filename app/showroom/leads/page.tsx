@@ -26,6 +26,8 @@ import LeadDrawer from '@/components/showroom/LeadDrawer';
 const REQUEST_TABS: { value: string; label: string }[] = [
   { value: '', label: 'Tất cả' },
   { value: 'QUOTATION', label: 'Yêu cầu báo giá' },
+  { value: 'RETAIL_RFQ', label: 'Báo giá khách lẻ' },
+  { value: 'PROJECT_RFQ', label: 'Báo giá công trình' },
   { value: 'SHOWROOM_CONSULTATION', label: 'Cần tư vấn' },
   { value: 'TECHNICAL_CHECK', label: 'Kiểm tra kỹ thuật' },
 ];

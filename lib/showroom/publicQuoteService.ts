@@ -27,6 +27,8 @@ interface IncomingLine {
   priceMin?: number;
   priceMax?: number;
   priceSnapshot?: number | null;
+  priceType?: string | null;
+  priceUnit?: string | null;
   sourceContext?: string;
 }
 
@@ -146,7 +148,7 @@ export async function createPublicQuoteRequest(
     const key = line.catalogProductId || line.productId || line.id || '';
     const product = canonicalById.get(key) ?? canonicalById.get(line.productId || line.id || '');
     const quantity = Math.min(99, Math.max(1, Math.round(Number(line.quantity) || 1)));
-    const price = product?.showroomPrice ?? product?.referencePrice ?? 0;
+    const price = product?.showroomPrice ?? product?.marketReferencePrice ?? product?.referencePrice ?? 0;
     const fallbackMin = integerOrNull(line.priceMin ?? line.priceSnapshot ?? line.price);
     const fallbackMax = integerOrNull(line.priceMax ?? line.priceSnapshot ?? line.price);
     const priceMin = product ? price : fallbackMin;
@@ -159,6 +161,12 @@ export async function createPublicQuoteRequest(
       sourceType: product?.sourceType ?? line.sourceType ?? null,
       sku: product?.sku ?? line.sku ?? null,
       priceSnapshot: priceMin,
+      priceType: product?.priceType ?? line.priceType ?? null,
+      priceUnit: product?.priceUnit ?? line.priceUnit ?? null,
+      priceSourceName: product?.priceSourceName ?? null,
+      priceSourceUrl: product?.priceSourceUrl ?? null,
+      priceCheckedAt: product?.priceCheckedAt ?? null,
+      isOfficialShowroomOffer: product?.priceType === 'SHOWROOM_OFFER',
       sourceContext: line.sourceContext ?? null,
       quantity,
     });

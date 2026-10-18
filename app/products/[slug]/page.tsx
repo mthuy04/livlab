@@ -152,9 +152,9 @@ export default async function ProductDetailPage({ params }: Props) {
                   {pricing.displayPriceLabel}
                 </p>
                 <div className="mt-2.5 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                  {pricing.showroomPrice ? (
+                  {pricing.showroomPrice ?? pricing.marketReferencePrice ? (
                     <span style={{ fontSize: 'clamp(24px, 1.2rem + .7vw, 30px)', fontWeight: 600, color: `var(--tenant-price, ${TEXT})` }}>
-                      {formatVnd(pricing.showroomPrice)}
+                      {formatVnd((pricing.showroomPrice ?? pricing.marketReferencePrice)!)}{pricing.priceUnit ? ` / ${pricing.priceUnit}` : ''}
                     </span>
                   ) : (
                     <span style={{ fontSize: 20, fontWeight: 500, color: TEXT }}>Liên hệ để nhận báo giá</span>
@@ -190,6 +190,12 @@ export default async function ProductDetailPage({ params }: Props) {
                 {pricing.note && (
                   <p className="mt-2.5 max-w-[480px]" style={{ fontSize: 13, lineHeight: 1.55, color: TEXT_MUTED }}>
                     {pricing.note}
+                  </p>
+                )}
+                {pricing.sourceUrl && (
+                  <p className="mt-2 text-xs text-[#727C80]">
+                    Nguồn: <a href={pricing.sourceUrl} target="_blank" rel="noreferrer" className="underline underline-offset-2">{pricing.sourceName ?? 'nguồn tham khảo'}</a>
+                    {pricing.checkedAt ? ` · kiểm tra ${pricing.checkedAt}` : ''}
                   </p>
                 )}
               </div>

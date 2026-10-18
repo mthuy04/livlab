@@ -23,6 +23,8 @@ export interface TenantBrand {
   /** Path to a logo in /public. When absent the header renders the name as a wordmark. */
   logo?: string;
   logoAlt?: string;
+  logoWidth?: number;
+  logoHeight?: number;
   /**
    * The one colour a tenant controls. Deliberately a single accent rather than
    * a palette: a showroom supplying one brand colour cannot accidentally
@@ -490,8 +492,172 @@ export const DEMO_TUNGDANG_TENANT: TenantStorefrontConfig = {
   },
 };
 
+const GIANGSON_CATEGORIES = [
+  'Bồn cầu',
+  'Bồn tắm',
+  'Chậu rửa',
+  'Vòi nước',
+  'Vòi sen',
+  'Gạch ốp lát',
+  'Thiết bị điện',
+  'Vật liệu ngành nước',
+];
+
+/** Architectural-commerce treatment for the sourced Giang Sơn demo catalogue. */
+const GIANGSON_EXPERIENCE: TenantExperience = {
+  theme: {
+    ink: '#243746',
+    inkContrast: '#FFFFFF',
+    accentInk: '#105F95',
+    panel: '#243746',
+    panelContrast: '#FFFFFF',
+    price: '#105F95',
+    discount: '#A23D32',
+    surfaceMuted: '#F1F7F8',
+    radius: 4,
+    headingTracking: '.025em',
+    font: 'beVietnamPro',
+    uiPrimary: '#105F95',
+    uiPrimaryHover: '#0A4C79',
+    uiPrimaryContrast: '#FFFFFF',
+    uiSelected: '#19A5A2',
+    uiSelectedContrast: '#102D35',
+    uiSoft: '#E6F4F4',
+    uiSoftContrast: '#105F95',
+    uiLink: '#105F95',
+    uiSurface: '#F1F7F8',
+    uiInk: '#243746',
+  },
+  variants: {
+    header: 'retail',
+    hero: 'commerce',
+    categoryNav: 'iconRail',
+    productCard: 'priceLed',
+    conceptDetail: 'commerce',
+    hotspot: 'accent',
+  },
+  home: {
+    layout: 'catalog',
+    sections: ['hero', 'categories', 'concepts', 'materials', 'roomStudio', 'featuredProducts', 'projectQuote', 'about', 'consultation'],
+  },
+  merchandising: {
+    featuredProductIds: [
+      'inax-ac-1008vrn',
+      'inax-l-2298v',
+      'inax-lfv-502sh',
+      'inax-bfv-615s-8c',
+    ],
+    heroConceptSlug: 'serene-stone-spa',
+    conceptCount: 3,
+    conceptProductMap: {
+      TOILET: 'inax-ac-1008vrn',
+      BASIN: 'inax-l-2298v',
+      FAUCET: 'inax-lfv-502sh',
+      SHOWER: 'inax-bfv-615s-8c',
+      BATHTUB: 'inax-fbv-1500r',
+    },
+  },
+  copy: {
+    utility: ['Thiết bị & vật liệu hoàn thiện', 'Hotline / Zalo 0395 279 360'],
+    demoNotice: 'Bản trình diễn showroom số trên LivLab · dữ liệu nguồn công khai',
+    hero: {
+      eyebrow: 'GIANG SƠN',
+      kicker: 'THIẾT BỊ & VẬT LIỆU HOÀN THIỆN',
+      titleLines: ['Vững từ vật liệu.', 'Đẹp trong từng không gian.'],
+      body: 'Khám phá thiết bị vệ sinh, gạch ốp lát và giải pháp hoàn thiện phù hợp với không gian của bạn.',
+      primaryCta: { label: 'KHÁM PHÁ SẢN PHẨM', href: '/products' },
+      secondaryCta: { label: 'DỰNG THỬ PHÒNG TẮM', href: '/room-studio' },
+      trust: [
+        { title: '57 LOẠI SẢN PHẨM', body: 'Phân loại nguồn được giữ nguyên, không trình bày thành SKU thương mại.' },
+        { title: 'GIÁ CÓ NGUỒN', body: 'Giá tham khảo độc lập luôn đi kèm nguồn, đơn vị và ngày kiểm tra.' },
+        { title: 'BÁO GIÁ THEO NHU CẦU', body: 'Luồng riêng cho khách lẻ và yêu cầu vật tư công trình.' },
+      ],
+    },
+    sections: {
+      categoriesTitle: '8 NHÓM SẢN PHẨM & VẬT LIỆU',
+      conceptsEyebrow: 'GỢI Ý ỨNG DỤNG',
+      conceptsTitle: 'KHÔNG GIAN KIẾN TRÚC',
+      conceptsBody: 'Không gian minh họa giúp định hướng thiết bị và vật liệu; hotspot là gợi ý được tuyển chọn, không phải xác nhận sản phẩm trong ảnh.',
+      productsEyebrow: 'ĐỐI CHIẾU NGUỒN CÔNG KHAI',
+      productsTitle: 'SẢN PHẨM CÓ GIÁ THAM KHẢO',
+      productsNote: 'Giá tham khảo độc lập tại ngày kiểm tra, không phải giá bán hay báo giá chính thức của Giang Sơn.',
+      brandsTitle: 'NGUỒN THAM KHẢO',
+      materialsTitle: 'GẠCH & VẬT LIỆU HOÀN THIỆN',
+      materialsBody: 'Khám phá nhóm gạch, vật liệu ngành nước và lập ước tính diện tích sơ bộ trong Room Studio.',
+      projectTitle: 'BÁO GIÁ CÔNG TRÌNH',
+      projectBody: 'Lập danh sách vật tư, số lượng và đơn vị cho nhà ở, dự án hoặc nhu cầu mua sắm doanh nghiệp.',
+      aboutTitle: 'VỀ GIANG SƠN VIỆT NAM',
+      aboutBody: 'Hồ sơ nguồn công khai giới thiệu doanh nghiệp trong lĩnh vực thiết bị vệ sinh và vật liệu hoàn thiện. Thông tin vận hành hiện tại cần được doanh nghiệp xác nhận trước khi công bố chính thức.',
+    },
+    quote: {
+      cta: 'YÊU CẦU BÁO GIÁ',
+      trackLabel: 'Tra cứu báo giá',
+      drawerTitle: 'Danh sách cần báo giá',
+      drawerBody: 'Giá thị trường chỉ dùng để tham khảo; yêu cầu này cần được xác nhận thành báo giá chính thức.',
+      submit: 'Gửi yêu cầu báo giá',
+      addToQuote: 'THÊM YÊU CẦU',
+    },
+    roomStudio: { libraryTitle: 'Danh mục Giang Sơn', primaryCta: 'Gửi yêu cầu vật tư' },
+    footerBlurb: 'Showroom số cho thiết bị vệ sinh, gạch ốp lát và vật liệu hoàn thiện — từ khám phá đến yêu cầu báo giá.',
+    concept: {
+      productsTitle: 'SẢN PHẨM THAM KHẢO CHO CONCEPT',
+      ctaTitle: 'CẦN PHỐI HỢP THIẾT BỊ & VẬT LIỆU?',
+      ctaBody: 'Lưu danh sách để tiếp tục trao đổi nhu cầu và nhận báo giá xác nhận.',
+      estimateTitle: 'GIÁ THỊ TRƯỜNG THAM KHẢO',
+    },
+  },
+  roomStudioCatalog: 'tenant',
+};
+
+/**
+ * Public demonstration tenant. The catalogue and external prices are research
+ * references; no partnership or current commercial offer is asserted.
+ */
+export const DEMO_GIANGSON_TENANT: TenantStorefrontConfig = {
+  id: 'giangson',
+  slug: 'giangson',
+  brand: {
+    name: 'Giang Sơn',
+    tagline: 'Trường tồn với thời gian',
+    logo: '/demo/giangson/logo.png',
+    logoAlt: 'Giang Sơn — Trường tồn với thời gian',
+    logoWidth: 216,
+    logoHeight: 90,
+    accent: '#105F95',
+    accentHover: '#0A4C79',
+    accentContrast: '#FFFFFF',
+  },
+  navigation: [
+    { href: '/concepts', label: 'KHÔNG GIAN' },
+    {
+      href: '/products',
+      label: 'SẢN PHẨM',
+      children: GIANGSON_CATEGORIES.slice(0, 5).map((category) => ({
+        href: `/products?category=${encodeURIComponent(category)}`,
+        label: category,
+      })),
+    },
+    { href: '/products?category=G%E1%BA%A1ch%20%E1%BB%91p%20l%C3%A1t', label: 'GẠCH & VẬT LIỆU' },
+    { href: '/room-studio', label: 'ROOM STUDIO' },
+    { href: '/project-quote', label: 'BÁO GIÁ CÔNG TRÌNH' },
+    { href: '/#about-giangson', label: 'GIỚI THIỆU' },
+  ],
+  contact: { phone: '0395 279 360' },
+  catalogScope: { showroomId: null, categories: GIANGSON_CATEGORIES },
+  requestWorkspace: { showroomId: 'workspace-demo-giangson', kind: 'DEMO' },
+  features: DEMO_FEATURES,
+  poweredByLivLab: true,
+  publicDemo: true,
+  experience: GIANGSON_EXPERIENCE,
+  seo: {
+    title: 'Giang Sơn — Thiết bị & vật liệu hoàn thiện',
+    description: 'Khám phá thiết bị vệ sinh, gạch ốp lát, vật liệu hoàn thiện và gửi yêu cầu báo giá trên showroom số LivLab.',
+  },
+};
+
 export const TENANTS: Record<string, TenantStorefrontConfig> = {
   [LIVLAB_TENANT.slug]: LIVLAB_TENANT,
   [DEMO_SHOWROOM_TENANT.slug]: DEMO_SHOWROOM_TENANT,
   [DEMO_TUNGDANG_TENANT.slug]: DEMO_TUNGDANG_TENANT,
+  [DEMO_GIANGSON_TENANT.slug]: DEMO_GIANGSON_TENANT,
 };

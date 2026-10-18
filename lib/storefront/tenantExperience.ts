@@ -144,7 +144,10 @@ export type HomeSection =
   | 'concepts'
   | 'featuredProducts'
   | 'brands'
+  | 'materials'
   | 'roomStudio'
+  | 'projectQuote'
+  | 'about'
   | 'consultation';
 
 export interface TenantHome {
@@ -171,6 +174,8 @@ export interface TenantMerchandising {
   featuredConceptSlug?: string;
   /** A capture of this storefront's own Room Studio, for the homepage teaser. */
   roomStudioImage?: { src: string; alt: string };
+  /** Curated replacement products for shared concept hotspot roles. */
+  conceptProductMap?: Partial<Record<'TOILET' | 'BASIN' | 'FAUCET' | 'SHOWER' | 'BATHTUB' | 'MIRROR' | 'VANITY' | 'ACCESSORY', string>>;
 }
 
 /* ── Copy ────────────────────────────────────────────────────────────────── */
@@ -207,6 +212,12 @@ export interface TenantCopy {
     productsTitle: string;
     productsNote?: string;
     brandsTitle: string;
+    materialsTitle?: string;
+    materialsBody?: string;
+    projectTitle?: string;
+    projectBody?: string;
+    aboutTitle?: string;
+    aboutBody?: string;
   };
   quote: {
     /** The header's primary action. */

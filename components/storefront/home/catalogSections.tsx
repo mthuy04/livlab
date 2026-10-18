@@ -326,3 +326,70 @@ export function BrandStrip({ title, brands }: { title: string; brands: HomeBrand
     </section>
   );
 }
+
+export function MaterialsShowcase({ title, body }: { title: string; body?: string }) {
+  const items = [
+    { name: 'Gạch ốp lát', detail: '5 loại nguồn', href: '/products?category=G%E1%BA%A1ch%20%E1%BB%91p%20l%C3%A1t', mark: '600 × 600' },
+    { name: 'Vật liệu ngành nước', detail: '5 loại nguồn', href: '/products?category=V%E1%BA%ADt%20li%E1%BB%87u%20ng%C3%A0nh%20n%C6%B0%E1%BB%9Bc', mark: 'MEP' },
+    { name: 'Material Studio', detail: 'Ước tính diện tích sơ bộ', href: '/room-studio', mark: 'm² + hao hụt' },
+  ];
+  return (
+    <section id="materials" aria-labelledby="home-materials" className="py-16 md:py-24" style={{ backgroundColor: 'var(--tenant-surface-muted)' }}>
+      <div className="home-container">
+        <CatalogSectionHeader id="home-materials" eyebrow="VẬT LIỆU HOÀN THIỆN" title={title} body={body} />
+        <div className="grid gap-px overflow-hidden border border-[#D9E6E8] bg-[#D9E6E8] md:grid-cols-3" style={{ borderRadius: 'var(--tenant-radius)' }}>
+          {items.map((item) => (
+            <Link key={item.name} href={item.href as Route} className="group flex min-h-52 flex-col justify-between bg-white p-7 transition-colors hover:bg-[#F8FBFB] md:p-9">
+              <span className="text-[11px] font-semibold tracking-[.14em] text-[color:var(--tenant-accent-ink)]">{item.mark}</span>
+              <span>
+                <strong className="block text-[22px] font-medium text-[color:var(--tenant-ink)]">{item.name}</strong>
+                <span className="mt-2 block text-sm text-[#6D797E]">{item.detail}</span>
+                <span className="mt-6 block text-xs font-semibold tracking-[.09em] text-[color:var(--tenant-ink)]">KHÁM PHÁ <span aria-hidden>→</span></span>
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function ProjectQuoteShowcase({ title, body }: { title: string; body?: string }) {
+  return (
+    <section className="bg-white py-16 md:py-24" aria-labelledby="project-quote-title">
+      <div className="home-container grid overflow-hidden lg:grid-cols-[1.25fr_.75fr]" style={{ border: '1px solid #D8E4E7', borderRadius: 'var(--tenant-radius)' }}>
+        <div className="px-7 py-10 md:px-12 md:py-14">
+          <p className="text-[11px] font-semibold tracking-[.16em] text-[color:var(--tenant-accent-ink)]">CHO NHÀ THẦU & DỰ ÁN</p>
+          <h2 id="project-quote-title" className="mt-4 text-[clamp(28px,3vw,40px)] font-medium leading-tight text-[color:var(--tenant-ink)]">{title}</h2>
+          {body && <p className="mt-4 max-w-2xl text-[15px] leading-7 text-[#5E6A70]">{body}</p>}
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href={'/project-quote' as Route} className="inline-flex h-12 items-center bg-[color:var(--tenant-accent)] px-6 text-xs font-semibold tracking-[.09em] text-[color:var(--tenant-accent-contrast)]">TẠO YÊU CẦU CÔNG TRÌNH</Link>
+            <a href="/demo/giangson/GiangSon_BOQ_Template.xlsx" download className="inline-flex h-12 items-center border border-[#C7D3D6] px-6 text-xs font-semibold tracking-[.09em] text-[color:var(--tenant-ink)]">TẢI MẪU BOQ</a>
+          </div>
+        </div>
+        <div className="grid content-center gap-4 bg-[color:var(--tenant-ink)] px-7 py-10 text-white md:px-10">
+          {['Danh mục & quy cách', 'Số lượng theo đơn vị', 'Địa điểm & tiến độ', 'Ghi chú kỹ thuật'].map((item, index) => (
+            <div key={item} className="flex items-center gap-4 border-b border-white/15 pb-4 last:border-0">
+              <span className="text-xs text-[#78D2D0]">0{index + 1}</span><span className="text-sm font-medium tracking-wide">{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function AboutShowroom({ title, body }: { title: string; body?: string }) {
+  return (
+    <section id="about-giangson" className="py-16 md:py-20" aria-labelledby="about-giangson-title" style={{ backgroundColor: 'var(--tenant-surface-muted)' }}>
+      <div className="home-container grid gap-7 md:grid-cols-[.75fr_1.25fr] md:items-start">
+        <p className="text-[11px] font-semibold tracking-[.16em] text-[color:var(--tenant-accent-ink)]">HỒ SƠ NGUỒN CÔNG KHAI</p>
+        <div>
+          <h2 id="about-giangson-title" className="text-[clamp(28px,3vw,40px)] font-medium leading-tight text-[color:var(--tenant-ink)]">{title}</h2>
+          {body && <p className="mt-5 max-w-3xl text-[15px] leading-7 text-[#5E6A70]">{body}</p>}
+          <p className="mt-5 text-xs leading-6 text-[#7A858A]">MST theo hồ sơ nguồn: 0106917237 · Thông tin liên hệ và địa điểm cần doanh nghiệp xác nhận trước khi chuyển sang vận hành chính thức.</p>
+        </div>
+      </div>
+    </section>
+  );
+}

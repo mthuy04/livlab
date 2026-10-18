@@ -19,6 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: tenant.seo.title,
     description: tenant.seo.description,
     openGraph: { title: tenant.seo.title, description: tenant.seo.description, type: 'website' },
+    robots: tenant.publicDemo ? { index: false, follow: false } : undefined,
   };
 }
 

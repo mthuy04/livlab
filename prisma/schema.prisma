@@ -52,6 +52,8 @@ enum LeadStage {
 /// inside contextJson, because the showroom filters and reports on it.
 enum LeadRequestType {
   QUOTATION
+  RETAIL_RFQ
+  PROJECT_RFQ
   SHOWROOM_CONSULTATION
   TECHNICAL_CHECK
 }

@@ -10,7 +10,7 @@ import RoomStudioFeature from './RoomStudioFeature';
 import ShowroomConsultation from './ShowroomConsultation';
 import CommerceHero from './CommerceHero';
 import CategoryRail from './CategoryRail';
-import { BrandStrip, ConceptShowcase, RetailProductGrid } from './catalogSections';
+import { AboutShowroom, BrandStrip, ConceptShowcase, MaterialsShowcase, ProjectQuoteShowcase, RetailProductGrid } from './catalogSections';
 
 /**
  * A showroom's homepage: the sections its experience lists, in that order,
@@ -47,6 +47,8 @@ function renderSection(section: HomeSection, tenant: TenantStorefrontConfig, dat
           productCount={data.productCount}
           brandCount={data.brands.length}
           categoryCount={data.categories.length}
+          productTypeCount={data.productTypeCount}
+          verifiedSkuCount={data.verifiedSkuCount}
           roomStudio={tenant.features.roomStudio}
         />
       ) : (
@@ -59,6 +61,7 @@ function renderSection(section: HomeSection, tenant: TenantStorefrontConfig, dat
           title={copy.sections.categoriesTitle}
           categories={data.categories}
           productCount={data.productCount}
+          itemNoun={data.productTypeCount > 0 ? 'mục danh mục' : 'sản phẩm'}
         />
       ) : (
         <HomeCategories
@@ -116,6 +119,9 @@ function renderSection(section: HomeSection, tenant: TenantStorefrontConfig, dat
     case 'brands':
       return <BrandStrip title={copy.sections.brandsTitle} brands={data.brands} />;
 
+    case 'materials':
+      return <MaterialsShowcase title={copy.sections.materialsTitle ?? 'GẠCH & VẬT LIỆU'} body={copy.sections.materialsBody} />;
+
     case 'roomStudio':
       return tenant.features.roomStudio ? (
         <RoomStudioFeature
@@ -124,8 +130,13 @@ function renderSection(section: HomeSection, tenant: TenantStorefrontConfig, dat
         />
       ) : null;
 
+    case 'projectQuote':
+      return <ProjectQuoteShowcase title={copy.sections.projectTitle ?? 'BÁO GIÁ CÔNG TRÌNH'} body={copy.sections.projectBody} />;
+
+    case 'about':
+      return <AboutShowroom title={copy.sections.aboutTitle ?? tenant.brand.name} body={copy.sections.aboutBody} />;
+
     case 'consultation':
       return <ShowroomConsultation quotations={tenant.features.quotations} />;
   }
 }
-

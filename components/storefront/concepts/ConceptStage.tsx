@@ -295,8 +295,9 @@ function CommercePreview({ hotspot, conceptSlug }: { hotspot: ConceptHotspotView
   const tenant = useTenant();
   const { addCatalogItem, hasItem } = useQuote();
   const inQuote = hasItem(p.id);
-  const hasPrice = p.showroomPrice != null && p.showroomPrice > 0;
-  const listPrice = hasPrice && p.referencePrice && p.referencePrice > p.showroomPrice! ? p.referencePrice : null;
+  const displayPrice = p.showroomPrice ?? p.marketReferencePrice;
+  const hasPrice = displayPrice != null && displayPrice > 0;
+  const listPrice = p.showroomPrice && p.referencePrice && p.referencePrice > p.showroomPrice ? p.referencePrice : null;
 
   const add = () =>
     addCatalogItem({
@@ -311,6 +312,9 @@ function CommercePreview({ hotspot, conceptSlug }: { hotspot: ConceptHotspotView
       image: p.image,
       showroomPrice: p.showroomPrice,
       referencePrice: p.referencePrice,
+      marketReferencePrice: p.marketReferencePrice,
+      priceType: p.priceType,
+      priceUnit: p.priceUnit,
       sourceContext: conceptSlug ? `CONCEPT:${conceptSlug}` : 'CONCEPT',
     });
 
@@ -347,7 +351,7 @@ function CommercePreview({ hotspot, conceptSlug }: { hotspot: ConceptHotspotView
           {hasPrice ? (
             <p className="mt-2 flex flex-wrap items-baseline gap-x-2">
               <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--tenant-price, var(--tenant-ink))' }}>
-                {formatVnd(p.showroomPrice!)}
+                {formatVnd(displayPrice!)}{p.priceUnit ? ` / ${p.priceUnit}` : ''}
               </span>
               {listPrice && (
                 <span style={{ fontSize: 11.5, color: '#9A9893', textDecoration: 'line-through' }}>
@@ -358,7 +362,11 @@ function CommercePreview({ hotspot, conceptSlug }: { hotspot: ConceptHotspotView
           ) : (
             <p className="mt-2" style={{ fontSize: 13, color: TEXT_MUTED }}>Liên hệ báo giá</p>
           )}
-          {hasPrice && <p style={{ fontSize: 10.5, color: TEXT_FAINT }}>Giá tham khảo</p>}
+          {hasPrice && (
+            <p style={{ fontSize: 10.5, color: TEXT_FAINT }}>
+              {p.priceType === 'SHOWROOM_OFFER' ? 'Giá tham khảo' : 'Tham khảo ngoài · không phải báo giá'}
+            </p>
+          )}
         </div>
       </div>
 

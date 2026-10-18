@@ -340,6 +340,7 @@ export default function RoomStudioClient() {
           <SurfaceMaterialPanel
             surfaceStyles={studio.state.surfaceStyles}
             onStyleChange={studio.setSurfaceStyle}
+            dimensions={studio.state.dimensions}
           />
           <LightingPanel value={lighting.id} onChange={studio.setLighting} />
         </div>

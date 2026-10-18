@@ -65,7 +65,7 @@ export default function TenantFooter({ tenant }: { tenant: TenantStorefrontConfi
         <div>
           {retail && brand.logo ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={brand.logo} alt={brand.logoAlt ?? brand.name} className="h-11 w-auto" loading="lazy" />
+            <img src={brand.logo} alt={brand.logoAlt ?? brand.name} width={brand.logoWidth} height={brand.logoHeight} className="h-11 w-auto" loading="lazy" />
           ) : (
             <p style={{ ...COLUMN_TITLE, fontSize: 13 }}>{brand.name.toUpperCase()}</p>
           )}

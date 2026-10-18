@@ -19,6 +19,8 @@ import { STAGE_LABEL, STAGE_ORDER } from '@/lib/showroom/leadStage';
 
 const REQUEST_LABEL: Record<string, string> = {
   QUOTATION: 'Yêu cầu báo giá',
+  RETAIL_RFQ: 'Báo giá khách lẻ',
+  PROJECT_RFQ: 'Báo giá công trình',
   SHOWROOM_CONSULTATION: 'Cần showroom tư vấn',
   TECHNICAL_CHECK: 'Cần kiểm tra kỹ thuật',
 };
