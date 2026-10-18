@@ -3,12 +3,10 @@
 /**
  * Storage for implementation requests.
  *
- * TEMPORARY ADAPTER. Requests are delivered to the real backend by
- * submitImplementationRequest; what lives here is the customer's own copy —
- * the full structured snapshot, which the current QuoteLead table has no column
- * for. Keeping it behind this interface is the point: when a `contextJson`
- * column (or Supabase) arrives, only this file changes, and no component that
- * reads a request needs to know.
+ * Optional on-device receipt cache. Requests are delivered to the real backend
+ * by submitImplementationRequest and their full snapshot is persisted in
+ * QuoteLead.contextJson. This cache is never used for public status lookup or
+ * as proof that a submission reached LivLab.
  *
  * This is also why no component calls localStorage directly for requests.
  */
@@ -68,23 +66,3 @@ export const implementationRequestRepository: ImplementationRequestRepository = 
     return readAll();
   },
 };
-
-/**
- * Next request code in the existing LLQ-YYYY-NNN series.
- *
- * Reuses the convention already used by generateLeadId and the quote tracking
- * UI rather than minting a second identifier scheme. The sequence is per
- * browser, so it is a customer-facing reference, not a global key — the
- * server's own lead id remains the system of record.
- */
-export async function nextRequestCode(): Promise<string> {
-  const prefix = `LLQ-${new Date().getFullYear()}-`;
-  const highest = (await implementationRequestRepository.listRequests())
-    .map((r) => r.requestCode)
-    .filter((code) => code.startsWith(prefix))
-    .map((code) => Number.parseInt(code.slice(prefix.length), 10))
-    .filter((n) => Number.isFinite(n))
-    .reduce((max, n) => Math.max(max, n), 0);
-
-  return `${prefix}${String(highest + 1).padStart(3, '0')}`;
-}

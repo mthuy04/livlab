@@ -7,7 +7,7 @@ import {
   money, relativeTime,
 } from '@/components/showroom/ui/primitives';
 import { CX } from '@/components/showroom/ui/tokens';
-import { Search } from 'lucide-react';
+import { Download, Search } from 'lucide-react';
 import { isTestRecord } from '@/lib/showroom/testRecords';
 
 /**
@@ -79,6 +79,7 @@ export default function ShowroomCustomersPage() {
       width="full"
       title="Khách hàng"
       description="Gom theo số điện thoại từ các lead của showroom. Cùng tên nhưng khác số là hai khách khác nhau."
+      actions={<a href="/api/showroom/customers/export" className={CX.buttonSecondary}><Download className="h-3.5 w-3.5" /> Xuất CSV</a>}
     >
       {state === 'migration' ? (
         <MigrationNotice />

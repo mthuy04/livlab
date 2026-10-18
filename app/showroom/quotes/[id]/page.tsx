@@ -30,6 +30,8 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
   const [lines, setLines] = useState<Line[]>([]);
   const [state, setState] = useState<'loading' | 'ready' | 'migration' | 'missing'>('loading');
   const [busy, setBusy] = useState(false);
+  const [validUntil, setValidUntil] = useState('');
+  const [notes, setNotes] = useState('');
 
   // Bumped after every mutation to re-run the effect, which owns the fetch so
   // it can be cancelled if the page changes mid-request.
@@ -46,6 +48,8 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
       if (cancelled) return;
       setQuote(q);
       setLines(q.lines);
+      setValidUntil(q.validUntil ? q.validUntil.slice(0, 10) : '');
+      setNotes(q.notes ?? '');
       setState('ready');
     })();
     return () => { cancelled = true; };
@@ -66,13 +70,14 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
     try {
       await fetch(`/api/showroom/quotes/${id}`, {
         method: 'PATCH', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lines }),
+        body: JSON.stringify({ lines, validUntil: validUntil || null, notes }),
       });
       setReloadAt((n) => n + 1);
     } finally { setBusy(false); }
   }
 
   async function setStatus(status: string) {
+    if (status === 'SENT' && !window.confirm('Xác nhận báo giá đã được gửi cho khách? Sau khi gửi, nội dung và giá sẽ được khóa.')) return;
     setBusy(true);
     try {
       await fetch(`/api/showroom/quotes/${id}`, {
@@ -122,6 +127,14 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
       </Link>
 
       <Section title="Dòng báo giá">
+        <div className="grid gap-4 border-b border-[#E8EDF2] px-5 py-4 sm:grid-cols-2">
+          <label className="text-[12px] font-semibold text-[#5B6B7C]">Hiệu lực tới
+            <input type="date" value={validUntil} disabled={!isDraft} onChange={(event) => setValidUntil(event.target.value)} className="mt-1.5 block h-9 w-full rounded-lg border border-[#DCE4EC] bg-white px-3 text-[13px] disabled:bg-[#F5F5F2]" />
+          </label>
+          <label className="text-[12px] font-semibold text-[#5B6B7C]">Ghi chú trên báo giá
+            <input value={notes} disabled={!isDraft} onChange={(event) => setNotes(event.target.value)} placeholder="Điều kiện giao hàng, lắp đặt…" className="mt-1.5 block h-9 w-full rounded-lg border border-[#DCE4EC] bg-white px-3 text-[13px] disabled:bg-[#F5F5F2]" />
+          </label>
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-[14px]">
             <thead>

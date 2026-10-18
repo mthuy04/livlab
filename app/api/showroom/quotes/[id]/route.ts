@@ -34,12 +34,22 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const body = await request.json();
 
     if (Array.isArray(body?.lines)) {
+      const validUntil = body.validUntil === null || body.validUntil === ''
+        ? null
+        : body.validUntil !== undefined
+          ? new Date(body.validUntil)
+          : undefined;
+      if (validUntil instanceof Date && Number.isNaN(validUntil.getTime())) {
+        return NextResponse.json({ error: 'Ngày hiệu lực không hợp lệ.' }, { status: 400 });
+      }
       // Totals are recomputed from the lines by the service; any totals in the
       // payload are ignored rather than trusted.
       const quote = await updateQuoteLines({
         quoteId: id,
         showroomId: ctx.showroomId,
         lines: body.lines,
+        validUntil,
+        notes: typeof body.notes === 'string' ? body.notes.trim() || null : undefined,
       });
       return NextResponse.json({ quote });
     }

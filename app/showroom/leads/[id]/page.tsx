@@ -30,7 +30,7 @@ const ACTIVITY_LABEL: Record<string, string> = {
 };
 
 interface LeadDetail {
-  id: string; customerName: string; phone: string | null; email: string | null;
+  id: string; requestCode: string | null; customerName: string; phone: string | null; email: string | null;
   roomType: string | null; conceptName: string | null; notes: string | null;
   requestType: string | null; effectiveStage: string; estimatedValue: number | null;
   budgetMin: number | null; budgetMax: number | null;
@@ -106,7 +106,7 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
   return (
     <PageShell
       title={lead.customerName}
-      description={`${lead.requestType ? REQUEST_LABEL[lead.requestType] : 'Yêu cầu'} · tạo ${relativeTime(lead.createdAt)}`}
+      description={`${lead.requestCode ?? 'Yêu cầu cũ'} · ${lead.requestType ? REQUEST_LABEL[lead.requestType] : 'Yêu cầu'} · tạo ${relativeTime(lead.createdAt)}`}
       actions={
         <>
           {lead.phone && (

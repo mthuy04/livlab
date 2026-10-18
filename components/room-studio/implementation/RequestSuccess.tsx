@@ -1,6 +1,6 @@
 'use client';
 
-import { CheckCircle2, CloudOff } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 import { REQUEST_TYPES, type ImplementationRequest } from '@/lib/implementation/types';
 
 interface RequestSuccessProps {
@@ -15,36 +15,25 @@ interface RequestSuccessProps {
  * No arrival window, no technician name, no service price — none of which
  * exists yet, and any of which would be a commitment LivLab cannot keep.
  *
- * When the request could not reach the server it says so plainly instead of
- * showing a green tick over nothing. The customer still gets their reference,
- * because the request is stored either way.
+ * This component is reached only after the backend persisted the request and
+ * returned its real YC reference.
  */
 export default function RequestSuccess({ request, onClose }: RequestSuccessProps) {
   const meta = REQUEST_TYPES[request.package.requestType];
-  const delivered = request.delivery === 'DELIVERED';
-
   return (
     <div className="py-2 text-center">
       <div
-        className={`mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full ${
-          delivered ? 'bg-[#E8F3EC]' : 'bg-[#FBF0DC]'
-        }`}
+        className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#E8F3EC]"
       >
-        {delivered ? (
-          <CheckCircle2 className="h-6 w-6 text-[#2E7D52]" />
-        ) : (
-          <CloudOff className="h-6 w-6 text-[#8A6520]" />
-        )}
+        <CheckCircle2 className="h-6 w-6 text-[#2E7D52]" />
       </div>
 
       <h3 className="text-[15px] font-bold text-[#0B1623]">
-        {delivered ? 'LivLab đã ghi nhận yêu cầu của bạn.' : 'Yêu cầu của bạn đã được lưu.'}
+        LivLab đã ghi nhận yêu cầu của bạn.
       </h3>
 
       <p className="mx-auto mt-1.5 max-w-[320px] text-[12px] leading-relaxed text-[#627386]">
-        {delivered
-          ? meta.confirmation
-          : 'Hiện chưa gửi được tới hệ thống LivLab. Yêu cầu vẫn được lưu trên thiết bị của bạn — vui lòng gửi lại khi có kết nối, hoặc liên hệ showroom kèm mã bên dưới.'}
+        {meta.confirmation}
       </p>
 
       <div className="mx-auto mt-4 inline-flex flex-col items-center rounded-2xl border border-[#D8E2EA] bg-[#FAFCFD] px-6 py-3">

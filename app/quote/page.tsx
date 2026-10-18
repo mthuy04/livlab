@@ -9,15 +9,15 @@ import { CheckCircle, ArrowRight, Clipboard, Search, FileText } from 'lucide-rea
 
 export default function QuotePage() {
   const { items, clearAll } = useQuote();
-  const [successLeadId, setSuccessLeadId] = useState<string | null>(null);
+  const [successRequestCode, setSuccessRequestCode] = useState<string | null>(null);
 
-  const handleSuccess = (leadId: string) => {
+  const handleSuccess = (requestCode: string) => {
     clearAll();
-    setSuccessLeadId(leadId);
+    setSuccessRequestCode(requestCode);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  if (successLeadId) {
+  if (successRequestCode) {
     return (
       <div className="pt-16 bg-[#F3F7FA] min-h-screen flex items-center justify-center px-6">
         <div className="max-w-lg w-full text-center py-20">
@@ -33,7 +33,7 @@ export default function QuotePage() {
             <p className="text-xs text-[#627386] uppercase tracking-widest font-medium mb-2 flex items-center justify-center gap-1.5">
               <Clipboard className="w-3.5 h-3.5" /> Mã yêu cầu
             </p>
-            <p className="text-3xl font-bold text-[#C8A96A]">{successLeadId}</p>
+            <p className="text-3xl font-bold text-[#C8A96A]">{successRequestCode}</p>
             <p className="text-xs text-[#627386] mt-2">Lưu lại mã này để tra cứu trạng thái yêu cầu</p>
           </div>
 

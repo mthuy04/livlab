@@ -72,6 +72,7 @@ grep -v '^--' db/migrations/<file>.sql \
 | File | Date | Summary | Applied to production |
 |------|------|---------|----------------------|
 | `20261007_showroom_workspace_v2.sql` | 2026-10-07 | Showroom Workspace V2: 7 enums, 4 tables (`Quote`, `QuoteLine`, `LeadActivity`, `ShowroomProductOffer`), 8 nullable columns on `QuoteLead`. Additive only. **Schema frozen.** | **No — awaiting approval** |
+| `20261018_showroom_workspace_v3.sql` | 2026-10-18 | Stable customer request codes, secure phone lookup keys, idempotent submissions, and explicit LIVE/DEMO tenant workspace binding. Additive; includes one idempotent Tùng Đăng demo configuration row. | **No — awaiting approval** |
 
 ## Invariants the database cannot enforce
 

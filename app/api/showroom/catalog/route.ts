@@ -3,6 +3,41 @@ import { prisma } from '@/lib/prisma';
 import { OfferAvailability } from '@prisma/client';
 import { withSchemaGuard } from '@/lib/showroom/guards';
 import { requireShowroomContext, handleShowroomError } from '@/lib/showroom/apiHelpers';
+import { TENANTS } from '@/lib/storefront/tenantConfig';
+import { getCatalog } from '@/lib/storefront/catalog';
+
+async function demoWorkspaceCatalog(showroomId: string, search?: string | null, offeredOnly = false) {
+  const showroom = await prisma.showroom.findUnique({
+    where: { id: showroomId },
+    select: { tenantKey: true, workspaceKind: true },
+  });
+  if (showroom?.workspaceKind !== 'DEMO' || !showroom.tenantKey) return null;
+  const tenant = TENANTS[showroom.tenantKey];
+  if (!tenant?.publicDemo) return null;
+  const catalog = await getCatalog(tenant, { includeUnpresentable: true });
+  const needle = search?.toLocaleLowerCase('vi') ?? '';
+  const items = catalog.products
+    .filter((product) => !needle || [product.name, product.brand, product.sku].some((value) => value?.toLocaleLowerCase('vi').includes(needle)))
+    .map((product) => ({
+      productId: product.catalogProductId,
+      name: product.name,
+      brand: product.brand,
+      category: product.category,
+      imageUrl: product.image,
+      referencePriceMin: product.showroomPrice,
+      referencePriceMax: product.referencePrice ?? product.showroomPrice,
+      isOffered: true,
+      showroomPrice: product.showroomPrice,
+      promotionPrice: null,
+      availability: OfferAvailability.UNKNOWN,
+      leadTimeDays: null,
+      updatedAt: product.sourceCheckedAt,
+      readOnly: true,
+      sourceType: product.sourceType,
+    }))
+    .filter((item) => (offeredOnly ? item.isOffered : true));
+  return { items, sourceCheckedAt: catalog.sourceCheckedAt, readOnly: true };
+}
 
 /**
  * The showroom's catalogue: LivLab master products joined with this showroom's
@@ -20,6 +55,9 @@ export async function GET(request: Request) {
     const url = new URL(request.url);
     const search = url.searchParams.get('q')?.trim();
     const offeredOnly = url.searchParams.get('offered') === '1';
+
+    const demo = await demoWorkspaceCatalog(ctx.showroomId, search, offeredOnly);
+    if (demo) return NextResponse.json(demo);
 
     const products = await prisma.product.findMany({
       where: {
@@ -79,6 +117,16 @@ export async function PATCH(request: Request) {
   const ctx = await requireShowroomContext();
   if ('error' in ctx) return ctx.error;
   try {
+    const workspace = await prisma.showroom.findUnique({
+      where: { id: ctx.showroomId },
+      select: { workspaceKind: true },
+    });
+    if (workspace?.workspaceKind === 'DEMO') {
+      return NextResponse.json(
+        { error: 'Danh mục fixture của demo là dữ liệu chỉ đọc.' },
+        { status: 403 }
+      );
+    }
     const body = await request.json();
     if (typeof body?.productId !== 'string') {
       return NextResponse.json({ error: 'Thiếu sản phẩm.' }, { status: 400 });

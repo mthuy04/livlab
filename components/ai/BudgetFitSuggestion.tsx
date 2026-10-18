@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Sparkles, CheckCircle2, AlertCircle, RefreshCcw, ChevronRight, LayoutGrid } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import BudgetFitCard from '@/components/budget/BudgetFitCard';
@@ -9,6 +9,7 @@ export default function BudgetFitSuggestion() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
+  const quoteSubmissionKey = useRef<string | null>(null);
   
   const [formData, setFormData] = useState({
     budgetMin: 15000000,
@@ -76,9 +77,10 @@ export default function BudgetFitSuggestion() {
       return;
     }
     try {
+      quoteSubmissionKey.current ??= crypto.randomUUID();
       const res = await fetch('/api/quote', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': quoteSubmissionKey.current },
         body: JSON.stringify({
           customerName: customerInfo.name,
           phone: customerInfo.phone,
@@ -99,7 +101,8 @@ export default function BudgetFitSuggestion() {
         })
       });
       if (res.ok) {
-        alert('Yêu cầu báo giá đã được gửi thành công!');
+        const data = await res.json();
+        alert(`Yêu cầu báo giá đã được gửi. Mã yêu cầu: ${data.requestCode}`);
         router.push('/');
       } else {
         alert('Lỗi gửi báo giá.');

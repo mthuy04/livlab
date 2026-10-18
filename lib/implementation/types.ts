@@ -143,17 +143,13 @@ export interface HumanHandoffPackage {
 
 /** A stored request: the package plus what happened to it. */
 export interface ImplementationRequest {
-  /** Customer-facing reference, e.g. "LLQ-2026-004". */
+  /** Server-issued customer reference, e.g. "YC-2026-000004". */
   requestCode: string;
   /** Id returned by the server when the lead was persisted, when it was. */
   leadId?: string;
   package: HumanHandoffPackage;
-  /**
-   * Whether the request reached the LivLab backend. A request saved locally
-   * but not delivered is still shown to the customer with its code — losing it
-   * silently would be worse than an honest "chưa đồng bộ".
-   */
-  delivery: 'DELIVERED' | 'LOCAL_ONLY';
+  /** Returned records have been persisted by the LivLab backend. */
+  delivery: 'DELIVERED';
   status: 'NEW';
   createdAt: string;
 }

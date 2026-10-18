@@ -104,6 +104,13 @@ enum OfferAvailability {
   UNKNOWN
 }
 
+/// Keeps public demo workspaces physically and logically separate from live
+/// partner data. A demo storefront can only route into a DEMO showroom.
+enum WorkspaceKind {
+  LIVE
+  DEMO
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -133,6 +140,12 @@ model Showroom {
   status      String   @default("ACTIVE")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  /// Stable storefront-to-workspace binding. This is deliberately separate
+  /// from Product.showroomId: a public demo uses fixture catalogue data but
+  /// still needs an owned inbox for persisted requests.
+  tenantKey     String?       @unique
+  workspaceKind WorkspaceKind @default(LIVE)
 
   products    Product[]
   leads       QuoteLead[]
@@ -203,6 +216,18 @@ model QuoteLead {
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
 
+  /// Public reference returned to the customer. Nullable only for historical
+  /// rows created before Workspace V3; every new public submission receives
+  /// one inside the same transaction as the lead.
+  requestCode     String? @unique
+  /// Server-normalised lookup key. The raw phone remains in `phone` for staff.
+  normalizedPhone String?
+  /// Storefront that originated the request, independent of its workspace.
+  sourceTenantId  String?
+  /// Client retry key. It lets a repeated POST return the original request
+  /// instead of creating a duplicate lead.
+  submissionKey   String? @unique
+
   aiSummary      String?
   aiFitScore     Int?
   aiSource       String?
@@ -243,6 +268,8 @@ model QuoteLead {
   @@index([showroomId, stage])
   @@index([showroomId, nextActionAt])
   @@index([showroomId, requestType])
+  @@index([requestCode, normalizedPhone])
+  @@index([sourceTenantId, createdAt])
 }
 
 model QuoteItem {

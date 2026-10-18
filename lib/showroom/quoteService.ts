@@ -1,4 +1,4 @@
-import { Prisma, type QuoteStatus } from '@prisma/client';
+import { Prisma, type LeadStage, type LeadStatus, type QuoteStatus } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { requireOwnedLead, withSchemaGuard, ShowroomAccessError } from './guards';
 
@@ -56,6 +56,7 @@ function priceLines(lines: QuoteLineInput[]) {
 /** Next human reference in the BG-YYYY-NNNN series, scoped to the year. */
 async function nextQuoteCode(tx: Prisma.TransactionClient): Promise<string> {
   const prefix = `BG-${new Date().getFullYear()}-`;
+  await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${`livlab:${prefix}`}))`;
   const last = await tx.quote.findFirst({
     where: { code: { startsWith: prefix } },
     orderBy: { code: 'desc' },
@@ -117,7 +118,7 @@ export async function createQuoteFromLead(params: {
 
     return prisma.$transaction(async (tx) => {
       const code = await nextQuoteCode(tx);
-      return tx.quote.create({
+      const quote = await tx.quote.create({
         data: {
           code,
           leadId,
@@ -138,6 +139,22 @@ export async function createQuoteFromLead(params: {
         },
         include: { lines: { orderBy: { sortOrder: 'asc' } } },
       });
+      await tx.quoteLead.update({
+        where: { id: leadId },
+        data: { stage: 'QUOTING' },
+      });
+      await tx.leadActivity.create({
+        data: {
+          leadId,
+          showroomId,
+          type: 'STAGE_CHANGE',
+          body: `Đã tạo báo giá nháp ${code}`,
+          metadataJson: { quoteId: quote.id, code, from: lead.stage, to: 'QUOTING' },
+          doneAt: new Date(),
+          createdById: createdById ?? null,
+        },
+      });
+      return quote;
     });
   });
 }
@@ -147,6 +164,8 @@ export async function updateQuoteLines(params: {
   quoteId: string;
   showroomId: string;
   lines: QuoteLineInput[];
+  validUntil?: Date | null;
+  notes?: string | null;
 }) {
   const { quoteId, showroomId, lines } = params;
 
@@ -165,7 +184,14 @@ export async function updateQuoteLines(params: {
       await tx.quoteLine.deleteMany({ where: { quoteId } });
       return tx.quote.update({
         where: { id: quoteId },
-        data: { subtotal, discount, total, lines: { create: priced } },
+        data: {
+          subtotal,
+          discount,
+          total,
+          ...(params.validUntil !== undefined ? { validUntil: params.validUntil } : {}),
+          ...(params.notes !== undefined ? { notes: params.notes } : {}),
+          lines: { create: priced },
+        },
         include: { lines: { orderBy: { sortOrder: 'asc' } } },
       });
     });
@@ -222,6 +248,40 @@ export async function changeQuoteStatus(params: {
             createdById: createdById ?? null,
           },
         });
+      }
+
+      // The lead pipeline and the commercial document are two views of the
+      // same customer journey. Keep them in sync in this transaction so the
+      // dashboard cannot say "đang soạn" after a quote was actually sent.
+      if (quote.leadId) {
+        const stageByStatus: Partial<Record<QuoteStatus, { stage: LeadStage; status: LeadStatus }>> = {
+          SENT: { stage: 'QUOTE_SENT' as const, status: 'QUOTED' as const },
+          ACCEPTED: { stage: 'WON' as const, status: 'WON' as const },
+          REJECTED: { stage: 'FOLLOW_UP' as const, status: 'QUOTED' as const },
+          EXPIRED: { stage: 'FOLLOW_UP' as const, status: 'QUOTED' as const },
+        };
+        const nextLeadState = stageByStatus[to];
+        if (nextLeadState) {
+          await tx.quoteLead.update({ where: { id: quote.leadId }, data: nextLeadState });
+          if (to !== 'SENT') {
+            await tx.leadActivity.create({
+              data: {
+                leadId: quote.leadId,
+                showroomId,
+                type: 'STAGE_CHANGE',
+                body:
+                  to === 'ACCEPTED'
+                    ? `Khách đã chấp nhận báo giá ${quote.code}`
+                    : to === 'REJECTED'
+                      ? `Khách từ chối báo giá ${quote.code}`
+                      : `Báo giá ${quote.code} đã hết hiệu lực`,
+                metadataJson: { quoteId, code: quote.code, quoteStatus: to, to: nextLeadState.stage },
+                doneAt: now,
+                createdById: createdById ?? null,
+              },
+            });
+          }
+        }
       }
 
       return updated;
