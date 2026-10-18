@@ -2,6 +2,9 @@
 
 Status: **preview code ready; production release gated**
 
+GitHub branch: `codex/giangson-showroom-v1`  
+Verified pushed commit: `cedf37bf93c6b5a8a5877c6116ca6efce360ade8`
+
 ## Completed
 
 - Dedicated `giangson` public-demo tenant and route.
