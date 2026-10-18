@@ -6,6 +6,8 @@ import type { TenantStorefrontConfig } from '@/lib/storefront/tenantConfig';
 import ArchitecturalHero from './ArchitecturalHero';
 import styles from './ArchitecturalLanding.module.css';
 
+const formatVnd = (value: number) => `${value.toLocaleString('vi-VN')}đ`;
+
 function SectionIntro({
   eyebrow,
   title,
@@ -116,6 +118,43 @@ export default function ArchitecturalLanding({ tenant }: { tenant: TenantStorefr
               </Link>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section id="featured-products" className={`${styles.section} ${styles.productSection}`}>
+        <div className="home-container">
+          <SectionIntro
+            eyebrow={landing.products.eyebrow}
+            title={landing.products.title}
+            description={landing.products.description}
+          />
+          <div className={styles.productGrid}>
+            {landing.products.items.map((product) => (
+              <article key={product.sku} className={styles.productCard}>
+                <div className={styles.productImage}>
+                  <Image
+                    src={product.image.src}
+                    alt={product.image.alt}
+                    fill
+                    sizes="(max-width: 767px) 100vw, 33vw"
+                    className={styles.productObject}
+                  />
+                </div>
+                <div className={styles.productCopy}>
+                  <p className={styles.productMeta}>{product.category} · {product.brand}</p>
+                  <h3>{product.name}</h3>
+                  <p className={styles.productSku}>{product.sku}</p>
+                  <p className={styles.productPrice}>{formatVnd(product.referencePrice)}</p>
+                  <p className={styles.productSource}>{product.sourceLabel}</p>
+                  <a href={product.href} target="_blank" rel="noreferrer" className={styles.productLink}>
+                    XEM NGUỒN SẢN PHẨM
+                    <ArrowRight aria-hidden="true" />
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+          <p className={styles.productNote}>{landing.products.note}</p>
         </div>
       </section>
 

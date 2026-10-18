@@ -151,6 +151,17 @@ export interface LandingHotspot {
   yPct: number;
 }
 
+export interface LandingProduct {
+  name: string;
+  brand: string;
+  sku: string;
+  category: string;
+  image: LandingImage;
+  referencePrice: number;
+  sourceLabel: string;
+  href: string;
+}
+
 export interface ArchitecturalLandingContent {
   hero: {
     image: LandingImage;
@@ -168,6 +179,13 @@ export interface ArchitecturalLandingContent {
     description: string;
     cta: CtaCopy;
     items: Array<{ title: string; note: string; image: LandingImage; href: string }>;
+  };
+  products: {
+    eyebrow: string;
+    title: string;
+    description: string;
+    note: string;
+    items: LandingProduct[];
   };
   roomStudio: {
     eyebrow: string;
@@ -247,6 +265,8 @@ export interface TenantCopy {
     searchHref?: string;
     showSearch?: boolean;
     showSaved?: boolean;
+    /** Compensates for logo files whose canvas has generous built-in whitespace. */
+    logoSize?: 'standard' | 'large';
     /** Collapse to the drawer early when the logo and four primary items need more room. */
     collapseAt?: 'lg' | 'xl';
   };

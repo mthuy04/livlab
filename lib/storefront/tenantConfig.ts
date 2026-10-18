@@ -544,9 +544,9 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
       },
       categories: {
         eyebrow: 'DANH MỤC SẢN PHẨM',
-        title: 'Lựa chọn phù hợp cho từng không gian.',
+        title: 'Khám phá danh mục sản phẩm',
         description:
-          'Từ bồn cầu, lavabo, sen vòi đến gạch ốp lát và vật liệu hoàn thiện — tìm hiểu các nhóm sản phẩm theo nhu cầu của bạn.',
+          'Tìm hiểu các nhóm thiết bị vệ sinh và vật liệu hoàn thiện phù hợp với từng không gian.',
         items: [
           {
             id: 'bon-cau',
@@ -602,9 +602,9 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
       },
       concepts: {
         eyebrow: 'KHÔNG GIAN GỢI Ý',
-        title: 'Thấy không gian yêu thích. Khám phá sản phẩm ngay.',
+        title: 'Từ không gian yêu thích đến sản phẩm phù hợp',
         description:
-          'Mỗi không gian là một gợi ý về cách phối hợp thiết bị và vật liệu. Chạm vào sản phẩm để tìm hiểu thêm mà không cần tìm kiếm lại từ đầu.',
+          'Khám phá các không gian gợi ý, chạm vào từng sản phẩm để xem thông tin và lưu trực tiếp vào yêu cầu báo giá.',
         cta: { label: 'KHÁM PHÁ KHÔNG GIAN', href: '/concepts' },
         items: [
           {
@@ -636,12 +636,60 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
           },
         ],
       },
+      products: {
+        eyebrow: 'SẢN PHẨM NỔI BẬT',
+        title: 'Sản phẩm được tuyển chọn',
+        description:
+          'Khám phá những mẫu thiết bị có thông tin, hình ảnh và giá tham khảo từ nguồn công khai.',
+        note: 'Giá hiển thị là giá tham khảo từ nguồn công khai, không phải báo giá của Giang Sơn.',
+        items: [
+          {
+            name: 'Bồn cầu một khối INAX AC-1008VRN',
+            brand: 'INAX',
+            sku: 'AC-1008VRN',
+            category: 'Bồn cầu',
+            image: {
+              src: '/demo/manufacturers/inax/ac-1008vrn-primary.webp',
+              alt: 'Bồn cầu một khối INAX AC-1008VRN trên nền sáng',
+            },
+            referencePrice: 17440000,
+            sourceLabel: 'Giá tham khảo · INAX Việt Nam',
+            href: 'https://www.inax.com.vn/vi/product-category/805/',
+          },
+          {
+            name: 'Vòi lavabo nóng lạnh INAX LFV-502SH',
+            brand: 'INAX',
+            sku: 'LFV-502SH',
+            category: 'Vòi lavabo',
+            image: {
+              src: '/demo/manufacturers/inax/lfv-502sh-primary.webp',
+              alt: 'Vòi lavabo nóng lạnh INAX LFV-502SH trên nền sáng',
+            },
+            referencePrice: 6902000,
+            sourceLabel: 'Giá tham khảo · INAX Việt Nam',
+            href: 'https://www.inax.com.vn/vi/products/bathroom-faucet/sen-voi-don-lfv-502sh/',
+          },
+          {
+            name: 'Sen cây nóng lạnh INAX BFV-615S-8C',
+            brand: 'INAX',
+            sku: 'BFV-615S-8C',
+            category: 'Sen vòi',
+            image: {
+              src: '/demo/manufacturers/inax/llv-sho-inax-bfv615s8c-primary.webp',
+              alt: 'Sen cây nóng lạnh INAX BFV-615S-8C trên nền sáng',
+            },
+            referencePrice: 12210000,
+            sourceLabel: 'Giá tham khảo · INAX Việt Nam',
+            href: 'https://www.inax.com.vn/vi/products/shower/sen-cay-bfv-615s-8c/',
+          },
+        ],
+      },
       roomStudio: {
         eyebrow: 'THIẾT KẾ TRỰC QUAN 3D',
-        title: 'Thử thiết kế trước khi quyết định.',
+        title: 'Chủ động thiết kế không gian của bạn',
         description:
-          'Thiết lập kích thước phòng, thử bố trí thiết bị, thay đổi vật liệu và quan sát không gian từ nhiều góc độ.',
-        cta: { label: 'MỞ ROOM STUDIO', href: '/room-studio' },
+          'Với Room Studio, khách hàng có thể thiết lập kích thước phòng, lựa chọn màu sắc, chất liệu gạch tường và sàn, phối hợp các thiết bị vệ sinh và quan sát tổng thể trong môi trường 3D. Điều này giúp so sánh phương án thiết kế, đánh giá mức độ phù hợp với không gian và đưa ra lựa chọn sản phẩm có cơ sở hơn trước khi yêu cầu báo giá.',
+        cta: { label: 'TRẢI NGHIỆM ROOM STUDIO', href: '/room-studio' },
         image: {
           src: '/images/room-studio-ui.png',
           alt: 'Giao diện Room Studio đang chạy với phòng 3D, bảng vật liệu và thư viện sản phẩm',
@@ -649,34 +697,50 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
       },
       about: {
         eyebrow: 'VỀ GIANG SƠN',
-        title: 'Thiết bị và vật liệu cho không gian hoàn thiện.',
+        title: 'Giang Sơn — Thiết bị và vật liệu hoàn thiện',
         body:
-          'Giang Sơn Việt Nam hoạt động trong lĩnh vực thương mại thiết bị vệ sinh, gạch ốp lát và vật liệu hoàn thiện, đáp ứng nhu cầu tìm hiểu sản phẩm cho nhà ở và công trình.',
+          'Khám phá các nhóm thiết bị vệ sinh, gạch ốp lát và vật liệu phục vụ nhu cầu hoàn thiện nhà ở và công trình.',
       },
       contact: {
-        title: 'Bạn đang tìm giải pháp cho không gian của mình?',
-        body: 'Khám phá sản phẩm hoặc chia sẻ nhu cầu để được hỗ trợ lựa chọn phù hợp.',
-        cta: { label: 'LIÊN HỆ TƯ VẤN', href: 'tel:0395279360' },
+        title: 'Bắt đầu lựa chọn cho không gian của bạn',
+        body: 'Khám phá sản phẩm, thử bố trí trong Room Studio hoặc gửi yêu cầu để nhận tư vấn phù hợp.',
+        cta: { label: 'YÊU CẦU BÁO GIÁ', href: 'tel:0395279360' },
         phone: '0395 279 360',
       },
     },
   },
   copy: {
-    utility: ['Thiết bị & vật liệu hoàn thiện'],
+    utility: ['Thiết bị & vật liệu hoàn thiện', 'Tư vấn & báo giá'],
     demoNotice: 'Bản trình diễn showroom số LivLab, sử dụng thông tin từ nguồn công khai',
     header: {
       primaryCta: { label: 'YÊU CẦU BÁO GIÁ', href: '/#contact-giangson' },
-      showSearch: false,
+      searchHref: '/#featured-products',
+      showSearch: true,
       showSaved: false,
-      collapseAt: 'xl',
+      logoSize: 'large',
+      collapseAt: 'lg',
     },
     hero: {
       eyebrow: 'GIANG SƠN · THIẾT BỊ & VẬT LIỆU HOÀN THIỆN',
       titleLines: ['Hoàn thiện không gian,', 'bắt đầu từ lựa chọn đúng.'],
       body:
-        'Khám phá thiết bị vệ sinh và vật liệu hoàn thiện, tìm cảm hứng từ những không gian đẹp và thử thiết kế phòng tắm theo nhu cầu của bạn.',
+        'Khám phá thiết bị vệ sinh, gạch ốp lát và giải pháp hoàn thiện. Trực tiếp phối thử thiết bị, vật liệu trong không gian 3D trước khi lựa chọn.',
       primaryCta: { label: 'KHÁM PHÁ SẢN PHẨM', href: '/#categories' },
       secondaryCta: { label: 'TRẢI NGHIỆM ROOM STUDIO', href: '/room-studio' },
+      trust: [
+        {
+          title: 'DANH MỤC ĐA DẠNG',
+          body: 'Thiết bị vệ sinh, gạch ốp lát và vật liệu hoàn thiện cho nhiều nhu cầu.',
+        },
+        {
+          title: 'THIẾT KẾ TRỰC QUAN 3D',
+          body: 'Tùy chỉnh kích thước, phối vật liệu và bố trí thiết bị ngay trong không gian.',
+        },
+        {
+          title: 'TƯ VẤN & BÁO GIÁ',
+          body: 'Lưu lựa chọn và gửi yêu cầu để showroom tư vấn theo nhu cầu thực tế.',
+        },
+      ],
     },
     sections: {
       categoriesTitle: 'DANH MỤC SẢN PHẨM',
@@ -732,8 +796,7 @@ export const DEMO_GIANGSON_TENANT: TenantStorefrontConfig = {
         { href: '/#bon-cau', label: 'Bồn cầu' },
         { href: '/#lavabo', label: 'Lavabo & chậu rửa' },
         { href: '/#sen-voi', label: 'Sen vòi' },
-        { href: '/#gach-op-lat', label: 'Gạch ốp lát' },
-        { href: '/#vat-lieu-hoan-thien', label: 'Vật liệu hoàn thiện' },
+        { href: '/#gach-op-lat', label: 'Gạch & Vật liệu' },
       ],
     },
     { href: '/room-studio', label: 'Room Studio' },
@@ -742,6 +805,7 @@ export const DEMO_GIANGSON_TENANT: TenantStorefrontConfig = {
       label: 'Báo giá',
       children: [
         { href: '/#contact-giangson', label: 'Yêu cầu báo giá' },
+        { href: '/#contact-giangson', label: 'Báo giá công trình' },
         { href: 'tel:0395279360', label: 'Gọi 0395 279 360' },
       ],
     },

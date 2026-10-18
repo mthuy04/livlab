@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Route } from 'next';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Grid3X3, Headset, Ruler } from 'lucide-react';
 import type { LandingHotspot, LandingImage, TenantCopy } from '@/lib/storefront/tenantExperience';
 import styles from './ArchitecturalLanding.module.css';
 
@@ -24,7 +24,12 @@ export default function ArchitecturalHero({
     <section className={styles.hero} aria-labelledby="giangson-hero-title">
       <div className={`${styles.heroGrid} home-container`}>
         <div className={styles.heroCopy}>
-          {copy.eyebrow && <p className={styles.eyebrow}>{copy.eyebrow}</p>}
+          {copy.eyebrow && (
+            <p className={`${styles.eyebrow} ${styles.heroEyebrow}`}>
+              <span aria-hidden="true" className={styles.eyebrowRule} />
+              <span>{copy.eyebrow}</span>
+            </p>
+          )}
           <h1 id="giangson-hero-title" className={styles.heroTitle}>
             {copy.titleLines.map((line) => (
               <span key={line}>{line}</span>
@@ -50,7 +55,8 @@ export default function ArchitecturalHero({
             src={image.src}
             alt={image.alt}
             fill
-            priority
+            loading="eager"
+            fetchPriority="high"
             sizes="(max-width: 767px) 100vw, 55vw"
             className={styles.heroImage}
           />
@@ -80,6 +86,25 @@ export default function ArchitecturalHero({
           )}
         </div>
       </div>
+
+      {copy.trust && copy.trust.length > 0 && (
+        <div className={`${styles.trust} home-container`} data-hero-trust>
+          <ul className={styles.trustGrid}>
+            {copy.trust.map((item, index) => {
+              const Icon = [Grid3X3, Ruler, Headset][index % 3];
+              return (
+                <li key={item.title} className={styles.trustItem}>
+                  <Icon aria-hidden="true" strokeWidth={1.4} />
+                  <div>
+                    <p>{item.title}</p>
+                    <span>{item.body}</span>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
     </section>
   );
 }

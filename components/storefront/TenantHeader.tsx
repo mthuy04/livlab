@@ -32,6 +32,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
   const { copy } = tenant.experience;
   const header = copy.header;
   const collapseAtXl = header?.collapseAt === 'xl';
+  const largeLogo = header?.logoSize === 'large';
   /**
    * The menu is open for a specific route. Navigating changes the pathname,
    * which closes it by derivation — no effect watching for route changes, and
@@ -95,7 +96,13 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
                   alt={tenant.brand.logoAlt ?? tenant.brand.name}
                   // A lockup with its descriptor set inside it needs the height
                   // to stay legible; a bare wordmark does not.
-                  className={retail ? 'h-10 w-auto lg:h-[40px] xl:h-[50px]' : 'h-9 w-auto lg:h-[40px]'}
+                  className={
+                    largeLogo
+                      ? 'h-11 w-auto lg:h-[52px] xl:h-14'
+                      : retail
+                        ? 'h-10 w-auto lg:h-[40px] xl:h-[50px]'
+                        : 'h-9 w-auto lg:h-[40px]'
+                  }
                   onError={() => setLogoFailed(true)}
                 />
               ) : (
