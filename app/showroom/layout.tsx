@@ -10,6 +10,7 @@ import { useAuth } from '@/lib/context/AuthContext';
 import {
   LayoutDashboard, FileText, Inbox, Tags, Users, BarChart3, Settings,
   ExternalLink, AlertCircle, LogOut, ChevronDown, Menu, Search, Bell, X,
+  PanelLeftClose, PanelLeftOpen,
 } from 'lucide-react';
 import { CX } from '@/components/showroom/ui/tokens';
 
@@ -33,6 +34,19 @@ const NAV_GROUPS: { label: string; items: { href: string; label: string; icon: t
   { label: 'Hệ thống', items: [{ href: '/showroom/settings', label: 'Cài đặt', icon: Settings }] },
 ];
 
+/** Per-viewer preference only; the sidebar opens by default wherever it is unreadable. */
+const SIDEBAR_KEY = 'livlab_showroom_sidebar_collapsed';
+const DESKTOP_QUERY = '(min-width: 1024px)';
+
+function readSidebarCollapsed(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    return localStorage.getItem(SIDEBAR_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
 export default function ShowroomLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -40,6 +54,9 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
   const [showroom, setShowroom] = useState<{ name: string; tenantKey: string | null; workspaceKind: 'LIVE' | 'DEMO' } | null>(null);
   const [accountOpen, setAccountOpen] = useState(false);
   const [mobileMenuPath, setMobileMenuPath] = useState<string | null>(null);
+  // Read once on the client. Safe to differ from the server's `false`: the
+  // first render on both sides is the auth spinner, which does not show it.
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(readSidebarCollapsed);
   const [search, setSearch] = useState('');
   const menuTriggerRef = useRef<HTMLButtonElement>(null);
   const menuCloseRef = useRef<HTMLButtonElement>(null);
@@ -71,6 +88,22 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
     if (restoreFocus) requestAnimationFrame(() => menuTriggerRef.current?.focus());
   }
 
+  // One button, two jobs: on desktop it folds the docked sidebar away, below
+  // the desktop breakpoint (where no sidebar is docked) it opens the drawer.
+  function toggleNavigation() {
+    if (!window.matchMedia(DESKTOP_QUERY).matches) {
+      setMobileMenuPath(pathname);
+      return;
+    }
+    const next = !sidebarCollapsed;
+    setSidebarCollapsed(next);
+    try {
+      localStorage.setItem(SIDEBAR_KEY, next ? '1' : '0');
+    } catch {
+      // Not remembered across visits; the toggle still works for this one.
+    }
+  }
+
   if (loading) {
     return <div className="grid min-h-screen place-items-center bg-[#F7F6F2]"><span className="h-6 w-6 animate-spin rounded-full border-2 border-[#E5D7B7] border-t-[#EF9F00]" /></div>;
   }
@@ -83,7 +116,7 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
 
   const isTungDang = showroom?.tenantKey === 'tungdang';
   const isDemo = showroom?.workspaceKind === 'DEMO';
-  const displayName = isTungDang ? 'BẾP TÙNG ĐĂNG' : showroom?.name?.replace(' — Demo Workspace', '') || 'Showroom';
+  const displayName = showroom?.name?.replace(' — Demo Workspace', '') || 'Showroom';
   const initials = (user.name || user.email || '?').slice(0, 2).toUpperCase();
   const active = (href: string, exact?: boolean) => exact ? pathname === href : pathname.startsWith(href);
 
@@ -91,13 +124,18 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
     <>
       <div className="showroom-brand">
         {isTungDang ? (
-          <span className="showroom-brand-logo"><Image src="/demo/tungdang/logo.png" alt="Bếp Tùng Đăng" width={38} height={38} className="h-full w-full object-contain" /></span>
-        ) : <span className="showroom-brand-mark">LL</span>}
-        <div className="min-w-0">
-          <p className="truncate text-[15px] font-extrabold tracking-[0.01em] text-[#2E2D2B]">{displayName}</p>
-          <p className="mt-0.5 text-[9px] font-bold uppercase tracking-[0.16em] text-[#A2A099]">Showroom Workspace · Powered by LivLab</p>
-          {isDemo && <span className="mt-1.5 inline-flex rounded-full bg-[#FFF1D6] px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-[0.12em] text-[#8D530B]">Demo workspace</span>}
-        </div>
+          // The showroom's own wordmark, at its own proportions, and nothing beside it.
+          <Image src="/demo/tungdang/logo.png" alt="Bếp Tùng Đăng" width={1096} height={290} priority className="h-12 w-auto max-w-full" />
+        ) : (
+          <>
+            <span className="showroom-brand-mark">LL</span>
+            <div className="min-w-0">
+              <p className="truncate text-[15px] font-extrabold tracking-[0.01em] text-[#2E2D2B]">{displayName}</p>
+              <p className="mt-0.5 text-[9px] font-bold uppercase tracking-[0.16em] text-[#A2A099]">Showroom Workspace · Powered by LivLab</p>
+              {isDemo && <span className="mt-1.5 inline-flex rounded-full bg-[#FFF1D6] px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-[0.12em] text-[#8D530B]">Demo workspace</span>}
+            </div>
+          </>
+        )}
       </div>
       <nav className="showroom-nav" aria-label="Điều hướng showroom">
         {NAV_GROUPS.map((group) => (
@@ -133,7 +171,7 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
   );
 
   return (
-    <div className="showroom-v3 min-h-screen bg-[#F7F6F2] text-[#2E2D2B]">
+    <div className="showroom-v3 min-h-screen bg-[#F7F6F2] text-[#2E2D2B]" data-sidebar={sidebarCollapsed ? 'collapsed' : 'open'}>
       <aside className="showroom-sidebar print-hide">{sidebar}</aside>
       {mobileOpen && (
         <>
@@ -147,11 +185,11 @@ export default function ShowroomLayout({ children }: { children: React.ReactNode
 
       <div className="showroom-workspace">
         <header className="showroom-topbar print-hide">
-          <div className="flex min-w-0 items-center gap-3">
-            <button ref={menuTriggerRef} type="button" aria-label="Mở menu" aria-expanded={mobileOpen} className="showroom-icon-btn lg:hidden" onClick={() => setMobileMenuPath(pathname)}><Menu className="h-5 w-5" /></button>
-            <span className="hidden text-[11px] font-extrabold uppercase tracking-[0.13em] text-[#93948D] sm:inline">Showroom Workspace</span>
-            <span className="hidden h-[18px] w-px bg-[#ECEAE4] sm:block" />
-            <span className="truncate text-[12px] text-[#696D69]">{NAV_GROUPS.flatMap((g) => g.items).find((item) => active(item.href, item.exact))?.label || 'Tổng quan'}</span>
+          <div className="flex min-w-0 items-center">
+            <button ref={menuTriggerRef} type="button" aria-label="Ẩn/hiện thanh điều hướng" title="Ẩn/hiện thanh điều hướng" className="showroom-icon-btn" onClick={toggleNavigation}>
+              <Menu className="h-5 w-5 lg:hidden" />
+              {sidebarCollapsed ? <PanelLeftOpen className="hidden h-5 w-5 lg:block" /> : <PanelLeftClose className="hidden h-5 w-5 lg:block" />}
+            </button>
           </div>
           <div className="flex items-center gap-2 sm:gap-3">
             <form onSubmit={(event) => { event.preventDefault(); if (search.trim()) { closeMobileMenu(); router.push(`/showroom/leads?q=${encodeURIComponent(search.trim())}`); } }} className="showroom-global-search">

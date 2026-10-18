@@ -13,5 +13,5 @@
 .showroom-v3 .text-\[\#123C5A\]{color:#9b6309!important}.showroom-v3 .hover\:text-\[\#123C5A\]:hover{color:#8d530b!important}.showroom-v3 .bg-\[\#123C5A\]{background-color:#efa724!important;color:#2e2d2b!important}.showroom-v3 .hover\:bg-\[\#0D2B42\]:hover{background-color:#fca359!important}.showroom-v3 .border-\[\#E3E9EE\]{border-color:#eae9e4!important}.showroom-v3 .bg-\[\#F7F9FA\]{background-color:#f7f6f2!important}.showroom-v3 .text-\[\#111A22\]{color:#2e2d2b!important}
 @keyframes showroom-slide-in{from{transform:translateX(-100%)}to{transform:translateX(0)}}
 @media(min-width:640px){.showroom-topbar{padding-inline:28px}.showroom-global-search{display:flex}}
-@media(min-width:1024px){.showroom-sidebar{display:flex}.showroom-topbar{padding-inline:36px}.showroom-mobile-sidebar,.showroom-mobile-backdrop{display:none!important}}
+@media(min-width:1024px){.showroom-sidebar{display:flex}.showroom-v3[data-sidebar=collapsed] .showroom-sidebar{display:none}.showroom-topbar{padding-inline:36px}.showroom-mobile-sidebar,.showroom-mobile-backdrop{display:none!important}}
 @media print{.showroom-sidebar,.showroom-topbar{display:none!important}.showroom-workspace{display:block}}
