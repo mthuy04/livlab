@@ -3,6 +3,13 @@
  * Sanitaryware-only demo ingestion for the unsigned Tùng Đăng showroom demo.
  *
  *   node scripts/import-tungdang-sanitaryware.mjs [--pages 6] [--out <path>]
+ *   node scripts/import-tungdang-sanitaryware.mjs --add <url>[,<url>] --category <c> [--dry-run]
+ *
+ * `--add` scrapes only the given product pages, with the same extraction as a
+ * full crawl, and merges them into the existing fixture by brand + SKU: a
+ * product already present is refreshed in place, a new one is appended, and
+ * every other record is left exactly as it was. Use it to pick up one product
+ * without re-pricing the whole catalogue. `--dry-run` prints what would change.
  *
  * Crawls ONLY the five allowlisted sanitaryware category paths and the
  * /san-pham/ product pages they link to. Kitchen appliances are never
@@ -19,7 +26,7 @@
  * does not own it, and reuse rights must be cleared before any public launch.
  */
 
-import { writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 
 const ORIGIN = 'https://beptungdang.vn';
@@ -196,7 +203,7 @@ function extractFacts(html) {
  * from the product title, so candidates are scored on how many slug tokens
  * they share with the page's own slug.
  */
-function extractImages(html, slug, sku) {
+function extractImages(html, slug, sku, name) {
   const tags = html.match(/<img[^>]+>/g) ?? [];
   const urls = [];
   for (const tag of tags) {
@@ -244,6 +251,24 @@ function extractImages(html, slug, sku) {
   const isDrawing = (u) => /ban-?ve|banve|drawing|tskt|kich-?thuoc|-bv[-.]|dimension/i.test(u);
   const technicalDrawing = gallery.find(isDrawing) ?? null;
   const photos = gallery.filter((u) => !isDrawing(u));
+
+  // Fallback, only when no filename carried the model code: the image the
+  // page itself declares for THIS product on its add-to-cart control, which
+  // carries the product's own name. Some uploads are named with a shortened
+  // code (`11252.png` for 11252-2/31KA-I011) that the six-character prefix
+  // rule above rightly refuses to guess at; the page's own declaration is not
+  // a guess. Related-product cards carry the same attribute with THEIR names,
+  // so the name must match exactly.
+  if (photos.length === 0 && name) {
+    for (const m of html.matchAll(/<[^>]+data-product-name="([^"]+)"[^>]*>/g)) {
+      if (decode(m[1]).trim() !== name) continue;
+      const declared = m[0].match(/data-product-image="([^"]+)"/)?.[1];
+      if (declared && declared.includes('/wp-content/uploads/') && !isDrawing(declared)) {
+        photos.push(declared.replace(/-\d{2,4}x\d{2,4}(\.[a-z]+)$/i, '$1'));
+        break;
+      }
+    }
+  }
   return {
     primaryImage: photos[0] ?? null,
     additionalImages: photos.slice(1, 5),
@@ -320,7 +345,7 @@ async function scrapeProduct(url, category, checkedAt) {
   const facts = extractFacts(html);
   const { referencePrice, showroomPrice } = extractPrices(html);
   const sku = detectSku(name, brand);
-  const images = extractImages(html, url.replace(/\/$/, '').split('/').pop() ?? '', sku);
+  const images = extractImages(html, url.replace(/\/$/, '').split('/').pop() ?? '', sku, name);
   const resolvedCategory =
     category === 'Sen tắm' && FAUCET_PATTERN.test(name) ? 'Vòi lavabo' : category;
 
@@ -360,8 +385,62 @@ async function scrapeProduct(url, category, checkedAt) {
 const dedupeKey = (p) =>
   `${(p.brand ?? 'unknown').toLowerCase()}::${(p.sku ?? p.name).toLowerCase().replace(/[^a-z0-9]/g, '')}`;
 
+/** Scrape a few named product pages and merge them into the fixture. */
+async function addProducts(urls, category, out, dryRun) {
+  const checkedAt = new Date().toISOString();
+  const fixture = JSON.parse(await readFile(out, 'utf8'));
+  const byKey = new Map(fixture.products.map((p, i) => [dedupeKey(p), i]));
+
+  for (const url of urls) {
+    const p = await scrapeProduct(url, category, checkedAt);
+    // The same bar a full crawl applies: name, brand, category and a photo
+    // whose filename carries the product's own model code.
+    if (!p || !p.name || !p.brand || !p.category || !p.primaryImage) {
+      console.log(`SKIP ${url} — incomplete:`, p && { name: p.name, brand: p.brand, image: p.primaryImage });
+      continue;
+    }
+    const key = dedupeKey(p);
+    const index = byKey.get(key);
+    const before = index === undefined ? null : fixture.products[index];
+    console.log(`${before ? 'REFRESH' : 'ADD'} ${p.brand} ${p.sku} · ${p.showroomPrice ?? '—'} (list ${p.referencePrice ?? '—'}) · ${p.dimensionsRaw ?? 'no size'}`);
+    if (before) {
+      for (const field of Object.keys(p)) {
+        if (field === 'sourceCheckedAt') continue;
+        if (JSON.stringify(before[field]) !== JSON.stringify(p[field])) {
+          console.log(`    ${field}: ${JSON.stringify(before[field])} → ${JSON.stringify(p[field])}`);
+        }
+      }
+      fixture.products[index] = p;
+    } else {
+      byKey.set(key, fixture.products.length);
+      fixture.products.push(p);
+    }
+    await sleep(350);
+  }
+
+  if (dryRun) return console.log('\n--dry-run: nothing written');
+
+  const byCategory = {};
+  for (const p of fixture.products) byCategory[p.category] = (byCategory[p.category] ?? 0) + 1;
+  fixture.counts = { ...fixture.counts, total: fixture.products.length, byCategory };
+  await writeFile(out, JSON.stringify(fixture, null, 2), 'utf8');
+  console.log(`\nWrote ${fixture.products.length} products → ${out}`);
+}
+
 async function main() {
   const args = process.argv.slice(2);
+  const addIndex = args.indexOf('--add');
+  if (addIndex > -1) {
+    const urls = (args[addIndex + 1] ?? '').split(',').filter(Boolean);
+    const category = args[args.indexOf('--category') + 1];
+    if (urls.length === 0 || !category || args.indexOf('--category') === -1) {
+      throw new Error('--add needs <url>[,<url>] and --category <c>');
+    }
+    const outAt = args.indexOf('--out');
+    const target = resolve(outAt > -1 ? args[outAt + 1] : 'data/demo/tungdang-sanitaryware.json');
+    return addProducts(urls, category, target, args.includes('--dry-run'));
+  }
+
   const maxPages = Number(args[args.indexOf('--pages') + 1]) || 6;
   const outIndex = args.indexOf('--out');
   const out = resolve(outIndex > -1 ? args[outIndex + 1] : 'data/demo/tungdang-sanitaryware.json');

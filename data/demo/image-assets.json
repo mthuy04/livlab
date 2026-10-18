@@ -1724,6 +1724,48 @@
         "originalHeight": 600,
         "checkedAt": "2026-10-13T08:00:56Z"
       }
+    },
+    "jomoo-11252-2-31ka-i011": {
+      "localPath": "/demo/manufacturers/jomoo/11252-2-31ka-i011-primary.webp",
+      "width": 1200,
+      "height": 1200,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP",
+        "STAGE_BACKGROUND_MATCHED"
+      ],
+      "trimMethod": "ALPHA",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2025/05/11252.png",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "PNG",
+        "originalWidth": 2480,
+        "originalHeight": 2480,
+        "checkedAt": "2026-10-18T09:12:56Z"
+      }
+    },
+    "jomoo-36437-477-1b-i011": {
+      "localPath": "/demo/manufacturers/jomoo/36437-477-1b-i011-primary.webp",
+      "width": 515,
+      "height": 515,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP",
+        "STAGE_BACKGROUND_MATCHED"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://beptungdang.vn/wp-content/uploads/2024/11/Sen-cay-tam-JOMOO-36437-477_1B-I011.jpg",
+        "assetOwner": "JOMOO",
+        "sourceType": "SHOWROOM",
+        "originalFormat": "JPEG",
+        "originalWidth": 505,
+        "originalHeight": 506,
+        "checkedAt": "2026-10-18T09:12:56Z"
+      }
     }
   }
 }

@@ -13,6 +13,8 @@ import {
 import { DIVIDER, TEXT, TEXT_FAINT, TEXT_MUTED } from '@/components/storefront/home/editorial';
 import ConceptStage from '@/components/storefront/concepts/ConceptStage';
 import ConceptProductList from '@/components/storefront/concepts/ConceptProductList';
+import ConceptStory from '@/components/storefront/concepts/ConceptStory';
+import CommerceConceptPage from '@/components/storefront/concepts/CommerceConceptPage';
 
 /**
  * One concept, on the server.
@@ -45,12 +47,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const { concept } = resolved;
+  const name = concept.presentation?.leadWithName ? `${concept.title} — ${concept.titleVi}` : concept.titleVi;
   return {
-    title: `${concept.titleVi} | ${tenant.brand.name}`,
+    title: `${name} | ${tenant.brand.name}`,
     description: concept.shortDescription,
     alternates: { canonical: `/concepts/${concept.slug}` },
     openGraph: {
-      title: `${concept.titleVi} | ${tenant.brand.name}`,
+      title: `${name} | ${tenant.brand.name}`,
       description: concept.shortDescription,
       images: [{ url: concept.canonicalImage, width: 1448, height: 1086, alt: concept.imageAlt }],
     },
@@ -62,6 +65,12 @@ export default async function ConceptDetailPage({ params }: Props) {
   const tenant = await resolveTenant();
   const resolved = await getConceptBySlug(tenant, slug);
   if (!resolved) notFound();
+
+  // A storefront on the `commerce` treatment gets the shoppable layout; the
+  // resolution, the 404 rules and the stage are the same either way.
+  if (tenant.experience.variants.conceptDetail === 'commerce') {
+    return <CommerceConceptPage tenant={tenant} resolved={resolved} />;
+  }
 
   const { concept, products, estimate } = resolved;
   const hotspots = toHotspotViews(resolved);
@@ -123,70 +132,7 @@ export default async function ConceptDetailPage({ params }: Props) {
         <ConceptStage image={concept.canonicalImage} imageAlt={concept.imageAlt} hotspots={hotspots} />
       </div>
 
-      {/*
-        The design idea, after the room rather than before it.
-
-        A reader who has just looked at the photograph and opened a hotspot or
-        two is ready to be told why the room is like this; the same paragraphs
-        above the image would be text standing between them and the thing they
-        came to see.
-
-        Two columns, no cards: the story at a readable measure on the left and
-        the three principles as a short list on the right, separated by a rule
-        rather than by a surface.
-      */}
-      <section className="home-container" style={{ paddingTop: 44 }}>
-        <div style={{ borderTop: `1px solid ${DIVIDER}`, paddingTop: 40 }}>
-          <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.12em', color: TEXT_FAINT }}>
-            Ý TƯỞNG THIẾT KẾ
-          </p>
-
-          <h2
-            style={{
-              marginTop: 12,
-              fontSize: 'clamp(22px, 1.2rem + .6vw, 31px)',
-              fontWeight: 500,
-              lineHeight: 1.14,
-              letterSpacing: '.008em',
-              color: TEXT,
-            }}
-          >
-            {concept.titleVi}
-          </h2>
-
-          <div className="concept-story">
-            <div className="concept-story-body">
-              {concept.conceptStory.split('\n\n').map((para) => (
-                <p key={para.slice(0, 24)} style={{ fontSize: 15.5, lineHeight: 1.78, color: TEXT_MUTED }}>
-                  {para}
-                </p>
-              ))}
-            </div>
-
-            <aside className="concept-story-principles">
-              <ul>
-                {concept.designPrinciples.map((point, i) => (
-                  <li key={point}>
-                    <span
-                      style={{
-                        display: 'block',
-                        marginBottom: 7,
-                        fontSize: 11,
-                        fontWeight: 600,
-                        letterSpacing: '.1em',
-                        color: TEXT_FAINT,
-                      }}
-                    >
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <span style={{ fontSize: 14.5, lineHeight: 1.62, color: TEXT }}>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </aside>
-          </div>
-        </div>
-      </section>
+      <ConceptStory heading={concept.titleVi} story={concept.conceptStory} principles={concept.designPrinciples} />
 
       <ConceptProductList zones={zones} exactCount={exactCount} />
 

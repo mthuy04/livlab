@@ -13,6 +13,7 @@
     "inspect:glb-materials": "node scripts/inspectGlbMaterials.mjs",
     "test:technical": "npx tsx scripts/testTechnicalAdvisor.mts",
     "test:room-studio": "npx tsx scripts/testRoomStudioCapability.mts",
+    "test:concepts": "npx tsx scripts/testConceptLibrary.mts",
     "test:dev-glb": "npx tsx scripts/testDevGlbPipeline.mts",
     "build:dev-glb": "node scripts/build_dev_test_glb.mjs",
     "3d:incoming": "npx tsx scripts/3d/incoming.mts",

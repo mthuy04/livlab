@@ -65,6 +65,12 @@ export interface HomeHeroRoom {
   estimate: ConceptEstimate;
 }
 
+/** The concept the homepage leads its concept section with, and the products in it. */
+export interface HomeFeaturedConcept {
+  card: ConceptCardModel;
+  products: Array<{ catalogProductId: string; brand: string; sku: string | null; image: string; href: string }>;
+}
+
 export interface CatalogHomeData {
   tenantId: string;
   productCount: number;
@@ -72,6 +78,7 @@ export interface CatalogHomeData {
   brands: HomeBrand[];
   featured: HomeProductView[];
   concepts: ConceptCardModel[];
+  featuredConcept: HomeFeaturedConcept | null;
   heroRoom: HomeHeroRoom | null;
 }
 
@@ -151,6 +158,7 @@ export async function getCatalogHomeData(tenant: TenantStorefrontConfig): Promis
 
   let concepts: ConceptCardModel[] = [];
   let heroRoom: HomeHeroRoom | null = null;
+  let featuredConcept: HomeFeaturedConcept | null = null;
   try {
     const published = await getPublishedConcepts(tenant);
     concepts = published.map(toCardModel);
@@ -178,6 +186,23 @@ export async function getCatalogHomeData(tenant: TenantStorefrontConfig): Promis
       // The hero room leads the page; the concept row shows the others.
       concepts = concepts.filter((c) => c.slug !== hero.concept.slug);
     }
+
+    const featured = published.find((c) => c.concept.slug === merchandising?.featuredConceptSlug);
+    if (featured && featured.concept.slug !== heroRoom?.slug) {
+      featuredConcept = {
+        card: toCardModel(featured),
+        products: featured.products
+          .filter(({ product }) => product.imagePresentable && product.image)
+          .map(({ product }) => ({
+            catalogProductId: product.catalogProductId,
+            brand: product.brand,
+            sku: product.sku,
+            image: product.image,
+            href: product.href,
+          })),
+      };
+      concepts = concepts.filter((c) => c.slug !== featured.concept.slug);
+    }
   } catch {
     concepts = [];
   }
@@ -189,6 +214,7 @@ export async function getCatalogHomeData(tenant: TenantStorefrontConfig): Promis
     brands,
     featured,
     concepts: concepts.slice(0, merchandising?.conceptCount ?? 3),
+    featuredConcept,
     heroRoom,
   };
 }

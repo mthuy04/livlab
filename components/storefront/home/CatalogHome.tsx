@@ -77,6 +77,7 @@ function renderSection(section: HomeSection, tenant: TenantStorefrontConfig, dat
           title={copy.sections.conceptsTitle}
           body={copy.sections.conceptsBody}
           concepts={data.concepts}
+          featured={data.featuredConcept}
         />
       );
 

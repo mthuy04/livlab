@@ -104,7 +104,7 @@ export default function ConceptProductList({
                       <p style={{ marginTop: 4, fontSize: 11.5, color: TEXT_FAINT }}>{product.sku}</p>
                     )}
 
-                    {(match === 'EXACT_VISUAL' || match === 'CLOSE_VISUAL_MATCH') && (
+                    {(match === 'EXACT_VISUAL' || match === 'CLOSE_VISUAL_MATCH' || match === 'CURATED_SUGGESTION') && (
                       <p style={{ marginTop: 8, fontSize: 11, color: TEXT_MUTED }}>
                         {MATCH_LABEL[match]}
                       </p>

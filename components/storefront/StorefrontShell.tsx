@@ -65,6 +65,8 @@ export default function StorefrontShell({
       data-tenant={tenant.slug}
       // Present only when the tenant chose a typeface; see globals.css.
       data-tenant-font={cssVars['--tenant-font-family'] ? '' : undefined}
+      // Concept hotspots in the tenant's accent; see globals.css.
+      data-hotspot={tenant.experience.variants.hotspot === 'accent' ? 'accent' : undefined}
       style={cssVars as React.CSSProperties}
     >
       <TenantHeader tenant={tenant} />

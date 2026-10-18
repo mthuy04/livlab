@@ -182,17 +182,27 @@ export function budgetFacetMatches(facet: BudgetFacet, estimate: ConceptEstimate
 /**
  * How far the evidence actually goes.
  *
- * Only the first two render. The rest exist so that a fixture nobody could
+ * Only the first three render. The rest exist so that a fixture nobody could
  * match is recorded as unmatched rather than quietly dropped — the difference
  * between "we checked and the showroom does not stock this" and "nobody
  * looked" is the difference between a catalogue gap and an unknown.
+ *
+ * `CURATED_SUGGESTION` runs the other way from the two above it. Those match a
+ * product to a room that already existed; this one is a room art-directed
+ * around products the showroom chose for each position. The object drawn
+ * there is still an illustration, not that product — so the claim is "the
+ * showroom suggests this here", never "this is what you see".
  */
 export type ConceptHotspotMatch =
   | 'EXACT_VISUAL'
   | 'CLOSE_VISUAL_MATCH'
+  | 'CURATED_SUGGESTION'
   | 'GENERIC_FIXTURE'
   | 'UNVERIFIED'
   | 'REJECTED';
+
+/** The match levels a customer is shown. */
+export type CustomerFacingMatch = 'EXACT_VISUAL' | 'CLOSE_VISUAL_MATCH' | 'CURATED_SUGGESTION';
 
 export type ConceptHotspotTarget =
   | 'TOILET'
@@ -265,12 +275,27 @@ export interface ConceptHotspot {
   qaStatus: ConceptQaStatus;
   /** Why this confidence and not a higher one. Internal; never rendered. */
   note?: string;
+  /**
+   * Which way the desktop preview opens, when the default (away from the
+   * nearer edge) would cover another fixture the reader is meant to see.
+   */
+  popover?: { x: 'left' | 'right'; y: 'up' | 'down' };
 }
 
 /** The two states a customer may see, and the words each one is allowed. */
-export const MATCH_LABEL: Record<'EXACT_VISUAL' | 'CLOSE_VISUAL_MATCH', string> = {
+export const MATCH_LABEL: Record<CustomerFacingMatch, string> = {
   EXACT_VISUAL: 'Sản phẩm trong concept',
   CLOSE_VISUAL_MATCH: 'Sản phẩm gợi ý tương đồng',
+  CURATED_SUGGESTION: 'Sản phẩm gợi ý trong concept',
+};
+
+/** What a match does NOT claim, said where the product is shown. Null when nothing needs saying. */
+export const MATCH_CAVEAT: Record<CustomerFacingMatch, string | null> = {
+  EXACT_VISUAL: null,
+  CLOSE_VISUAL_MATCH:
+    'Gợi ý sản phẩm tương đồng với thiết bị trong ảnh, không phải ảnh chụp chính sản phẩm này.',
+  CURATED_SUGGESTION:
+    'Sản phẩm showroom gợi ý cho vị trí này. Ảnh concept là hình minh hoạ không gian, không phải ảnh dựng chính xác của sản phẩm.',
 };
 
 /**
@@ -282,7 +307,9 @@ export const MATCH_LABEL: Record<'EXACT_VISUAL' | 'CLOSE_VISUAL_MATCH', string> 
 export function isCustomerFacing(h: ConceptHotspot): boolean {
   return (
     h.qaStatus === 'VERIFIED' &&
-    (h.matchConfidence === 'EXACT_VISUAL' || h.matchConfidence === 'CLOSE_VISUAL_MATCH') &&
+    (h.matchConfidence === 'EXACT_VISUAL' ||
+      h.matchConfidence === 'CLOSE_VISUAL_MATCH' ||
+      h.matchConfidence === 'CURATED_SUGGESTION') &&
     Boolean(h.catalogProductId)
   );
 }
@@ -350,6 +377,26 @@ export interface StorefrontConcept {
 
   /** `null` means a LivLab curated concept, offered to every storefront. */
   tenantId: string | null;
+
+  /**
+   * For a named, authored concept: lead with its name and state the facts a
+   * card would otherwise derive from the bands. The generated library rooms
+   * leave this unset and keep their derived labels.
+   */
+  presentation?: ConceptPresentation;
+}
+
+export interface ConceptPresentation {
+  /** Show `title` ("Golden Retreat") as the heading and `titleVi` as its subtitle. */
+  leadWithName: boolean;
+  /** Room type, e.g. "Master bathroom". */
+  roomType?: string;
+  /** Replaces the derived style facet label on cards and the detail page. */
+  styleLabel?: string;
+  /** A stated size range, e.g. "10–14 m²", in place of the area band label. */
+  areaLabel?: string;
+  /** Positioning, e.g. "Cao cấp". Never a price. */
+  budgetLabel?: string;
 }
 
 /* ------------------------------------------------------------------- estimate */
@@ -388,6 +435,12 @@ export interface ResolvedConcept {
 export interface ConceptCardModel {
   slug: string;
   titleVi: string;
+  /** Set when the concept leads with its name; `titleVi` is then the subtitle. */
+  name: string | null;
+  /** "Style · area", from the presentation when stated, else from the bands. */
+  metaLabel: string;
+  /** Every product is the showroom's own pick for its position (`CURATED_SUGGESTION`). */
+  curated: boolean;
   shortDescription: string;
   image: string;
   imageAlt: string;
@@ -400,11 +453,21 @@ export interface ConceptCardModel {
   dots: Array<{ id: string; xPct: number; yPct: number }>;
 }
 
+/** "Hiện đại cao cấp · 10–14 m²" — stated labels where the concept gives them. */
+export function conceptMetaLabel(concept: StorefrontConcept): string {
+  const style = concept.presentation?.styleLabel ?? STYLE_FACET_LABEL[STYLE_FACET_OF[concept.style]];
+  const area = concept.presentation?.areaLabel ?? AREA_BAND_LABEL[concept.areaBand];
+  return `${style} · ${area}`;
+}
+
 export function toCardModel(resolved: ResolvedConcept): ConceptCardModel {
   const { concept, products, estimate } = resolved;
   return {
     slug: concept.slug,
     titleVi: concept.titleVi,
+    name: concept.presentation?.leadWithName ? concept.title : null,
+    metaLabel: conceptMetaLabel(concept),
+    curated: products.length > 0 && products.every((p) => p.match === 'CURATED_SUGGESTION'),
     shortDescription: concept.shortDescription,
     image: concept.canonicalImage,
     imageAlt: concept.imageAlt,
@@ -426,6 +489,9 @@ export function toCardModel(resolved: ResolvedConcept): ConceptCardModel {
  */
 export interface ConceptProductView {
   catalogProductId: string;
+  /** Catalogue row id, the key the quote basket and product pages use. */
+  id: string;
+  sourceType: CatalogProduct['sourceType'];
   href: string;
   brand: string;
   name: string;
@@ -434,6 +500,10 @@ export interface ConceptProductView {
   image: string | null;
   imagePresentable: boolean;
   showroomPrice: number | null;
+  /** Only a list price the catalogue genuinely holds above the showroom's. */
+  referencePrice: number | null;
+  /** One stated fact for a compact preview — the size, else the type. Never invented. */
+  keyFact: string | null;
 }
 
 export interface ConceptHotspotView {
@@ -441,7 +511,8 @@ export interface ConceptHotspotView {
   targetType: ConceptHotspotTarget;
   xPct: number;
   yPct: number;
-  match: 'EXACT_VISUAL' | 'CLOSE_VISUAL_MATCH';
+  match: CustomerFacingMatch;
+  popover?: ConceptHotspot['popover'];
   product: ConceptProductView;
 }
 
@@ -474,6 +545,8 @@ const isTechnicalDrawing = (p: CatalogProduct): boolean =>
 
 const productView = (p: CatalogProduct): ConceptProductView => ({
   catalogProductId: p.catalogProductId,
+  id: p.id,
+  sourceType: p.sourceType,
   href: p.href,
   brand: p.brand,
   name: p.name,
@@ -482,6 +555,8 @@ const productView = (p: CatalogProduct): ConceptProductView => ({
   image: p.image,
   imagePresentable: p.imagePresentable && !isTechnicalDrawing(p),
   showroomPrice: p.showroomPrice,
+  referencePrice: p.referencePrice,
+  keyFact: p.dimensionsRaw ?? p.subcategory ?? null,
 });
 
 export function toHotspotViews(resolved: ResolvedConcept): ConceptHotspotView[] {
@@ -490,7 +565,8 @@ export function toHotspotViews(resolved: ResolvedConcept): ConceptHotspotView[] 
     targetType: h.targetType,
     xPct: h.xPct,
     yPct: h.yPct,
-    match: h.matchConfidence as 'EXACT_VISUAL' | 'CLOSE_VISUAL_MATCH',
+    match: h.matchConfidence as CustomerFacingMatch,
+    popover: h.popover,
     product: productView(h.product),
   }));
 }

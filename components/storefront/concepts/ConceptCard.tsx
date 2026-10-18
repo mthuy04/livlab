@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Route } from 'next';
 import { TEXT, TEXT_MUTED, TEXT_FAINT } from '@/components/storefront/home/editorial';
-import { AREA_BAND_LABEL, STYLE_FACET_LABEL, type ConceptCardModel } from '@/lib/storefront/conceptTypes';
+import type { ConceptCardModel } from '@/lib/storefront/conceptTypes';
 import { CONCEPT_IMAGE_HEIGHT, CONCEPT_IMAGE_WIDTH } from '@/lib/storefront/conceptLibrary';
 
 /**
@@ -67,7 +67,7 @@ export default function ConceptCard({
           textTransform: 'uppercase',
         }}
       >
-        {STYLE_FACET_LABEL[concept.styleFacet]} · {concept.areaLabel || AREA_BAND_LABEL.MEDIUM}
+        {concept.metaLabel}
       </p>
 
       <Heading
@@ -81,9 +81,13 @@ export default function ConceptCard({
         }}
       >
         <Link href={href} className="transition-opacity hover:opacity-70">
-          {concept.titleVi}
+          {concept.name ?? concept.titleVi}
         </Link>
       </Heading>
+      {/* A named concept carries its description as a subtitle. */}
+      {concept.name && (
+        <p style={{ marginTop: 4, fontSize: 15.5, lineHeight: 1.4, color: TEXT_MUTED }}>{concept.titleVi}</p>
+      )}
 
       {/* The card's share of the editorial copy: one sentence on why the room
           is like this. The full story belongs on the detail page — a card that
@@ -93,7 +97,7 @@ export default function ConceptCard({
       </p>
 
       <p style={{ marginTop: 14, fontSize: 13.5, lineHeight: 1.6, color: TEXT_FAINT }}>
-        {concept.productCount} sản phẩm phù hợp
+        {concept.productCount} {concept.curated ? 'sản phẩm gợi ý' : 'sản phẩm phù hợp'}
         {estimate.kind === 'RANGE' && (
           <>
             {' · '}

@@ -30,11 +30,17 @@ export default function RetailProductCard({
   tenantId,
   addLabel,
   eager = false,
+  index,
+  sourceContext = 'HOME_FEATURED',
 }: {
   product: HomeProductView;
   tenantId: string;
   addLabel: string;
   eager?: boolean;
+  /** 1-based position, shown as "01", where the card is one of a numbered set (a concept's hotspots). */
+  index?: number;
+  /** Recorded on the quote item: where the customer added it from. */
+  sourceContext?: string;
 }) {
   const { addCatalogItem, hasItem } = useQuote();
   const inQuote = hasItem(product.id);
@@ -57,7 +63,7 @@ export default function RetailProductCard({
       image: product.image,
       showroomPrice: product.showroomPrice,
       referencePrice: product.referencePrice,
-      sourceContext: 'HOME_FEATURED',
+      sourceContext,
     });
 
   return (
@@ -74,11 +80,27 @@ export default function RetailProductCard({
           sizes="(max-width: 768px) 50vw, 25vw"
           className="transition-transform duration-500 group-hover:scale-[1.02]"
         />
-        <span
-          className="absolute left-3 top-3 bg-white px-2 py-1"
-          style={{ fontSize: 10, fontWeight: 600, letterSpacing: '.12em', color: '#6E6B66', borderRadius: 3 }}
-        >
-          {product.category.toUpperCase()}
+        <span className="absolute left-3 top-3 flex items-center gap-1.5">
+          {index !== undefined && (
+            <span
+              className="grid h-6 min-w-6 place-items-center px-1"
+              style={{
+                fontSize: 10.5,
+                fontWeight: 600,
+                color: 'var(--tenant-accent-contrast)',
+                backgroundColor: 'var(--tenant-accent)',
+                borderRadius: 3,
+              }}
+            >
+              {String(index).padStart(2, '0')}
+            </span>
+          )}
+          <span
+            className="bg-white px-2 py-1"
+            style={{ fontSize: 10, fontWeight: 600, letterSpacing: '.12em', color: '#6E6B66', borderRadius: 3 }}
+          >
+            {product.category.toUpperCase()}
+          </span>
         </span>
       </Link>
 

@@ -1052,6 +1052,136 @@ const c10: StorefrontConcept = {
   ],
 };
 
+/* ============================================================ TENANT-OWNED */
+
+/**
+ * Golden Retreat — Bếp Tùng Đăng's own concept, and the only one here that
+ * belongs to a single storefront (`tenantId`). It is invisible to every other
+ * tenant and its slug carries the tenant so a later showroom's concepts can
+ * never collide with it.
+ *
+ * It is also built the other way round from the library above. Those rooms
+ * existed first and products were matched to them afterwards, which is why
+ * their best claim is "gợi ý tương đồng". This scene was art-directed for four
+ * products the showroom chose — one per zone — and supplied by the LivLab
+ * team on 2026-10-18. The objects drawn are still illustrations, not those
+ * SKUs, so each hotspot is `CURATED_SUGGESTION`: "sản phẩm gợi ý trong
+ * concept", the showroom's suggestion for that position. Nothing on the page
+ * may call it a render of the product.
+ *
+ * All four were checked on beptungdang.vn on 2026-10-18 (prices included);
+ * the catalogue rows are the fixture's, so prices shown are the fixture's.
+ * Coordinates were read on the 1448×1086 asset against a 5% grid, and the
+ * shower point sits on the hand shower, not on the lit niche beside it.
+ */
+const TD01_ID = 'td01-golden-retreat';
+
+const td01: StorefrontConcept = {
+  id: TD01_ID,
+  slug: 'tungdang-golden-retreat',
+  title: 'Golden Retreat',
+  titleVi: 'Phòng tắm master thư giãn',
+  shortDescription:
+    'Không gian phòng tắm master hiện đại với đá vân ấm, gỗ tự nhiên và ánh sáng dịu. Bốn vùng ' +
+    'chức năng được tổ chức rõ ràng với lavabo đặt bàn, bồn cầu liền khối, bồn tắm thư giãn và ' +
+    'khu sen tắm riêng biệt.',
+  conceptStory:
+    'Golden Retreat được xây dựng cho một phòng tắm master rộng rãi, nơi trải nghiệm thư giãn được ' +
+    'đặt ngang hàng với tính thực dụng.\n\n' +
+    'Không gian sử dụng bảng vật liệu ấm gồm đá vân tự nhiên, gỗ và ánh sáng gián tiếp để tạo cảm ' +
+    'giác yên tĩnh nhưng vẫn hiện đại. Bố cục được chia thành bốn vùng chức năng rõ ràng: khu ' +
+    'lavabo, khu vệ sinh, bồn tắm thư giãn và khu sen tắm kính riêng biệt.\n\n' +
+    'Thay vì chỉ xem từng thiết bị riêng lẻ trong catalogue, người dùng có thể khám phá các sản phẩm ' +
+    'gợi ý ngay trong bối cảnh của một phòng tắm hoàn chỉnh, sau đó xem thông tin sản phẩm, mức giá ' +
+    'tham khảo và tiếp tục thêm sản phẩm vào báo giá hoặc Room Studio.',
+  designPrinciples: [
+    'Bốn vùng chức năng tách bạch: lavabo, vệ sinh, bồn tắm và sen tắm kính.',
+    'Bảng vật liệu ấm — đá vân, gỗ tự nhiên, ánh sáng gián tiếp — giữ không gian yên tĩnh.',
+    'Bồn tắm đặt giữa phòng, hướng ra khoảng sáng tự nhiên, là điểm nhìn chính.',
+  ],
+  canonicalImage: '/demo/tungdang/concepts/golden-retreat.webp',
+  imageAlt:
+    'Phòng tắm master tông đá ấm lúc hoàng hôn: lavabo đặt bàn dưới gương tròn bên trái, bồn cầu ' +
+    'liền khối, bồn tắm đặt giữa phòng trước cửa kính và khu sen tắm kính bên phải.',
+  // 96-bit difference hash (13×8 greyscale, left < right), per the field's doc.
+  imageHash: 'a53bf6df1973967712c50db0',
+  imageSourceType: 'LIVLAB_GENERATED',
+  imageSourceId: 'golden-retreat.webp (LivLab, 2026-10-18)',
+  style: 'WARM_LUXURY',
+  useCase: 'MASTER_BATHROOM',
+  areaBand: 'LARGE',
+  budgetBand: 'PREMIUM',
+  tone: 'WARM_STONE',
+  publicationStatus: 'PUBLISHED_VERIFIED',
+  qaNote: 'Bốn điểm kiểm tra trên trang chi tiết ở 1440×900 và 390px, ngày 2026-10-18.',
+  tenantId: PHASE1_TENANT,
+  presentation: {
+    leadWithName: true,
+    roomType: 'Master bathroom',
+    styleLabel: 'Hiện đại cao cấp',
+    areaLabel: '10–14 m²',
+    budgetLabel: 'Cao cấp',
+  },
+  hotspots: [
+    h(TD01_ID, 1, {
+      targetType: 'BASIN',
+      ...pct(195, 570),
+      bbox: box(65, 543, 311, 602),
+      catalogProductId: demoId(PHASE1_TENANT, 'JOMOO', '12703-1/01P'),
+      brand: 'JOMOO',
+      sku: '12703-1/01P',
+      matchConfidence: 'CURATED_SUGGESTION',
+      qaStatus: 'VERIFIED',
+      // Up, not down: opening downward lands on the toilet beside it.
+      popover: { x: 'right', y: 'up' },
+      note: 'Chậu đặt bàn trắng dưới gương tròn. 445×445×200 mm theo trang sản phẩm.',
+    }),
+    h(TD01_ID, 2, {
+      targetType: 'TOILET',
+      ...pct(478, 657),
+      bbox: box(384, 521, 572, 744),
+      catalogProductId: demoId(PHASE1_TENANT, 'JOMOO', '11252-2/31KA-I011'),
+      brand: 'JOMOO',
+      sku: '11252-2/31KA-I011',
+      matchConfidence: 'CURATED_SUGGESTION',
+      qaStatus: 'VERIFIED',
+      popover: { x: 'right', y: 'up' },
+      note:
+        'Bồn cầu liền khối giữa tủ lavabo và bồn tắm. Trang sản phẩm không ghi kích thước; ' +
+        'bản vẽ thông số có, nhưng chú thích bằng tiếng Trung nên không chép số ra.',
+    }),
+    h(TD01_ID, 3, {
+      targetType: 'BATHTUB',
+      // On the tub's front, low and left enough that the toilet's and the
+      // shower's previews both clear it.
+      ...pct(782, 662),
+      bbox: box(634, 548, 1000, 690),
+      catalogProductId: demoId(PHASE1_TENANT, 'TOTO', 'PPY1560HPE#P/TVBF411'),
+      brand: 'TOTO',
+      sku: 'PPY1560HPE#P/TVBF411',
+      matchConfidence: 'CURATED_SUGGESTION',
+      qaStatus: 'VERIFIED',
+      popover: { x: 'left', y: 'up' },
+      note:
+        'Bồn tắm giữa phòng. Bồn trong ảnh là bồn đặt sàn dáng bầu dục; sản phẩm gợi ý ghi ' +
+        '1500×750×600 mm trên trang sản phẩm và có dáng khác — đây là gợi ý của showroom cho vị ' +
+        'trí này, không phải bồn trong ảnh.',
+    }),
+    h(TD01_ID, 4, {
+      targetType: 'SHOWER',
+      ...pct(1339, 282),
+      bbox: box(1225, 120, 1420, 650),
+      catalogProductId: demoId(PHASE1_TENANT, 'JOMOO', '36437-477/1B-I011'),
+      brand: 'JOMOO',
+      sku: '36437-477/1B-I011',
+      matchConfidence: 'CURATED_SUGGESTION',
+      qaStatus: 'VERIFIED',
+      popover: { x: 'left', y: 'down' },
+      note: 'Sen cây trong khu kính: điểm đặt trên tay sen, không đặt trên hốc tường bên cạnh.',
+    }),
+  ],
+};
+
 /**
  * Reading order, set by how the rooms look rather than by when they were made.
  *
@@ -1066,5 +1196,7 @@ const c10: StorefrontConcept = {
  * rhythm already expects it, and nothing has to be resorted by hand.
  */
 export const CONCEPT_LIBRARY: StorefrontConcept[] = [
+  // A tenant's own concept leads its storefront; every other tenant skips it.
+  td01,
   c01, c07, c03, c10, c08, c04, c06, c09, c02, c05,
 ];

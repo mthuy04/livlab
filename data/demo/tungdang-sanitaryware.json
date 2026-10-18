@@ -10,9 +10,9 @@
   "sourceCheckedAt": "2026-10-13T06:42:46.626Z",
   "notice": "Dữ liệu và hình ảnh thu thập từ trang công khai của nguồn, dùng cho demo nội bộ. Giá lấy tại thời điểm đồng bộ dữ liệu. LivLab không sở hữu hình ảnh và chưa có quan hệ hợp tác với showroom này.",
   "counts": {
-    "total": 99,
+    "total": 100,
     "byCategory": {
-      "Bồn cầu": 42,
+      "Bồn cầu": 43,
       "Lavabo": 17,
       "Sen tắm": 20,
       "Vòi lavabo": 6,
@@ -3242,6 +3242,35 @@
       "control": null,
       "technologies": [],
       "shortDescription": "Màu trắng bóng, 2200×1050×800 mm, galaline."
+    },
+    {
+      "sourceUrl": "https://beptungdang.vn/san-pham/ban-cau-lien-khoi-jomoo-11252-2-31ka-i011/",
+      "sourceCheckedAt": "2026-10-18T09:12:34.719Z",
+      "name": "Bàn Cầu Liền Khối JOMOO 11252-2/31KA-I011",
+      "brand": "JOMOO",
+      "sku": "11252-2/31KA-I011",
+      "category": "Bồn cầu",
+      "subcategory": "1 khối",
+      "primaryImage": "https://beptungdang.vn/wp-content/uploads/2025/05/11252.png",
+      "additionalImages": [],
+      "technicalDrawing": "https://beptungdang.vn/wp-content/uploads/2025/05/11252-231KA-I011-tskt.png",
+      "referencePrice": 7040000,
+      "showroomPrice": 5640000,
+      "dimensions": null,
+      "dimensionsRaw": null,
+      "color": null,
+      "finish": null,
+      "material": null,
+      "origin": null,
+      "warranty": null,
+      "installationType": null,
+      "seatType": null,
+      "flushType": null,
+      "flushVolume": null,
+      "roughIn": null,
+      "control": null,
+      "technologies": [],
+      "shortDescription": "1 khối."
     }
   ]
 }

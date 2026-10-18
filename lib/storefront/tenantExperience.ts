@@ -106,11 +106,26 @@ export type CategoryNavVariant = 'stage' | 'iconRail';
 /** `editorial`: image-first, price as a footnote. `priceLed`: SKU, price and quote action up front. */
 export type ProductCardVariant = 'editorial' | 'priceLed';
 
+/**
+ * The concept detail page.
+ *
+ * `editorial`: the room, its story, its products grouped by zone.
+ * `commerce`: the same room with each hotspot's preview carrying price and a
+ * quote action, the products as numbered cards in hotspot order, and a closing
+ * block that puts the whole room into the quote basket.
+ */
+export type ConceptDetailVariant = 'editorial' | 'commerce';
+
+/** `neutral`: a white dot. `accent`: the tenant's accent with a white "+". */
+export type HotspotVariant = 'neutral' | 'accent';
+
 export interface TenantVariants {
   header: HeaderVariant;
   hero: HeroVariant;
   categoryNav: CategoryNavVariant;
   productCard: ProductCardVariant;
+  conceptDetail: ConceptDetailVariant;
+  hotspot: HotspotVariant;
 }
 
 /* ── Homepage ────────────────────────────────────────────────────────────── */
@@ -152,6 +167,8 @@ export interface TenantMerchandising {
   heroConceptSlug?: string;
   /** How many concepts the homepage concept section shows. */
   conceptCount?: number;
+  /** The concept the homepage concept section leads with, as a large card. */
+  featuredConceptSlug?: string;
   /** A capture of this storefront's own Room Studio, for the homepage teaser. */
   roomStudioImage?: { src: string; alt: string };
 }
@@ -206,6 +223,14 @@ export interface TenantCopy {
     primaryCta: string;
   };
   footerBlurb: string;
+  /** The `commerce` concept detail page. */
+  concept?: {
+    productsTitle: string;
+    ctaTitle: string;
+    ctaBody: string;
+    /** The equipment total's label — equipment only, never the finished room. */
+    estimateTitle: string;
+  };
 }
 
 /* ── Room Studio ─────────────────────────────────────────────────────────── */
@@ -264,7 +289,14 @@ export interface TenantExperience {
  */
 export const EDITORIAL_EXPERIENCE: TenantExperience = {
   theme: {},
-  variants: { header: 'editorial', hero: 'editorial', categoryNav: 'stage', productCard: 'editorial' },
+  variants: {
+    header: 'editorial',
+    hero: 'editorial',
+    categoryNav: 'stage',
+    productCard: 'editorial',
+    conceptDetail: 'editorial',
+    hotspot: 'neutral',
+  },
   home: { layout: 'showcase', sections: [] },
   copy: {
     hero: {

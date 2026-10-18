@@ -322,7 +322,14 @@ const TUNGDANG_EXPERIENCE: TenantExperience = {
     uiSurface: '#F6F5F3',
     uiInk: '#2E2D2B',
   },
-  variants: { header: 'retail', hero: 'commerce', categoryNav: 'iconRail', productCard: 'priceLed' },
+  variants: {
+    header: 'retail',
+    hero: 'commerce',
+    categoryNav: 'iconRail',
+    productCard: 'priceLed',
+    conceptDetail: 'commerce',
+    hotspot: 'accent',
+  },
   home: {
     layout: 'catalog',
     sections: ['hero', 'categories', 'concepts', 'featuredProducts', 'brands', 'roomStudio', 'consultation'],
@@ -337,6 +344,8 @@ const TUNGDANG_EXPERIENCE: TenantExperience = {
       'toto-pay1725vc-tvbf411',
     ],
     heroConceptSlug: 'master-spa-retreat',
+    // The showroom's own room, art-directed around four products it sells.
+    featuredConceptSlug: 'tungdang-golden-retreat',
     conceptCount: 3,
     // Captured from this storefront's own Room Studio with `?demo=1` (see
     // public/demo/tungdang/source-map.json). The default teaser image shows
@@ -395,6 +404,12 @@ const TUNGDANG_EXPERIENCE: TenantExperience = {
     footerBlurb:
       'Thiết bị bếp – phòng tắm nhập khẩu. Xem thiết bị trong không gian, so sánh thông số và gửi ' +
       'yêu cầu báo giá tới showroom.',
+    concept: {
+      productsTitle: 'SẢN PHẨM GỢI Ý TRONG CONCEPT',
+      ctaTitle: 'ĐÃ TÌM ĐƯỢC KHÔNG GIAN PHÙ HỢP?',
+      ctaBody: 'Lưu các thiết bị bạn quan tâm để Tùng Đăng tiếp tục tư vấn và gửi báo giá.',
+      estimateTitle: 'NGÂN SÁCH THIẾT BỊ THAM KHẢO',
+    },
   },
   roomStudioCatalog: 'tenant',
   // `/room-studio?demo=1`: a furnished 3 × 2 m room for presentations. Both

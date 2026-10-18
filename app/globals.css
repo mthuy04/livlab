@@ -580,6 +580,78 @@ body {
   }
 }
 
+/* A pin on a card: where a hotspot is, not a control. A white dot by default;
+   the accent variant below gives it the tenant's colour and a "+". */
+.concept-card-pin {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(26, 26, 24, 0.5);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.concept-card-pin::after {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #1a1a18;
+}
+
+.storefront[data-hotspot="accent"] .concept-card-pin {
+  background: var(--tenant-accent);
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(26, 24, 20, 0.3);
+}
+
+.storefront[data-hotspot="accent"] .concept-card-pin::after {
+  width: 9px;
+  height: 9px;
+  border-radius: 0;
+  background:
+    linear-gradient(#ffffff, #ffffff) center / 9px 2px no-repeat,
+    linear-gradient(#ffffff, #ffffff) center / 2px 9px no-repeat;
+}
+
+/* The `accent` hotspot variant: the tenant's accent, a white "+" and a white
+   ring, with a shadow so the marker holds against a bright photograph. The
+   plus turns into a cross while its preview is open. */
+.storefront[data-hotspot="accent"] .concept-hotspot {
+  background: var(--tenant-accent);
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 10px rgba(26, 24, 20, 0.32);
+}
+
+.storefront[data-hotspot="accent"] .concept-hotspot::after {
+  width: 12px;
+  height: 12px;
+  border-radius: 0;
+  background:
+    linear-gradient(#ffffff, #ffffff) center / 12px 2.5px no-repeat,
+    linear-gradient(#ffffff, #ffffff) center / 2.5px 12px no-repeat;
+}
+
+.storefront[data-hotspot="accent"] .concept-hotspot:hover,
+.storefront[data-hotspot="accent"] .concept-hotspot:focus-visible,
+.storefront[data-hotspot="accent"] .concept-hotspot[aria-expanded='true'] {
+  background: var(--tenant-accent);
+}
+
+.storefront[data-hotspot="accent"] .concept-hotspot:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.storefront[data-hotspot="accent"] .concept-hotspot[aria-expanded='true']::after {
+  transform: rotate(45deg);
+}
+
 /* Desktop popover. Flipped by the component when it would leave the stage. */
 .concept-popover {
   position: absolute;
