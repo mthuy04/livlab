@@ -56,7 +56,7 @@ function priceLines(lines: QuoteLineInput[]) {
 /** Next human reference in the BG-YYYY-NNNN series, scoped to the year. */
 async function nextQuoteCode(tx: Prisma.TransactionClient): Promise<string> {
   const prefix = `BG-${new Date().getFullYear()}-`;
-  await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${`livlab:${prefix}`}))`;
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`livlab:${prefix}`}))`;
   const last = await tx.quote.findFirst({
     where: { code: { startsWith: prefix } },
     orderBy: { code: 'desc' },

@@ -94,7 +94,7 @@ function requestType(value: unknown): LeadRequestType | null {
 async function nextRequestCode(tx: Prisma.TransactionClient): Promise<string> {
   const year = new Date().getFullYear();
   const prefix = `YC-${year}-`;
-  await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${`livlab:${prefix}`}))`;
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`livlab:${prefix}`}))`;
   const last = await tx.quoteLead.findFirst({
     where: { requestCode: { startsWith: prefix } },
     orderBy: { requestCode: 'desc' },
