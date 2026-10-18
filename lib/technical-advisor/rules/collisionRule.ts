@@ -18,12 +18,27 @@
 
 import { technicalRulesConfig } from '../config';
 import { getOverlap, getWorldAabb, type Aabb } from '../geometry';
+import { basinCounterExtent } from '@/lib/room-studio/environment';
 import type { TechnicalProductEntry, TechnicalRule, TechnicalValidationResult } from '../types';
 
-function boxFor(entry: TechnicalProductEntry): Aabb | null {
+function boxFor(entry: TechnicalProductEntry, counterSupport: boolean): Aabb | null {
   const { metadata, placed } = entry;
   if (metadata.width === undefined || metadata.depth === undefined || metadata.height === undefined) {
     return null;
+  }
+  // A countertop basin over its drawn counter occupies the counter too: from
+  // the cabinet's underside to the basin's rim, the counter's width and depth.
+  if (counterSupport && placed.placementType === 'counter') {
+    const c = basinCounterExtent({ width: metadata.width, depth: metadata.depth, height: metadata.height });
+    const top = placed.position[1] + metadata.height / 2;
+    const bottom = placed.position[1] - metadata.height / 2 - c.below;
+    return getWorldAabb({
+      position: [placed.position[0], (top + bottom) / 2, placed.position[2]],
+      width: c.width,
+      depth: c.depth,
+      height: top - bottom,
+      rotationY: placed.rotationY,
+    });
   }
   return getWorldAabb({
     position: placed.position,
@@ -43,7 +58,7 @@ export const collisionRule: TechnicalRule = {
     const { collisionEpsilonM, collisionMinOverlapRatio } = technicalRulesConfig;
 
     const measured = context.entries
-      .map((entry) => ({ entry, box: boxFor(entry) }))
+      .map((entry) => ({ entry, box: boxFor(entry, Boolean(context.counterSupport)) }))
       .filter((m): m is { entry: TechnicalProductEntry; box: Aabb } => m.box !== null);
 
     for (let i = 0; i < measured.length; i++) {
@@ -70,6 +85,7 @@ export const collisionRule: TechnicalRule = {
           ruleId: 'collision',
           category: 'COLLISION',
           severity: 'VERIFY',
+          placementIssue: 'COLLISION',
           title: 'Hai sản phẩm đang chồng lên nhau',
           message: `${a.entry.product.name} và ${b.entry.product.name} đang chiếm cùng một khoảng không gian. Bạn nên tách hai sản phẩm ra để kiểm tra lại bố trí.`,
           affectedInstanceIds: [a.entry.placed.instanceId, b.entry.placed.instanceId],

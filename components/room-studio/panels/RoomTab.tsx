@@ -10,6 +10,7 @@ import {
   type RoomDimensionKey,
   type RoomDimensions,
 } from '@/lib/room-studio/roomGeometry';
+import { ARCHITECTURE_LABEL, type ArchitectureSettings } from '@/lib/room-studio/environment';
 
 interface RoomTabProps {
   dimensions: RoomDimensions;
@@ -19,7 +20,19 @@ interface RoomTabProps {
   onOpenReferenceImage: () => void;
   hasReferenceImage: boolean;
   onOpenPresets: () => void;
+  architecture: ArchitectureSettings;
+  onArchitectureChange: (patch: Partial<ArchitectureSettings>) => void;
 }
+
+/** Context toggles, in the order a customer would think of them. */
+const ARCHITECTURE_ORDER: Array<keyof ArchitectureSettings> = [
+  'cutaway',
+  'basinCounter',
+  'skirting',
+  'glassPartition',
+  'niche',
+  'window',
+];
 
 /**
  * Short customer labels, one style throughout. The validation layer calls these
@@ -51,6 +64,8 @@ export default function RoomTab({
   onOpenReferenceImage,
   hasReferenceImage,
   onOpenPresets,
+  architecture,
+  onArchitectureChange,
 }: RoomTabProps) {
   const [drafts, setDrafts] = useState<Record<RoomDimensionKey, string>>({
     length: String(dimensions.length),
@@ -118,7 +133,7 @@ export default function RoomTab({
             onClick={onOpenPresets}
             className="text-[13px] font-medium text-[color:var(--tenant-ui-link,#0F3D5C)] underline decoration-[#C8D5DE] underline-offset-4 transition-colors hover:decoration-current"
           >
-            Kích thước mẫu
+            Phòng mẫu
           </button>
         </div>
 
@@ -198,6 +213,29 @@ export default function RoomTab({
             className="h-4 w-4 accent-[color:var(--tenant-ui-selected,#0F3D5C)]"
           />
         </label>
+      </section>
+
+      {/* The room around the products. None of these is a product or a line
+          in the quote; each is context for judging the products, and off is
+          always an option. */}
+      <section>
+        <h3 className="mb-1 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#8C9BAB]">
+          Chi tiết kiến trúc
+        </h3>
+        <p className="mb-1.5 text-[12px] leading-relaxed text-[#9AA9B6]">Bối cảnh minh hoạ, không tính vào báo giá.</p>
+        {ARCHITECTURE_ORDER.map((key) => (
+          <label key={key} className="flex cursor-pointer items-center justify-between gap-3 py-1.5" title={ARCHITECTURE_LABEL[key].note}>
+            <span className="min-w-0">
+              <span className="block text-[13px] text-[#3F4F5C]">{ARCHITECTURE_LABEL[key].name}</span>
+            </span>
+            <input
+              type="checkbox"
+              checked={architecture[key]}
+              onChange={(e) => onArchitectureChange({ [key]: e.target.checked })}
+              className="h-4 w-4 shrink-0 accent-[color:var(--tenant-ui-selected,#0F3D5C)]"
+            />
+          </label>
+        ))}
       </section>
 
       <section className="border-t border-[#EDF2F5] pt-4">

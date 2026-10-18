@@ -1,0 +1,117 @@
+{
+  "id": "inax-ac-1017vrn",
+  "brand": "INAX",
+  "sku": "AC-1017VRN",
+  "name": "Bồn cầu 1 khối INAX AC-1017VRN",
+  "nameEn": "One-piece Toilet AC-1017VRN",
+  "category": "toilet",
+  "mounting": "floor",
+  "status": "prototype_reconstructed",
+  "commercialCatalogApproved": false,
+  "thumbnailUrl": "/models/inax/AC-1017VRN/preview.png",
+  "variants": {
+    "web": "/models/inax/AC-1017VRN/AC-1017VRN_web.glb",
+    "high": "/models/inax/AC-1017VRN/AC-1017VRN_high.glb"
+  },
+  "recommendedVariant": "web",
+  "units": "m",
+  "axes": {
+    "x": "horizontal",
+    "y": "up",
+    "z": "forward_out_from_rear_wall"
+  },
+  "forward": "+Z",
+  "referenceDimensionsMm": {
+    "width_mm": 400,
+    "height_mm": 588,
+    "depth_mm": 805
+  },
+  "referenceEnvelopeM_XYZ": [
+    0.4,
+    0.588,
+    0.805
+  ],
+  "modelBounds": {
+    "web": {
+      "xyzMeters": [
+        0.4,
+        0.588,
+        0.805
+      ],
+      "min": [
+        -0.2,
+        0.0,
+        0.0
+      ],
+      "max": [
+        0.2,
+        0.588,
+        0.805
+      ]
+    },
+    "high": {
+      "xyzMeters": [
+        0.4,
+        0.588,
+        0.805
+      ],
+      "min": [
+        -0.2,
+        0.0,
+        0.0
+      ],
+      "max": [
+        0.2,
+        0.588,
+        0.805
+      ]
+    }
+  },
+  "rendering": {
+    "castShadow": true,
+    "receiveShadow": true,
+    "modelScale": [
+      1,
+      1,
+      1
+    ],
+    "preferOriginalPBR": true
+  },
+  "placement": {
+    "anchor": "rear_wall_floor_center",
+    "wallFacing": null,
+    "notes": "The source GLB used -Z as forward; package copy is baked to +Z and tested. Reference exterior is approximate."
+  },
+  "reconstructedFrom": "reference_photos_and_technical_drawings",
+  "manufacturerCADUsed": false,
+  "qa": {
+    "web": {
+      "fileSizeBytes": 986172,
+      "sha256": "47312ea6768a72c90dea1d1a8dd4dd6ebdd7d9f454fb1324540812b2473e8620",
+      "meshCount": 9,
+      "triangleCount": 57264,
+      "dimensionsM_XYZ": [
+        0.4,
+        0.588,
+        0.805
+      ],
+      "watertightCount": 9,
+      "finiteVertices": true,
+      "reloadedWithTrimesh": true
+    },
+    "high": {
+      "fileSizeBytes": 2720036,
+      "sha256": "06e4702eccd3a6ad968012559df01665ec1d1548fd4abf00e397543a59a3dbad",
+      "meshCount": 9,
+      "triangleCount": 150692,
+      "dimensionsM_XYZ": [
+        0.4,
+        0.588,
+        0.805
+      ],
+      "watertightCount": 9,
+      "finiteVertices": true,
+      "reloadedWithTrimesh": true
+    }
+  }
+}

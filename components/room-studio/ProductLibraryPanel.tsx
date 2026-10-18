@@ -41,6 +41,7 @@ interface ProductLibraryPanelProps {
  */
 const CATEGORY_LABEL: Record<string, string> = {
   toilet: 'Bồn cầu',
+  bathtub: 'Bồn tắm',
   lavabo: 'Lavabo',
   faucet: 'Vòi',
   shower: 'Sen tắm',
@@ -51,10 +52,11 @@ const CATEGORY_LABEL: Record<string, string> = {
 };
 
 /** Display order when a category is present. */
-const CATEGORY_ORDER = ['toilet', 'lavabo', 'faucet', 'shower', 'mirror', 'vanity', 'lighting', 'accessory'];
+const CATEGORY_ORDER = ['toilet', 'lavabo', 'faucet', 'shower', 'bathtub', 'mirror', 'vanity', 'lighting', 'accessory'];
 
 const CAPABILITY_RANK: Record<string, number> = {
-  VERIFIED_3D: 2,
+  VERIFIED_3D: 3,
+  PROTOTYPE_3D: 2,
   EXACT_DIMENSIONS: 1,
   NO_DIMENSIONS: 0,
 };
@@ -294,7 +296,9 @@ export default function ProductLibraryPanel({
                           className={`whitespace-nowrap rounded px-1.5 py-px text-[11px] font-semibold tracking-[0.04em] ${
                             product.capability === 'VERIFIED_3D'
                               ? 'bg-[#123C5A] text-white'
-                              : 'bg-[#EEF4F7] text-[#4A6275]'
+                              : product.capability === 'PROTOTYPE_3D'
+                                ? 'bg-[#E4F1EA] text-[#245E45]'
+                                : 'bg-[#EEF4F7] text-[#4A6275]'
                           }`}
                         >
                           {badge.label}

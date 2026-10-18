@@ -23,8 +23,10 @@ export function useTechnicalAdvisor(params: {
   dimensions: RoomDimensions;
   placedViews: PlacedProductView[];
   utilityPoints: UtilityPoint[];
+  /** The room draws a counter under countertop products. */
+  counterSupport?: boolean;
 }): TechnicalValidationResult[] {
-  const { dimensions, placedViews, utilityPoints } = params;
+  const { dimensions, placedViews, utilityPoints, counterSupport = false } = params;
 
   // A compact signature of everything the rules actually read. Deferring this
   // rather than the arrays themselves means validation re-runs when a product
@@ -42,8 +44,9 @@ export function useTechnicalAdvisor(params: {
           placed.wall,
         ]),
         u: utilityPoints.map((point) => [point.id, point.type, point.position.map((n) => Math.round(n * 1000))]),
+        c: counterSupport,
       }),
-    [dimensions, placedViews, utilityPoints]
+    [dimensions, placedViews, utilityPoints, counterSupport]
   );
 
   const deferredSignature = useDeferredValue(signature);
@@ -54,6 +57,7 @@ export function useTechnicalAdvisor(params: {
         room: dimensions,
         entries: buildEntries(placedViews),
         utilityPoints,
+        counterSupport,
       }),
     // Recompute only when the deferred signature changes. The other values are
     // read through the closure and are consistent with it by construction.

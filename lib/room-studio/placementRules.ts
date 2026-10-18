@@ -23,6 +23,33 @@ export interface PlacementContext {
   size: RealWorldSize;
   placementType: PlacementType;
   wall?: WallId;
+  /**
+   * Yaw, radians. A floor or counter product is kept inside the room by its
+   * ROTATED footprint: a 1.6m bath turned a quarter takes 1.6m of the room's
+   * width, not its length. Wall products are not rotated off their wall.
+   */
+  rotationY?: number;
+  /** Gap between a wall-backed product and its wall, metres. Default 2cm. */
+  wallGap?: number;
+  /** Top of the counter a counter product rests on, metres. Default 0.85m. */
+  counterHeight?: number;
+  /**
+   * For a wall product anchored by its own origin (a mixer): the range its
+   * CENTRE may occupy, metres. Intersected with the room, never widened.
+   */
+  centreYRange?: [number, number];
+  /** Where a wall product's centre goes when it is first placed, metres. */
+  preferredCentreY?: number;
+}
+
+/** Half-extents of a footprint after yaw, the exact form for any angle. */
+export function rotatedHalfExtents(size: RealWorldSize, rotationY = 0): { halfX: number; halfZ: number } {
+  const cos = Math.abs(Math.cos(rotationY));
+  const sin = Math.abs(Math.sin(rotationY));
+  return {
+    halfX: (size.width / 2) * cos + (size.depth / 2) * sin,
+    halfZ: (size.width / 2) * sin + (size.depth / 2) * cos,
+  };
 }
 
 /** Mounting height (centre of the product, metres) when it hangs on a wall. */
@@ -41,9 +68,25 @@ const CLEARANCE = 0.02;
 export const COUNTER_HEIGHT = 0.85;
 
 /** Resting height of a product's CENTRE for the surface it stands on. */
-export function getRestingHeight(placementType: PlacementType, size: RealWorldSize): number {
-  if (placementType === 'counter') return COUNTER_HEIGHT + size.height / 2;
+export function getRestingHeight(
+  placementType: PlacementType,
+  size: RealWorldSize,
+  counterHeight: number = COUNTER_HEIGHT
+): number {
+  if (placementType === 'counter') return counterHeight + size.height / 2;
   return size.height / 2;
+}
+
+/** The centre heights a wall product may take, inside the room and its own range. */
+function wallCentreRange(ctx: PlacementContext): [number, number] {
+  const half = ctx.size.height / 2;
+  let lo = half + CLEARANCE;
+  let hi = ctx.dimensions.height - half - CLEARANCE;
+  if (ctx.centreYRange) {
+    lo = Math.max(lo, ctx.centreYRange[0]);
+    hi = Math.min(hi, ctx.centreYRange[1]);
+  }
+  return [lo, hi];
 }
 
 export function getWallMountHeight(normalizedCategory: string, size: RealWorldSize, room: RoomDimensions): number {
@@ -68,12 +111,16 @@ export function getDefaultPlacement(
   const nudge = index * 0.35;
 
   if (placementType === 'wall') {
-    const y = getWallMountHeight(normalizedCategory, size, dimensions);
+    const [lo, hi] = wallCentreRange(ctx);
+    const y =
+      ctx.preferredCentreY !== undefined
+        ? clampToRange(ctx.preferredCentreY, lo, hi)
+        : getWallMountHeight(normalizedCategory, size, dimensions);
     // Flat against the back wall, pushed out by half its own depth.
     const position: Vec3 = [
       clampToRange(-dimensions.length * 0.2 + nudge, bounds.minX + size.width / 2, bounds.maxX - size.width / 2),
       y,
-      bounds.minZ + size.depth / 2 + CLEARANCE,
+      bounds.minZ + size.depth / 2 + (ctx.wallGap ?? CLEARANCE),
     ];
     return { position, rotationY: 0, wall };
   }
@@ -87,12 +134,14 @@ export function getDefaultPlacement(
   }
 
   // Floor / counter: stand on its surface, back edge near the back wall.
+  const rotationY = ctx.rotationY ?? 0;
+  const { halfX, halfZ } = rotatedHalfExtents(size, rotationY);
   const position: Vec3 = [
-    clampToRange(-dimensions.length * 0.25 + nudge, bounds.minX + size.width / 2, bounds.maxX - size.width / 2),
-    getRestingHeight(placementType, size),
-    clampToRange(bounds.minZ + size.depth / 2 + CLEARANCE, bounds.minZ + size.depth / 2, bounds.maxZ - size.depth / 2),
+    clampToRange(-dimensions.length * 0.25 + nudge, bounds.minX + halfX, bounds.maxX - halfX),
+    getRestingHeight(placementType, size, ctx.counterHeight),
+    clampToRange(bounds.minZ + halfZ + (ctx.wallGap ?? CLEARANCE), bounds.minZ + halfZ, bounds.maxZ - halfZ),
   ];
-  return { position, rotationY: 0, wall };
+  return { position, rotationY, wall };
 }
 
 function clampToRange(value: number, min: number, max: number): number {
@@ -114,28 +163,87 @@ export function clampToRoom(position: Vec3, ctx: PlacementContext): Vec3 {
   const halfD = size.depth / 2;
   const halfH = size.height / 2;
 
-  const x = clampToRange(position[0], bounds.minX + halfW, bounds.maxX - halfW);
-
   if (placementType === 'wall') {
     const wall = ctx.wall ?? 'back';
-    const y = clampToRange(position[1], bounds.minY + halfH + CLEARANCE, bounds.maxY - halfH - CLEARANCE);
+    const gap = ctx.wallGap ?? CLEARANCE;
+    const [lo, hi] = wallCentreRange(ctx);
+    const y = clampToRange(position[1], lo, hi);
     if (wall === 'left') {
-      return [bounds.minX + halfD + CLEARANCE, y, clampToRange(position[2], bounds.minZ + halfW, bounds.maxZ - halfW)];
+      return [bounds.minX + halfD + gap, y, clampToRange(position[2], bounds.minZ + halfW, bounds.maxZ - halfW)];
     }
     if (wall === 'right') {
-      return [bounds.maxX - halfD - CLEARANCE, y, clampToRange(position[2], bounds.minZ + halfW, bounds.maxZ - halfW)];
+      return [bounds.maxX - halfD - gap, y, clampToRange(position[2], bounds.minZ + halfW, bounds.maxZ - halfW)];
     }
-    return [x, y, bounds.minZ + halfD + CLEARANCE];
+    return [clampToRange(position[0], bounds.minX + halfW, bounds.maxX - halfW), y, bounds.minZ + halfD + gap];
   }
 
   if (placementType === 'ceiling') {
+    const x = clampToRange(position[0], bounds.minX + halfW, bounds.maxX - halfW);
     return [x, bounds.maxY - halfH - CLEARANCE, clampToRange(position[2], bounds.minZ + halfD, bounds.maxZ - halfD)];
   }
 
   // Floor and counter products keep their resting height: dragging moves them
-  // across their surface, it never lifts them off it.
-  const restingY = Math.min(getRestingHeight(placementType, size), bounds.maxY - halfH - CLEARANCE);
-  return [x, restingY, clampToRange(position[2], bounds.minZ + halfD, bounds.maxZ - halfD)];
+  // across their surface, it never lifts them off it. The footprint is the
+  // rotated one, so a turned bath cannot be pushed through a side wall.
+  const { halfX, halfZ } = rotatedHalfExtents(size, ctx.rotationY ?? 0);
+  const restingY = Math.min(getRestingHeight(placementType, size, ctx.counterHeight), bounds.maxY - halfH - CLEARANCE);
+  return [
+    clampToRange(position[0], bounds.minX + halfX, bounds.maxX - halfX),
+    restingY,
+    clampToRange(position[2], bounds.minZ + halfZ, bounds.maxZ - halfZ),
+  ];
+}
+
+/**
+ * Whether a product can stand in this room at all, and which way round.
+ *
+ * Asked before a product is placed, because `clampToRoom` cannot help a
+ * product larger than the room: with nowhere valid to go it would park the
+ * centre in the middle and leave both ends inside the walls. The product is
+ * never shrunk to fit — the answer is a reason, and the customer changes the
+ * room or the product.
+ */
+export function fitInRoom(ctx: PlacementContext): { fits: boolean; rotationY: number; reason?: string } {
+  const { dimensions, size, placementType } = ctx;
+  const m = (v: number) => `${v.toFixed(2).replace('.', ',')} m`;
+  const base = placementType === 'counter' ? ctx.counterHeight ?? COUNTER_HEIGHT : 0;
+  if (placementType !== 'wall' && base + size.height > dimensions.height) {
+    return {
+      fits: false,
+      rotationY: 0,
+      reason: `Sản phẩm cao ${m(base + size.height)} tính từ sàn, phòng chỉ cao ${m(dimensions.height)}.`,
+    };
+  }
+  if (placementType === 'wall' || placementType === 'ceiling') {
+    const [lo, hi] = placementType === 'wall' ? wallCentreRange(ctx) : [0, dimensions.height];
+    if (size.width > dimensions.length || size.depth > dimensions.width || lo > hi) {
+      return {
+        fits: false,
+        rotationY: 0,
+        reason:
+          lo > hi
+            ? `Sản phẩm cao ${m(size.height)}; ở cao độ lắp yêu cầu nó vượt quá trần ${m(dimensions.height)}.`
+            : `Sản phẩm rộng ${m(size.width)}, sâu ${m(size.depth)}; tường trong của phòng dài ${m(dimensions.length)}.`,
+      };
+    }
+    return { fits: true, rotationY: 0 };
+  }
+  const preferred = ctx.rotationY ?? 0;
+  const fitsAt = (yaw: number) => {
+    const { halfX, halfZ } = rotatedHalfExtents(size, yaw);
+    return halfX * 2 <= dimensions.length + 1e-6 && halfZ * 2 <= dimensions.width + 1e-6;
+  };
+  if (fitsAt(preferred)) return { fits: true, rotationY: preferred };
+  if (fitsAt(preferred + Math.PI / 2)) return { fits: true, rotationY: preferred + Math.PI / 2 };
+  const long = Math.max(size.width, size.depth);
+  const short = Math.min(size.width, size.depth);
+  return {
+    fits: false,
+    rotationY: preferred,
+    reason:
+      `Sản phẩm chiếm ${m(long)} × ${m(short)} trên sàn, phòng chỉ ${m(dimensions.length)} × ` +
+      `${m(dimensions.width)} — không đặt được theo hướng nào.`,
+  };
 }
 
 /** True when a product's footprint would be pushed outside the room. */

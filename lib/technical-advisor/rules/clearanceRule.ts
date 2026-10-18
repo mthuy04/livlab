@@ -113,6 +113,7 @@ export const clearanceRule: TechnicalRule = {
         ruleId: 'clearance',
         category: 'CLEARANCE',
         severity: 'OPTIMIZE',
+        placementIssue: 'CLEARANCE',
         title: 'Khoảng trống phía trước còn hạn chế',
         message:
           `Khoảng trống phía trước ${product.name} hiện khoảng ${formatCm(available)}; dữ liệu tham khảo của LivLab khuyến nghị khoảng ${formatCm(recommendedFront)}.` +

@@ -1,0 +1,117 @@
+{
+  "id": "inax-bf-1656v",
+  "brand": "INAX",
+  "sku": "BF-1656V",
+  "name": "Bồn tắm đặt sàn INAX BF-1656V",
+  "nameEn": "Freestanding Bathtub BF-1656V",
+  "category": "bathtub",
+  "mounting": "floor",
+  "status": "prototype_reconstructed",
+  "commercialCatalogApproved": false,
+  "thumbnailUrl": "/models/inax/BF-1656V/preview.png",
+  "variants": {
+    "web": "/models/inax/BF-1656V/BF-1656V_web.glb",
+    "high": "/models/inax/BF-1656V/BF-1656V_high.glb"
+  },
+  "recommendedVariant": "web",
+  "units": "m",
+  "axes": {
+    "x": "horizontal",
+    "y": "up",
+    "z": "forward_out_from_rear_wall"
+  },
+  "forward": "+Z",
+  "referenceDimensionsMm": {
+    "length_mm": 1600,
+    "width_mm": 800,
+    "height_mm": 560
+  },
+  "referenceEnvelopeM_XYZ": [
+    1.6,
+    0.56,
+    0.8
+  ],
+  "modelBounds": {
+    "web": {
+      "xyzMeters": [
+        1.6,
+        0.56,
+        0.8
+      ],
+      "min": [
+        -0.8,
+        0.0,
+        0.0
+      ],
+      "max": [
+        0.8,
+        0.56,
+        0.8
+      ]
+    },
+    "high": {
+      "xyzMeters": [
+        1.6,
+        0.56,
+        0.8
+      ],
+      "min": [
+        -0.8,
+        0.0,
+        0.0
+      ],
+      "max": [
+        0.8,
+        0.56,
+        0.8
+      ]
+    }
+  },
+  "rendering": {
+    "castShadow": true,
+    "receiveShadow": true,
+    "modelScale": [
+      1,
+      1,
+      1
+    ],
+    "preferOriginalPBR": true
+  },
+  "placement": {
+    "anchor": "rear_wall_floor_center",
+    "wallFacing": null,
+    "notes": "Long dimension along X, depth along Z; do not rotate merely because width is numerically 1.6m."
+  },
+  "reconstructedFrom": "reference_photos_and_technical_drawings",
+  "manufacturerCADUsed": false,
+  "qa": {
+    "web": {
+      "fileSizeBytes": 237904,
+      "sha256": "27b27fbd5654aacf51952b57dc59be1cb70c0967135ef9aaccf7e502c5102cec",
+      "meshCount": 6,
+      "triangleCount": 13012,
+      "dimensionsM_XYZ": [
+        1.6,
+        0.56,
+        0.8
+      ],
+      "watertightCount": 6,
+      "finiteVertices": true,
+      "reloadedWithTrimesh": true
+    },
+    "high": {
+      "fileSizeBytes": 723984,
+      "sha256": "8f6cb46abb1cad7134da0f1d4b032cecd37544dc70f0b836c4b7ff8a0454f713",
+      "meshCount": 6,
+      "triangleCount": 40016,
+      "dimensionsM_XYZ": [
+        1.6,
+        0.56,
+        0.8
+      ],
+      "watertightCount": 6,
+      "finiteVertices": true,
+      "reloadedWithTrimesh": true
+    }
+  }
+}

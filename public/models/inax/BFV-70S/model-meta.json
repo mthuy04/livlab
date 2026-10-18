@@ -1,0 +1,114 @@
+{
+  "id": "inax-bfv-70s",
+  "brand": "INAX",
+  "sku": "BFV-70S",
+  "name": "Sen cây nóng lạnh INAX BFV-70S",
+  "nameEn": "Wall-mounted Shower Column BFV-70S",
+  "category": "shower",
+  "mounting": "wall",
+  "status": "prototype_reconstructed",
+  "commercialCatalogApproved": false,
+  "thumbnailUrl": "/models/inax/BFV-70S/preview.png",
+  "variants": {
+    "web": "/models/inax/BFV-70S/BFV-70S_web.glb",
+    "high": "/models/inax/BFV-70S/BFV-70S_high.glb"
+  },
+  "recommendedVariant": "web",
+  "units": "m",
+  "axes": {
+    "x": "horizontal",
+    "y": "up",
+    "z": "forward_out_from_rear_wall"
+  },
+  "forward": "+Z",
+  "referenceDimensionsMm": {
+    "rainhead_diameter_mm": 203,
+    "riser_to_rainhead_center_mm": 350,
+    "mixer_to_slider_mm": 720,
+    "mixer_to_rainhead_max_mm": 1397
+  },
+  "referenceEnvelopeM_XYZ": null,
+  "modelBounds": {
+    "web": {
+      "xyzMeters": [
+        0.294,
+        1.638049,
+        0.5235
+      ],
+      "min": [
+        -0.147,
+        -0.092079,
+        0.0
+      ],
+      "max": [
+        0.147,
+        1.545969,
+        0.5235
+      ]
+    },
+    "high": {
+      "xyzMeters": [
+        0.294,
+        1.638532,
+        0.5235
+      ],
+      "min": [
+        -0.147,
+        -0.092332,
+        0.0
+      ],
+      "max": [
+        0.147,
+        1.5462,
+        0.5235
+      ]
+    }
+  },
+  "rendering": {
+    "castShadow": true,
+    "receiveShadow": true,
+    "modelScale": [
+      1,
+      1,
+      1
+    ],
+    "preferOriginalPBR": true
+  },
+  "placement": {
+    "anchor": "mixer_center_on_wall",
+    "wallFacing": "+Z",
+    "notes": "Origin at mixer axis on wall, NOT floor. Set Y to mixer installation height. Z=0 wall plane."
+  },
+  "reconstructedFrom": "reference_photos_and_technical_drawings",
+  "manufacturerCADUsed": false,
+  "qa": {
+    "web": {
+      "fileSizeBytes": 315864,
+      "sha256": "41b9091454f8c44bfcda50578c327627edcc05d0834615f8b092a9d49193d9f0",
+      "meshCount": 25,
+      "triangleCount": 17140,
+      "dimensionsM_XYZ": [
+        0.294,
+        1.638049,
+        0.5235
+      ],
+      "watertightCount": 25,
+      "finiteVertices": true,
+      "reloadedWithTrimesh": true
+    },
+    "high": {
+      "fileSizeBytes": 696800,
+      "sha256": "65b6d16651f54a113efa19e01453917de3d06b6eb30595ff8e08e10f6ceb6437",
+      "meshCount": 26,
+      "triangleCount": 38812,
+      "dimensionsM_XYZ": [
+        0.294,
+        1.638532,
+        0.5235
+      ],
+      "watertightCount": 26,
+      "finiteVertices": true,
+      "reloadedWithTrimesh": true
+    }
+  }
+}

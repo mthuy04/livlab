@@ -17,6 +17,15 @@ import { getModelMetadata } from './modelMetadata';
 import { findProduct3DAssetForKeys } from './product3dRegistry';
 import { deriveCapability, type RoomStudioCapability } from './productCapability';
 import type { PlacementType } from './placementRules';
+import {
+  allReconstructions,
+  canRenderReconstruction,
+  envelopeOf,
+  findReconstruction,
+  variantFile,
+  type ReconstructedModel,
+  type ReconstructionMounting,
+} from './reconstructionRegistry';
 
 export interface RoomStudioProduct {
   id: string;
@@ -63,6 +72,22 @@ export interface RoomStudioProduct {
   /** What Room Studio may claim about this product. The one badge/gate source. */
   capability: RoomStudioCapability;
   placementType: PlacementType;
+  /**
+   * Present when the scene draws LivLab's reconstruction of this exact SKU.
+   * Carries what the scene needs to anchor it by its own origin and what the
+   * words around it must say. Absent for every other product.
+   */
+  reconstruction?: {
+    modelId: string;
+    variant: 'web' | 'basin_only';
+    /** Variants the customer may switch between in the room. */
+    variants: Array<{ id: 'web' | 'basin_only'; label: string }>;
+    /** Model-space bounds of the variant being drawn, metres. */
+    boundsM: { min: [number, number, number]; max: [number, number, number] };
+    mounting: ReconstructionMounting;
+    /** Parts of this variant that are not the product, in a customer's words. */
+    illustrativeParts?: string;
+  };
   /** The original record, so existing flows (quote basket) keep working as-is. */
   source: Product;
   /**
@@ -140,6 +165,7 @@ function derivePlacementType(product: Product, normalized: string): PlacementTyp
       return 'wall';
     case 'toilet':
     case 'vanity':
+    case 'bathtub':
       return 'floor';
     // Basins are installed on a vanity top, not on the floor. Resting them at
     // counter height reads correctly even before a vanity is placed under them.
@@ -155,13 +181,103 @@ function derivePlacementType(product: Product, normalized: string): PlacementTyp
   }
 }
 
+/**
+ * Room Studio's own category for a bathtub.
+ *
+ * The shared classifier (also used by Visual Studio) files "bồn tắm" under
+ * accessories, which hang on a wall. Room Studio needs it on the floor, so it
+ * is recognised here rather than by changing what Visual Studio's suggestions
+ * pick from.
+ */
+function roomStudioCategory(category: string): string {
+  const lower = (category || '').toLowerCase();
+  if (lower.includes('bồn tắm') || lower.includes('bathtub')) return 'bathtub';
+  return normalizeCategory(category);
+}
+
+const PLACEMENT_FOR_MOUNTING: Record<ReconstructionMounting['kind'], PlacementType> = {
+  FLOOR: 'floor',
+  WALL_MIXER: 'wall',
+  COUNTERTOP: 'counter',
+};
+
+/**
+ * The same product, drawn with LivLab's reconstruction of its SKU.
+ *
+ * The size becomes the model's own measured envelope — the box the geometry
+ * really occupies — because that is what collides, clears doors and fits
+ * against walls. For a toilet, a tub and a basin it equals the manufacturer's
+ * figures; for a shower column, which has no "box" on its spec sheet, it is
+ * the measured extent of the reconstructed column.
+ *
+ * Scale is exactly 1: the files are authored in metres and measured to match.
+ * Nothing here normalises a largest dimension to anything.
+ */
+export function withReconstruction(
+  product: RoomStudioProduct,
+  model: ReconstructedModel,
+  variant?: string | null
+): RoomStudioProduct {
+  const file = variantFile(model, variant);
+  const env = envelopeOf(file);
+  const variantId = (Object.entries(model.files).find(([, f]) => f === file)?.[0] ?? model.defaultVariant) as
+    | 'web'
+    | 'basin_only';
+  const mm = (m: number) => Math.round(m * 1000);
+  return {
+    ...product,
+    normalizedCategory: model.category,
+    width: env.width,
+    depth: env.depth,
+    height: env.height,
+    dimensionsLabel:
+      variantId === model.defaultVariant
+        ? model.envelopeLabel
+        : `${mm(env.width)} x ${mm(env.depth)} x ${mm(env.height)} mm (${file.label.toLowerCase()})`,
+    model3dUrl: file.url,
+    modelScale: 1,
+    illustrativeModel: false,
+    capability: 'PROTOTYPE_3D',
+    placementType: PLACEMENT_FOR_MOUNTING[model.mounting.kind],
+    reconstruction: {
+      modelId: model.id,
+      variant: variantId,
+      variants: model.roomVariants.map((id) => ({ id, label: model.files[id]?.label ?? id })),
+      boundsM: file.boundsM,
+      mounting: model.mounting,
+      illustrativeParts: file.illustrativeParts,
+    },
+  };
+}
+
+/** The reconstruction a product resolves to, if it may be drawn. */
+export function reconstructionFor(product: Pick<RoomStudioProduct, 'brand' | 'sku'>): ReconstructedModel | null {
+  const model = findReconstruction(product.brand, product.sku);
+  return canRenderReconstruction(model) ? model : null;
+}
+
 export function toRoomStudioProduct(product: Product): RoomStudioProduct {
-  const normalizedCategory = normalizeCategory(product.category);
+  const normalizedCategory = roomStudioCategory(product.category);
   const normalizedSku = normalizeSku(product.sku) || undefined;
   const parsed = parseDimensionsToMeters(product.dimensions || product.size);
   const metadata = getModelMetadata(product, normalizedCategory);
   const asset = findProduct3DAssetForKeys(product.id, normalizedSku);
+  const base = baseRoomStudioProduct(product, normalizedCategory, normalizedSku, parsed, metadata, asset);
 
+  // A manufacturer master outranks a reconstruction; a reconstruction
+  // outranks a size box. Exact brand + SKU, or nothing.
+  const model = base.capability === 'VERIFIED_3D' ? null : reconstructionFor(base);
+  return model ? withReconstruction(base, model) : base;
+}
+
+function baseRoomStudioProduct(
+  product: Product,
+  normalizedCategory: string,
+  normalizedSku: string | undefined,
+  parsed: ReturnType<typeof parseDimensionsToMeters>,
+  metadata: ReturnType<typeof getModelMetadata>,
+  asset: ReturnType<typeof findProduct3DAssetForKeys>
+): RoomStudioProduct {
   return {
     id: product.id,
     normalizedSku,
@@ -205,18 +321,56 @@ export async function loadRoomStudioProducts(
   if (catalog === 'tenant') return loadTenantCatalogProducts();
   const { importVerifiedProductsFromCsv } = await import('@/lib/importVerifiedProducts');
   const products = await importVerifiedProductsFromCsv(true);
-  return (products || []).map(toRoomStudioProduct);
+  const mapped = (products || []).map(toRoomStudioProduct);
+  return [...mapped, ...livlab3dLibraryProducts(mapped)];
 }
 
 /**
- * Categories the tenant catalogue sells that Room Studio cannot place yet.
+ * LivLab's own 3D library, offered in LivLab's Room Studio only.
  *
- * A bathtub has no placement category here: the classifier files it under
- * accessories, which hang on a wall. Listing tubs would put a 1.7m bath on
- * the wall at shelf height, so they stay on the product pages until Room
- * Studio has a floor-standing bath placement of its own.
+ * Each reconstructed SKU that LivLab's catalogue does not already list is
+ * offered once, under a stable id, with no price, stock or seller written in
+ * — the library knows the product's size and shape, not what it costs or who
+ * stocks it, so the basket records it as "Liên hệ". A showroom's Room Studio
+ * never receives these: it shows a model only where the showroom's own
+ * catalogue carries the exact SKU.
+ *
+ * Kept out of the shared CSV on purpose: Visual Studio reads that file too,
+ * and an unpriced row would sort first in its budget picks.
  */
-const NOT_PLACEABLE_IN_ROOM_STUDIO = new Set(['Bồn tắm']);
+export function livlab3dLibraryProducts(existing: RoomStudioProduct[]): RoomStudioProduct[] {
+  const listed = new Set(existing.filter((p) => p.reconstruction).map((p) => p.reconstruction!.modelId));
+  return allReconstructions()
+    .filter((model) => canRenderReconstruction(model) && !listed.has(model.id))
+    .map((model) => {
+      const id = `livlab-3d-${model.sku.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+      const source: Product = {
+        id,
+        slug: id,
+        name: model.name,
+        category: model.catalogueCategory,
+        subCategory: model.subCategory,
+        brand: model.brand,
+        sku: model.sku,
+        priceMin: 0,
+        priceMax: 0,
+        priceRange: 'Liên hệ',
+        dimensions: model.envelopeLabel,
+        image: model.thumbnailUrl,
+        imageAlt: `Ảnh dựng từ mô hình 3D tái tạo của ${model.sku}, không phải ảnh chụp sản phẩm`,
+        imageVerified: false,
+        description: '',
+        // Required by the legacy shape and read by nothing in Room Studio.
+        // No stock or seller fact is known, so none is written in.
+        availability: '',
+        status: '' as Product['status'],
+        showroomName: '',
+        showroomLocation: '',
+        sellerType: '',
+      };
+      return toRoomStudioProduct(source);
+    });
+}
 
 /**
  * A catalogue size as Room Studio's "width × depth × height".
@@ -238,7 +392,7 @@ function catalogueSize(p: CatalogProduct, normalizedCategory: string): string | 
 const formatVnd = (v: number) => `${v.toLocaleString('vi-VN')}đ`;
 
 export function catalogProductToRoomStudio(p: CatalogProduct, tenantId: string): RoomStudioProduct {
-  const normalizedCategory = normalizeCategory(p.category);
+  const normalizedCategory = roomStudioCategory(p.category);
   const normalizedSku = normalizeSku(p.sku) || undefined;
   const asset = findProduct3DAssetForKeys(p.catalogProductId, p.id, normalizedSku);
 
@@ -305,7 +459,7 @@ async function loadTenantCatalogProducts(): Promise<RoomStudioProduct[]> {
   const res = await fetch('/api/storefront/products');
   if (!res.ok) throw new Error(`catalogue ${res.status}`);
   const data = (await res.json()) as { tenantId: string; products: CatalogProduct[] };
-  return (data.products ?? [])
-    .filter((p) => !NOT_PLACEABLE_IN_ROOM_STUDIO.has(p.category))
-    .map((p) => catalogProductToRoomStudio(p, data.tenantId));
+  // Bathtubs are listed again now that Room Studio stands them on the floor;
+  // a tub without all three stated dimensions still cannot be placed.
+  return (data.products ?? []).map((p) => catalogProductToRoomStudio(p, data.tenantId));
 }
