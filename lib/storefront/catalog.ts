@@ -94,14 +94,18 @@ interface DemoFixture {
   }[];
 }
 
-let fixtureCache: DemoFixture | null = null;
+// Keyed by file: with more than one fixture tenant, a single slot would hand
+// whichever catalogue a warm server loaded first to every tenant after it.
+const fixtureCache = new Map<string, DemoFixture>();
 
 async function loadFixture(file: string): Promise<DemoFixture | null> {
-  if (fixtureCache) return fixtureCache;
+  const cached = fixtureCache.get(file);
+  if (cached) return cached;
   try {
     const raw = await readFile(join(process.cwd(), 'data', 'demo', file), 'utf8');
-    fixtureCache = JSON.parse(raw) as DemoFixture;
-    return fixtureCache;
+    const fixture = JSON.parse(raw) as DemoFixture;
+    fixtureCache.set(file, fixture);
+    return fixture;
   } catch {
     return null;
   }
@@ -324,11 +328,13 @@ function withManufacturer(product: CatalogProduct, record: ManufacturerRecord | 
     const host = product.image?.startsWith('http') ? product.image.split('/')[2] : '';
     const source: ImageSource = !product.image
       ? 'PLACEHOLDER'
-      : /luxbath\.vn|beptungdang\.vn/.test(host)
-        ? 'SHOWROOM'
-        : host
-          ? 'RETAILER'
-          : 'PLACEHOLDER';
+      : /(^|\.)inax\.com\.vn$|^inax-vn\.s3[\w.-]*amazonaws\.com$|^vn\.toto\.com$/.test(host)
+        ? 'MANUFACTURER'
+        : /luxbath\.vn|beptungdang\.vn/.test(host)
+          ? 'SHOWROOM'
+          : host
+            ? 'RETAILER'
+            : 'PLACEHOLDER';
     return { ...product, imageSource: source };
   }
 
@@ -365,6 +371,7 @@ function withManufacturer(product: CatalogProduct, record: ManufacturerRecord | 
 /** Fixture-backed tenants, by tenant id. Everything else reads the database. */
 const FIXTURE_TENANTS: Record<string, string> = {
   tungdang: 'tungdang-sanitaryware.json',
+  giangson: 'giangson-sanitaryware.json',
 };
 
 /**

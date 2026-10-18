@@ -117,9 +117,41 @@ console.log('\nGolden Retreat');
 console.log('\ncô lập tenant');
 {
   // Every other concept is offered to all storefronts, so it must not name a
-  // tenant; and nothing but tungdang's own may carry tungdang.
-  const strays = CONCEPT_LIBRARY.filter((c) => c.tenantId !== null && c.tenantId !== 'tungdang');
+  // tenant; a tenant's own concept belongs to a tenant with its own catalogue,
+  // and points only at that catalogue.
+  const owners = new Set(['tungdang', 'giangson']);
+  const strays = CONCEPT_LIBRARY.filter((c) => c.tenantId !== null && !owners.has(c.tenantId));
   check('không concept nào gán cho tenant khác', strays.length === 0, strays.map((c) => c.slug));
+  const crossed = CONCEPT_LIBRARY.filter((c) => c.tenantId !== null).flatMap((c) =>
+    c.hotspots
+      .filter((h) => h.catalogProductId && !h.catalogProductId.startsWith(`demo:${c.tenantId}:`))
+      .map((h) => h.id)
+  );
+  check('concept riêng chỉ trỏ tới danh mục của chính tenant đó', crossed.length === 0, crossed);
+}
+
+/* --------------------------------------------------------------- Giang Sơn */
+
+console.log('\nGiang Sơn');
+{
+  const gsFixture = JSON.parse(readFileSync('data/demo/giangson-sanitaryware.json', 'utf8')) as {
+    products: { brand: string; sku: string | null; name: string }[];
+  };
+  const giangsonIds = new Set(
+    gsFixture.products.map((p) =>
+      catalogIdentity({ sourceType: 'DEMO_FIXTURE', sourceRecordId: '', tenantId: 'giangson', brand: p.brand, sku: p.sku, name: p.name })
+    )
+  );
+  const owned = CONCEPT_LIBRARY.filter((c) => c.tenantId === 'giangson');
+  check('ba concept riêng của Giang Sơn', owned.length === 3, owned.map((c) => c.slug));
+  for (const c of owned) {
+    const facing = c.hotspots.filter(isCustomerFacing);
+    check(`${c.slug}: ảnh nằm trong public`, existsSync(`public${c.canonicalImage}`), c.canonicalImage);
+    check(`${c.slug}: đủ điểm để xuất bản`, facing.length >= 2, facing.length);
+    check(`${c.slug}: mọi điểm là gợi ý trong concept`, facing.every((h) => h.matchConfidence === 'CURATED_SUGGESTION'));
+    const missing = facing.filter((h) => !giangsonIds.has(h.catalogProductId!)).map((h) => h.sku);
+    check(`${c.slug}: mọi sản phẩm có trong danh mục Giang Sơn`, missing.length === 0, missing);
+  }
 }
 
 console.log(`\n${passed} passed, ${failed} failed`);

@@ -146,10 +146,19 @@ export default function ArchitecturalLanding({ tenant }: { tenant: TenantStorefr
                   <p className={styles.productSku}>{product.sku}</p>
                   <p className={styles.productPrice}>{formatVnd(product.referencePrice)}</p>
                   <p className={styles.productSource}>{product.sourceLabel}</p>
-                  <a href={product.href} target="_blank" rel="noreferrer" className={styles.productLink}>
-                    XEM NGUỒN SẢN PHẨM
-                    <ArrowRight aria-hidden="true" />
-                  </a>
+                  {/* A catalogue product opens its own page; only an off-site
+                      reference leaves the storefront, and says so. */}
+                  {product.href.startsWith('/') ? (
+                    <Link href={product.href as Route} className={styles.productLink}>
+                      XEM CHI TIẾT
+                      <ArrowRight aria-hidden="true" />
+                    </Link>
+                  ) : (
+                    <a href={product.href} target="_blank" rel="noreferrer" className={styles.productLink}>
+                      XEM NGUỒN SẢN PHẨM
+                      <ArrowRight aria-hidden="true" />
+                    </a>
+                  )}
                 </div>
               </article>
             ))}

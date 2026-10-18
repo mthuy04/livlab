@@ -1182,6 +1182,163 @@ const td01: StorefrontConcept = {
   ],
 };
 
+/* -------------------------------------------------------------- Giang Sơn */
+
+export const GIANGSON_TENANT = 'giangson';
+
+interface GiangsonPick {
+  brand: string;
+  sku: string;
+  note: string;
+}
+
+/**
+ * A Giang Sơn concept on a LivLab image whose objects were already located for
+ * another concept.
+ *
+ * Point and box come from the base hotspot, so each stays on the object it was
+ * checked against. An object Giang Sơn's catalogue has a fitting product for is
+ * offered as a curated suggestion — never as the exact model in the picture.
+ * An object it has nothing fitting for stays in the image unannotated, rather
+ * than pointing at a product of a different kind.
+ */
+function giangsonConcept(
+  base: StorefrontConcept,
+  {
+    slug,
+    titleVi,
+    presentation,
+    picks,
+  }: {
+    slug: string;
+    titleVi: string;
+    presentation: StorefrontConcept['presentation'];
+    /** By the base hotspot's 1-based position. */
+    picks: Record<number, GiangsonPick>;
+  }
+): StorefrontConcept {
+  const id = `gs-${base.id}`;
+  return {
+    ...base,
+    id,
+    slug,
+    titleVi,
+    tenantId: GIANGSON_TENANT,
+    presentation,
+    qaNote: 'Vị trí điểm lấy từ concept gốc đã kiểm tra; sản phẩm gán theo danh mục Giang Sơn, ngày 2026-10-19.',
+    hotspots: base.hotspots.map((spot, index) => {
+      const pick = picks[index + 1];
+      const position = {
+        id: `${id}-h${index + 1}`,
+        conceptId: id,
+        targetType: spot.targetType,
+        xPct: spot.xPct,
+        yPct: spot.yPct,
+        ...(spot.bbox ? { bbox: spot.bbox } : {}),
+        ...(spot.popover ? { popover: spot.popover } : {}),
+      };
+      return pick
+        ? {
+            ...position,
+            catalogProductId: demoId(GIANGSON_TENANT, pick.brand, pick.sku),
+            brand: pick.brand,
+            sku: pick.sku,
+            matchConfidence: 'CURATED_SUGGESTION' as const,
+            qaStatus: 'VERIFIED' as const,
+            note: pick.note,
+          }
+        : {
+            ...position,
+            matchConfidence: 'GENERIC_FIXTURE' as const,
+            qaStatus: 'VERIFIED' as const,
+            note: 'Danh mục Giang Sơn chưa có sản phẩm cùng kiểu với vật thể này.',
+          };
+    }),
+  };
+}
+
+const GS_SHOWER_COLUMN: GiangsonPick = {
+  brand: 'INAX',
+  sku: 'BFV-70S',
+  note: 'Sen cây lộ thiên nóng lạnh, bát sen lớn và tay sen — cùng kiểu thiết bị trong khu tắm.',
+};
+
+const GS_BASIN_MIXER: GiangsonPick = {
+  brand: 'INAX',
+  sku: 'LFV-1402S',
+  note: 'Vòi nóng lạnh một lỗ, thân thấp — cùng kiểu vòi trên chậu.',
+};
+
+const GS_VESSEL_RECT: GiangsonPick = {
+  brand: 'INAX',
+  sku: 'L-293V',
+  note: 'Chậu đặt bàn chữ nhật thành mỏng, 500 × 450 × 155 mm — cùng kiểu lắp đặt và tỷ lệ.',
+};
+
+const gsMasterSpa = giangsonConcept(c05, {
+  slug: 'giangson-master-spa',
+  titleVi: 'Phòng tắm master phong cách spa',
+  presentation: {
+    leadWithName: true,
+    roomType: 'Master bathroom',
+    styleLabel: 'Spa tại gia',
+    areaLabel: '10–14 m²',
+    budgetLabel: 'Cao cấp',
+  },
+  picks: {
+    1: {
+      brand: 'INAX',
+      sku: 'BF-1656V',
+      note: 'Bồn tắm đặt sàn tách tường, dài 1,6 m — cùng kiểu lắp đặt với bồn trong ảnh.',
+    },
+    2: GS_VESSEL_RECT,
+    3: { ...GS_VESSEL_RECT, note: `${GS_VESSEL_RECT.note} Chậu thứ hai của mặt bàn đôi.` },
+  },
+});
+
+const gsScandinavian = giangsonConcept(c02, {
+  slug: 'giangson-scandinavian-bath',
+  titleVi: 'Phòng tắm Scandinavian ấm sáng',
+  presentation: {
+    leadWithName: true,
+    roomType: 'Phòng tắm gia đình',
+    styleLabel: 'Scandinavian',
+    areaLabel: '4–6 m²',
+    budgetLabel: 'Phổ thông – trung cấp',
+  },
+  picks: {
+    1: {
+      brand: 'TOTO',
+      sku: 'CS838DT10',
+      note: 'Bồn cầu hai khối, két hộp — cùng kiểu với thiết bị trong ảnh.',
+    },
+    2: GS_SHOWER_COLUMN,
+    4: GS_BASIN_MIXER,
+  },
+});
+
+const gsPremiumSuite = giangsonConcept(c04, {
+  slug: 'giangson-premium-suite',
+  titleVi: 'Phòng tắm nghỉ dưỡng thanh lịch',
+  presentation: {
+    leadWithName: true,
+    roomType: 'Phòng tắm master',
+    styleLabel: 'Hiện đại thanh lịch',
+    areaLabel: '6–9 m²',
+    budgetLabel: 'Trung – cao cấp',
+  },
+  picks: {
+    1: {
+      brand: 'INAX',
+      sku: 'AC-912VN',
+      note: 'Bồn cầu một khối bo tròn liền mạch — cùng kiểu thân liền với thiết bị trong ảnh.',
+    },
+    2: GS_VESSEL_RECT,
+    3: GS_SHOWER_COLUMN,
+    4: GS_BASIN_MIXER,
+  },
+});
+
 /**
  * Reading order, set by how the rooms look rather than by when they were made.
  *
@@ -1198,5 +1355,6 @@ const td01: StorefrontConcept = {
 export const CONCEPT_LIBRARY: StorefrontConcept[] = [
   // A tenant's own concept leads its storefront; every other tenant skips it.
   td01,
+  gsMasterSpa, gsScandinavian, gsPremiumSuite,
   c01, c07, c03, c10, c08, c04, c06, c09, c02, c05,
 ];

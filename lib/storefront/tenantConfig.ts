@@ -490,6 +490,14 @@ export const DEMO_TUNGDANG_TENANT: TenantStorefrontConfig = {
   },
 };
 
+/**
+ * Giang Sơn sells across these sanitaryware groups; the storefront lists only
+ * the ones its demo catalogue (data/demo/giangson-sanitaryware.json) holds, so
+ * no category link filters to nothing.
+ */
+const GIANGSON_CATEGORIES = ['Bồn cầu', 'Lavabo', 'Vòi lavabo', 'Sen tắm', 'Bồn tắm'];
+const giangsonCategory = (category: string) => `/products?category=${encodeURIComponent(category)}`;
+
 const GIANGSON_EXPERIENCE: TenantExperience = {
   theme: {
     ink: '#123F62',
@@ -531,23 +539,23 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
         },
         hotspots: [
           {
-            label: 'Lavabo & sen vòi',
-            detail: 'Tìm nhóm thiết bị phù hợp với khu vực rửa mặt.',
-            href: '/#contact-giangson',
+            label: 'Lavabo & vòi',
+            detail: 'Chậu đặt bàn TOTO, INAX và vòi nóng lạnh cho khu vực rửa mặt.',
+            href: giangsonCategory('Lavabo'),
             xPct: 23,
             yPct: 55,
           },
           {
-            label: 'Thiết bị vệ sinh',
-            detail: 'Trao đổi nhu cầu để được hỗ trợ lựa chọn.',
-            href: '/#contact-giangson',
+            label: 'Bồn cầu',
+            detail: 'Bồn cầu một khối, hai khối TOTO và INAX, men chống bám bẩn.',
+            href: giangsonCategory('Bồn cầu'),
             xPct: 52,
             yPct: 64,
           },
           {
-            label: 'Gạch & vật liệu',
-            detail: 'Tham khảo cách phối bề mặt trong cùng không gian.',
-            href: '/#contact-giangson',
+            label: 'Sen tắm',
+            detail: 'Sen cây nóng lạnh cho khu tắm đứng.',
+            href: giangsonCategory('Sen tắm'),
             xPct: 82,
             yPct: 36,
           },
@@ -562,52 +570,52 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
           {
             id: 'bon-cau',
             name: 'Bồn cầu',
-            note: 'Thiết bị vệ sinh cho nhà ở và công trình',
+            note: 'Một khối, hai khối · TOTO, INAX',
             image: {
               src: '/concepts/serene-modern-stone-spa-bathroom.webp',
               alt: 'Bồn cầu trong không gian phòng tắm đá xám hiện đại',
             },
-            href: '/#contact-giangson',
+            href: giangsonCategory('Bồn cầu'),
           },
           {
             id: 'lavabo',
-            name: 'Lavabo & chậu rửa',
-            note: 'Giải pháp cho khu vực rửa mặt',
+            name: 'Lavabo',
+            note: 'Chậu đặt bàn cho khu vực rửa mặt',
             image: {
               src: '/concepts/coastal-minimalist-spa-bathroom.webp',
               alt: 'Lavabo đặt bàn trong không gian phòng tắm xanh xám',
             },
-            href: '/#contact-giangson',
+            href: giangsonCategory('Lavabo'),
           },
           {
-            id: 'sen-voi',
-            name: 'Sen vòi',
-            note: 'Thiết bị cho khu tắm và lavabo',
+            id: 'voi-lavabo',
+            name: 'Vòi lavabo',
+            note: 'Vòi nóng lạnh, van gốm bền bỉ',
+            image: {
+              src: '/concepts/serene-japandi-spa-bathroom.webp',
+              alt: 'Vòi lavabo trên chậu đặt bàn trong phòng tắm Japandi',
+            },
+            href: giangsonCategory('Vòi lavabo'),
+          },
+          {
+            id: 'sen-tam',
+            name: 'Sen tắm',
+            note: 'Sen cây nóng lạnh cho khu tắm đứng',
             image: {
               src: '/concepts/luxurious-modern-stone-spa-bathroom.webp',
-              alt: 'Khu tắm kính với thiết bị sen vòi trong phòng tắm hiện đại',
+              alt: 'Khu tắm kính với sen cây trong phòng tắm hiện đại',
             },
-            href: '/#contact-giangson',
+            href: giangsonCategory('Sen tắm'),
           },
           {
-            id: 'gach-op-lat',
-            name: 'Gạch ốp lát',
-            note: 'Bề mặt nền và tường cho từng phong cách',
+            id: 'bon-tam',
+            name: 'Bồn tắm',
+            note: 'Bồn đặt sàn và bồn có yếm acrylic',
             image: {
-              src: '/concepts/monochrome-marble-spa-bathroom.webp',
-              alt: 'Bề mặt gạch và đá vân mây trong phòng tắm đơn sắc',
+              src: '/concepts/luxury-smart-bathroom-retreat.webp',
+              alt: 'Bồn tắm đặt sàn trong phòng tắm master phong cách spa',
             },
-            href: '/#contact-giangson',
-          },
-          {
-            id: 'vat-lieu-hoan-thien',
-            name: 'Vật liệu hoàn thiện',
-            note: 'Nhóm vật liệu hỗ trợ hoàn thiện không gian',
-            image: {
-              src: '/concepts/warm-luxury-spa-bathroom.webp',
-              alt: 'Vật liệu hoàn thiện tông ấm trong không gian phòng tắm',
-            },
-            href: '/#contact-giangson',
+            href: giangsonCategory('Bồn tắm'),
           },
         ],
       },
@@ -619,31 +627,31 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
         cta: { label: 'KHÁM PHÁ KHÔNG GIAN', href: '/concepts' },
         items: [
           {
-            title: 'Đá sáng hiện đại',
-            note: 'Thiết bị tối giản · Bề mặt đá trung tính',
+            title: 'Spa tại gia',
+            note: 'Bồn tắm đặt sàn · Lavabo đặt bàn đôi',
             image: {
-              src: '/concepts/serene-modern-stone-spa-bathroom.webp',
-              alt: 'Phòng tắm đá xám sáng với các vùng chức năng rõ ràng',
+              src: '/concepts/luxury-smart-bathroom-retreat.webp',
+              alt: 'Phòng tắm master phong cách spa với bồn tắm đặt sàn và lavabo đôi',
             },
-            href: '/#contact-giangson',
+            href: '/concepts/giangson-master-spa',
           },
           {
-            title: 'Sắc xanh thư giãn',
-            note: 'Lavabo đặt bàn · Phối màu xanh xám',
+            title: 'Scandinavian ấm sáng',
+            note: 'Bồn cầu hai khối · Sen cây · Vòi lavabo',
             image: {
-              src: '/concepts/coastal-minimalist-spa-bathroom.webp',
-              alt: 'Phòng tắm xanh xám thoáng sáng với lavabo đặt bàn',
+              src: '/concepts/scandinavian-bathroom-with-warm-accents.webp',
+              alt: 'Phòng tắm Scandinavian sáng với điểm nhấn gỗ ấm',
             },
-            href: '/#contact-giangson',
+            href: '/concepts/giangson-scandinavian-bath',
           },
           {
-            title: 'Không gian ấm áp',
-            note: 'Vật liệu tông ấm · Ánh sáng dịu',
+            title: 'Nghỉ dưỡng thanh lịch',
+            note: 'Bồn cầu một khối · Lavabo chữ nhật · Sen cây',
             image: {
-              src: '/concepts/warm-luxury-spa-bathroom.webp',
-              alt: 'Phòng tắm hiện đại với bảng vật liệu tông ấm',
+              src: '/concepts/serene-luxury-spa-bathroom.webp',
+              alt: 'Phòng tắm nghỉ dưỡng thanh lịch tông sáng',
             },
-            href: '/#contact-giangson',
+            href: '/concepts/giangson-premium-suite',
           },
         ],
       },
@@ -651,47 +659,47 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
         eyebrow: 'SẢN PHẨM NỔI BẬT',
         title: 'Sản phẩm được tuyển chọn',
         description:
-          'Khám phá những mẫu thiết bị có thông tin, hình ảnh và giá tham khảo từ nguồn công khai.',
-        note: 'Giá hiển thị là giá tham khảo từ nguồn công khai, không phải báo giá của Giang Sơn.',
+          'Thiết bị TOTO và INAX chính hãng, kèm thông số, hình ảnh và giá bán lẻ đề xuất của hãng.',
+        note: 'Giá bán lẻ đề xuất do hãng công bố. Giang Sơn báo giá thực tế theo số lượng và công trình.',
         items: [
           {
-            name: 'Bồn cầu một khối INAX AC-1008VRN',
+            name: 'Bồn cầu 1 khối INAX AC-1017VRN',
             brand: 'INAX',
-            sku: 'AC-1008VRN',
+            sku: 'AC-1017VRN',
             category: 'Bồn cầu',
             image: {
-              src: '/demo/manufacturers/inax/ac-1008vrn-primary.webp',
-              alt: 'Bồn cầu một khối INAX AC-1008VRN trên nền sáng',
+              src: '/demo/manufacturers/inax/ac-1017vrn-primary.webp',
+              alt: 'Bồn cầu một khối INAX AC-1017VRN trên nền sáng',
             },
-            referencePrice: 17440000,
-            sourceLabel: 'Giá tham khảo · INAX Việt Nam',
-            href: 'https://www.inax.com.vn/vi/product-category/805/',
+            referencePrice: 17290000,
+            sourceLabel: 'Giá bán lẻ đề xuất · INAX · Có mô hình 3D',
+            href: '/products/inax-ac-1017vrn',
           },
           {
-            name: 'Vòi lavabo nóng lạnh INAX LFV-502SH',
-            brand: 'INAX',
-            sku: 'LFV-502SH',
-            category: 'Vòi lavabo',
+            name: 'Bồn tắm có yếm TOTO PAY1725VC/TVBF411 1,7 m',
+            brand: 'TOTO',
+            sku: 'PAY1725VC/TVBF411',
+            category: 'Bồn tắm',
             image: {
-              src: '/demo/manufacturers/inax/lfv-502sh-primary.webp',
-              alt: 'Vòi lavabo nóng lạnh INAX LFV-502SH trên nền sáng',
+              src: '/demo/manufacturers/toto/pay1725vc-tvbf411-primary.webp',
+              alt: 'Bồn tắm acrylic có yếm TOTO PAY1725VC trên nền sáng',
             },
-            referencePrice: 6902000,
-            sourceLabel: 'Giá tham khảo · INAX Việt Nam',
-            href: 'https://www.inax.com.vn/vi/products/bathroom-faucet/sen-voi-don-lfv-502sh/',
+            referencePrice: 21521000,
+            sourceLabel: 'Giá bán lẻ đề xuất · TOTO',
+            href: '/products/toto-pay1725vc-tvbf411',
           },
           {
-            name: 'Sen cây nóng lạnh INAX BFV-615S-8C',
-            brand: 'INAX',
-            sku: 'BFV-615S-8C',
-            category: 'Sen vòi',
+            name: 'Bồn cầu 1 khối TOTO MS889DRT8 nắp êm TC600VS',
+            brand: 'TOTO',
+            sku: 'MS889DRT8',
+            category: 'Bồn cầu',
             image: {
-              src: '/demo/manufacturers/inax/llv-sho-inax-bfv615s8c-primary.webp',
-              alt: 'Sen cây nóng lạnh INAX BFV-615S-8C trên nền sáng',
+              src: '/demo/manufacturers/toto/ms889drt8-primary.webp',
+              alt: 'Bồn cầu một khối TOTO MS889DRT8 trên nền sáng',
             },
-            referencePrice: 12210000,
-            sourceLabel: 'Giá tham khảo · INAX Việt Nam',
-            href: 'https://www.inax.com.vn/vi/products/shower/sen-cay-bfv-615s-8c/',
+            referencePrice: 12276000,
+            sourceLabel: 'Giá khuyến mãi đề xuất · TOTO',
+            href: '/products/toto-ms889drt8',
           },
         ],
       },
@@ -709,13 +717,18 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
       about: {
         eyebrow: 'VỀ GIANG SƠN',
         title: 'Giang Sơn — Thiết bị và vật liệu hoàn thiện',
+        // From the company's own directory listing (Trang Vàng Việt Nam,
+        // checked 2026-10-19): what it sells, to whom, and what it commits to.
         body:
-          'Khám phá các nhóm thiết bị vệ sinh, gạch ốp lát và vật liệu phục vụ nhu cầu hoàn thiện nhà ở và công trình.',
+          'Công ty TNHH Thương mại và Xây dựng Giang Sơn Việt Nam phân phối thiết bị vệ sinh, gạch ốp lát, ' +
+          'thiết bị điện và vật liệu ngành nước cho nhà ở và công trình tại miền Bắc. Hàng chính hãng, ' +
+          'cung cấp đủ số lượng cho công trình, chiết khấu cho đơn hàng lớn và giao hàng tận nơi. ' +
+          'Showroom: Số 240 Hồ Tùng Mậu, P. Phú Diễn, Q. Bắc Từ Liêm, Hà Nội.',
       },
       contact: {
         title: 'Bắt đầu lựa chọn cho không gian của bạn',
         body: 'Khám phá sản phẩm, thử bố trí trong Room Studio hoặc gửi yêu cầu để nhận tư vấn phù hợp.',
-        cta: { label: 'YÊU CẦU BÁO GIÁ', href: 'tel:0395279360' },
+        cta: { label: 'YÊU CẦU BÁO GIÁ', href: '/quote' },
         phone: '0395 279 360',
       },
     },
@@ -724,8 +737,8 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
     utility: ['Thiết bị & vật liệu hoàn thiện', 'Tư vấn & báo giá'],
     demoNotice: 'Bản trình diễn showroom số LivLab, sử dụng thông tin từ nguồn công khai',
     header: {
-      primaryCta: { label: 'YÊU CẦU BÁO GIÁ', href: '/#contact-giangson' },
-      searchHref: '/#featured-products',
+      primaryCta: { label: 'YÊU CẦU BÁO GIÁ', href: '/quote' },
+      searchHref: '/products',
       showSearch: true,
       showSaved: false,
       logoSize: 'large',
@@ -736,12 +749,12 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
       titleLines: ['Hoàn thiện không gian,', 'bắt đầu từ lựa chọn đúng.'],
       body:
         'Khám phá thiết bị vệ sinh, gạch ốp lát và giải pháp hoàn thiện. Trực tiếp phối thử thiết bị, vật liệu trong không gian 3D trước khi lựa chọn.',
-      primaryCta: { label: 'KHÁM PHÁ SẢN PHẨM', href: '/#categories' },
+      primaryCta: { label: 'KHÁM PHÁ SẢN PHẨM', href: '/products' },
       secondaryCta: { label: 'TRẢI NGHIỆM ROOM STUDIO', href: '/room-studio' },
       trust: [
         {
-          title: 'DANH MỤC ĐA DẠNG',
-          body: 'Thiết bị vệ sinh, gạch ốp lát và vật liệu hoàn thiện cho nhiều nhu cầu.',
+          title: 'HÀNG CHÍNH HÃNG',
+          body: 'Thiết bị TOTO, INAX kèm mã sản phẩm, thông số và giá bán lẻ đề xuất của hãng.',
         },
         {
           title: 'THIẾT KẾ TRỰC QUAN 3D',
@@ -758,32 +771,50 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
       conceptsEyebrow: 'KHÔNG GIAN GỢI Ý',
       conceptsTitle: 'Thấy không gian yêu thích. Khám phá sản phẩm ngay.',
       productsTitle: 'SẢN PHẨM',
+      productsNote: 'Giá bán lẻ đề xuất do hãng công bố. Giang Sơn xác nhận giá cuối khi báo giá.',
       brandsTitle: 'THƯƠNG HIỆU',
     },
     quote: {
       cta: 'YÊU CẦU BÁO GIÁ',
       trackLabel: 'TRA CỨU BÁO GIÁ',
-      drawerTitle: 'Yêu cầu báo giá',
-      submit: 'Gửi yêu cầu',
-      addToQuote: 'YÊU CẦU BÁO GIÁ',
+      drawerTitle: 'Giỏ báo giá',
+      drawerBody: 'Lưu những thiết bị bạn quan tâm để Giang Sơn tư vấn và gửi báo giá.',
+      submit: 'Gửi yêu cầu báo giá',
+      addToQuote: 'THÊM BÁO GIÁ',
     },
-    roomStudio: { libraryTitle: 'Sản phẩm', primaryCta: 'Liên hệ tư vấn' },
+    // True because `roomStudioCatalog: 'tenant'` below makes the library this
+    // showroom's catalogue. Switch that back and this must change too.
+    roomStudio: { libraryTitle: 'Sản phẩm từ Giang Sơn', primaryCta: 'Yêu cầu báo giá' },
     footerBlurb:
       'Thiết bị vệ sinh, gạch ốp lát và vật liệu hoàn thiện cho nhu cầu nhà ở và công trình.',
     footer: {
       explore: [
-        { label: 'Không gian gợi ý', href: '/#concept-showcase' },
-        { label: 'Danh mục sản phẩm', href: '/#categories' },
+        { label: 'Không gian gợi ý', href: '/concepts' },
+        { label: 'Tất cả sản phẩm', href: '/products' },
         { label: 'Room Studio', href: '/room-studio' },
       ],
       support: [
         { label: 'Về Giang Sơn', href: '/#about-giangson' },
-        { label: 'Liên hệ tư vấn', href: '/#contact-giangson' },
+        { label: 'Yêu cầu báo giá', href: '/quote' },
+        { label: 'Tra cứu báo giá', href: '/track-quote' },
         { label: 'Hotline / Zalo 0395 279 360', href: 'tel:0395279360' },
       ],
     },
   },
-  roomStudioCatalog: 'livlab',
+  roomStudioCatalog: 'tenant',
+  // `/room-studio?demo=1`: a furnished 3,2 × 2,4 m room for presentations,
+  // drawn with the INAX reconstructions this catalogue carries. Back wall:
+  // the 1,6 m tub on the left, the toilet on the right.
+  roomStudioDemo: {
+    dimensions: { length: 3.2, width: 2.4, height: 2.7 },
+    floor: { material: 'stone-look', color: 'light-grey', finish: 'matte' },
+    walls: { material: 'porcelain', color: 'white', finish: 'matte' },
+    products: [
+      { id: 'inax-bf-1656v', at: [-0.75, -0.78] },
+      { id: 'inax-ac-1017vrn', at: [0.95, -0.78] },
+    ],
+    selectProductId: 'inax-bf-1656v',
+  },
 };
 
 export const DEMO_GIANGSON_TENANT: TenantStorefrontConfig = {
@@ -798,37 +829,16 @@ export const DEMO_GIANGSON_TENANT: TenantStorefrontConfig = {
     accentHover: '#00648B',
     accentContrast: '#FFFFFF',
   },
-  navigation: [
-    { href: '/#concept-showcase', label: 'Không gian' },
-    {
-      href: '/#categories',
-      label: 'Sản phẩm',
-      children: [
-        { href: '/#bon-cau', label: 'Bồn cầu' },
-        { href: '/#lavabo', label: 'Lavabo & chậu rửa' },
-        { href: '/#sen-voi', label: 'Sen vòi' },
-        { href: '/#gach-op-lat', label: 'Gạch & Vật liệu' },
-      ],
-    },
-    { href: '/room-studio', label: 'Room Studio' },
-    {
-      href: '/#contact-giangson',
-      label: 'Báo giá',
-      children: [
-        { href: '/#contact-giangson', label: 'Yêu cầu báo giá' },
-        { href: '/#contact-giangson', label: 'Báo giá công trình' },
-        { href: 'tel:0395279360', label: 'Gọi 0395 279 360' },
-      ],
-    },
-  ],
-  contact: { phone: '0395 279 360' },
-  catalogScope: { showroomId: null, categories: [] },
-  features: {
-    roomStudio: true,
-    expert: true,
-    consultation: true,
-    quotations: false,
-  },
+  navigation: baseNavigation(DEMO_FEATURES, {
+    isDefaultTenant: false,
+    productCategories: GIANGSON_CATEGORIES,
+  }),
+  // Hotline and showroom address as the company publishes them on its own
+  // directory listing (Trang Vàng Việt Nam, checked 2026-10-19).
+  contact: { phone: '0395 279 360', address: 'Số 240 Hồ Tùng Mậu, P. Phú Diễn, Q. Bắc Từ Liêm, Hà Nội' },
+  catalogScope: { showroomId: null, categories: GIANGSON_CATEGORIES },
+  requestWorkspace: { showroomId: 'workspace-demo-giangson', kind: 'DEMO' },
+  features: DEMO_FEATURES,
   poweredByLivLab: true,
   publicDemo: true,
   experience: GIANGSON_EXPERIENCE,
