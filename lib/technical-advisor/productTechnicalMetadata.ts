@@ -19,6 +19,7 @@
  */
 
 import type { RoomStudioProduct } from '@/lib/room-studio/productAdapter';
+import { findReconstruction } from '@/lib/room-studio/reconstructionRegistry';
 import type { PlacementType } from '@/lib/room-studio/placementRules';
 
 export type TechnicalPlacementType = 'FLOOR' | 'WALL' | 'COUNTERTOP' | 'CEILING' | 'SURFACE' | 'UNKNOWN';
@@ -144,8 +145,31 @@ const PLACEMENT_MAP: Record<PlacementType, TechnicalPlacementType> = {
  * Assembles the technical view of one product, recording the provenance of
  * every field so the rules can be honest about what they actually know.
  */
+/**
+ * What a reconstructed model's own record declares: how it mounts, what it
+ * connects to, and — for clearance — a LivLab reference figure, never a
+ * manufacturer requirement. Filed as CURATED_DEMO so every surface that
+ * shows it says "tham khảo của LivLab", which is exactly what it is.
+ */
+function reconstructionMetadata(product: RoomStudioProduct) {
+  const recon = product.reconstruction;
+  if (!recon) return undefined;
+  const model = findReconstruction(product.brand, product.sku);
+  if (!model) return undefined;
+  const placementType: TechnicalPlacementType =
+    recon.mounting.kind === 'WALL_MIXER' ? 'WALL' : recon.mounting.kind === 'COUNTERTOP' ? 'COUNTERTOP' : 'FLOOR';
+  return {
+    placementType,
+    allowedSurfaces: [placementType] as Array<'FLOOR' | 'WALL' | 'COUNTERTOP' | 'CEILING'>,
+    recommendedClearance:
+      model.technical.heuristicFrontClearanceM !== undefined ? { front: model.technical.heuristicFrontClearanceM } : undefined,
+    plumbing: model.technical.plumbing,
+    installationNotes: model.technical.drawingNotes.join(' '),
+  };
+}
+
 export function getProductTechnicalMetadata(product: RoomStudioProduct): ProductTechnicalMetadata {
-  const curated = CURATED_TECHNICAL_METADATA[product.id];
+  const curated = CURATED_TECHNICAL_METADATA[product.id] ?? reconstructionMetadata(product);
 
   // Dimensions come only from the catalogue. The category fallback sizes that
   // let the 3D scene place an un-modelled product are NOT used here: they exist

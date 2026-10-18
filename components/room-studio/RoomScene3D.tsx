@@ -1,22 +1,39 @@
 'use client';
 
 import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { Environment, ContactShadows, useGLTF } from '@react-three/drei';
+import { Canvas, useThree } from '@react-three/fiber';
+import { ContactShadows, PerformanceMonitor, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
-import { AlertCircle, Eye, EyeOff, RotateCcw } from 'lucide-react';
+import { AlertCircle, Box, Eye, EyeOff, Focus, LayoutGrid, Maximize } from 'lucide-react';
 import type { RoomDimensions } from '@/lib/room-studio/roomGeometry';
 import { DEFAULT_CAMERA_FOV } from '@/lib/room-studio/roomGeometry';
 import type { PlacedProductView } from '@/lib/room-studio/useRoomStudio';
 import type { Vec3 } from '@/lib/room-studio/placementRules';
 import RoomShell from './scene/RoomShell';
 import type { SurfaceStyle } from '@/lib/room-studio/materials';
+import type { ArchitectureSettings, LightingPreset } from '@/lib/room-studio/environment';
+import type { PlacementStatus } from '@/lib/room-studio/placementStatus';
+import { getRealWorldSize } from '@/lib/room-studio/assetResolver';
+import SceneLighting from './scene/SceneLighting';
+import { useRenderQuality } from './scene/useRenderQuality';
 import PlacedProductNode, { type measureGlbForPlacement } from './scene/PlacedProductNode';
 
 /** What `measureGlbForPlacement` returns; named so the dev prop can state it. */
 type GlbMeasurement = ReturnType<typeof measureGlbForPlacement>;
 import DragPlane from './scene/DragPlane';
-import RoomCameraControls from './scene/RoomCameraControls';
+import RoomCameraControls, { type FocusTarget, type ViewMode } from './scene/RoomCameraControls';
+
+/**
+ * Keeps a ref on whichever camera is the default right now. The drop raycast
+ * needs the camera the customer is looking through, and the plan view swaps it.
+ */
+function CameraTracker({ cameraRef }: { cameraRef: React.MutableRefObject<THREE.Camera | null> }) {
+  const camera = useThree((s) => s.camera);
+  useEffect(() => {
+    cameraRef.current = camera;
+  }, [camera, cameraRef]);
+  return null;
+}
 
 /** A WebGL context loss or an out-of-memory model must not blank the page. */
 class CanvasErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
@@ -47,9 +64,9 @@ class CanvasErrorBoundary extends React.Component<{ children: React.ReactNode },
 }
 
 /**
- * drei's `Environment` preset streams an HDR from an external CDN. A network
- * failure there must degrade to the plain directional lighting rather than
- * bringing down the Canvas, so it gets its own boundary and Suspense.
+ * The reflection environment is built on the GPU from light panels (see
+ * SceneLighting) and needs no network, but a driver that cannot render the
+ * cube map must still degrade to direct lighting rather than take the Canvas.
  */
 class EnvironmentBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
   state = { hasError: false };
@@ -57,7 +74,7 @@ class EnvironmentBoundary extends React.Component<{ children: React.ReactNode },
     return { hasError: true };
   }
   componentDidCatch() {
-    console.warn('[Room Studio] environment map unavailable, falling back to direct lighting.');
+    console.warn('[Room Studio] environment unavailable, falling back to direct lighting.');
   }
   render() {
     return this.state.hasError ? null : this.props.children;
@@ -70,6 +87,10 @@ interface RoomScene3DProps {
   overlayTopLeft?: ReactNode;
   floorStyle: SurfaceStyle;
   wallStyle: SurfaceStyle;
+  lighting: LightingPreset;
+  architecture: ArchitectureSettings;
+  /** Per-instance placement state, colouring each outline. */
+  placementStatus?: Record<string, PlacementStatus>;
   placedViews: PlacedProductView[];
   selectedInstanceId: string | null;
   showCeiling: boolean;
@@ -91,7 +112,7 @@ interface RoomScene3DProps {
   devSceneOverlay?: ReactNode;
   /** Dev harness only: forwarded to the placed node so the QA panel can report
    *  what the renderer measured rather than measuring the file a second way. */
-  onModelMeasured?: (measurement: GlbMeasurement) => void;
+  onModelMeasured?: (measurement: GlbMeasurement, instanceId: string) => void;
   /** Dev harness only: a GLB that failed to load. */
   onModelLoadError?: () => void;
 }
@@ -101,6 +122,9 @@ export default function RoomScene3D({
   overlayTopLeft,
   floorStyle,
   wallStyle,
+  lighting,
+  architecture,
+  placementStatus,
   placedViews,
   selectedInstanceId,
   showCeiling,
@@ -114,6 +138,34 @@ export default function RoomScene3D({
   onModelLoadError,
 }: RoomScene3DProps) {
   const [resetSignal, setResetSignal] = useState(0);
+  const [viewMode, setViewMode] = useState<ViewMode>('perspective');
+  const [focus, setFocus] = useState<FocusTarget | null>(null);
+  const [quality, setQualityTier] = useRenderQuality();
+  /**
+   * A lost WebGL context — the GPU reclaimed by the browser or the system —
+   * leaves a blank canvas forever unless something rebuilds it. The renderer
+   * is asked to restore first; if it has not within a moment, the Canvas is
+   * remounted on the lighter tier. The room's state lives outside the Canvas,
+   * so nothing the customer placed is lost either way.
+   */
+  const [canvasKey, setCanvasKey] = useState(0);
+  const [contextLost, setContextLost] = useState(false);
+  useEffect(() => {
+    if (!contextLost) return;
+    const timer = setTimeout(() => {
+      setQualityTier('low');
+      setCanvasKey((k) => k + 1);
+      setContextLost(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [contextLost, setQualityTier]);
+  const selectedView = placedViews.find((v) => v.placed.instanceId === selectedInstanceId) ?? null;
+  const focusSelected = () => {
+    if (!selectedView) return;
+    const size = getRealWorldSize(selectedView.product);
+    setViewMode('perspective');
+    setFocus({ center: selectedView.placed.position, size: [size.width, size.height, size.depth], nonce: Date.now() });
+  };
   const [dragging, setDragging] = useState<{ instanceId: string; offset: Vec3 } | null>(null);
   const [isDropTarget, setIsDropTarget] = useState(false);
   const cameraRef = useRef<THREE.Camera | null>(null);
@@ -220,16 +272,53 @@ export default function RoomScene3D({
     >
       {overlayTopLeft && <div className="absolute left-3 top-3 z-10 flex gap-2">{overlayTopLeft}</div>}
 
-      <div className="absolute right-3 top-3 z-10 flex gap-1.5">
+      <div className="absolute right-3 top-3 z-10 flex flex-wrap justify-end gap-1.5">
+        {/* One segmented control for the two ways to look at the room. */}
+        <div className="flex overflow-hidden rounded border border-[#D8E2EA] bg-white/92 shadow-sm backdrop-blur">
+          {(
+            [
+              { id: 'perspective', label: 'Phối cảnh', icon: Box },
+              { id: 'plan', label: 'Mặt bằng', icon: LayoutGrid },
+            ] as const
+          ).map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => setViewMode(id)}
+              aria-pressed={viewMode === id}
+              title={id === 'plan' ? 'Nhìn thẳng từ trên xuống như bản vẽ mặt bằng' : 'Góc nhìn phối cảnh trong phòng'}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 text-[12px] font-medium transition-colors ${
+                viewMode === id ? 'bg-[color:var(--tenant-ui-selected,#0B2239)] text-[color:var(--tenant-ui-selected-contrast,#FFFFFF)]' : 'text-[#0B1623] hover:bg-white'
+              }`}
+            >
+              <Icon className="h-3.5 w-3.5" aria-hidden />
+              <span className="hidden sm:inline">{label}</span>
+            </button>
+          ))}
+        </div>
         <button
           type="button"
-          onClick={() => setResetSignal((n) => n + 1)}
-          title="Đưa góc nhìn về mặc định"
+          onClick={() => {
+            setViewMode('perspective');
+            setResetSignal((n) => n + 1);
+          }}
+          title="Đưa cả phòng vào khung nhìn"
           className="flex items-center gap-1.5 rounded border border-[#D8E2EA] bg-white/92 px-2.5 py-1.5 text-[12px] font-medium text-[#0B1623] shadow-sm backdrop-blur transition-colors hover:bg-white"
         >
-          <RotateCcw className="h-3.5 w-3.5" aria-hidden />
-          <span className="hidden sm:inline">Xem góc chuẩn</span>
+          <Maximize className="h-3.5 w-3.5" aria-hidden />
+          <span className="hidden sm:inline">Vừa phòng</span>
         </button>
+        {selectedView && (
+          <button
+            type="button"
+            onClick={focusSelected}
+            title="Phóng tới sản phẩm đang chọn"
+            className="flex items-center gap-1.5 rounded border border-[#D8E2EA] bg-white/92 px-2.5 py-1.5 text-[12px] font-medium text-[#0B1623] shadow-sm backdrop-blur transition-colors hover:bg-white"
+          >
+            <Focus className="h-3.5 w-3.5" aria-hidden />
+            <span className="hidden lg:inline">Xem sản phẩm</span>
+          </button>
+        )}
         <button
           type="button"
           onClick={() => onToggleCeiling(!showCeiling)}
@@ -252,49 +341,72 @@ export default function RoomScene3D({
       <div className="pointer-events-none absolute bottom-3 left-3 z-10 hidden rounded bg-white/85 px-2.5 py-1.5 text-[12px] text-[#5B6B7A] shadow-sm backdrop-blur sm:block">
         {selectedInstanceId
           ? 'Kéo sản phẩm để đổi vị trí · Phím mũi tên chỉnh từng centimét · Giữ Shift để bước 10cm'
-          : 'Kéo để xoay · Cuộn để phóng to · Kéo sản phẩm để đổi vị trí'}
+          : viewMode === 'plan'
+            ? 'Mặt bằng · Kéo để di chuyển khung nhìn · Cuộn để phóng to · Kéo sản phẩm để đổi vị trí'
+            : 'Kéo để xoay · Cuộn để phóng to · Kéo sản phẩm để đổi vị trí'}
       </div>
 
       <CanvasErrorBoundary>
         <Canvas
+          key={canvasKey}
           // Position is set by RoomCameraControls on mount, where the canvas's
           // real aspect ratio is known. Framing the room from here would mean
           // guessing it.
-          camera={{ fov: DEFAULT_CAMERA_FOV }}
+          camera={{ fov: DEFAULT_CAMERA_FOV, near: 0.05, far: 80 }}
           onCreated={(state) => {
             cameraRef.current = state.camera;
+            const canvas = state.gl.domElement;
+            canvas.addEventListener('webglcontextlost', (event) => {
+              // Without preventDefault the browser never offers it back.
+              event.preventDefault();
+              console.warn('[Room Studio] WebGL context lost; rebuilding the scene.');
+              setContextLost(true);
+            });
+            canvas.addEventListener('webglcontextrestored', () => setContextLost(false));
           }}
           onPointerMissed={() => onSelect(null)}
           className="h-full w-full bg-[#E9EEF1]"
-          dpr={[1, 1.75]}
+          dpr={quality.dpr}
           gl={{ antialias: true, powerPreference: 'high-performance' }}
-          shadows
+          shadows={{ type: THREE.PCFSoftShadowMap }}
         >
-          <ambientLight intensity={0.65} />
-          <directionalLight position={[4, 6, 5]} intensity={0.85} castShadow />
-          <directionalLight position={[-5, 4, -4]} intensity={0.25} />
+          {/* Steps down to the lighter tier when the real frame rate drops;
+              never back up within a session, so the room does not flicker
+              between two looks. */}
+          <PerformanceMonitor onDecline={() => setQualityTier('low')} />
+          <CameraTracker cameraRef={cameraRef} />
           <EnvironmentBoundary>
             <Suspense fallback={null}>
-              <Environment preset="apartment" />
+              <SceneLighting dimensions={dimensions} lighting={lighting} quality={quality} />
             </Suspense>
           </EnvironmentBoundary>
 
-          <RoomCameraControls dimensions={dimensions} enabled={!dragging} resetSignal={resetSignal} />
+          <RoomCameraControls
+            dimensions={dimensions}
+            enabled={!dragging}
+            resetSignal={resetSignal}
+            viewMode={viewMode}
+            focus={focus}
+          />
 
           <RoomShell
             dimensions={dimensions}
             floorStyle={floorStyle}
             wallStyle={wallStyle}
             showCeiling={showCeiling}
+            architecture={architecture}
+            lighting={lighting}
+            textureResolution={quality.textureResolution}
+            planView={viewMode === 'plan'}
           />
 
           <ContactShadows
             position={[0, 0.002, 0]}
             scale={Math.max(dimensions.length, dimensions.width) * 1.5}
-            opacity={0.35}
-            blur={2.2}
-            far={2}
-            resolution={512}
+            opacity={0.42}
+            blur={2.4}
+            far={1.2}
+            resolution={quality.tier === 'high' ? 1024 : 512}
           />
 
           {placedViews.map(({ placed, product }) => (
@@ -303,9 +415,11 @@ export default function RoomScene3D({
               placed={placed}
               product={product}
               selected={placed.instanceId === selectedInstanceId}
+              status={placementStatus?.[placed.instanceId]}
+              showCounter={architecture.basinCounter}
               onSelect={onSelect}
               onDragStart={handleDragStart}
-              onMeasured={onModelMeasured}
+              onMeasured={onModelMeasured ? (m) => onModelMeasured(m, placed.instanceId) : undefined}
               onLoadError={onModelLoadError}
             />
           ))}
@@ -323,6 +437,14 @@ export default function RoomScene3D({
           )}
         </Canvas>
       </CanvasErrorBoundary>
+
+      {contextLost && (
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-[#E9EEF1]/80">
+          <p className="rounded bg-white px-4 py-2 text-[13px] font-medium text-[#0B1623] shadow-sm">
+            Đang khôi phục không gian 3D…
+          </p>
+        </div>
+      )}
 
       {/* An empty room is a valid state, not an error — the prompt suggests the
           three products a bathroom is actually planned around and gets out of

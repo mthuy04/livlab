@@ -84,6 +84,11 @@ export interface TechnicalValidationResult {
   reason?: TechnicalReason;
   /** Optional next step, shown as a hint under the message. */
   suggestedAction?: string;
+  /**
+   * Set only when the rule found a real geometric problem with a placement,
+   * as opposed to missing data. Drives the outline colour while positioning.
+   */
+  placementIssue?: 'OUTSIDE_ROOM' | 'COLLISION' | 'UNSUPPORTED_SURFACE' | 'CLEARANCE';
 }
 
 /** A water/drain/electrical point the customer has told LivLab about. */
@@ -119,6 +124,11 @@ export interface TechnicalContext {
   utilityPoints: UtilityPoint[];
   /** Restricts the run to one product, for the selected-product panel. */
   focusInstanceId?: string;
+  /**
+   * The room draws a context counter and cabinet under countertop products,
+   * so their footprint reaches down to the cabinet and collides as such.
+   */
+  counterSupport?: boolean;
 }
 
 /**

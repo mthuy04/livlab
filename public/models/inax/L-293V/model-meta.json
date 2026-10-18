@@ -1,0 +1,149 @@
+{
+  "id": "inax-l-293v",
+  "brand": "INAX",
+  "sku": "L-293V",
+  "name": "Lavabo đặt bàn INAX L-293VFC",
+  "nameEn": "Countertop Basin L-293VFC",
+  "category": "basin",
+  "mounting": "countertop",
+  "status": "prototype_reconstructed",
+  "commercialCatalogApproved": false,
+  "thumbnailUrl": "/models/inax/L-293V/preview.png",
+  "variants": {
+    "web": "/models/inax/L-293V/L-293V_web.glb",
+    "high": "/models/inax/L-293V/L-293V_high.glb",
+    "basin_only": "/models/inax/L-293V/L-293V_basin_only.glb"
+  },
+  "recommendedVariant": "basin_only",
+  "units": "m",
+  "axes": {
+    "x": "horizontal",
+    "y": "up",
+    "z": "forward_out_from_rear_wall"
+  },
+  "forward": "+Z",
+  "referenceDimensionsMm": {
+    "basin_width_mm": 500,
+    "basin_depth_mm": 450,
+    "basin_height_mm": 155
+  },
+  "referenceEnvelopeM_XYZ": [
+    0.5,
+    0.155,
+    0.45
+  ],
+  "modelBounds": {
+    "web": {
+      "xyzMeters": [
+        0.5,
+        0.27875,
+        0.45
+      ],
+      "min": [
+        -0.25,
+        0.0,
+        0.0
+      ],
+      "max": [
+        0.25,
+        0.27875,
+        0.45
+      ]
+    },
+    "high": {
+      "xyzMeters": [
+        0.5,
+        0.27875,
+        0.45
+      ],
+      "min": [
+        -0.25,
+        0.0,
+        0.0
+      ],
+      "max": [
+        0.25,
+        0.27875,
+        0.45
+      ]
+    },
+    "basin_only": {
+      "xyzMeters": [
+        0.5,
+        0.155,
+        0.45
+      ],
+      "min": [
+        -0.25,
+        0.0,
+        0.0
+      ],
+      "max": [
+        0.25,
+        0.155,
+        0.45
+      ]
+    }
+  },
+  "rendering": {
+    "castShadow": true,
+    "receiveShadow": true,
+    "modelScale": [
+      1,
+      1,
+      1
+    ],
+    "preferOriginalPBR": true
+  },
+  "placement": {
+    "anchor": "basin_bottom_rear_center",
+    "wallFacing": null,
+    "notes": "Web/high include illustrative faucet of unverified dimensions. Basin-only should be default when faucet personalization is enabled. Mounting Y is at model bottom, not necessarily countertop installation reference."
+  },
+  "reconstructedFrom": "reference_photos_and_technical_drawings",
+  "manufacturerCADUsed": false,
+  "qa": {
+    "web": {
+      "fileSizeBytes": 88036,
+      "sha256": "8c4fbed3b369ab0f592dee4e6f9a1f37fe4d9df34ead9b393fbf04df09e8b971",
+      "meshCount": 12,
+      "triangleCount": 4250,
+      "dimensionsM_XYZ": [
+        0.5,
+        0.27875,
+        0.45
+      ],
+      "watertightCount": 12,
+      "finiteVertices": true,
+      "reloadedWithTrimesh": true
+    },
+    "high": {
+      "fileSizeBytes": 177004,
+      "sha256": "1736168c91dc4a7eaae26259019de11d3a0ba79d5a04ad679e3a170ba6a5b3fc",
+      "meshCount": 12,
+      "triangleCount": 8026,
+      "dimensionsM_XYZ": [
+        0.5,
+        0.27875,
+        0.45
+      ],
+      "watertightCount": 12,
+      "finiteVertices": true,
+      "reloadedWithTrimesh": true
+    },
+    "basin_only": {
+      "fileSizeBytes": 96848,
+      "sha256": "64ae379472168a63b0919dee534c728154aaa797d233b93b84f17f7753997493",
+      "meshCount": 5,
+      "triangleCount": 4418,
+      "dimensionsM_XYZ": [
+        0.5,
+        0.155,
+        0.45
+      ],
+      "watertightCount": 5,
+      "finiteVertices": true,
+      "reloadedWithTrimesh": true
+    }
+  }
+}

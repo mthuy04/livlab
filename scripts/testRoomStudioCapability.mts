@@ -27,6 +27,7 @@ import {
   CAPABILITY_BADGE,
 } from '../lib/room-studio/productCapability';
 import { allProduct3DAssets, findProduct3DAssetForKeys } from '../lib/room-studio/product3dRegistry';
+import { findReconstruction } from '../lib/room-studio/reconstructionRegistry';
 import { isRoomStudioReady, QA_CHECKS } from '../lib/room-studio/product3dAsset';
 import { availableProductModels } from '../lib/livlabProductModels';
 import type { Product3DAsset } from '../lib/room-studio/product3dAsset';
@@ -204,10 +205,15 @@ console.log('\ndanh mục thật (CSV seed)');
    * conversion suite. That guard is untouched.
    */
   const withModel = products.filter((p) => p.model3dUrl);
+  // Three declared kinds: the manufacturer's verified asset, a stand-in that
+  // says so, or LivLab's reconstruction of exactly this brand + SKU.
   const undeclared = withModel.filter(
-    (p) => p.capability !== 'VERIFIED_3D' && p.illustrativeModel !== true
+    (p) =>
+      p.capability !== 'VERIFIED_3D' &&
+      p.illustrativeModel !== true &&
+      !(p.capability === 'PROTOTYPE_3D' && p.reconstruction && findReconstruction(p.brand, p.sku)?.id === p.reconstruction.modelId)
   );
-  check('model nào cũng phải khai báo: verified hoặc minh hoạ', undeclared.length === 0,
+  check('model nào cũng phải khai báo: verified, minh hoạ hoặc tái tạo đúng mã', undeclared.length === 0,
     undeclared.map((p) => p.sku));
   check('model minh hoạ không bao giờ mang 3D VERIFIED',
     products.filter((p) => p.illustrativeModel).every((p) => p.capability !== 'VERIFIED_3D'),

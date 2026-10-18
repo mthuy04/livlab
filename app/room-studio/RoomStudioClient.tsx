@@ -31,6 +31,10 @@ import type { ImplementationRequestType } from '@/lib/implementation/types';
 import { useTechnicalAdvisor } from '@/lib/technical-advisor/useTechnicalAdvisor';
 import { summarise } from '@/lib/technical-advisor/engine';
 import type { ExpertIntent } from '@/lib/room-studio/expertNudges';
+import LightingPanel from '@/components/room-studio/LightingPanel';
+import { LIGHTING_PRESETS, parseArchitecture, parseLighting } from '@/lib/room-studio/environment';
+import { placementStatusByInstance } from '@/lib/room-studio/placementStatus';
+import { getStarterRoom, type StarterRoomPreset } from '@/lib/room-studio/roomPresets';
 
 /**
  * The 3D canvas is client-only and pulls in three.js, so it is loaded on demand
@@ -66,7 +70,7 @@ type MobilePanel = 'none' | 'tools' | 'products';
  */
 export default function RoomStudioClient() {
   const tenant = useTenant();
-  const studio = useRoomStudio(tenant.experience.roomStudioCatalog);
+  const studio = useRoomStudio(tenant.experience.roomStudioCatalog, tenant.id);
   const { addItem, addCatalogItem, hasItem, items: quoteItems } = useQuote();
 
   /**
@@ -85,7 +89,7 @@ export default function RoomStudioClient() {
   const isDesktop = useIsDesktop();
 
   const [showCeiling, setShowCeiling] = useState(false);
-  const [toast, setToast] = useState<string | null>(null);
+  const [toast, setToast] = useState<{ message: string; undo?: () => void } | null>(null);
   const [toolTab, setToolTab] = useState<ToolTabId>('room');
   const [mobilePanel, setMobilePanel] = useState<MobilePanel>('none');
   const [pendingUtilityType, setPendingUtilityType] = useState<UtilityPointType | null>(null);
@@ -107,9 +111,12 @@ export default function RoomStudioClient() {
     id: number;
   }>({ open: false, type: null, id: 0 });
 
-  const showToast = useCallback((message: string) => {
-    setToast(message);
-    setTimeout(() => setToast(null), 2800);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const showToast = useCallback((message: string, undo?: () => void) => {
+    setToast({ message, undo });
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    // An undo stays long enough to be reached for; a plain notice does not.
+    toastTimer.current = setTimeout(() => setToast(null), undo ? 7000 : 2800);
   }, []);
 
   // Deterministic technical validation. Runs entirely locally — no Gemini, no
@@ -118,8 +125,18 @@ export default function RoomStudioClient() {
     dimensions: studio.state.dimensions,
     placedViews: studio.placedViews,
     utilityPoints: studio.state.utilityPoints ?? [],
+    counterSupport: parseArchitecture(studio.state.architecture).basinCounter,
   });
   const technicalSummary = useMemo(() => summarise(technicalFindings), [technicalFindings]);
+
+  // One word per placement for its outline colour: valid, clearance warning,
+  // collision, outside the room, off its surface.
+  const placementStatus = useMemo(
+    () => placementStatusByInstance(technicalFindings, studio.placedViews.map((v) => v.placed.instanceId)),
+    [technicalFindings, studio.placedViews]
+  );
+  const lighting = LIGHTING_PRESETS[parseLighting(studio.state.lighting)];
+  const architecture = parseArchitecture(studio.state.architecture);
 
   const utilityPoints = studio.state.utilityPoints ?? [];
 
@@ -134,11 +151,11 @@ export default function RoomStudioClient() {
   }, []);
 
   const announcePlacement = useCallback(
-    (product: RoomStudioProduct, instanceId: string | null) => {
+    (product: RoomStudioProduct, instanceId: string | null, refusal: string | null) => {
       showToast(
         instanceId
           ? `Đã đưa ${product.name} vào phòng.`
-          : `${product.name} chưa có kích thước thật nên chưa đặt được vào phòng.`
+          : refusal ?? `${product.name} chưa đặt được vào phòng.`
       );
     },
     [showToast]
@@ -146,7 +163,11 @@ export default function RoomStudioClient() {
 
   const handleAddProduct = useCallback(
     (product: RoomStudioProduct) => {
-      announcePlacement(product, studio.addProduct(product));
+      // The reason is read before the attempt: a refusal always says why —
+      // no dimensions, or bigger than the room — and the product is never
+      // shrunk to make it fit.
+      const refusal = studio.explainPlacement(product);
+      announcePlacement(product, studio.addProduct(product), refusal);
     },
     [studio, announcePlacement]
   );
@@ -156,7 +177,8 @@ export default function RoomStudioClient() {
     (productId: string, point: Vec3) => {
       const product = studio.products.find((p) => p.id === productId);
       if (!product) return;
-      announcePlacement(product, studio.addProduct(product, point));
+      const refusal = studio.explainPlacement(product);
+      announcePlacement(product, studio.addProduct(product, point), refusal);
     },
     [studio, announcePlacement]
   );
@@ -204,6 +226,23 @@ export default function RoomStudioClient() {
     [studio]
   );
 
+  const applyStarterRoom = useCallback(
+    (preset: StarterRoomPreset) => {
+      const result = studio.applyStarterRoom(preset);
+      const placed = result.placed.length;
+      const skipped = result.skipped.length;
+      const message =
+        preset.id === 'empty'
+          ? 'Đã làm trống phòng.'
+          : `Đã áp dụng “${preset.name}”: ${placed} sản phẩm${
+              skipped ? `, ${skipped} vị trí bỏ trống vì danh mục không có sản phẩm phù hợp` : ''
+            }.`;
+      showToast(message, studio.undoStarterRoom);
+      setToolTab('room');
+    },
+    [studio, showToast]
+  );
+
   const handlePickUtilityPosition = useCallback(
     ({ fromLeft, fromBack }: { fromLeft: number; fromBack: number }) => {
       if (!pendingUtilityType) return;
@@ -240,6 +279,29 @@ export default function RoomStudioClient() {
     window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
   }, [demoRoom, studio]);
 
+  /**
+   * `/room-studio?starter=warm-stone` opens a starter room by link — for a
+   * demonstration, or a showroom's own "see it styled" button.
+   *
+   * Only into an empty room: a link must never replace a design the customer
+   * already has. With products already placed the parameter is dropped and
+   * the room is left exactly as it was saved.
+   */
+  const starterApplied = useRef(false);
+  useEffect(() => {
+    if (starterApplied.current || studio.isLoadingProducts || !studio.isHydrated) return;
+    const url = new URL(window.location.href);
+    const id = url.searchParams.get('starter');
+    if (!id) return;
+    starterApplied.current = true;
+    const preset = getStarterRoom(id);
+    // After this commit, not inside it: applying replaces the room state and
+    // announces itself, and neither belongs in the render that read the URL.
+    if (preset && studio.placedViews.length === 0) setTimeout(() => applyStarterRoom(preset), 0);
+    url.searchParams.delete('starter');
+    window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+  }, [studio, applyStarterRoom]);
+
   /* ----------------------------------------------------------- the panels */
 
   const floorPlan = (
@@ -269,13 +331,18 @@ export default function RoomStudioClient() {
           onOpenReferenceImage={() => setShowReferenceImage(true)}
           hasReferenceImage={Boolean(studio.state.roomContextImage)}
           onOpenPresets={() => setShowPresets(true)}
+          architecture={architecture}
+          onArchitectureChange={studio.setArchitecture}
         />
       )}
       {toolTab === 'material' && (
-        <SurfaceMaterialPanel
-          surfaceStyles={studio.state.surfaceStyles}
-          onStyleChange={studio.setSurfaceStyle}
-        />
+        <div className="space-y-4">
+          <SurfaceMaterialPanel
+            surfaceStyles={studio.state.surfaceStyles}
+            onStyleChange={studio.setSurfaceStyle}
+          />
+          <LightingPanel value={lighting.id} onChange={studio.setLighting} />
+        </div>
       )}
       {toolTab === 'technical' && (
         <TechnicalTab
@@ -310,6 +377,9 @@ export default function RoomStudioClient() {
       dimensions={studio.state.dimensions}
       floorStyle={studio.state.surfaceStyles.floor}
       wallStyle={studio.state.surfaceStyles.walls}
+      lighting={lighting}
+      architecture={architecture}
+      placementStatus={placementStatus}
       placedViews={studio.placedViews}
       selectedInstanceId={studio.selectedInstanceId}
       showCeiling={showCeiling}
@@ -375,6 +445,11 @@ export default function RoomStudioClient() {
       onRemove={studio.removeProduct}
       onAddToQuote={handleAddToQuote}
       onDeselect={() => studio.setSelectedInstanceId(null)}
+      status={placementStatus[studio.selected.placed.instanceId]}
+      findings={technicalFindings.filter((f) => f.affectedInstanceIds.includes(studio.selected!.placed.instanceId))}
+      dimensions={studio.state.dimensions}
+      onSetVariant={studio.setPlacementVariant}
+      onSetInstallationHeight={studio.setInstallationHeight}
     />
   );
 
@@ -489,7 +564,14 @@ export default function RoomStudioClient() {
         onResetRoom={studio.resetRoom}
       />
 
-      <RoomPresetDialog open={showPresets} onClose={() => setShowPresets(false)} onApply={applyPreset} />
+      <RoomPresetDialog
+        open={showPresets}
+        onClose={() => setShowPresets(false)}
+        onApply={applyPreset}
+        products={studio.products}
+        placedCount={studio.placedViews.length}
+        onApplyStarter={applyStarterRoom}
+      />
 
       <WorkspaceDialog
         open={showBudget}
@@ -597,8 +679,20 @@ export default function RoomStudioClient() {
           role="status"
           className="fixed right-4 top-28 z-[80] flex items-center gap-2 rounded bg-[color:var(--tenant-ui-ink,#123C5A)] px-4 py-2.5 text-white shadow-xl"
         >
-          <CheckCircle className="h-4 w-4 text-[#DCEBF5]" aria-hidden />
-          <span className="text-[13px] font-medium">{toast}</span>
+          <CheckCircle className="h-4 w-4 shrink-0 text-[#DCEBF5]" aria-hidden />
+          <span className="max-w-[420px] text-[13px] font-medium">{toast.message}</span>
+          {toast.undo && (
+            <button
+              type="button"
+              onClick={() => {
+                toast.undo?.();
+                setToast(null);
+              }}
+              className="ml-1 shrink-0 rounded border border-white/40 px-2 py-0.5 text-[12px] font-semibold hover:bg-white/10"
+            >
+              Hoàn tác
+            </button>
+          )}
         </div>
       )}
     </div>

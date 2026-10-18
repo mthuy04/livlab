@@ -130,6 +130,7 @@ export const CATEGORY_FALLBACK_SIZE: Record<string, { width: number; height: num
   lavabo: { width: 0.55, height: 0.2, depth: 0.4 },
   faucet: { width: 0.05, height: 0.3, depth: 0.15 },
   toilet: { width: 0.38, height: 0.78, depth: 0.68 },
+  bathtub: { width: 1.6, height: 0.56, depth: 0.75 },
   shower: { width: 0.25, height: 1.2, depth: 0.25 },
   mirror: { width: 0.6, height: 0.8, depth: 0.03 },
   vanity: { width: 0.8, height: 0.8, depth: 0.48 },

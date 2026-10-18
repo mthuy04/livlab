@@ -113,6 +113,7 @@ export const roomBoundsRule: TechnicalRule = {
         ruleId: 'room-bounds',
         category: 'ROOM_BOUNDS',
         severity: 'VERIFY',
+        placementIssue: 'OUTSIDE_ROOM',
         title: 'Vượt ra ngoài phạm vi phòng',
         message: `${product.name} đang vượt quá ${worst.side} khoảng ${formatCm(worst.by)}. Bạn nên dịch sản phẩm vào trong hoặc kiểm tra lại kích thước phòng.`,
         affectedInstanceIds: [placed.instanceId],

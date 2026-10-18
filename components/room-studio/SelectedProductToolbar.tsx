@@ -1,10 +1,23 @@
 'use client';
 
 import Link from 'next/link';
-import { Copy, ExternalLink, RotateCw, Trash2, Wallet, X } from 'lucide-react';
+import { Copy, ExternalLink, Minus, Plus, RotateCw, Trash2, Wallet, X } from 'lucide-react';
 import type { PlacedProductView } from '@/lib/room-studio/useRoomStudio';
 import { getRealWorldSize } from '@/lib/room-studio/assetResolver';
 import { formatProductPrice } from '@/lib/room-studio/budgetCalculator';
+import type { RoomDimensions } from '@/lib/room-studio/roomGeometry';
+import type { TechnicalValidationResult } from '@/lib/technical-advisor/types';
+import {
+  PLACEMENT_STATUS_COLOR,
+  PLACEMENT_STATUS_LABEL,
+  type PlacementStatus,
+} from '@/lib/room-studio/placementStatus';
+import {
+  MOUNTING_LABEL,
+  installationHeight,
+  installationHeightLabel,
+  installationHeightRange,
+} from '@/lib/room-studio/mounting';
 
 interface SelectedProductToolbarProps {
   selection: PlacedProductView;
@@ -14,7 +27,17 @@ interface SelectedProductToolbarProps {
   onRemove: (instanceId: string) => void;
   onAddToQuote: (view: PlacedProductView) => void;
   onDeselect: () => void;
+  /** Where this placement stands; drives the fit line. */
+  status?: PlacementStatus;
+  /** The advisor's findings for this instance, worst first. */
+  findings?: TechnicalValidationResult[];
+  dimensions?: RoomDimensions;
+  onSetVariant?: (instanceId: string, variant: string) => void;
+  onSetInstallationHeight?: (instanceId: string, metres: number) => void;
 }
+
+/** One press of the height stepper. Fine enough for a mixer, coarse enough to be quick. */
+const HEIGHT_STEP = 0.05;
 
 const QUARTER_TURN = Math.PI / 2;
 
@@ -37,10 +60,23 @@ export default function SelectedProductToolbar({
   onRemove,
   onAddToQuote,
   onDeselect,
+  status,
+  findings = [],
+  dimensions,
+  onSetVariant,
+  onSetInstallationHeight,
 }: SelectedProductToolbarProps) {
   const { placed, product } = selection;
   const size = getRealWorldSize(product);
   const mm = (metres: number) => Math.round(metres * 1000);
+  const height = installationHeight(product, placed);
+  const heightRange = installationHeightRange(product);
+  const heightLabel = installationHeightLabel(product);
+  const recon = product.reconstruction;
+  // The finding a customer should read first: a real placement problem, else
+  // the first thing the advisor wants checked.
+  const headline =
+    findings.find((f) => f.placementIssue) ?? findings.find((f) => f.severity !== 'SUITABLE') ?? null;
 
   return (
     <div className="flex flex-col gap-3 border-t border-[#E1E8ED] bg-white px-4 py-3 md:flex-row md:items-center md:px-6">
@@ -80,7 +116,15 @@ export default function SelectedProductToolbar({
                 being updated" while a 3D model is on screen in front of them.
                 A stand-in says what it is; only a product with no geometry at
                 all is still waiting for one. */}
-            {product.capability !== 'VERIFIED_3D' &&
+            {product.capability === 'PROTOTYPE_3D' ? (
+              <span
+                className="whitespace-nowrap text-[#2F7D5B]"
+                title="Mô hình 3D LivLab tái tạo từ ảnh và bản vẽ của hãng: đúng kích thước tổng thể, hướng và cách lắp; không phải file 3D chính hãng."
+              >
+                Mô hình 3D tái tạo
+              </span>
+            ) : (
+              product.capability !== 'VERIFIED_3D' &&
               (product.illustrativeModel ? (
                 // Just the caveat. The true dimensions are the span immediately
                 // before this one, so repeating "kích thước thật" here only
@@ -88,8 +132,74 @@ export default function SelectedProductToolbar({
                 <span className="whitespace-nowrap text-[#8C9BAB]">Hình khối minh hoạ</span>
               ) : (
                 <span className="text-[#A8691F]">Mô hình 3D đang cập nhật</span>
-              ))}
+              ))
+            )}
           </p>
+          {/* The fit line: how this product sits in this room, in one row. */}
+          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px]">
+            {status && (
+              <span className="flex items-center gap-1.5 font-medium" style={{ color: PLACEMENT_STATUS_COLOR[status] }}>
+                <span aria-hidden className="h-2 w-2 rounded-full" style={{ background: PLACEMENT_STATUS_COLOR[status] }} />
+                {PLACEMENT_STATUS_LABEL[status]}
+              </span>
+            )}
+            <span className="text-[#8C9BAB]">{MOUNTING_LABEL[placed.placementType] ?? placed.placementType}</span>
+            {dimensions && (
+              <span className="tabular-nums text-[#8C9BAB]">
+                Phòng {dimensions.length.toFixed(2).replace('.', ',')} × {dimensions.width.toFixed(2).replace('.', ',')} m
+              </span>
+            )}
+            {height !== null && heightRange && heightLabel && onSetInstallationHeight && (
+              <span className="flex items-center gap-1 text-[#3F4F5C]">
+                <span className="text-[#8C9BAB]">{heightLabel}</span>
+                <button
+                  type="button"
+                  aria-label={`Hạ ${heightLabel.toLowerCase()} 5cm`}
+                  disabled={height <= heightRange[0] + 1e-6}
+                  onClick={() => onSetInstallationHeight(placed.instanceId, height - HEIGHT_STEP)}
+                  className="flex h-5 w-5 items-center justify-center rounded border border-[#D8E2EA] disabled:opacity-40"
+                >
+                  <Minus className="h-3 w-3" aria-hidden />
+                </button>
+                <span className="w-[52px] text-center font-semibold tabular-nums">{mm(height)} mm</span>
+                <button
+                  type="button"
+                  aria-label={`Nâng ${heightLabel.toLowerCase()} 5cm`}
+                  disabled={height >= heightRange[1] - 1e-6}
+                  onClick={() => onSetInstallationHeight(placed.instanceId, height + HEIGHT_STEP)}
+                  className="flex h-5 w-5 items-center justify-center rounded border border-[#D8E2EA] disabled:opacity-40"
+                >
+                  <Plus className="h-3 w-3" aria-hidden />
+                </button>
+              </span>
+            )}
+            {recon && recon.variants.length > 1 && onSetVariant && (
+              <span className="flex overflow-hidden rounded border border-[#D8E2EA]" role="group" aria-label="Phiên bản mô hình">
+                {recon.variants.map((v) => (
+                  <button
+                    key={v.id}
+                    type="button"
+                    aria-pressed={recon.variant === v.id}
+                    onClick={() => onSetVariant(placed.instanceId, v.id)}
+                    className={`px-2 py-0.5 ${
+                      recon.variant === v.id ? 'bg-[#EEF4F7] font-semibold text-[#0B1623]' : 'text-[#5B6B7A] hover:bg-[#F8FAFC]'
+                    }`}
+                  >
+                    {v.label}
+                  </button>
+                ))}
+              </span>
+            )}
+          </div>
+          {headline && (
+            <p className="mt-0.5 line-clamp-1 text-[12px] text-[#5B6B7A]" title={headline.message}>
+              {headline.title}
+              {headline.suggestedAction ? ` — ${headline.suggestedAction}` : ''}
+            </p>
+          )}
+          {recon?.illustrativeParts && (
+            <p className="mt-0.5 text-[12px] text-[#A8691F]">{recon.illustrativeParts}</p>
+          )}
         </div>
       </div>
 

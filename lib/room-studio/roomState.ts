@@ -14,9 +14,17 @@ import {
   type SurfaceId,
   type SurfaceStyle,
 } from './materials';
-import { clampToRoom, getDefaultPlacement, type PlacementType, type Vec3, type WallId } from './placementRules';
-import { getRealWorldSize } from './assetResolver';
+import { clampToRoom, fitInRoom, getDefaultPlacement, type PlacementType, type Vec3, type WallId } from './placementRules';
 import type { RoomStudioProduct } from './productAdapter';
+import { placementContextFor } from './mounting';
+import {
+  DEFAULT_ARCHITECTURE,
+  DEFAULT_LIGHTING,
+  parseArchitecture,
+  parseLighting,
+  type ArchitectureSettings,
+  type LightingPresetId,
+} from './environment';
 import type { UtilityPoint } from '@/lib/technical-advisor/types';
 
 export const ROOM_STATE_VERSION = 1;
@@ -33,6 +41,18 @@ export interface PlacedProduct {
   scale?: number;
   placementType: PlacementType;
   wall?: WallId;
+  /**
+   * Which of the product's model variants is drawn, when it has more than one
+   * — a basin alone, or the basin with an illustrative faucet. Absent means
+   * the product's default. Never changes what is quoted.
+   */
+  variant?: string;
+  /**
+   * The installation height a customer set, metres above the floor. Read for
+   * counter products (the counter top); a wall product's height is its
+   * position. Absent means the product's own default.
+   */
+  mountHeight?: number;
 }
 
 export interface RoomState {
@@ -66,6 +86,10 @@ export interface RoomState {
    * assuming when this is empty.
    */
   utilityPoints?: UtilityPoint[];
+  /** How the room is lit. Absent in snapshots that predate it: daylight. */
+  lighting?: LightingPresetId;
+  /** Context around the products. Absent in older snapshots: the defaults. */
+  architecture?: ArchitectureSettings;
 }
 
 export function createInitialRoomState(): RoomState {
@@ -77,6 +101,8 @@ export function createInitialRoomState(): RoomState {
       walls: { ...DEFAULT_SURFACE_STYLES.walls },
     },
     placedProducts: [],
+    lighting: DEFAULT_LIGHTING,
+    architecture: { ...DEFAULT_ARCHITECTURE },
   };
 }
 
@@ -110,12 +136,9 @@ export function reflowPlacements(
   const placedProducts = state.placedProducts.map((placed) => {
     const product = resolveProduct(placed.productId);
     if (!product) return placed;
-    const size = getRealWorldSize(product);
     const position = clampToRoom(placed.position, {
-      dimensions: state.dimensions,
-      size,
+      ...placementContextFor(product, state.dimensions, placed),
       placementType: placed.placementType,
-      wall: placed.wall,
     });
     return { ...placed, position };
   });
@@ -139,21 +162,32 @@ export function setSurfaceStyle(
   };
 }
 
+/**
+ * Whether a product can be placed in this room, and if not, why.
+ *
+ * The product is never scaled to make the answer yes.
+ */
+export function canPlaceInRoom(
+  state: RoomState,
+  product: RoomStudioProduct
+): { fits: boolean; rotationY: number; reason?: string } {
+  return fitInRoom(placementContextFor(product, state.dimensions));
+}
+
 export function addProduct(
   state: RoomState,
   product: RoomStudioProduct,
-  options: { instanceId: string; atPoint?: Vec3 }
+  options: { instanceId: string; atPoint?: Vec3; rotationY?: number }
 ): RoomState {
-  const size = getRealWorldSize(product);
   // Spread every new arrival along x by how many products are already in the
   // room, so nothing lands on top of anything else and looks like it failed to
   // appear — a basin stacked on a toilet reads as a bug, not as a suggestion.
   const neighbourCount = state.placedProducts.length;
-  const placementCtx = {
-    dimensions: state.dimensions,
-    size,
-    placementType: product.placementType,
-  };
+  const fit = fitInRoom({ ...placementContextFor(product, state.dimensions), rotationY: options.rotationY });
+  // A product that cannot stand in the room at all is not added. The caller
+  // asked `canPlaceInRoom` and told the customer why; this is the backstop.
+  if (!fit.fits) return state;
+  const placementCtx = { ...placementContextFor(product, state.dimensions), rotationY: fit.rotationY };
   const { position, rotationY, wall } = getDefaultPlacement(
     placementCtx,
     product.normalizedCategory,
@@ -174,6 +208,9 @@ export function addProduct(
     rotationY,
     placementType: product.placementType,
     wall,
+    ...(product.placementType === 'counter' && placementCtx.counterHeight !== undefined
+      ? { mountHeight: placementCtx.counterHeight }
+      : {}),
   };
 
   return { ...state, placedProducts: [...state.placedProducts, placed] };
@@ -186,7 +223,7 @@ export function removeProduct(state: RoomState, instanceId: string): RoomState {
 export function updatePlacement(
   state: RoomState,
   instanceId: string,
-  updates: Partial<Pick<PlacedProduct, 'position' | 'rotationY' | 'wall'>>
+  updates: Partial<Pick<PlacedProduct, 'position' | 'rotationY' | 'wall' | 'variant' | 'mountHeight'>>
 ): RoomState {
   return {
     ...state,
@@ -228,6 +265,14 @@ export function addUtilityPoint(state: RoomState, point: UtilityPoint): RoomStat
 
 export function removeUtilityPoint(state: RoomState, id: string): RoomState {
   return { ...state, utilityPoints: (state.utilityPoints ?? []).filter((p) => p.id !== id) };
+}
+
+export function setLighting(state: RoomState, lighting: LightingPresetId): RoomState {
+  return { ...state, lighting: parseLighting(lighting) };
+}
+
+export function setArchitecture(state: RoomState, patch: Partial<ArchitectureSettings>): RoomState {
+  return { ...state, architecture: parseArchitecture({ ...parseArchitecture(state.architecture), ...patch }) };
 }
 
 // ─── Serialization ────────────────────────────────────────────────────────────
@@ -286,6 +331,12 @@ export function deserializeRoomState(raw: unknown): RoomState {
           scale: Number.isFinite(p.scale as number) ? p.scale : undefined,
           placementType: (p.placementType ?? 'floor') as PlacementType,
           wall: p.wall,
+          // Newer fields, absent from older snapshots. A value that is not
+          // what it should be is dropped, never guessed at.
+          ...(typeof p.variant === 'string' ? { variant: p.variant } : {}),
+          ...(typeof p.mountHeight === 'number' && Number.isFinite(p.mountHeight) && p.mountHeight > 0
+            ? { mountHeight: p.mountHeight }
+            : {}),
         }))
     : [];
 
@@ -319,6 +370,8 @@ export function deserializeRoomState(raw: unknown): RoomState {
             p.position.every((n) => typeof n === 'number' && Number.isFinite(n))
         )
       : undefined,
+    lighting: parseLighting(data.lighting),
+    architecture: parseArchitecture(data.architecture),
   };
 }
 

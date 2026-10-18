@@ -1,5 +1,6 @@
 'use client';
 
+import { DEFAULT_ARCHITECTURE, LIGHTING_PRESETS } from '@/lib/room-studio/environment';
 import { useCallback, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import * as THREE from 'three';
@@ -171,6 +172,8 @@ export default function PipelineTestClient() {
       <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
         <div className="relative h-[52vh] min-h-0 shrink-0 lg:h-auto lg:flex-1">
           <RoomScene3D
+            lighting={LIGHTING_PRESETS.studio}
+            architecture={{ ...DEFAULT_ARCHITECTURE, skirting: false, basinCounter: false }}
             dimensions={ROOM}
             floorStyle={DEFAULT_SURFACE_STYLES.floor}
             wallStyle={DEFAULT_SURFACE_STYLES.walls}

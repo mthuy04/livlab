@@ -1,0 +1,595 @@
+{
+ "generatedAt": "2026-10-18T13:02:06.291Z",
+ "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+ "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1, Unspecified Version)",
+ "room": {
+  "length": 6.4,
+  "width": 3.2,
+  "height": 2.8
+ },
+ "loadErrors": 0,
+ "results": [
+  {
+   "sku": "AC-1017VRN",
+   "variant": "web",
+   "url": "/models/inax/AC-1017VRN/AC-1017VRN_web.glb",
+   "measuredMm": {
+    "width": 400,
+    "depth": 805,
+    "height": 588
+   },
+   "rendererScale": 1,
+   "boundsErrorPct": 0.0000014901161193847656,
+   "referenceChecks": [
+    {
+     "axis": "width (X)",
+     "ref": 400,
+     "got": 400,
+     "errPct": 0
+    },
+    {
+     "axis": "depth (Z)",
+     "ref": 805,
+     "got": 805,
+     "errPct": 0
+    },
+    {
+     "axis": "height (Y)",
+     "ref": 588,
+     "got": 588,
+     "errPct": 0
+    }
+   ],
+   "worstReferenceErrorPct": 0.0000014901161193847656,
+   "orientationNote": "két nước phía sau: cao 588 mm (sau) / 445 mm (trước) → mặt trước +Z",
+   "mountingNote": "đáy 0 mm · cách tường 20 mm",
+   "placedPosition": [
+    -2.6,
+    0.294,
+    -1.1775
+   ],
+   "meshes": 9,
+   "triangles": 57264,
+   "bytes": 986172,
+   "materials": [
+    {
+     "name": "AC1017_SatinChrome_Lever",
+     "type": "MeshStandardMaterial",
+     "metalness": 0.88,
+     "roughness": 0.18
+    },
+    {
+     "name": "AC1017_Lever_Shadow",
+     "type": "MeshStandardMaterial",
+     "metalness": 0.7,
+     "roughness": 0.31
+    },
+    {
+     "name": "AC1017_Soft_Seat_Shadow",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.52
+    },
+    {
+     "name": "AC1017_SoftClose_WhitePolymer_APPROX",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.32
+    },
+    {
+     "name": "AC1017_AquaCeramic_GlossWhite_APPROX",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.16
+    },
+    {
+     "name": "AC1017_AquaCeramic_GlossWhite_Tank",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.17
+    },
+    {
+     "name": "AC1017_Tank_Porcelain_Seam",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.32
+    }
+   ],
+   "metalMaterials": [
+    "AC1017_SatinChrome_Lever",
+    "AC1017_Lever_Shadow"
+   ],
+   "primitivesWithoutNormals": "9/9",
+   "performanceTarget": {
+    "maxBytes": 3000000,
+    "triangles": [
+     20000,
+     60000
+    ]
+   },
+   "checks": {
+    "loads": true,
+    "boundsMatchFile": true,
+    "dimensionsMatchReference": true,
+    "originAndOrientation": true,
+    "mounting": true,
+    "materialsPbr": true,
+    "performance": true
+   },
+   "pass": true
+  },
+  {
+   "sku": "AC-912VN",
+   "variant": "web",
+   "url": "/models/inax/AC-912VN/AC-912VN_web.glb",
+   "measuredMm": {
+    "width": 372,
+    "depth": 721,
+    "height": 680
+   },
+   "rendererScale": 1,
+   "boundsErrorPct": 0.0000023713675878381214,
+   "referenceChecks": [
+    {
+     "axis": "width (X)",
+     "ref": 372,
+     "got": 372,
+     "errPct": 0
+    },
+    {
+     "axis": "depth (Z)",
+     "ref": 721,
+     "got": 721,
+     "errPct": 0
+    },
+    {
+     "axis": "height (Y)",
+     "ref": 680,
+     "got": 680,
+     "errPct": 0
+    }
+   ],
+   "worstReferenceErrorPct": 0.0000023713675878381214,
+   "orientationNote": "két nước phía sau: cao 680 mm (sau) / 390 mm (trước) → mặt trước +Z",
+   "mountingNote": "đáy 0 mm · cách tường 15 mm",
+   "placedPosition": [
+    -1.75,
+    0.34,
+    -1.2245
+   ],
+   "meshes": 9,
+   "triangles": 13876,
+   "bytes": 257220,
+   "materials": [
+    {
+     "name": "Glazed_AquaCeramic_NeutralWhite_estimated",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.17
+    },
+    {
+     "name": "TankLid_WhiteGlaze_estimated",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.19
+    },
+    {
+     "name": "TankLid_Shadow_WhiteGray",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.43
+    },
+    {
+     "name": "SeatRing_WhitePolymer_estimated",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.29
+    },
+    {
+     "name": "SeatCover_CF602VS_WhitePolymer_estimated",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.3
+    },
+    {
+     "name": "Seat_Gap_WarmGray",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.6
+    },
+    {
+     "name": "FlushLever_BaseMetal_estimated",
+     "type": "MeshStandardMaterial",
+     "metalness": 0.73,
+     "roughness": 0.31
+    },
+    {
+     "name": "FlushLever_PolishedChrome_estimated",
+     "type": "MeshStandardMaterial",
+     "metalness": 0.92,
+     "roughness": 0.19
+    }
+   ],
+   "metalMaterials": [
+    "FlushLever_BaseMetal_estimated",
+    "FlushLever_PolishedChrome_estimated"
+   ],
+   "primitivesWithoutNormals": "9/9",
+   "performanceTarget": {
+    "maxBytes": 3000000,
+    "triangles": [
+     20000,
+     60000
+    ]
+   },
+   "checks": {
+    "loads": true,
+    "boundsMatchFile": true,
+    "dimensionsMatchReference": true,
+    "originAndOrientation": true,
+    "mounting": true,
+    "materialsPbr": true,
+    "performance": true
+   },
+   "pass": true
+  },
+  {
+   "sku": "BF-1656V",
+   "variant": "web",
+   "url": "/models/inax/BF-1656V/BF-1656V_web.glb",
+   "measuredMm": {
+    "width": 1600,
+    "depth": 800,
+    "height": 560
+   },
+   "rendererScale": 1,
+   "boundsErrorPct": 0.0000014901161193847656,
+   "referenceChecks": [
+    {
+     "axis": "length (X)",
+     "ref": 1600,
+     "got": 1600,
+     "errPct": 0
+    },
+    {
+     "axis": "width (Z)",
+     "ref": 800,
+     "got": 800,
+     "errPct": 0
+    },
+    {
+     "axis": "height (Y)",
+     "ref": 560,
+     "got": 560,
+     "errPct": 0
+    }
+   ],
+   "worstReferenceErrorPct": 0.0000014901161193847656,
+   "orientationNote": "đáy y=0, chiều dài theo X",
+   "mountingNote": "đáy 0 mm · cách tường 20 mm",
+   "placedPosition": [
+    -0.4,
+    0.28,
+    -1.18
+   ],
+   "meshes": 6,
+   "triangles": 13012,
+   "bytes": 237904,
+   "materials": [
+    {
+     "name": "INAX_Glossy_White_Acrylic",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.18
+    },
+    {
+     "name": "Polished_Chrome",
+     "type": "MeshStandardMaterial",
+     "metalness": 0.95,
+     "roughness": 0.2
+    },
+    {
+     "name": "Drain_Shadow_Gray",
+     "type": "MeshStandardMaterial",
+     "metalness": 0.15,
+     "roughness": 0.44
+    },
+    {
+     "name": "Integrated_AntiSlip_Acrylic",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.32
+    }
+   ],
+   "metalMaterials": [
+    "Polished_Chrome"
+   ],
+   "primitivesWithoutNormals": "6/6",
+   "performanceTarget": {
+    "maxBytes": 5000000,
+    "triangles": [
+     20000,
+     60000
+    ]
+   },
+   "checks": {
+    "loads": true,
+    "boundsMatchFile": true,
+    "dimensionsMatchReference": true,
+    "originAndOrientation": true,
+    "mounting": true,
+    "materialsPbr": true,
+    "performance": true
+   },
+   "pass": true
+  },
+  {
+   "sku": "BFV-70S",
+   "variant": "web",
+   "url": "/models/inax/BFV-70S/BFV-70S_web.glb",
+   "measuredMm": {
+    "width": 294,
+    "depth": 523.5,
+    "height": 1638.05
+   },
+   "rendererScale": 1,
+   "boundsErrorPct": 0.00003506175780835285,
+   "referenceChecks": [
+    {
+     "axis": "reach depth (Z)",
+     "ref": 523.5,
+     "got": 523.5,
+     "errPct": 0
+    }
+   ],
+   "worstReferenceErrorPct": 0.000004827577723928486,
+   "orientationNote": "mặt tường z=0, gốc tại tâm bộ trộn (y=0 nằm trong thân)",
+   "mountingNote": "bộ trộn 1000 mm · sát tường 1 mm",
+   "placedPosition": [
+    1.25,
+    1.7269,
+    -1.3373
+   ],
+   "meshes": 25,
+   "triangles": 17140,
+   "bytes": 315864,
+   "materials": [
+    {
+     "name": "Chrome_Polished",
+     "type": "MeshStandardMaterial",
+     "metalness": 0.94,
+     "roughness": 0.16
+    },
+    {
+     "name": "Chrome_Satin",
+     "type": "MeshStandardMaterial",
+     "metalness": 0.86,
+     "roughness": 0.3
+    },
+    {
+     "name": "Chrome_Light",
+     "type": "MeshStandardMaterial",
+     "metalness": 0.77,
+     "roughness": 0.23
+    },
+    {
+     "name": "Chrome_Dark",
+     "type": "MeshStandardMaterial",
+     "metalness": 0.72,
+     "roughness": 0.36
+    },
+    {
+     "name": "Nozzle_Elastomer",
+     "type": "MeshStandardMaterial",
+     "metalness": 0.03,
+     "roughness": 0.76
+    }
+   ],
+   "metalMaterials": [
+    "Chrome_Polished",
+    "Chrome_Satin",
+    "Chrome_Light",
+    "Chrome_Dark"
+   ],
+   "primitivesWithoutNormals": "25/25",
+   "performanceTarget": {
+    "maxBytes": 5000000,
+    "triangles": [
+     20000,
+     80000
+    ]
+   },
+   "checks": {
+    "loads": true,
+    "boundsMatchFile": true,
+    "dimensionsMatchReference": true,
+    "originAndOrientation": true,
+    "mounting": true,
+    "materialsPbr": true,
+    "performance": true
+   },
+   "pass": true
+  },
+  {
+   "sku": "L-293V",
+   "variant": "basin_only",
+   "url": "/models/inax/L-293V/L-293V_basin_only.glb",
+   "measuredMm": {
+    "width": 500,
+    "depth": 450,
+    "height": 155
+   },
+   "rendererScale": 1,
+   "boundsErrorPct": 0.0000026490953233506944,
+   "referenceChecks": [
+    {
+     "axis": "width (X)",
+     "ref": 500,
+     "got": 500,
+     "errPct": 0
+    },
+    {
+     "axis": "depth (Z)",
+     "ref": 450,
+     "got": 450,
+     "errPct": 0
+    },
+    {
+     "axis": "height (Y)",
+     "ref": 155,
+     "got": 155,
+     "errPct": 0
+    }
+   ],
+   "worstReferenceErrorPct": 0.0000026490953233506944,
+   "orientationNote": "đáy chậu y=0, mặt sau z=0",
+   "mountingNote": "đáy chậu 800 mm trên sàn (mặt bàn)",
+   "placedPosition": [
+    2.05,
+    0.8775,
+    -1.355
+   ],
+   "meshes": 5,
+   "triangles": 4418,
+   "bytes": 96848,
+   "materials": [
+    {
+     "name": "Ceramic_AquaWhite",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.16
+    },
+    {
+     "name": "Chrome_Satin",
+     "type": "MeshStandardMaterial",
+     "metalness": 0.92,
+     "roughness": 0.27
+    },
+    {
+     "name": "Dark_Overflow",
+     "type": "MeshStandardMaterial",
+     "metalness": 0.18,
+     "roughness": 0.32
+    }
+   ],
+   "metalMaterials": [
+    "Chrome_Satin"
+   ],
+   "primitivesWithoutNormals": "4/5",
+   "performanceTarget": {
+    "maxBytes": 3000000,
+    "triangles": [
+     10000,
+     40000
+    ]
+   },
+   "checks": {
+    "loads": true,
+    "boundsMatchFile": true,
+    "dimensionsMatchReference": true,
+    "originAndOrientation": true,
+    "mounting": true,
+    "materialsPbr": true,
+    "performance": true
+   },
+   "pass": true
+  },
+  {
+   "sku": "L-293V",
+   "variant": "web",
+   "url": "/models/inax/L-293V/L-293V_web.glb",
+   "measuredMm": {
+    "width": 500,
+    "depth": 450,
+    "height": 278.75
+   },
+   "rendererScale": 1,
+   "boundsErrorPct": 0.0000026490953233506944,
+   "referenceChecks": [
+    {
+     "axis": "width (X)",
+     "ref": 500,
+     "got": 500,
+     "errPct": 0
+    },
+    {
+     "axis": "depth (Z)",
+     "ref": 450,
+     "got": 450,
+     "errPct": 0
+    }
+   ],
+   "worstReferenceErrorPct": 0.0000026490953233506944,
+   "orientationNote": "đáy chậu y=0, mặt sau z=0",
+   "mountingNote": "đáy chậu 800 mm trên sàn (mặt bàn)",
+   "placedPosition": [
+    2.75,
+    0.9394,
+    -1.355
+   ],
+   "meshes": 12,
+   "triangles": 4250,
+   "bytes": 88036,
+   "materials": [
+    {
+     "name": "Ceramic_AquaWhite",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.16
+    },
+    {
+     "name": "Chrome_Satin",
+     "type": "MeshStandardMaterial",
+     "metalness": 0.92,
+     "roughness": 0.27
+    },
+    {
+     "name": "Dark_Overflow",
+     "type": "MeshStandardMaterial",
+     "metalness": 0.18,
+     "roughness": 0.32
+    },
+    {
+     "name": "Chrome_Polished",
+     "type": "MeshStandardMaterial",
+     "metalness": 1,
+     "roughness": 0.13
+    },
+    {
+     "name": "Red_Hot",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.35
+    },
+    {
+     "name": "Blue_Cold",
+     "type": "MeshStandardMaterial",
+     "metalness": 0,
+     "roughness": 0.38
+    }
+   ],
+   "metalMaterials": [
+    "Chrome_Satin",
+    "Chrome_Polished"
+   ],
+   "primitivesWithoutNormals": "11/12",
+   "performanceTarget": {
+    "maxBytes": 3000000,
+    "triangles": [
+     10000,
+     40000
+    ]
+   },
+   "checks": {
+    "loads": true,
+    "boundsMatchFile": true,
+    "dimensionsMatchReference": true,
+    "originAndOrientation": true,
+    "mounting": true,
+    "materialsPbr": true,
+    "performance": true
+   },
+   "pass": true
+  }
+ ]
+}

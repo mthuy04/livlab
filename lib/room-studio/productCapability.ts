@@ -14,10 +14,17 @@
  */
 
 import { isRoomStudioReady, type Product3DAsset } from './product3dAsset';
+import { canRenderReconstruction, type ReconstructedModel } from './reconstructionRegistry';
 
 export type RoomStudioCapability =
   /** A reviewed runtime GLB exists and passed every QA check. */
   | 'VERIFIED_3D'
+  /**
+   * LivLab's reconstruction of this exact SKU, checked in the running
+   * renderer for size, orientation and mounting. Real geometry, approximate
+   * curves — never the manufacturer's file, and never called verified.
+   */
+  | 'PROTOTYPE_3D'
   /** Trustworthy width, depth and height; the scene draws a true-size volume. */
   | 'EXACT_DIMENSIONS'
   /** Not enough to occupy space honestly. Cannot be placed. */
@@ -37,6 +44,12 @@ export const CAPABILITY_BADGE: Record<RoomStudioCapability, CapabilityBadge | nu
   VERIFIED_3D: {
     label: '3D VERIFIED',
     title: 'Model 3D chính hãng, đã kiểm tra kích thước, tỷ lệ và hướng đặt.',
+  },
+  PROTOTYPE_3D: {
+    label: '3D TÁI TẠO',
+    title:
+      'Mô hình 3D LivLab tái tạo từ ảnh và bản vẽ của hãng, đã kiểm tra kích thước tổng thể, ' +
+      'hướng đặt và cách lắp trong Room Studio. Không phải file 3D chính hãng.',
   },
   EXACT_DIMENSIONS: {
     label: 'ĐÚNG KÍCH THƯỚC',
@@ -81,9 +94,13 @@ export function hasCompleteDimensions(d: DimensionTriple): boolean {
  */
 export function deriveCapability(
   asset: Product3DAsset | null | undefined,
-  catalogueDimensions: DimensionTriple
+  catalogueDimensions: DimensionTriple,
+  reconstruction?: ReconstructedModel | null
 ): RoomStudioCapability {
   if (asset && isRoomStudioReady(asset)) return 'VERIFIED_3D';
+  // Below a manufacturer master, above a size box: the geometry is real but
+  // rebuilt, and only once the runtime check passed with nothing outstanding.
+  if (canRenderReconstruction(reconstruction)) return 'PROTOTYPE_3D';
 
   // Manufacturer figures outrank a parsed catalogue string when both exist.
   if (asset?.qa.dimensionsVerified) {
