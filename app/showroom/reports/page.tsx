@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Download } from 'lucide-react';
 import {
   PageShell, Section, MigrationNotice, ErrorState, FootNote, money, moneyFull, percent,
 } from '@/components/showroom/ui/primitives';
@@ -70,7 +71,11 @@ export default function ShowroomReportsPage() {
   const top = data.funnel[0]?.count ?? 0;
 
   return (
-    <PageShell title="Báo cáo" description="Suy ra từ lead và báo giá thật của showroom.">
+    <PageShell
+      title="Báo cáo"
+      description="Suy ra từ lead và báo giá thật của showroom."
+      actions={<a href="/api/showroom/reports/export" className={CX.buttonSecondary}><Download className="h-3.5 w-3.5" /> Xuất báo cáo</a>}
+    >
       {/* One chart, and it answers a question: where does the pipeline stop? */}
       <Section title="Phễu bán hàng" description="Số lead đã đi qua từng giai đoạn, tính trên tổng lead." flush>
         <div className="px-4 py-4">

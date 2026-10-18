@@ -120,9 +120,8 @@ export default function ImplementationFlow({
       setResult(request);
       setStep('success');
     } catch {
-      // submitImplementationRequest already absorbs delivery failures, so
-      // reaching here means something unexpected. Keep the customer's typed
-      // details and let them retry rather than dropping them back to step one.
+      // Keep the typed details and the package-bound idempotency key so a
+      // retry is safe even if the first response was lost after persistence.
       setError('Không gửi được yêu cầu. Thông tin của bạn vẫn được giữ — vui lòng thử lại.');
       inFlight.current = false;
     } finally {

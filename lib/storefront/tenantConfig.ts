@@ -87,6 +87,15 @@ export interface TenantStorefrontConfig {
   navigation: TenantNavItem[];
   contact?: TenantContact;
   catalogScope: TenantCatalogScope;
+  /**
+   * Server-owned destination for customer requests. It is intentionally not
+   * inferred from catalogScope: a demo can use fixture products while still
+   * owning a dedicated, isolated inbox.
+   */
+  requestWorkspace?: {
+    showroomId: string;
+    kind: 'LIVE' | 'DEMO';
+  };
   features: TenantFeatureFlags;
   /** Quiet "Powered by LivLab" in the footer. A tenant may switch it off. */
   poweredByLivLab: boolean;
@@ -265,6 +274,7 @@ export const DEMO_SHOWROOM_TENANT: TenantStorefrontConfig = {
       'Bồn tắm', 'Gương', 'Phụ kiện phòng tắm', 'Thoát sàn',
     ],
   },
+  requestWorkspace: { showroomId: 'sr-luxbath-1', kind: 'LIVE' },
   features: DEMO_FEATURES,
   poweredByLivLab: true,
   experience: EDITORIAL_EXPERIENCE,
@@ -467,6 +477,7 @@ export const DEMO_TUNGDANG_TENANT: TenantStorefrontConfig = {
     showroomId: null,
     categories: TUNGDANG_CATEGORIES,
   },
+  requestWorkspace: { showroomId: 'workspace-demo-tungdang', kind: 'DEMO' },
   features: DEMO_FEATURES,
   poweredByLivLab: true,
   publicDemo: true,

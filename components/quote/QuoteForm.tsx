@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, FormEvent, useEffect } from 'react';
+import { useState, FormEvent, useEffect, useRef } from 'react';
 import { QuoteItem } from '@/lib/types';
 import { clearQuotePrefill, calculateQuoteTotalRange, getQuotePrefill } from '@/lib/storage';
-import { generateLeadId } from '@/lib/utils';
 import BudgetFitCard from '@/components/budget/BudgetFitCard';
 import { CheckCircle, Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
@@ -84,16 +83,24 @@ export default function QuoteForm({ quoteItems, onSuccess }: QuoteFormProps) {
     const initConcept = searchParams?.get('concept') || prefill?.selectedConcept || '';
     const initRoomType = searchParams?.get('roomType') || prefill?.roomType || '';
 
-    setForm(prev => ({
-      ...prev,
-      roomType: initRoomType,
-      budgetRange: initBudget,
-      selectedConcept: initConcept
-    }));
+    let cancelled = false;
+    queueMicrotask(() => {
+      if (cancelled) return;
+      setForm(prev => ({
+        ...prev,
+        roomType: initRoomType,
+        budgetRange: initBudget,
+        selectedConcept: initConcept
+      }));
+    });
+    return () => { cancelled = true; };
   }, [searchParams]);
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
+  // Kept stable across retries. If the server commits but the response is
+  // interrupted, submitting again returns the same lead and request code.
+  const submissionKey = useRef<string | null>(null);
 
   const validate = (): boolean => {
     const errs: FormErrors = {};
@@ -128,9 +135,10 @@ export default function QuoteForm({ quoteItems, onSuccess }: QuoteFormProps) {
     }
 
     try {
+      submissionKey.current ??= crypto.randomUUID();
       const res = await fetch('/api/quote', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': submissionKey.current },
         body: JSON.stringify({
           customerName: form.customerName,
           phone: form.phone,
@@ -140,21 +148,28 @@ export default function QuoteForm({ quoteItems, onSuccess }: QuoteFormProps) {
           budgetMin: parsedMin,
           budgetMax: parsedMax,
           conceptName: form.selectedConcept,
+          requestType: 'QUOTATION',
+          context: {
+            version: 3,
+            source: 'QUOTE_FORM',
+            room: { type: form.roomType, size: form.roomSize || null },
+            style: form.style || null,
+            timeline: form.timeline || null,
+            needsInstallation: form.needsInstallation,
+          },
           notes: form.notes + (form.timeline ? `\nTimeline: ${form.timeline}` : '') + (form.needsInstallation ? `\nNeeds Installation: Yes` : ''),
           items: quoteItems,
         })
       });
 
-      if (!res.ok) throw new Error('Failed to submit quote');
-      
       const data = await res.json();
-      console.log(`[LivLab] Lead created via API:`, data.lead.id);
+      if (!res.ok) throw new Error(data.error || 'Không gửi được yêu cầu báo giá.');
       
       clearQuotePrefill();
-      onSuccess(data.lead.id);
+      onSuccess(data.requestCode);
     } catch (err) {
       console.error(err);
-      alert('Đã có lỗi xảy ra khi gửi yêu cầu báo giá.');
+      alert(err instanceof Error ? err.message : 'Đã có lỗi xảy ra khi gửi yêu cầu báo giá.');
     } finally {
       setLoading(false);
     }

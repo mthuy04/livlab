@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import type { Route } from 'next';
+import { Download, Plus } from 'lucide-react';
 import {
   PageShell, Section, Status, EmptyState, ErrorState, MigrationNotice,
   Table, THead, TH, TBody, TR, TD, TableSkeleton, FilterBar, FilterTabs, FootNote,
@@ -124,6 +125,7 @@ export default function ShowroomQuotesPage() {
       width="full"
       title="Báo giá"
       description="Báo giá showroom phát hành cho khách. Chỉ báo giá đã gửi mới tính là cam kết."
+      actions={<><button type="button" onClick={() => window.location.assign('/api/showroom/quotes/export')} className={CX.buttonSecondary}><Download className="h-3.5 w-3.5" /> Xuất CSV</button><Link href="/showroom/leads" className={CX.buttonPrimary}><Plus className="h-3.5 w-3.5" /> Tạo từ yêu cầu</Link></>}
     >
       {state === 'migration' ? (
         <MigrationNotice />

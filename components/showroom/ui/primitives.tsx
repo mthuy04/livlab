@@ -92,12 +92,14 @@ export function PageShell({
   children: ReactNode;
 }) {
   return (
-    <div className={`mx-auto w-full ${WIDTH[width]} px-6 py-6 lg:px-8`}>
-      <header className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <div className={`mx-auto w-full ${WIDTH[width]} px-5 py-7 sm:px-7 lg:px-9 lg:py-9`}>
+      <header className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
-          {context && <div className="mb-1 text-[12px] text-[#7E8D9B]">{context}</div>}
-          <h1 className="text-[20px] font-semibold leading-tight tracking-[-0.01em] text-[#111A22]">{title}</h1>
-          {description && <p className="mt-1 text-[13px] leading-relaxed text-[#5A6977]">{description}</p>}
+          <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#B27B28]">
+            {context ?? 'SHOWROOM WORKSPACE · LIVLAB'}
+          </div>
+          <h1 className="text-[28px] font-bold leading-tight tracking-[-0.04em] text-[#2E2D2B]">{title}</h1>
+          {description && <p className="mt-1.5 text-[13px] leading-relaxed text-[#85857F]">{description}</p>}
         </div>
         {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
       </header>
@@ -125,9 +127,9 @@ export function Section({
   return (
     <section className={`${CX.card} ${className}`}>
       {(title || action) && (
-        <div className="flex items-center justify-between gap-4 border-b border-[#EDF1F4] px-4 py-3">
+        <div className="flex items-center justify-between gap-4 border-b border-[#F0EFEB] px-5 py-4">
           <div className="min-w-0">
-            {title && <h2 className="text-[14px] font-semibold text-[#111A22]">{title}</h2>}
+            {title && <h2 className="text-[15px] font-bold tracking-[-0.02em] text-[#2E2D2B]">{title}</h2>}
             {description && <p className="mt-0.5 text-[12px] text-[#7E8D9B]">{description}</p>}
           </div>
           {action && <div className="shrink-0">{action}</div>}

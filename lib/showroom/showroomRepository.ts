@@ -14,6 +14,7 @@ import { withSchemaGuard } from './guards';
 
 const LEAD_SELECT = {
   id: true,
+  requestCode: true,
   customerName: true,
   phone: true,
   email: true,
@@ -39,6 +40,7 @@ const LEAD_SELECT = {
 
 export interface LeadListItem {
   id: string;
+  requestCode: string | null;
   customerName: string;
   phone: string | null;
   requestType: LeadRequestType | null;
@@ -49,6 +51,7 @@ export interface LeadListItem {
   targetBudget: number | null;
   nextActionAt: Date | null;
   nextActionNote: string | null;
+  firstContactAt: Date | null;
   assigneeName: string | null;
   createdAt: Date;
   /** Hours since creation with no contact yet; null once contacted. */
@@ -138,6 +141,7 @@ export async function listLeads(params: {
     const items = rows
       .map((lead) => ({
         id: lead.id,
+        requestCode: lead.requestCode,
         customerName: lead.customerName,
         phone: lead.phone,
         requestType: lead.requestType,
@@ -153,6 +157,7 @@ export async function listLeads(params: {
         targetBudget: lead.budgetMax ?? lead.budgetMin,
         nextActionAt: lead.nextActionAt,
         nextActionNote: lead.nextActionNote,
+        firstContactAt: lead.firstContactAt,
         assigneeName: lead.assignedTo?.name ?? lead.assignedTo?.email ?? null,
         createdAt: lead.createdAt,
         uncontactedHours: lead.firstContactAt ? null : hoursSince(lead.createdAt),
@@ -191,6 +196,11 @@ export async function getLeadDetail(leadId: string, showroomId: string) {
 }
 
 export interface DashboardViewModel {
+  periodDays: number;
+  totalRequests: number;
+  contacted: number;
+  quotesSent: number;
+  acceptedValue: number;
   newLeads: number;
   uncontacted: number;
   uncontactedOverdue: number;
@@ -202,6 +212,14 @@ export interface DashboardViewModel {
   /** QA rows excluded from every figure above; shown as a note, not a number. */
   hiddenTestRecords: number;
   actionQueue: LeadListItem[];
+  trend: { label: string; requests: number; contacted: number }[];
+  recentActivities: {
+    id: string;
+    type: string;
+    body: string | null;
+    createdAt: Date;
+    customerName: string;
+  }[];
 }
 
 /**
@@ -210,15 +228,17 @@ export interface DashboardViewModel {
  * `pipelineValue` sums open leads only and is never labelled revenue: it is
  * the value of work in progress, which is a different claim from money earned.
  */
-export async function getDashboard(showroomId: string): Promise<DashboardViewModel> {
+export async function getDashboard(showroomId: string, periodDays = 30): Promise<DashboardViewModel> {
   return withSchemaGuard(async () => {
     const { items: allItems } = await listLeads({ showroomId, take: 500 });
 
     // Test rows are excluded from every figure on this screen. A dashboard that
     // counts QA records is a dashboard the partner learns to distrust, and one
     // wrong number is enough to make them doubt the rest.
-    const items = allItems.filter((l) => !l.isTestRecord);
-    const hiddenTestRecords = allItems.length - items.length;
+    const realItems = allItems.filter((l) => !l.isTestRecord);
+    const hiddenTestRecords = allItems.length - realItems.length;
+    const cutoff = new Date(Date.now() - periodDays * 86_400_000);
+    const items = realItems.filter((lead) => new Date(lead.createdAt) >= cutoff);
 
     const open = items.filter((l) => isOpenStage(l.stage));
     const now = Date.now();
@@ -243,7 +263,46 @@ export async function getDashboard(showroomId: string): Promise<DashboardViewMod
       })
       .slice(0, 12);
 
+    const [quotes, recentActivities] = await Promise.all([
+      prisma.quote.findMany({
+        where: { showroomId, OR: [{ sentAt: { gte: cutoff } }, { decidedAt: { gte: cutoff } }] },
+        select: { status: true, total: true, sentAt: true, decidedAt: true },
+      }),
+      prisma.leadActivity.findMany({
+        where: { showroomId, createdAt: { gte: cutoff } },
+        orderBy: { createdAt: 'desc' },
+        take: 8,
+        select: {
+          id: true, type: true, body: true, createdAt: true,
+          lead: { select: { customerName: true } },
+        },
+      }),
+    ]);
+
+    const bucketCount = 7;
+    const bucketMs = (periodDays * 86_400_000) / bucketCount;
+    const trend = Array.from({ length: bucketCount }, (_, index) => {
+      const start = cutoff.getTime() + index * bucketMs;
+      const end = start + bucketMs;
+      const inBucket = items.filter((lead) => {
+        const at = new Date(lead.createdAt).getTime();
+        return at >= start && at < end;
+      });
+      return {
+        label: new Date(start).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' }),
+        requests: inBucket.length,
+        contacted: inBucket.filter((lead) => lead.firstContactAt !== null).length,
+      };
+    });
+
     return {
+      periodDays,
+      totalRequests: items.length,
+      contacted: items.filter((lead) => lead.firstContactAt !== null).length,
+      quotesSent: quotes.filter((quote) => quote.sentAt && quote.sentAt >= cutoff).length,
+      acceptedValue: quotes
+        .filter((quote) => quote.status === 'ACCEPTED' && quote.decidedAt && quote.decidedAt >= cutoff)
+        .reduce((sum, quote) => sum + quote.total, 0),
       newLeads: items.filter((l) => l.stage === 'NEW').length,
       uncontacted: items.filter((l) => l.uncontactedHours !== null && isOpenStage(l.stage)).length,
       uncontactedOverdue: items.filter(
@@ -255,6 +314,14 @@ export async function getDashboard(showroomId: string): Promise<DashboardViewMod
       pipeline,
       actionQueue,
       hiddenTestRecords,
+      trend,
+      recentActivities: recentActivities.map((activity) => ({
+        id: activity.id,
+        type: activity.type,
+        body: activity.body,
+        createdAt: activity.createdAt,
+        customerName: activity.lead.customerName,
+      })),
     };
   });
 }

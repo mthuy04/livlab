@@ -19,7 +19,7 @@
  */
 
 import { formatVnd } from '@/lib/room-studio/budgetCalculator';
-import { implementationRequestRepository, nextRequestCode } from './implementationRequestRepository';
+import { implementationRequestRepository } from './implementationRequestRepository';
 import { toLeadContext } from './leadContext';
 import { REQUEST_TYPES, type HumanHandoffPackage, type ImplementationRequest } from './types';
 
@@ -110,29 +110,30 @@ export function formatHandoffNotes(pkg: HumanHandoffPackage): string {
 
 export interface SubmitResult {
   request: ImplementationRequest;
-  /** True when the LivLab backend accepted it; false when only stored locally. */
+  /** Always true for a returned result; failures throw and remain retryable. */
   delivered: boolean;
 }
+
+const submissionKeys = new WeakMap<HumanHandoffPackage, string>();
 
 /**
  * Sends the request and returns the stored record.
  *
- * Never throws for a delivery failure. The customer has given their details and
- * pressed send; turning a backend outage into a lost request (and a lost lead)
- * would be the worst possible outcome. The request is recorded either way, and
- * the result says honestly whether it reached LivLab.
+ * A success is only shown after PostgreSQL returns the real YC code. The stable
+ * idempotency key stays attached to this package, so retrying after a lost
+ * response cannot create a second lead.
  */
 export async function submitImplementationRequest(pkg: HumanHandoffPackage): Promise<SubmitResult> {
-  const requestCode = await nextRequestCode();
   const budgetRange = toBudgetRange(pkg.budget?.targetBudget);
+  let submissionKey = submissionKeys.get(pkg);
+  if (!submissionKey) {
+    submissionKey = crypto.randomUUID();
+    submissionKeys.set(pkg, submissionKey);
+  }
 
-  let leadId: string | undefined;
-  let delivered = false;
-
-  try {
-    const res = await fetch('/api/quote', {
+  const res = await fetch('/api/quote', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Idempotency-Key': submissionKey },
       body: JSON.stringify({
         customerName: pkg.customerContact.fullName,
         phone: pkg.customerContact.phone,
@@ -158,26 +159,20 @@ export async function submitImplementationRequest(pkg: HumanHandoffPackage): Pro
         })),
       }),
     });
-
-    if (res.ok) {
-      const data = await res.json();
-      leadId = data?.lead?.id;
-      delivered = true;
-    }
-  } catch {
-    // Offline, blocked, or the API is down. Handled below, not surfaced as a
-    // crash.
+  const data = await res.json();
+  if (!res.ok || !data?.requestCode) {
+    throw new Error(data?.error || 'Không gửi được yêu cầu tới LivLab.');
   }
 
   const request: ImplementationRequest = {
-    requestCode,
-    leadId,
+    requestCode: data.requestCode,
+    leadId: data?.lead?.id,
     package: pkg,
-    delivery: delivered ? 'DELIVERED' : 'LOCAL_ONLY',
+    delivery: 'DELIVERED',
     status: 'NEW',
     createdAt: new Date().toISOString(),
   };
 
   await implementationRequestRepository.createRequest(request);
-  return { request, delivered };
+  return { request, delivered: true };
 }

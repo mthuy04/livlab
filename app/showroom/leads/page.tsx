@@ -2,8 +2,6 @@
 
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import type { Route } from 'next';
 import { Download, Search, X } from 'lucide-react';
 import {
   PageShell, Section, Status, EmptyState, ErrorState, MigrationNotice,
@@ -13,6 +11,7 @@ import {
 import { CX } from '@/components/showroom/ui/tokens';
 import { STAGE_LABEL } from '@/lib/showroom/leadStage';
 import type { LeadListItem } from '@/lib/showroom/showroomRepository';
+import LeadDrawer from '@/components/showroom/LeadDrawer';
 
 /**
  * The single sales inbox.
@@ -49,9 +48,11 @@ function LeadsWorkspace() {
   const [tab, setTab] = useState(() => searchParams.get('requestType') ?? '');
   const [stage, setStage] = useState(() => searchParams.get('stage') ?? '');
   const [overdueOnly, setOverdueOnly] = useState(() => searchParams.get('overdue') === '1');
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(() => searchParams.get('q') ?? '');
   const [showTestRecords, setShowTestRecords] = useState(false);
   const [state, setState] = useState<LoadState>('loading');
+  const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   // Debounced so typing a name does not fire a request per keystroke, and
   // guarded by `cancelled` so a slow result cannot overwrite a newer one.
@@ -79,7 +80,7 @@ function LeadsWorkspace() {
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [tab, stage, query]);
+  }, [tab, stage, query, refreshKey]);
 
   /** What this lead is waiting on — a scheduled action outranks an age. */
   const waitingOn = (lead: LeadListItem) =>
@@ -232,12 +233,16 @@ function LeadsWorkspace() {
                     return (
                       <TR key={lead.id} muted={lead.isTestRecord}>
                         <TD>
-                          <Link
-                            href={`/showroom/leads/${lead.id}` as Route}
+                          <button
+                            type="button"
+                            onClick={() => setSelectedLeadId(lead.id)}
                             className="whitespace-nowrap font-medium text-[#111A22] hover:text-[#123C5A]"
                           >
                             {lead.customerName}
-                          </Link>
+                          </button>
+                          <p className="mt-0.5 text-[10px] font-bold tracking-[0.03em] text-[#B97F20]">
+                            {lead.requestCode ?? 'Yêu cầu cũ'}
+                          </p>
                           {/* Phone sits under the name on purpose: it is the
                               identifier customers are grouped by, so two rows
                               with one name are told apart here. */}
@@ -306,6 +311,7 @@ function LeadsWorkspace() {
               </button>
             </FootNote>
           )}
+          {selectedLeadId && <LeadDrawer leadId={selectedLeadId} onClose={() => setSelectedLeadId(null)} onChanged={() => setRefreshKey((value) => value + 1)} />}
         </>
       )}
     </PageShell>

@@ -13,23 +13,23 @@
 
 export const COLOR = {
   /** Page background. Not white — white surfaces need something to sit on. */
-  canvas: '#F7F9FA',
+  canvas: '#F7F6F2',
   surface: '#FFFFFF',
   /** Table header, hover rows, inset panels. */
-  subtle: '#F4F7F9',
-  hover: '#FAFCFD',
+  subtle: '#FAF9F6',
+  hover: '#FFFCF6',
 
-  border: '#E3E9EE',
-  borderStrong: '#CFD9E1',
+  border: '#EAE9E4',
+  borderStrong: '#D8D6CF',
 
-  text: '#111A22',
-  textSecondary: '#4F6070',
-  textMuted: '#7E8D9B',
+  text: '#2E2D2B',
+  textSecondary: '#64635F',
+  textMuted: '#92948D',
 
   /** The one accent. LivLab navy, already used across the storefront. */
-  accent: '#123C5A',
-  accentHover: '#0D2B42',
-  accentSoft: '#EAF1F6',
+  accent: '#EF9F00',
+  accentHover: '#FCA359',
+  accentSoft: '#FFF1D6',
 
   success: '#2E7D52',
   successSoft: '#E9F3ED',
@@ -48,7 +48,7 @@ export const RADIUS = {
   /** Controls, chips, inputs. */
   sm: '4px',
   /** Cards, tables, panels. Moderate on purpose — not a pill, not a slab. */
-  md: '6px',
+  md: '15px',
 } as const;
 
 /**
@@ -64,20 +64,20 @@ export const ROW_HEIGHT = {
 
 /** Shared Tailwind fragments, so the same control is not re-specified per page. */
 export const CX = {
-  card: 'rounded-md border border-[#E3E9EE] bg-white',
+  card: 'rounded-[15px] border border-[#EAE9E4] bg-white shadow-[0_7px_24px_rgba(46,45,43,.035)]',
   input:
-    'h-8 rounded border border-[#E3E9EE] bg-white px-2.5 text-[13px] text-[#111A22] ' +
+    'h-9 rounded-[9px] border border-[#E6E4DE] bg-white px-3 text-[13px] text-[#2E2D2B] ' +
     'outline-none transition-colors placeholder:text-[#9AA7B4] ' +
-    'focus:border-[#123C5A] focus:ring-1 focus:ring-[#123C5A]/15',
+    'focus:border-[#EF9F00] focus:ring-2 focus:ring-[#EF9F00]/15',
   buttonPrimary:
-    'inline-flex h-8 items-center gap-1.5 rounded border border-transparent bg-[#123C5A] px-3 ' +
-    'text-[13px] font-medium text-white transition-colors hover:bg-[#0D2B42] ' +
-    'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#123C5A] ' +
+    'inline-flex h-9 items-center gap-1.5 rounded-[9px] border border-[#EF9F00] bg-[#EF9F00] px-3.5 ' +
+    'text-[13px] font-semibold text-[#2E2D2B] shadow-[0_2px_0_#C88400] transition-colors hover:bg-[#FCA359] ' +
+    'focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#EF9F00] ' +
     'disabled:cursor-not-allowed disabled:opacity-45',
   buttonSecondary:
-    'inline-flex h-8 items-center gap-1.5 rounded border border-[#E3E9EE] bg-white px-3 ' +
-    'text-[13px] font-medium text-[#4F6070] transition-colors hover:border-[#CFD9E1] hover:text-[#111A22] ' +
-    'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#123C5A] ' +
+    'inline-flex h-9 items-center gap-1.5 rounded-[9px] border border-[#E6E4DE] bg-white px-3.5 ' +
+    'text-[13px] font-semibold text-[#62615D] transition-colors hover:border-[#D6D2C8] hover:bg-[#FBF8F0] hover:text-[#2E2D2B] ' +
+    'focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#EF9F00] ' +
     'disabled:cursor-not-allowed disabled:opacity-45',
   /** Numeric cells. Tabular figures so columns of money line up. */
   numeric: 'text-right tabular-nums',

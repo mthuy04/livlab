@@ -1,62 +1,40 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getSessionUser, hasRole, unauthorized, forbidden, showroomScopeFilter, showroomUnassigned } from '@/lib/auth/session';
+import { resolveStage, STAGE_LABEL } from '@/lib/showroom/leadStage';
+import { requireShowroomContext, handleShowroomError } from '@/lib/showroom/apiHelpers';
 
-const statusMap: Record<string, string> = {
-  NEW: 'Mới',
-  CONTACTED: 'Đã liên hệ',
-  QUOTED: 'Đã báo giá',
-  WON: 'Đã chốt',
-  LOST: 'Mất lead'
-};
+const csvCell = (value: unknown) => `"${String(value ?? '').replaceAll('"', '""')}"`;
 
 export async function GET() {
-  const user = await getSessionUser();
-  if (!user) return unauthorized();
-  if (!hasRole(user, 'ADMIN', 'SHOWROOM')) return forbidden();
-
-  // A SHOWROOM account with no showroom would otherwise get an empty result
-  // set that reads as "no leads" rather than "not configured yet".
-  const unassigned = showroomUnassigned(user);
-  if (unassigned) return unassigned;
-
+  const ctx = await requireShowroomContext();
+  if ('error' in ctx) return ctx.error;
   try {
     const leads = await prisma.quoteLead.findMany({
-      where: showroomScopeFilter(user),
-      include: {
-        items: true,
+      where: { showroomId: ctx.showroomId },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        requestCode: true, customerName: true, phone: true, conceptName: true,
+        roomType: true, budgetMin: true, budgetMax: true, estimatedValue: true,
+        status: true, stage: true, createdAt: true,
       },
-      orderBy: { createdAt: 'desc' }
     });
-
-    const csvRows = [
-      ['Mã Lead', 'Tên khách hàng', 'Số điện thoại', 'Concept', 'Loại phòng', 'Ngân sách tối thiểu', 'Ngân sách tối đa', 'Trạng thái', 'Ngày tạo']
+    const rows = [
+      ['Mã yêu cầu', 'Tên khách hàng', 'Số điện thoại', 'Concept', 'Loại phòng', 'Ngân sách tối thiểu', 'Ngân sách tối đa', 'Giá trị tham khảo', 'Giai đoạn', 'Ngày tạo'],
+      ...leads.map((lead) => [
+        lead.requestCode ?? '', lead.customerName, lead.phone ?? '', lead.conceptName ?? '',
+        lead.roomType ?? '', lead.budgetMin ?? '', lead.budgetMax ?? '', lead.estimatedValue ?? '',
+        STAGE_LABEL[resolveStage(lead)], lead.createdAt.toISOString(),
+      ]),
     ];
-
-    for (const l of leads) {
-      const code = l.id.slice(-6).toUpperCase();
-      const name = `"${l.customerName.replace(/"/g, '""')}"`;
-      const phone = `"${(l.phone || '').replace(/"/g, '""')}"`;
-      const concept = `"${(l.conceptName || '').replace(/"/g, '""')}"`;
-      const room = `"${(l.roomType || '').replace(/"/g, '""')}"`;
-      const valMin = l.estimatedValue || 0;
-      const valMax = l.estimatedValue || 0;
-      const status = statusMap[l.status] || 'Mới';
-      const date = l.createdAt.toISOString();
-      csvRows.push([code, name, phone, concept, room, valMin.toString(), valMax.toString(), status, date]);
-    }
-
-    const csvString = '\uFEFF' + csvRows.map(row => row.join(',')).join('\n'); // Add BOM
-
-    return new NextResponse(csvString, {
-      status: 200,
+    const csv = `\uFEFF${rows.map((row) => row.map(csvCell).join(',')).join('\r\n')}`;
+    return new NextResponse(csv, {
       headers: {
-        'Content-Type': 'text/csv; charset=utf-8',
-        'Content-Disposition': 'attachment; filename="livlab-leads-export.csv"'
-      }
+        'content-type': 'text/csv; charset=utf-8',
+        'content-disposition': 'attachment; filename="tungdang-leads.csv"',
+        'cache-control': 'no-store',
+      },
     });
   } catch (error) {
-    console.error('Error exporting leads:', error);
-    return NextResponse.json({ error: 'Lỗi khi export CSV' }, { status: 500 });
+    return handleShowroomError(error);
   }
 }
