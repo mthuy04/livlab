@@ -71,8 +71,9 @@ grep -v '^--' db/migrations/<file>.sql \
 
 | File | Date | Summary | Applied to production |
 |------|------|---------|----------------------|
-| `20261007_showroom_workspace_v2.sql` | 2026-10-07 | Showroom Workspace V2: 7 enums, 4 tables (`Quote`, `QuoteLine`, `LeadActivity`, `ShowroomProductOffer`), 8 nullable columns on `QuoteLead`. Additive only. **Schema frozen.** | **No — awaiting approval** |
-| `20261018_showroom_workspace_v3.sql` | 2026-10-18 | Stable customer request codes, secure phone lookup keys, idempotent submissions, and explicit LIVE/DEMO tenant workspace binding. Additive; includes one idempotent Tùng Đăng demo configuration row. | **No — awaiting approval** |
+| `20261007_showroom_workspace_v2.sql` | 2026-10-07 | Showroom Workspace V2: 7 enums, 4 tables (`Quote`, `QuoteLine`, `LeadActivity`, `ShowroomProductOffer`), 8 nullable columns on `QuoteLead`. Additive only. **Schema frozen.** | Yes — present on the production database (readiness check, 2026-10-19) |
+| `20261018_showroom_workspace_v3.sql` | 2026-10-18 | Stable customer request codes, secure phone lookup keys, idempotent submissions, and explicit LIVE/DEMO tenant workspace binding. Additive; includes one idempotent Tùng Đăng demo configuration row. | Yes — 2026-10-19, `check:showroom-db` ready |
+| `20261019_giangson_demo_workspace.sql` | 2026-10-19 | One idempotent configuration row: the DEMO workspace bound to the `giangson` tenant, so the Giang Sơn demo storefront's quote requests have an owned inbox. No leads, prices or users. | Yes — 2026-10-19 |
 
 ## Invariants the database cannot enforce
 
