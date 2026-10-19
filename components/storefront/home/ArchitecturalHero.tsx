@@ -81,7 +81,7 @@ export default function ArchitecturalHero({
               <p>{`GỢI Ý ${activeIndex + 1}/${hotspots.length}`}</p>
               <strong>{active.label}</strong>
               <span>{active.detail}</span>
-              <Link href={active.href as Route}>TRAO ĐỔI NHU CẦU →</Link>
+              <Link href={active.href as Route}>XEM SẢN PHẨM →</Link>
             </div>
           )}
         </div>

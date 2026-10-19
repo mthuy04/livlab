@@ -152,7 +152,9 @@ const dimensionText = (p: CatalogProduct): string | null => {
 function buildSpecifications(p: CatalogProduct, bareTechnologies: string[]): SpecGroup[] {
   const identity = compact([
     row('Thương hiệu', p.brand),
-    row('Mã sản phẩm', p.sku),
+    // A model code is an identifier, not a measurement: through `row` the
+    // "1656V" in BF-1656V would be read as volts and printed "1656 v".
+    p.sku ? { label: 'Mã sản phẩm', value: p.sku } : null,
     row('Danh mục', p.category),
     row('Phân loại', p.subcategory),
     row('Xuất xứ', p.origin),
