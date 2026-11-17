@@ -158,6 +158,12 @@ export interface TenantSite {
   /** Lower-case hostnames, without ports, that serve this tenant. */
   hosts: string[];
   /**
+   * Hostnames that also serve this tenant but are never indexed — a stand-in
+   * address while the real domain is being connected. Canonical URLs on them
+   * still point at `origin`, so nothing has to move when the domain goes live.
+   */
+  previewHosts?: string[];
+  /**
    * Whether product pages may be indexed on this tenant's own host. Off for a
    * catalogue that is a reference list rather than the business's offer.
    */
@@ -936,6 +942,8 @@ export const DEMO_GIANGSON_TENANT: TenantStorefrontConfig = {
   site: {
     origin: 'https://giangson.livlab.space',
     hosts: ['giangson.livlab.space'],
+    // Live while giangson.livlab.space waits for its DNS record (2026-11-17).
+    previewHosts: ['giangson-livlab.vercel.app'],
     indexProducts: true,
   },
   business: {

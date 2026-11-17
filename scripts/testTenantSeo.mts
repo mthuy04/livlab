@@ -62,6 +62,10 @@ console.log('\nngữ cảnh site');
   check('livlab.vercel.app: LivLab nhưng không index, canonical về www', alias.tenant.id === 'livlab' && !alias.indexable && alias.origin === 'https://www.livlab.space');
   const forged = siteContext({ host: 'attacker.example', previewTenant: null });
   check('host lạ: LivLab, không index', forged.tenant.id === 'livlab' && !forged.indexable && forged.via === 'DEFAULT');
+  const temp = siteContext({ host: 'giangson-livlab.vercel.app', previewTenant: TD });
+  check('host tạm .vercel.app: phục vụ Giang Sơn, cookie khác bị bỏ qua', temp.tenant.id === 'giangson' && temp.via === 'HOST');
+  check('host tạm: không index, canonical vẫn về giangson.livlab.space', !temp.indexable && temp.origin === GS_ORIGIN);
+  check('host tạm: không có sitemap, robots không quảng bá sitemap', sitemapFor(temp, { products: [{ id: 'a', category: 'Bồn cầu' }], catalogCheckedAt: null, conceptSlugs: [] }).length === 0 && robotsFor(temp).sitemap === undefined);
   check('absoluteUrl giữ đúng origin', absoluteUrl(GS_ORIGIN, '/') === `${GS_ORIGIN}/` && absoluteUrl(GS_ORIGIN, '/products?category=L') === `${GS_ORIGIN}/products?category=L`);
 }
 

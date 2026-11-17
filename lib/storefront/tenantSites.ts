@@ -20,23 +20,31 @@ export function normalizeHost(raw: string | null | undefined): string | null {
   return /^[a-z0-9-]+(\.[a-z0-9-]+)*$/.test(host) && host.length <= 253 ? host : null;
 }
 
+interface HostEntry {
+  tenant: TenantStorefrontConfig;
+  /** False for a tenant's preview hosts: served, never indexed. */
+  indexable: boolean;
+}
+
 /** Built from the tenant configs themselves, so a host is declared in exactly one place. */
-const HOST_INDEX: ReadonlyMap<string, TenantStorefrontConfig> = (() => {
-  const index = new Map<string, TenantStorefrontConfig>();
+const HOST_INDEX: ReadonlyMap<string, HostEntry> = (() => {
+  const index = new Map<string, HostEntry>();
+  const claim = (tenant: TenantStorefrontConfig, host: string, indexable: boolean) => {
+    const key = normalizeHost(host);
+    if (!key) throw new Error(`Tenant ${tenant.id} declares an invalid host: ${host}`);
+    const taken = index.get(key);
+    if (taken) throw new Error(`Host ${key} is claimed by both ${taken.tenant.id} and ${tenant.id}`);
+    index.set(key, { tenant, indexable });
+  };
   for (const tenant of Object.values(TENANTS)) {
-    for (const host of tenant.site?.hosts ?? []) {
-      const key = normalizeHost(host);
-      if (!key) throw new Error(`Tenant ${tenant.id} declares an invalid host: ${host}`);
-      const taken = index.get(key);
-      if (taken) throw new Error(`Host ${key} is claimed by both ${taken.id} and ${tenant.id}`);
-      index.set(key, tenant);
-    }
+    for (const host of tenant.site?.hosts ?? []) claim(tenant, host, true);
+    for (const host of tenant.site?.previewHosts ?? []) claim(tenant, host, false);
   }
   return index;
 })();
 
 export function tenantForHost(host: string | null): TenantStorefrontConfig | null {
-  return host ? HOST_INDEX.get(host) ?? null : null;
+  return host ? HOST_INDEX.get(host)?.tenant ?? null : null;
 }
 
 export type TenantResolution =
@@ -70,12 +78,14 @@ export function siteContext({
   host: string | null;
   previewTenant: TenantStorefrontConfig | null;
 }): SiteContext {
-  const owner = tenantForHost(host);
+  const entry = host ? HOST_INDEX.get(host) ?? null : null;
+  const owner = entry?.tenant ?? null;
 
   // A showroom's own hostname always serves that showroom. A preview cookie
   // set elsewhere cannot repaint giangson.livlab.space as another tenant.
-  if (owner && owner.id !== LIVLAB_TENANT.id) {
-    return { tenant: owner, via: 'HOST', host, origin: owner.site!.origin, indexable: true };
+  // A preview host serves it too, unindexed, with the canonical on the origin.
+  if (entry && owner && owner.id !== LIVLAB_TENANT.id) {
+    return { tenant: owner, via: 'HOST', host, origin: owner.site!.origin, indexable: entry.indexable };
   }
 
   if (previewTenant && previewTenant.id !== LIVLAB_TENANT.id) {
@@ -93,7 +103,7 @@ export function siteContext({
     via: owner ? 'HOST' : 'DEFAULT',
     host,
     origin: LIVLAB_ORIGIN,
-    indexable: owner !== null,
+    indexable: entry?.indexable ?? false,
   };
 }
 
