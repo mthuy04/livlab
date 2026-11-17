@@ -1,10 +1,15 @@
+import { livlabPageMetadata } from '@/lib/seo/pageMetadata';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { FileText, ArrowRight } from 'lucide-react';
 
-export const metadata = {
-  title: 'Điều khoản sử dụng - LivLab',
-  description: 'Điều khoản và điều kiện sử dụng dịch vụ tại LivLab.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return livlabPageMetadata('/terms', {
+    title: 'Điều khoản sử dụng - LivLab',
+    description:
+      'Điều khoản và điều kiện sử dụng dịch vụ tại LivLab.',
+  });
+}
 
 export default function TermsPage() {
   return (

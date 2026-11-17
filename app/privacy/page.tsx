@@ -1,10 +1,15 @@
+import { livlabPageMetadata } from '@/lib/seo/pageMetadata';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Shield, ArrowRight } from 'lucide-react';
 
-export const metadata = {
-  title: 'Chính sách bảo mật - LivLab',
-  description: 'Chính sách bảo mật và cách LivLab xử lý thông tin cá nhân của bạn.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return livlabPageMetadata('/privacy', {
+    title: 'Chính sách bảo mật - LivLab',
+    description:
+      'Chính sách bảo mật và cách LivLab xử lý thông tin cá nhân của bạn.',
+  });
+}
 
 export default function PrivacyPage() {
   return (

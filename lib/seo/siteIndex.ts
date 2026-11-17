@@ -34,7 +34,12 @@ export interface SitemapInput {
   /** When the catalogue was last checked against its sources, if known. */
   catalogCheckedAt: string | null;
   conceptSlugs: string[];
+  /** LivLab's articles; listed on LivLab only. */
+  blogSlugs?: string[];
 }
+
+/** LivLab's own public pages, in addition to the storefront ones. */
+const LIVLAB_PAGES = ['/about', '/showrooms', '/contact', '/quote-process', '/visual-studio', '/ai-suggestion', '/small-bathroom-combo', '/blog'];
 
 export function sitemapFor(context: SiteContext, input: SitemapInput): MetadataRoute.Sitemap {
   if (!context.indexable) return [];
@@ -83,7 +88,10 @@ export function sitemapFor(context: SiteContext, input: SitemapInput): MetadataR
   if (tenant.features.roomStudio) entries.push(at('/room-studio', { changeFrequency: 'monthly', priority: 0.5 }));
   if (tenant.business) entries.push(at('/contact', { changeFrequency: 'yearly', priority: 0.6 }));
   if (tenant.id === LIVLAB_TENANT.id) {
-    entries.push(at('/about', { changeFrequency: 'yearly', priority: 0.4 }), at('/blog', { changeFrequency: 'weekly', priority: 0.4 }));
+    for (const path of LIVLAB_PAGES) entries.push(at(path, { changeFrequency: 'monthly', priority: path === '/showrooms' ? 0.8 : 0.5 }));
+    for (const slug of input.blogSlugs ?? []) {
+      entries.push(at(`/blog/${encodeURIComponent(slug)}`, { changeFrequency: 'yearly', priority: 0.4 }));
+    }
   }
   return entries;
 }

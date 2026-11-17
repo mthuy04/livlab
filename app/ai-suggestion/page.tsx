@@ -1,10 +1,14 @@
+import { livlabPageMetadata } from '@/lib/seo/pageMetadata';
 import BudgetFitSuggestion from '@/components/ai/BudgetFitSuggestion';
 import { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Gợi ý AI thông minh | LivLab',
-  description: 'AI Suggestion for budget-fit bathroom combos.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return livlabPageMetadata('/ai-suggestion', {
+    title: 'Gợi ý AI thông minh | LivLab',
+    description:
+      'Gợi ý combo thiết bị phòng tắm vừa ngân sách bằng AI, kèm sản phẩm thật và giá tham khảo.',
+  });
+}
 
 export default function AiSuggestionPage() {
   return (

@@ -3,6 +3,7 @@ import { resolveTenantContext } from '@/lib/storefront/resolveTenant';
 import { getCatalog } from '@/lib/storefront/catalog';
 import { getPublishedConcepts } from '@/lib/storefront/concepts';
 import { sitemapFor } from '@/lib/seo/siteIndex';
+import { blogArticles } from '@/lib/blogArticles';
 
 /**
  * The sitemap of whichever storefront this host serves — built from the same
@@ -18,5 +19,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     products: catalog?.products ?? [],
     catalogCheckedAt: catalog?.sourceCheckedAt ?? null,
     conceptSlugs: concepts.map((c) => c.concept.slug),
+    blogSlugs: blogArticles.map((a) => a.slug),
   });
 }

@@ -1,12 +1,17 @@
+import { livlabPageMetadata } from '@/lib/seo/pageMetadata';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, BookOpen } from 'lucide-react';
 import { blogArticles } from '@/lib/blogArticles';
 import BlogImageFallback from '@/components/blog/BlogImageFallback';
 
-export const metadata = {
-  title: 'Cẩm nang - LivLab',
-  description: 'Góc chia sẻ kinh nghiệm thiết kế, lựa chọn thiết bị vệ sinh và cải tạo phòng tắm.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return livlabPageMetadata('/blog', {
+    title: 'Cẩm nang - LivLab',
+    description:
+      'Góc chia sẻ kinh nghiệm thiết kế, lựa chọn thiết bị vệ sinh và cải tạo phòng tắm.',
+  });
+}
 
 export default function BlogPage() {
   return (

@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+import { livlabPageMetadata } from '@/lib/seo/pageMetadata';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -46,6 +48,14 @@ const benefits = [
   { icon: Clock, title: 'Rút ngắn chu kỳ bán hàng', desc: 'Từ xem sản phẩm đến gửi yêu cầu báo giá chỉ mất vài phút — không cần nhắn tin qua lại nhiều ngày.' },
   { icon: BarChart3, title: 'Hiện diện số chuyên nghiệp', desc: 'Khác biệt với đối thủ vẫn còn dùng catalogue PDF và theo dõi thủ công.' },
 ];
+
+export async function generateMetadata(): Promise<Metadata> {
+  return livlabPageMetadata('/showrooms', {
+    title: 'Giải pháp showroom số cho showroom phòng tắm | LivLab',
+    description:
+      'LivLab giúp showroom nội thất và phòng tắm trình bày sản phẩm trong không gian thực tế, thu thập yêu cầu báo giá có cấu trúc và quản lý lead trong một dashboard.',
+  });
+}
 
 export default function ShowroomsPage() {
   return (

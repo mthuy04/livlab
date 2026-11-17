@@ -23,7 +23,21 @@ export function websiteJsonLd(tenant: TenantStorefrontConfig, origin: string): J
     ...(names.length ? { alternateName: names } : {}),
     url: absoluteUrl(origin, '/'),
     inLanguage: 'vi-VN',
-    ...(tenant.business ? { publisher: { '@id': `${origin}/#business` } } : {}),
+    publisher: { '@id': tenant.business ? `${origin}/#business` : `${origin}/#organization` },
+  };
+}
+
+/** The organisation behind a site that is not a physical showroom — LivLab itself. */
+export function organizationJsonLd(tenant: TenantStorefrontConfig, origin: string): JsonLdObject | null {
+  if (tenant.business) return null;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': `${origin}/#organization`,
+    name: tenant.seo.siteName ?? tenant.brand.name,
+    url: absoluteUrl(origin, '/'),
+    ...(tenant.brand.logo ? { logo: absoluteUrl(origin, tenant.brand.logo) } : {}),
+    description: tenant.seo.description,
   };
 }
 

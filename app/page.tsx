@@ -1,7 +1,7 @@
 import type { Metadata, Route } from 'next';
 import { resolveTenantContext } from '@/lib/storefront/resolveTenant';
 import JsonLd from '@/components/seo/JsonLd';
-import { localBusinessJsonLd, websiteJsonLd } from '@/lib/seo/structuredData';
+import { localBusinessJsonLd, organizationJsonLd, websiteJsonLd } from '@/lib/seo/structuredData';
 import { getHomepageData } from '@/lib/storefront/homepageData';
 import HomeHero from '@/components/storefront/home/HomeHero';
 import HomeCategories from '@/components/storefront/home/HomeCategories';
@@ -33,7 +33,9 @@ export default async function HomePage() {
   const { tenant, origin } = await resolveTenantContext();
   // The site's identity for search engines: the WebSite name it should show,
   // and — for a showroom with confirmed details — the business behind it.
-  const identity = <JsonLd data={[websiteJsonLd(tenant, origin), localBusinessJsonLd(tenant, origin)]} />;
+  const identity = (
+    <JsonLd data={[websiteJsonLd(tenant, origin), localBusinessJsonLd(tenant, origin), organizationJsonLd(tenant, origin)]} />
+  );
   if (tenant.experience.home.layout === 'architecturalLanding') {
     return <>{identity}<ArchitecturalLanding tenant={tenant} /></>;
   }

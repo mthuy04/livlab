@@ -1,10 +1,15 @@
+import { livlabPageMetadata } from '@/lib/seo/pageMetadata';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle } from 'lucide-react';
 
-export const metadata = {
-  title: 'Quy trình báo giá - LivLab',
-  description: 'Tìm hiểu quy trình báo giá 4 bước minh bạch và tiện lợi từ LivLab.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return livlabPageMetadata('/quote-process', {
+    title: 'Quy trình báo giá - LivLab',
+    description:
+      'Tìm hiểu quy trình báo giá 4 bước minh bạch và tiện lợi từ LivLab.',
+  });
+}
 
 export default function QuoteProcessPage() {
   return (

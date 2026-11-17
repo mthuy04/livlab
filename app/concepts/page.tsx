@@ -23,12 +23,16 @@ import ConceptsBrowser from '@/components/storefront/concepts/ConceptsBrowser';
 
 export async function generateMetadata(): Promise<Metadata> {
   const tenant = await resolveTenant();
+  const published = await getPublishedConcepts(tenant).catch(() => []);
   return {
     title: `Không gian phòng tắm | ${tenant.brand.name}`,
     description:
       'Những không gian phòng tắm được tuyển chọn theo phong cách, diện tích và ngân sách, ' +
       'với các sản phẩm có thể xem trực tiếp trong từng concept.',
     alternates: { canonical: '/concepts' },
+    // An empty library is not a page worth a search result; it becomes one
+    // the moment a concept resolves against this catalogue.
+    ...(published.length === 0 ? { robots: { index: false, follow: true } } : {}),
   };
 }
 

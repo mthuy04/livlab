@@ -11,7 +11,7 @@ import { readFileSync } from 'node:fs';
 import { TENANTS } from '@/lib/storefront/tenantConfig';
 import { normalizeHost, siteContext, tenantForHost, absoluteUrl } from '@/lib/storefront/tenantSites';
 import { PRIVATE_PATHS, robotsFor, sitemapFor } from '@/lib/seo/siteIndex';
-import { breadcrumbJsonLd, localBusinessJsonLd, productJsonLd, serializeJsonLd, websiteJsonLd } from '@/lib/seo/structuredData';
+import { breadcrumbJsonLd, localBusinessJsonLd, organizationJsonLd, productJsonLd, serializeJsonLd, websiteJsonLd } from '@/lib/seo/structuredData';
 import { channelFor } from '@/lib/analytics/events';
 
 let passed = 0;
@@ -101,7 +101,10 @@ console.log('\nsitemap.xml');
   check('không có trang cá nhân, portal hay preview', !urls.some((u) => /\/(quote|track-quote|login|register|showroom|admin|s)(\/|$|\?)/.test(new URL(u).pathname + new URL(u).search)));
   check('không trùng URL', new Set(urls).size === urls.length);
 
-  const ll = sitemapFor(siteContext({ host: 'www.livlab.space', previewTenant: null }), input);
+  const ll = sitemapFor(siteContext({ host: 'www.livlab.space', previewTenant: null }), { ...input, blogSlugs: ['bai-viet-a'] });
+  const llUrls = ll.map((e) => e.url);
+  check('LivLab: có trang showroom, liên hệ, cẩm nang và bài viết', ['/showrooms', '/contact', '/blog', '/blog/bai-viet-a'].every((p) => llUrls.includes(`https://www.livlab.space${p}`)));
+  check('Giang Sơn: không liệt kê trang riêng hay bài viết của LivLab', !urls.some((u) => /\/(about|showrooms|blog|visual-studio)/.test(u)));
   check('LivLab: không liệt kê trang sản phẩm (vẫn noindex như trước)', !ll.some((e) => e.url.includes('/products/')));
   check('LivLab: chỉ URL của www.livlab.space', ll.every((e) => new URL(e.url).host === 'www.livlab.space'));
   check('host không index: sitemap rỗng', sitemapFor(siteContext({ host: 'livlab.vercel.app', previewTenant: null }), input).length === 0);
@@ -121,6 +124,10 @@ console.log('\nstructured data');
   const forbidden = ['aggregateRating', 'review', 'openingHours', 'openingHoursSpecification', 'geo', 'priceRange'];
   check('không có rating, review, giờ mở cửa, toạ độ chưa xác minh', forbidden.every((k) => !(k in biz)));
   check('LivLab không có LocalBusiness', localBusinessJsonLd(LL, 'https://www.livlab.space') === null);
+  const org = organizationJsonLd(LL, 'https://www.livlab.space');
+  check('LivLab: Organization tên LivLab, logo tuyệt đối', org?.name === 'LivLab' && String(org?.logo).startsWith('https://www.livlab.space/'));
+  check('LivLab: WebSite trỏ publisher về Organization', JSON.stringify(websiteJsonLd(LL, 'https://www.livlab.space').publisher).includes('#organization'));
+  check('Giang Sơn: không có Organization riêng (đã có LocalBusiness)', organizationJsonLd(GS, GS_ORIGIN) === null);
   check('điện thoại hiển thị và cấu hình khớp nhau', GS.contact?.phone === GS.business?.telephoneDisplay);
 
   const reference = productJsonLd({ origin: GS_ORIGIN, path: '/products/inax-bf-1656v', name: 'Bồn tắm', brand: 'INAX', sku: 'BF-1656V', category: 'Bồn tắm', description: null, images: ['/x.png'], offerPrice: null });

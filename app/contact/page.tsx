@@ -4,6 +4,7 @@ import LivLabContactPage from '@/components/contact/LivLabContactPage';
 import ShowroomContact from '@/components/contact/ShowroomContact';
 import JsonLd from '@/components/seo/JsonLd';
 import { breadcrumbJsonLd } from '@/lib/seo/structuredData';
+import { livlabPageMetadata } from '@/lib/seo/pageMetadata';
 
 /**
  * A showroom with confirmed business details gets its own contact page; LivLab
@@ -12,7 +13,12 @@ import { breadcrumbJsonLd } from '@/lib/seo/structuredData';
 export async function generateMetadata(): Promise<Metadata> {
   const { tenant } = await resolveTenantContext();
   const business = tenant.business;
-  if (!business) return { title: `Liên hệ | ${tenant.brand.name}` };
+  if (!business) {
+    return livlabPageMetadata('/contact', {
+      title: 'Liên hệ | LivLab',
+      description: 'Liên hệ LivLab để được tư vấn concept, combo phòng tắm hoặc hợp tác đưa showroom lên nền tảng.',
+    });
+  }
   return {
     title: `Liên hệ | ${tenant.brand.name}`,
     description: `Showroom ${business.name}: ${business.displayAddress}. Hotline / Zalo ${business.telephoneDisplay}. Tư vấn chọn thiết bị và báo giá.`,

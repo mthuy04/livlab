@@ -1,11 +1,15 @@
+import { livlabPageMetadata } from '@/lib/seo/pageMetadata';
 import Link from 'next/link';
 import { Target, Lightbulb, ShieldCheck, Users, Sparkles, ArrowRight, CheckCircle2, Eye, MousePointerClick, Link as LinkIcon, PiggyBank, Award } from 'lucide-react';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Về LivLab - Nền tảng visual-commerce',
-  description: 'LivLab - Số hoá trải nghiệm chọn mua phòng tắm. Nền tảng kết nối khách hàng, concept, sản phẩm và showroom trong một luồng liền mạch.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return livlabPageMetadata('/about', {
+    title: 'Về LivLab - Nền tảng visual-commerce',
+    description:
+      'LivLab - Số hoá trải nghiệm chọn mua phòng tắm. Nền tảng kết nối khách hàng, concept, sản phẩm và showroom trong một luồng liền mạch.',
+  });
+}
 
 export default function AboutPage() {
   return (
