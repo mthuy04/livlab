@@ -22,7 +22,7 @@ import CatalogSync from '@/components/layout/CatalogSync';
 export async function generateMetadata(): Promise<Metadata> {
   const { tenant, origin, indexable } = await resolveTenantContext();
   const siteName = tenant.seo.siteName ?? tenant.brand.name;
-  const shareImage = tenant.experience.home.landing?.hero.image.src ?? tenant.brand.logo;
+  const shareImage = tenant.seo.shareImage ?? tenant.experience.home.landing?.hero.image.src ?? tenant.brand.logo;
   return {
     metadataBase: new URL(origin),
     title: tenant.seo.title,

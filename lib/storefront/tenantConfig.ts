@@ -150,6 +150,8 @@ export interface TenantSeo {
   alternateNames?: string[];
   /** Google Search Console HTML-tag token, once the owner has created the property. */
   googleSiteVerification?: string | null;
+  /** 1200×630 image for shared links (Open Graph). Falls back to the hero image, then the logo. */
+  shareImage?: string;
 }
 
 export interface TenantSite {
@@ -287,6 +289,9 @@ export const LIVLAB_TENANT: TenantStorefrontConfig = {
     tagline: 'Dựng thử không gian phòng tắm với sản phẩm thật trước khi quyết định.',
     logo: '/images/logo.png',
     logoAlt: 'LivLab',
+    // The room mark from the logo, on white — replaces the Next/Vercel
+    // triangle that Google was showing beside LivLab's results.
+    icon: '/images/livlab-icon.png',
     accent: '#123C5A',
     accentHover: '#0D2B42',
     accentContrast: '#FFFFFF',
@@ -298,10 +303,13 @@ export const LIVLAB_TENANT: TenantStorefrontConfig = {
   poweredByLivLab: false,
   experience: EDITORIAL_EXPERIENCE,
   seo: {
-    title: 'LivLab — Dựng thử phòng tắm với sản phẩm thật',
+    // Brand first, then what people search for; short enough not to be cut.
+    title: 'LivLab – Thiết kế phòng tắm 3D với sản phẩm thật',
     description:
-      'Chọn sản phẩm thật, dựng phòng đúng kích thước và gửi yêu cầu báo giá tới showroom.',
+      'Chọn bồn cầu, lavabo, sen vòi từ showroom thật, dựng thử phòng tắm 3D đúng kích thước ' +
+      'nhà bạn và nhận báo giá từ showroom — thấy trước không gian trước khi mua.',
     siteName: 'LivLab',
+    shareImage: '/images/livlab-og.png',
     // Search Console HTML-tag token for https://www.livlab.space/, set in Vercel.
     googleSiteVerification: process.env.GOOGLE_SITE_VERIFICATION_LIVLAB ?? null,
   },
