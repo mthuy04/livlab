@@ -302,6 +302,8 @@ export const LIVLAB_TENANT: TenantStorefrontConfig = {
     description:
       'Chọn sản phẩm thật, dựng phòng đúng kích thước và gửi yêu cầu báo giá tới showroom.',
     siteName: 'LivLab',
+    // Search Console HTML-tag token for https://www.livlab.space/, set in Vercel.
+    googleSiteVerification: process.env.GOOGLE_SITE_VERIFICATION_LIVLAB ?? null,
   },
   // livlab.space answers with a 308 to www, so www is the canonical origin.
   // Product pages stay unindexed, as before: LivLab's catalogue is a reference
