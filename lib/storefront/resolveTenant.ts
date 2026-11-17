@@ -1,11 +1,9 @@
+import { cache } from 'react';
 import { cookies, headers } from 'next/headers';
 import { prisma } from '@/lib/prisma';
-import {
-  LIVLAB_TENANT,
-  TENANTS,
-  type TenantStorefrontConfig,
-} from './tenantConfig';
+import { TENANTS, type TenantStorefrontConfig } from './tenantConfig';
 import { themeCssVars } from './tenantExperience';
+import { normalizeHost, siteContext, type SiteContext } from './tenantSites';
 import { tenantFont } from './tenantFonts';
 
 /**
@@ -15,9 +13,10 @@ import { tenantFont } from './tenantFonts';
  * resolving on the client would flash LivLab's identity before a showroom's,
  * which is precisely what a white-label product must never do.
  *
- * Resolution order today is hostname, then an internal override. Subdomains
- * and custom domains slot into the same function later without any caller
- * changing.
+ * Resolution order: the request's hostname first — a showroom's own domain
+ * always serves that showroom — then the preview choice, which only applies
+ * on LivLab's hosts, then LivLab itself. The mapping lives in each tenant's
+ * `site.hosts`; see `tenantSites.ts`.
  */
 
 export const TENANT_PREVIEW_COOKIE = 'livlab_tenant_preview';
@@ -35,18 +34,13 @@ export function tenantPreviewEnabled(): boolean {
   );
 }
 
-/** Hostnames mapped to a tenant. Real custom domains belong here later. */
-const HOST_TENANTS: Record<string, string> = {
-  // livlab.vercel.app and local development both get the default storefront.
-};
-
 /**
  * The preview choice, set by /dev/tenant and stored in a cookie.
  *
  * A cookie rather than a query parameter because a root layout never receives
  * searchParams — only pages do — so a query string cannot reach this function.
  */
-async function previewTenantSlug(): Promise<string | null> {
+async function previewTenant(): Promise<TenantStorefrontConfig | null> {
   let slug: string | null = null;
   try {
     slug = (await cookies()).get(TENANT_PREVIEW_COOKIE)?.value ?? null;
@@ -63,8 +57,20 @@ async function previewTenantSlug(): Promise<string | null> {
   // Everything else is an internal switch and stays behind the dev gate: a
   // tenant backed by a live showroom carries that showroom's prices, and a
   // customer must never reach them by holding someone else's cookie.
-  if (tenant.publicDemo) return slug;
-  return tenantPreviewEnabled() ? slug : null;
+  if (tenant.publicDemo) return tenant;
+  return tenantPreviewEnabled() ? tenant : null;
+}
+
+async function requestHost(): Promise<string | null> {
+  try {
+    // `host`, not `x-forwarded-host`: on Vercel a request only reaches this
+    // deployment through a domain attached to it, and that is what `host` says.
+    return normalizeHost((await headers()).get('host'));
+  } catch {
+    // headers() is unavailable in some rendering contexts; LivLab's own
+    // storefront, unindexed, is the safe answer there.
+    return null;
+  }
 }
 
 /**
@@ -105,24 +111,19 @@ async function withShowroomContact(
   }
 }
 
+/**
+ * The tenant for this request, plus where its canonical URLs live and whether
+ * it may be indexed. Memoised per request: the layout, the page and their
+ * metadata all ask.
+ */
+export const resolveTenantContext = cache(async (): Promise<SiteContext> => {
+  const host = await requestHost();
+  const context = siteContext({ host, previewTenant: await previewTenant() });
+  return { ...context, tenant: await withShowroomContact(context.tenant) };
+});
+
 export async function resolveTenant(): Promise<TenantStorefrontConfig> {
-  const preview = await previewTenantSlug();
-  if (preview && TENANTS[preview]) {
-    return withShowroomContact(TENANTS[preview]);
-  }
-
-  try {
-    const host = (await headers()).get('host')?.split(':')[0] ?? '';
-    const bySlug = HOST_TENANTS[host];
-    if (bySlug && TENANTS[bySlug]) {
-      return withShowroomContact(TENANTS[bySlug]);
-    }
-  } catch {
-    // headers() is unavailable in some rendering contexts. Falling through to
-    // the default storefront is correct; failing the page is not.
-  }
-
-  return LIVLAB_TENANT;
+  return (await resolveTenantContext()).tenant;
 }
 
 /**

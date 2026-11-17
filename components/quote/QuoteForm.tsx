@@ -7,6 +7,7 @@ import BudgetFitCard from '@/components/budget/BudgetFitCard';
 import { CheckCircle, Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/lib/context/AuthContext';
+import { trackEvent, visitAttribution } from '@/lib/analytics/events';
 
 interface QuoteFormProps {
   quoteItems: QuoteItem[];
@@ -156,6 +157,9 @@ export default function QuoteForm({ quoteItems, onSuccess }: QuoteFormProps) {
             style: form.style || null,
             timeline: form.timeline || null,
             needsInstallation: form.needsInstallation,
+            // Where the visit came from — channel, landing path, referring
+            // host. No personal data; it lets the showroom count leads by source.
+            attribution: visitAttribution(),
           },
           notes: form.notes + (form.timeline ? `\nTimeline: ${form.timeline}` : '') + (form.needsInstallation ? `\nNeeds Installation: Yes` : ''),
           items: quoteItems,
@@ -166,6 +170,10 @@ export default function QuoteForm({ quoteItems, onSuccess }: QuoteFormProps) {
       if (!res.ok) throw new Error(data.error || 'Không gửi được yêu cầu báo giá.');
       
       clearQuotePrefill();
+      // Fired only after the server has stored the request and issued its code.
+      const value = calculateQuoteTotalRange(quoteItems).min;
+      trackEvent('quote_request_submit', { item_count: quoteItems.length, value, currency: 'VND', form_name: 'quote_form' });
+      trackEvent('generate_lead', { value, currency: 'VND', lead_source: visitAttribution()?.channel ?? 'unknown', form_name: 'quote_form' });
       onSuccess(data.requestCode);
     } catch (err) {
       console.error(err);

@@ -2,7 +2,7 @@ import 'server-only';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { prisma } from '@/lib/prisma';
-import type { TenantStorefrontConfig } from './tenantConfig';
+import { TENANTS, type TenantStorefrontConfig } from './tenantConfig';
 import { imageVerdicts, isRejected, type ImageStatus } from './imageQuality';
 import { manufacturerRecords, type ImageSource, type ManufacturerRecord } from './manufacturerData';
 import { imageAssets } from './imageAssets';
@@ -368,6 +368,24 @@ function withManufacturer(product: CatalogProduct, record: ManufacturerRecord | 
   };
 }
 
+/** Every other tenant's own website hosts — the photography this tenant may not show. */
+function foreignImageHosts(tenant: TenantStorefrontConfig): string[] {
+  return Object.values(TENANTS)
+    .filter((t) => t.id !== tenant.id)
+    .flatMap((t) => t.ownedImageHosts ?? []);
+}
+
+function isFrom(url: string | null | undefined, hosts: string[]): boolean {
+  if (!url || hosts.length === 0) return false;
+  let host: string;
+  try {
+    host = new URL(url).hostname;
+  } catch {
+    return false;
+  }
+  return hosts.some((h) => host === h || host.endsWith(`.${h}`));
+}
+
 /** Fixture-backed tenants, by tenant id. Everything else reads the database. */
 const FIXTURE_TENANTS: Record<string, string> = {
   tungdang: 'tungdang-sanitaryware.json',
@@ -401,6 +419,7 @@ export async function getCatalog(
   // rescued by an official photograph is judged on that photograph.
   const records = await manufacturerRecords();
   const assets = await imageAssets();
+  const foreign = foreignImageHosts(tenant);
   catalog = {
     ...catalog,
     products: catalog.products.map((p) => {
@@ -409,6 +428,9 @@ export async function getCatalog(
       // provenance so the asset can be traced and swapped later.
       const asset = assets.get(p.id);
       if (!asset?.localPath) return enriched;
+      // A copy of another showroom's own photography stays on that showroom's
+      // storefront; this one keeps the manufacturer's or its own image.
+      if (isFrom(asset.provenance?.imageSourceUrl, foreign)) return enriched;
       return {
         ...enriched,
         image: asset.localPath,

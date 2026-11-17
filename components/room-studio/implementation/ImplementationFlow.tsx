@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowLeft, X } from 'lucide-react';
+import { trackEvent, visitAttribution } from '@/lib/analytics/events';
 import type { RoomState } from '@/lib/room-studio/roomState';
 import type { BudgetEstimate } from '@/lib/room-studio/budgetCalculator';
 import type { PlacedProductView } from '@/lib/room-studio/useRoomStudio';
@@ -117,6 +118,9 @@ export default function ImplementationFlow({
     setError(null);
     try {
       const { request } = await submitImplementationRequest(pkg);
+      const value = pkg.products.reduce((sum, p) => sum + (p.referencePriceMin ?? 0) * p.quantity, 0);
+      trackEvent('room_studio_quote_request', { item_count: pkg.products.length, value, currency: 'VND' });
+      trackEvent('generate_lead', { value, currency: 'VND', lead_source: visitAttribution()?.channel ?? 'unknown', form_name: 'room_studio' });
       setResult(request);
       setStep('success');
     } catch {

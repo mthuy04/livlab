@@ -21,6 +21,7 @@
 import { formatVnd } from '@/lib/room-studio/budgetCalculator';
 import { implementationRequestRepository } from './implementationRequestRepository';
 import { toLeadContext } from './leadContext';
+import { visitAttribution } from '@/lib/analytics/events';
 import { REQUEST_TYPES, type HumanHandoffPackage, type ImplementationRequest } from './types';
 
 /** Mirrors the buckets the existing quote form and budget dashboard use, so
@@ -148,7 +149,7 @@ export async function submitImplementationRequest(pkg: HumanHandoffPackage): Pro
         // screens and exports depend on. The prose is never parsed back — it
         // is a compatibility surface, not a data source.
         requestType: pkg.requestType,
-        context: toLeadContext(pkg),
+        context: { ...toLeadContext(pkg), attribution: visitAttribution() },
         notes: formatHandoffNotes(pkg),
         items: pkg.products.map((p) => ({
           productId: p.productId,

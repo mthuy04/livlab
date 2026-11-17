@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { LIVLAB_TENANT, TENANTS } from '@/lib/storefront/tenantConfig';
 import { TENANT_PREVIEW_COOKIE } from '@/lib/storefront/resolveTenant';
+import { normalizeHost, tenantForHost } from '@/lib/storefront/tenantSites';
 
 /**
  * The shareable entrance to a demo storefront.
@@ -31,6 +32,12 @@ export async function GET(request: Request, context: { params: Promise<{ slug: s
   // and `//host` is absolute to a browser however much it looks like a path.
   const next = requested.startsWith('/') && !requested.startsWith('//') ? requested : '/';
   const response = NextResponse.redirect(new URL(next, url.origin));
+
+  // On a showroom's own domain the domain decides the storefront. Switching is
+  // meaningless there, and a cookie that later reached a LivLab host must not
+  // have been set by another tenant's site.
+  const owner = tenantForHost(normalizeHost(request.headers.get('host')));
+  if (owner && owner.id !== LIVLAB_TENANT.id) return response;
 
   // The way back. Without it the only exit from a demo is clearing a cookie by
   // hand, because the internal switch that clears it is not reachable here.

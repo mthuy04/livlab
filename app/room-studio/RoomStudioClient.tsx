@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { CheckCircle, Layers, Package, Wrench } from 'lucide-react';
 import { useQuote } from '@/lib/context/QuoteContext';
 import { useTenant } from '@/components/storefront/TenantContext';
+import { trackEvent } from '@/lib/analytics/events';
 import { useRoomStudio, type PlacedProductView } from '@/lib/room-studio/useRoomStudio';
 import { useIsDesktop } from '@/lib/room-studio/useIsDesktop';
 import type { RoomStudioProduct } from '@/lib/room-studio/productAdapter';
@@ -70,6 +71,9 @@ type MobilePanel = 'none' | 'tools' | 'products';
  */
 export default function RoomStudioClient() {
   const tenant = useTenant();
+  useEffect(() => {
+    trackEvent('room_studio_open', { catalog: tenant.experience.roomStudioCatalog });
+  }, [tenant.experience.roomStudioCatalog]);
   const studio = useRoomStudio(tenant.experience.roomStudioCatalog, tenant.id);
   const { addItem, addCatalogItem, hasItem, items: quoteItems } = useQuote();
 

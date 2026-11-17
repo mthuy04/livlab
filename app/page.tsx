@@ -1,5 +1,7 @@
-import type { Route } from 'next';
-import { resolveTenant } from '@/lib/storefront/resolveTenant';
+import type { Metadata, Route } from 'next';
+import { resolveTenantContext } from '@/lib/storefront/resolveTenant';
+import JsonLd from '@/components/seo/JsonLd';
+import { localBusinessJsonLd, websiteJsonLd } from '@/lib/seo/structuredData';
 import { getHomepageData } from '@/lib/storefront/homepageData';
 import HomeHero from '@/components/storefront/home/HomeHero';
 import HomeCategories from '@/components/storefront/home/HomeCategories';
@@ -22,12 +24,20 @@ import { SectionHeader, ArrowLink, TEXT, TEXT_MUTED } from '@/components/storefr
  * Studio, consultation. Nothing else — no feature grid, no metrics, no
  * process diagram.
  */
+export async function generateMetadata(): Promise<Metadata> {
+  // Title and description are the tenant's defaults from the root layout.
+  return { alternates: { canonical: '/' } };
+}
+
 export default async function HomePage() {
-  const tenant = await resolveTenant();
+  const { tenant, origin } = await resolveTenantContext();
+  // The site's identity for search engines: the WebSite name it should show,
+  // and — for a showroom with confirmed details — the business behind it.
+  const identity = <JsonLd data={[websiteJsonLd(tenant, origin), localBusinessJsonLd(tenant, origin)]} />;
   if (tenant.experience.home.layout === 'architecturalLanding') {
-    return <ArchitecturalLanding tenant={tenant} />;
+    return <>{identity}<ArchitecturalLanding tenant={tenant} /></>;
   }
-  if (tenant.experience.home.layout === 'catalog') return <CatalogHome tenant={tenant} />;
+  if (tenant.experience.home.layout === 'catalog') return <>{identity}<CatalogHome tenant={tenant} /></>;
 
   const { categories, featured, featuredProducts, collections } = await getHomepageData();
 
@@ -36,6 +46,7 @@ export default async function HomePage() {
 
   return (
     <>
+      {identity}
       <HomeHero roomStudio={tenant.features.roomStudio} />
 
       <HomeCategories categories={categories} />

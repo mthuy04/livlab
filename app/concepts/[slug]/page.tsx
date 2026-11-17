@@ -1,7 +1,9 @@
 import type { Metadata, Route } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { resolveTenant } from '@/lib/storefront/resolveTenant';
+import { resolveTenant, resolveTenantContext } from '@/lib/storefront/resolveTenant';
+import JsonLd from '@/components/seo/JsonLd';
+import { breadcrumbJsonLd } from '@/lib/seo/structuredData';
 import { getConceptBySlug, publishedSlugs } from '@/lib/storefront/concepts';
 import {
   AREA_BAND_LABEL,
@@ -62,14 +64,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ConceptDetailPage({ params }: Props) {
   const { slug } = await params;
-  const tenant = await resolveTenant();
+  const { tenant, origin } = await resolveTenantContext();
   const resolved = await getConceptBySlug(tenant, slug);
   if (!resolved) notFound();
+
+  const breadcrumbs = (
+    <JsonLd
+      data={[
+        breadcrumbJsonLd(origin, [
+          { name: 'Trang chủ', path: '/' },
+          { name: 'Không gian', path: '/concepts' },
+          { name: resolved.concept.titleVi, path: `/concepts/${resolved.concept.slug}` },
+        ]),
+      ]}
+    />
+  );
 
   // A storefront on the `commerce` treatment gets the shoppable layout; the
   // resolution, the 404 rules and the stage are the same either way.
   if (tenant.experience.variants.conceptDetail === 'commerce') {
-    return <CommerceConceptPage tenant={tenant} resolved={resolved} />;
+    return <>{breadcrumbs}<CommerceConceptPage tenant={tenant} resolved={resolved} /></>;
   }
 
   const { concept, products, estimate } = resolved;
@@ -79,6 +93,7 @@ export default async function ConceptDetailPage({ params }: Props) {
 
   return (
     <>
+      {breadcrumbs}
       <div className="home-container" style={{ paddingTop: 26, paddingBottom: 26 }}>
         <nav aria-label="Breadcrumb">
           <ol

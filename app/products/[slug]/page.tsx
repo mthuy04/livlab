@@ -1,7 +1,10 @@
 import type { Metadata, Route } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { resolveTenant } from '@/lib/storefront/resolveTenant';
+import { resolveTenantContext } from '@/lib/storefront/resolveTenant';
+import JsonLd from '@/components/seo/JsonLd';
+import { TrackOnMount } from '@/components/analytics/AnalyticsTracker';
+import { breadcrumbJsonLd, productJsonLd } from '@/lib/seo/structuredData';
 import { getProductDetail } from '@/lib/storefront/productDetail';
 import { activeSections, formatVnd } from '@/lib/storefront/productDetailTypes';
 import { DIVIDER, TEXT, TEXT_MUTED, TEXT_FAINT } from '@/components/storefront/home/editorial';
@@ -43,7 +46,7 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const tenant = await resolveTenant();
+  const { tenant, indexable } = await resolveTenantContext();
   const vm = await getProductDetail(tenant, slug);
 
   // A product that does not resolve for this tenant gets no product metadata:
@@ -51,16 +54,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // there to withhold.
   if (!vm) return { title: `Không tìm thấy sản phẩm | ${tenant.brand.name}`, robots: { index: false } };
 
+  const path = `/products/${encodeURIComponent(vm.identity.id)}`;
   return {
     title: `${vm.identity.name} | ${tenant.brand.name}`,
     description: vm.summary ?? undefined,
-    // Demo tenants are internal configurations, not signed storefronts; their
-    // product pages are not search results.
-    robots: vm.commercial.commercialConfirmed ? undefined : { index: false, follow: true },
+    alternates: { canonical: path },
+    // A demo configuration's product pages are not search results. A tenant
+    // that publishes its catalogue (`site.indexProducts`) is — on its own
+    // domain only. Stated explicitly either way: a page-level `undefined`
+    // would replace the layout's noindex rather than inherit it.
+    robots:
+      indexable && (vm.commercial.commercialConfirmed || tenant.site?.indexProducts)
+        ? { index: true, follow: true }
+        : { index: false, follow: true },
     openGraph: {
       title: `${vm.identity.name} | ${tenant.brand.name}`,
       description: vm.summary ?? undefined,
       type: 'website',
+      url: path,
       images: vm.media.primary ? [{ url: vm.media.primary.url }] : undefined,
     },
   };
@@ -68,7 +79,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params;
-  const tenant = await resolveTenant();
+  const { tenant, origin } = await resolveTenantContext();
   const vm = await getProductDetail(tenant, slug);
 
   // Not in this tenant's catalogue: a real 404, before anything about the
@@ -77,9 +88,47 @@ export default async function ProductDetailPage({ params }: Props) {
 
   const { identity, media, pricing, commercial, provenance } = vm;
   const sections = activeSections(vm);
+  const path = `/products/${encodeURIComponent(identity.id)}`;
+  const categoryPath = `/products?category=${encodeURIComponent(identity.category)}`;
 
   return (
     <>
+      <JsonLd
+        data={[
+          productJsonLd({
+            origin,
+            path,
+            name: identity.name,
+            brand: identity.brand,
+            sku: identity.sku,
+            category: identity.category,
+            description: vm.summary,
+            images: [media.primary, ...media.gallery].flatMap((m) => (m ? [m.url] : [])).slice(0, 4),
+            // Only a confirmed showroom price is an offer; a reference price is not.
+            offerPrice: commercial.commercialConfirmed ? pricing.showroomPrice : null,
+          }),
+          breadcrumbJsonLd(origin, [
+            { name: 'Trang chủ', path: '/' },
+            { name: 'Sản phẩm', path: '/products' },
+            { name: identity.category, path: categoryPath },
+            { name: identity.name, path },
+          ]),
+        ]}
+      />
+      <TrackOnMount
+        name="view_item"
+        params={{
+          currency: 'VND',
+          value: pricing.showroomPrice ?? undefined,
+          items: [{
+            item_id: identity.id,
+            item_name: identity.name,
+            item_brand: identity.brand,
+            item_category: identity.category,
+            price: pricing.showroomPrice ?? undefined,
+          }],
+        }}
+      />
       <section id="tong-quan" style={{ scrollMarginTop: ANCHOR_OFFSET }}>
         <div className="home-container" style={{ paddingTop: 26, paddingBottom: 'clamp(44px, 4.4vw, 68px)' }}>
           <nav aria-label="Breadcrumb">

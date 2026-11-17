@@ -15,8 +15,9 @@ import {
 import { toggleCompare, toggleSaved, useTenantIds } from '@/lib/storefront/tenantStorage';
 import { TEXT, TEXT_FAINT, DIVIDER, STAGE } from '@/components/storefront/home/editorial';
 import CatalogProductCard from './CatalogProductCard';
+import { trackEvent } from '@/lib/analytics/events';
 import { AllIcon, iconFor } from './CategoryIcons';
-import { BRAND_LOGOS } from './brandLogos';
+import { brandLogoFor } from './brandLogos';
 import CatalogFilterPanel from './CatalogFilterPanel';
 import CompareTray from './CompareTray';
 import QuickView from './QuickView';
@@ -33,12 +34,23 @@ import QuickView from './QuickView';
 
 type LoadState = 'loading' | 'ready' | 'error';
 
-export default function CatalogClient({ tenantId }: { tenantId: string }) {
+export default function CatalogClient({
+  tenantId,
+  initialProducts,
+}: {
+  tenantId: string;
+  /**
+   * The catalogue as the server already resolved it. With it the first render
+   * — the HTML a crawler reads — carries the product cards and their links
+   * instead of a loading state.
+   */
+  initialProducts?: CatalogProduct[];
+}) {
   const router = useRouter();
   const params = useSearchParams();
 
-  const [products, setProducts] = useState<CatalogProduct[]>([]);
-  const [state, setState] = useState<LoadState>('loading');
+  const [products, setProducts] = useState<CatalogProduct[]>(initialProducts ?? []);
+  const [state, setState] = useState<LoadState>(initialProducts ? 'ready' : 'loading');
   const [reloadToken, setReloadToken] = useState(0);
 
   const [compareIds, setCompareIds] = useTenantIds(tenantId, 'compare');
@@ -56,6 +68,8 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
   // `loading` is the initial state and the retry button sets it before
   // bumping the token, so the effect never has to set it on the way in.
   useEffect(() => {
+    // The server's copy is current for this request; only a retry refetches.
+    if (initialProducts && reloadToken === 0) return;
     let cancelled = false;
     fetch('/api/storefront/products')
       .then((res) => {
@@ -71,7 +85,7 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
         if (!cancelled) setState('error');
       });
     return () => { cancelled = true; };
-  }, [reloadToken]);
+  }, [reloadToken, initialProducts]);
 
   const update = useCallback(
     (next: Partial<CatalogFilters>) => {
@@ -110,6 +124,25 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
   const facets = useMemo(() => buildFacets(products, filters), [products, filters]);
 
   const visible = sorted.slice(0, filters.page * PAGE_SIZE);
+
+  // One list view per distinct listing the visitor actually sees.
+  const listName = filters.category ?? 'Tất cả sản phẩm';
+  const listKey = state === 'ready' ? `${listName}|${visible.slice(0, 10).map((p) => p.id).join(',')}` : null;
+  useEffect(() => {
+    if (!listKey) return;
+    trackEvent('view_item_list', {
+      item_list_name: listName,
+      items: visible.slice(0, 10).map((p) => ({
+        item_id: p.id,
+        item_name: p.name,
+        item_brand: p.brand ?? undefined,
+        item_category: p.category ?? undefined,
+        price: p.showroomPrice ?? undefined,
+      })),
+    });
+    // `listKey` already encodes the list and the ids in it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listKey]);
   const compareProducts = compareIds
     .map((id) => products.find((p) => p.id === id))
     .filter((p): p is CatalogProduct => Boolean(p));
@@ -212,7 +245,7 @@ export default function CatalogClient({ tenantId }: { tenantId: string }) {
             {[{ name: 'TẤT CẢ', count: products.length }, ...brandRail].map((b, index) => {
               const isAll = b.name === 'TẤT CẢ';
               const selected = isAll ? filters.brands.length === 0 : filters.brands.includes(b.name);
-              const logo = isAll ? null : BRAND_LOGOS[b.name];
+              const logo = isAll ? null : brandLogoFor(tenantId, b.name);
               return (
                 <button
                   key={b.name}

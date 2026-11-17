@@ -23,6 +23,8 @@ export interface TenantBrand {
   /** Path to a logo in /public. When absent the header renders the name as a wordmark. */
   logo?: string;
   logoAlt?: string;
+  /** Square icon in /public for the browser tab and search results. Falls back to the site favicon. */
+  icon?: string;
   /**
    * The one colour a tenant controls. Deliberately a single accent rather than
    * a palette: a showroom supplying one brand colour cannot accidentally
@@ -115,7 +117,70 @@ export interface TenantStorefrontConfig {
    * `tenantExperience.ts`.
    */
   experience: TenantExperience;
-  seo: { title: string; description: string };
+  seo: TenantSeo;
+  /**
+   * The tenant's own public address on the web. Present only for a storefront
+   * that is served on a hostname of its own; a tenant without it is reachable
+   * only as a preview on LivLab's hosts and is never indexed there.
+   */
+  site?: TenantSite;
+  /**
+   * The business as it presents itself publicly — the facts behind its
+   * LocalBusiness structured data. Only facts confirmed by the business's
+   * own channels belong here; everything else stays out until confirmed.
+   */
+  business?: TenantBusiness;
+  /** Third-party measurement, configured per tenant and off until an id is supplied. */
+  analytics?: { ga4MeasurementId: string | null };
+  /**
+   * Hostnames of this showroom's own website. Photographs copied from there
+   * are the showroom's and appear on its storefront only — never on another
+   * tenant's, even for the same SKU.
+   */
+  ownedImageHosts?: string[];
+}
+
+export interface TenantSeo {
+  /** The homepage title, and the default for pages that set none. */
+  title: string;
+  description: string;
+  /** The site's name as search engines should show it (WebSite.name, og:site_name). */
+  siteName?: string;
+  /** Other names the business is genuinely known by (WebSite.alternateName). */
+  alternateNames?: string[];
+  /** Google Search Console HTML-tag token, once the owner has created the property. */
+  googleSiteVerification?: string | null;
+}
+
+export interface TenantSite {
+  /** Canonical origin, no trailing slash. Every canonical, sitemap and JSON-LD URL is built on it. */
+  origin: string;
+  /** Lower-case hostnames, without ports, that serve this tenant. */
+  hosts: string[];
+  /**
+   * Whether product pages may be indexed on this tenant's own host. Off for a
+   * catalogue that is a reference list rather than the business's offer.
+   */
+  indexProducts: boolean;
+}
+
+export interface TenantBusiness {
+  name: string;
+  /** schema.org type, e.g. 'HomeGoodsStore'. */
+  schemaType: string;
+  streetAddress: string;
+  /** The address line exactly as the business publishes it. */
+  displayAddress: string;
+  locality: string;
+  country: string;
+  /** E.164, for structured data and tel: links. */
+  telephone: string;
+  /** As the business writes it. */
+  telephoneDisplay: string;
+  /** A Zalo chat link, when the business publishes a Zalo number. */
+  zaloUrl?: string;
+  /** The business's own profiles elsewhere (schema.org sameAs). */
+  sameAs: string[];
 }
 
 /**
@@ -230,7 +295,12 @@ export const LIVLAB_TENANT: TenantStorefrontConfig = {
     title: 'LivLab — Dựng thử phòng tắm với sản phẩm thật',
     description:
       'Chọn sản phẩm thật, dựng phòng đúng kích thước và gửi yêu cầu báo giá tới showroom.',
+    siteName: 'LivLab',
   },
+  // livlab.space answers with a 308 to www, so www is the canonical origin.
+  // Product pages stay unindexed, as before: LivLab's catalogue is a reference
+  // library, not an offer.
+  site: { origin: 'https://www.livlab.space', hosts: ['www.livlab.space', 'livlab.space'], indexProducts: false },
 };
 
 const DEMO_FEATURES: TenantFeatureFlags = {
@@ -478,6 +548,7 @@ export const DEMO_TUNGDANG_TENANT: TenantStorefrontConfig = {
     categories: TUNGDANG_CATEGORIES,
   },
   requestWorkspace: { showroomId: 'workspace-demo-tungdang', kind: 'DEMO' },
+  ownedImageHosts: ['beptungdang.vn'],
   features: DEMO_FEATURES,
   poweredByLivLab: true,
   publicDemo: true,
@@ -496,6 +567,7 @@ export const DEMO_TUNGDANG_TENANT: TenantStorefrontConfig = {
  * no category link filters to nothing.
  */
 const GIANGSON_CATEGORIES = ['Bồn cầu', 'Lavabo', 'Vòi lavabo', 'Sen tắm', 'Bồn tắm'];
+const GIANGSON_ADDRESS = '240 Hồ Tùng Mậu, Phú Diễn, Bắc Từ Liêm, Hà Nội';
 const giangsonCategory = (category: string) => `/products?category=${encodeURIComponent(category)}`;
 
 const GIANGSON_EXPERIENCE: TenantExperience = {
@@ -663,17 +735,18 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
         note: 'Giá bán lẻ đề xuất do hãng công bố. Giang Sơn báo giá thực tế theo số lượng và công trình.',
         items: [
           {
-            name: 'Bồn cầu 1 khối INAX AC-1017VRN',
+            name: 'Bồn cầu 1 khối INAX AC-912VN',
             brand: 'INAX',
-            sku: 'AC-1017VRN',
+            sku: 'AC-912VN',
             category: 'Bồn cầu',
+            // INAX's own product photograph, kept locally.
             image: {
-              src: '/demo/manufacturers/inax/ac-1017vrn-primary.webp',
-              alt: 'Bồn cầu một khối INAX AC-1017VRN trên nền sáng',
+              src: '/demo/manufacturers/inax/ac-912vn-primary.webp',
+              alt: 'Bồn cầu một khối INAX AC-912VN, thân bo tròn liền khối, màu trắng',
             },
-            referencePrice: 17290000,
+            referencePrice: 10900000,
             sourceLabel: 'Giá bán lẻ đề xuất · INAX · Có mô hình 3D',
-            href: '/products/inax-ac-1017vrn',
+            href: '/products/inax-ac-912vn',
           },
           {
             name: 'Bồn tắm có yếm TOTO PAY1725VC/TVBF411 1,7 m',
@@ -716,26 +789,28 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
       },
       about: {
         eyebrow: 'VỀ GIANG SƠN',
-        title: 'Giang Sơn — Thiết bị và vật liệu hoàn thiện',
-        // From the company's own directory listing (Trang Vàng Việt Nam,
-        // checked 2026-10-19): what it sells, to whom, and what it commits to.
+        title: 'Showroom thiết bị vệ sinh tại 240 Hồ Tùng Mậu',
+        // Only what the business states on its own Facebook page. The legal
+        // entity, opening hours and service promises wait for the owner's
+        // confirmation before they appear here.
         body:
-          'Công ty TNHH Thương mại và Xây dựng Giang Sơn Việt Nam phân phối thiết bị vệ sinh, gạch ốp lát, ' +
-          'thiết bị điện và vật liệu ngành nước cho nhà ở và công trình tại miền Bắc. Hàng chính hãng, ' +
-          'cung cấp đủ số lượng cho công trình, chiết khấu cho đơn hàng lớn và giao hàng tận nơi. ' +
-          'Showroom: Số 240 Hồ Tùng Mậu, P. Phú Diễn, Q. Bắc Từ Liêm, Hà Nội.',
+          'Thiết bị vệ sinh Giang Sơn là showroom thiết bị vệ sinh và phòng tắm tại 240 Hồ Tùng Mậu, ' +
+          'Phú Diễn, Bắc Từ Liêm, Hà Nội. Trên website, bạn có thể xem bồn cầu, lavabo, vòi, sen tắm và ' +
+          'bồn tắm kèm thông số kỹ thuật, thử bố trí trong Room Studio và gửi yêu cầu để showroom tư vấn, ' +
+          'báo giá. Liên hệ hotline / Zalo 032 969 0164 hoặc nhắn tin qua trang Facebook ' +
+          'Thiết bị vệ sinh Giang Sơn.',
       },
       contact: {
         title: 'Bắt đầu lựa chọn cho không gian của bạn',
         body: 'Khám phá sản phẩm, thử bố trí trong Room Studio hoặc gửi yêu cầu để nhận tư vấn phù hợp.',
         cta: { label: 'YÊU CẦU BÁO GIÁ', href: '/quote' },
-        phone: '0395 279 360',
+        phone: '032 969 0164',
       },
     },
   },
   copy: {
-    utility: ['Thiết bị & vật liệu hoàn thiện', 'Tư vấn & báo giá'],
-    demoNotice: 'Bản trình diễn showroom số LivLab, sử dụng thông tin từ nguồn công khai',
+    utility: ['Showroom 240 Hồ Tùng Mậu, Hà Nội', 'Tư vấn & báo giá'],
+    demoNotice: 'Website showroom số trên nền tảng LivLab. Giá hiển thị là giá bán lẻ đề xuất của hãng',
     header: {
       primaryCta: { label: 'YÊU CẦU BÁO GIÁ', href: '/quote' },
       searchHref: '/products',
@@ -745,16 +820,18 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
       collapseAt: 'lg',
     },
     hero: {
-      eyebrow: 'GIANG SƠN · THIẾT BỊ & VẬT LIỆU HOÀN THIỆN',
-      titleLines: ['Hoàn thiện không gian,', 'bắt đầu từ lựa chọn đúng.'],
+      eyebrow: 'SHOWROOM 240 HỒ TÙNG MẬU · HÀ NỘI',
+      // The one H1 on the homepage: the name customers search for.
+      titleLines: ['Thiết bị vệ sinh Giang Sơn'],
       body:
-        'Khám phá thiết bị vệ sinh, gạch ốp lát và giải pháp hoàn thiện. Trực tiếp phối thử thiết bị, vật liệu trong không gian 3D trước khi lựa chọn.',
+        'Bồn cầu, lavabo, sen vòi và bồn tắm TOTO, INAX kèm thông số và giá tham khảo. Thử bố trí ' +
+        'thiết bị trong không gian 3D, rồi gửi yêu cầu để showroom tư vấn và báo giá.',
       primaryCta: { label: 'KHÁM PHÁ SẢN PHẨM', href: '/products' },
       secondaryCta: { label: 'TRẢI NGHIỆM ROOM STUDIO', href: '/room-studio' },
       trust: [
         {
-          title: 'HÀNG CHÍNH HÃNG',
-          body: 'Thiết bị TOTO, INAX kèm mã sản phẩm, thông số và giá bán lẻ đề xuất của hãng.',
+          title: 'THÔNG TIN RÕ RÀNG',
+          body: 'Mẫu TOTO, INAX kèm mã sản phẩm, thông số kỹ thuật và giá bán lẻ đề xuất của hãng.',
         },
         {
           title: 'THIẾT KẾ TRỰC QUAN 3D',
@@ -785,8 +862,7 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
     // True because `roomStudioCatalog: 'tenant'` below makes the library this
     // showroom's catalogue. Switch that back and this must change too.
     roomStudio: { libraryTitle: 'Sản phẩm từ Giang Sơn', primaryCta: 'Yêu cầu báo giá' },
-    footerBlurb:
-      'Thiết bị vệ sinh, gạch ốp lát và vật liệu hoàn thiện cho nhu cầu nhà ở và công trình.',
+    footerBlurb: 'Showroom thiết bị vệ sinh và phòng tắm tại 240 Hồ Tùng Mậu, Phú Diễn, Bắc Từ Liêm, Hà Nội.',
     footer: {
       explore: [
         { label: 'Không gian gợi ý', href: '/concepts' },
@@ -797,7 +873,9 @@ const GIANGSON_EXPERIENCE: TenantExperience = {
         { label: 'Về Giang Sơn', href: '/#about-giangson' },
         { label: 'Yêu cầu báo giá', href: '/quote' },
         { label: 'Tra cứu báo giá', href: '/track-quote' },
-        { label: 'Hotline / Zalo 0395 279 360', href: 'tel:0395279360' },
+        { label: 'Hotline 032 969 0164', href: 'tel:+84329690164' },
+        { label: 'Chat Zalo', href: 'https://zalo.me/0329690164' },
+        { label: 'Facebook Giang Sơn', href: 'https://www.facebook.com/thietbigiangson/' },
       ],
     },
   },
@@ -821,10 +899,13 @@ export const DEMO_GIANGSON_TENANT: TenantStorefrontConfig = {
   id: 'giangson',
   slug: 'giangson',
   brand: {
-    name: 'Giang Sơn Việt Nam',
+    // The name the business uses on its own Facebook page.
+    name: 'Thiết bị vệ sinh Giang Sơn',
     tagline: 'Trường tồn với thời gian',
     logo: '/demo/giangson/logo.png',
-    logoAlt: 'Giang Sơn — Trường tồn với thời gian',
+    logoAlt: 'Thiết bị vệ sinh Giang Sơn',
+    // The diamond mark cropped from the supplied logo.
+    icon: '/demo/giangson/icon.png',
     accent: '#007BAA',
     accentHover: '#00648B',
     accentContrast: '#FFFFFF',
@@ -833,9 +914,10 @@ export const DEMO_GIANGSON_TENANT: TenantStorefrontConfig = {
     isDefaultTenant: false,
     productCategories: GIANGSON_CATEGORIES,
   }),
-  // Hotline and showroom address as the company publishes them on its own
-  // directory listing (Trang Vàng Việt Nam, checked 2026-10-19).
-  contact: { phone: '0395 279 360', address: 'Số 240 Hồ Tùng Mậu, P. Phú Diễn, Q. Bắc Từ Liêm, Hà Nội' },
+  // Phone and address as the business publishes them on its own Facebook page
+  // (facebook.com/thietbigiangson, "Giới thiệu", checked 2026-11-17). The
+  // second number listed there is not published until the owner confirms it.
+  contact: { phone: '032 969 0164', address: GIANGSON_ADDRESS },
   catalogScope: { showroomId: null, categories: GIANGSON_CATEGORIES },
   requestWorkspace: { showroomId: 'workspace-demo-giangson', kind: 'DEMO' },
   features: DEMO_FEATURES,
@@ -843,11 +925,34 @@ export const DEMO_GIANGSON_TENANT: TenantStorefrontConfig = {
   publicDemo: true,
   experience: GIANGSON_EXPERIENCE,
   seo: {
-    title: 'Giang Sơn — Thiết bị & vật liệu hoàn thiện',
+    title: 'Thiết Bị Vệ Sinh Giang Sơn | Showroom tại Hồ Tùng Mậu',
     description:
-      'Khám phá thiết bị vệ sinh, gạch ốp lát, vật liệu hoàn thiện và thử thiết kế phòng tắm trên Room Studio.',
+      'Khám phá thiết bị vệ sinh và nội thất phòng tắm tại Giang Sơn, 240 Hồ Tùng Mậu, Hà Nội. ' +
+      'Xem sản phẩm và liên hệ tư vấn, báo giá.',
+    siteName: 'Thiết bị vệ sinh Giang Sơn',
+    alternateNames: ['Giang Sơn thiết bị vệ sinh', 'Giang Sơn'],
+    googleSiteVerification: process.env.GOOGLE_SITE_VERIFICATION_GIANGSON ?? null,
   },
+  site: {
+    origin: 'https://giangson.livlab.space',
+    hosts: ['giangson.livlab.space'],
+    indexProducts: true,
+  },
+  business: {
+    name: 'Thiết bị vệ sinh Giang Sơn',
+    schemaType: 'HomeGoodsStore',
+    streetAddress: '240 Hồ Tùng Mậu',
+    displayAddress: GIANGSON_ADDRESS,
+    locality: 'Hà Nội',
+    country: 'VN',
+    telephone: '+84329690164',
+    telephoneDisplay: '032 969 0164',
+    zaloUrl: 'https://zalo.me/0329690164',
+    sameAs: ['https://www.facebook.com/thietbigiangson/'],
+  },
+  analytics: { ga4MeasurementId: process.env.NEXT_PUBLIC_GA4_ID_GIANGSON ?? null },
 };
+
 
 export const TENANTS: Record<string, TenantStorefrontConfig> = {
   [LIVLAB_TENANT.slug]: LIVLAB_TENANT,
