@@ -74,6 +74,7 @@ export function Section({
   return (
     <section
       id={id}
+      data-pd-section
       style={{
         ...(muted ? { backgroundColor: '#F7F7F5' } : null),
         ...(id ? { scrollMarginTop: ANCHOR_OFFSET } : null),

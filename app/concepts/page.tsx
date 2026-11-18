@@ -76,7 +76,7 @@ export default async function ConceptsPage() {
             color: TEXT,
           }}
         >
-          KHÔNG GIAN PHÒNG TẮM
+          {tenant.business ? 'Mẫu phối phòng tắm' : 'KHÔNG GIAN PHÒNG TẮM'}
         </h1>
 
         <p className="max-w-[660px]" style={{ marginTop: 16, fontSize: 15, lineHeight: 1.68, color: TEXT_MUTED }}>

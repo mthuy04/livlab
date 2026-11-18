@@ -29,11 +29,11 @@ function VideoCard({ video }: { video: ShowroomVideo }) {
           />
         ) : (
           <button type="button" className={styles.videoPoster} onClick={() => setPlaying(true)}>
+            <span className={styles.videoPosterHint}>Video · Facebook</span>
             <span className={styles.videoPlay} aria-hidden="true">
               <Play />
             </span>
             <span className={styles.videoPosterTitle}>{video.title}</span>
-            <span className={styles.videoPosterHint}>Bấm để phát · video từ Facebook</span>
             <span className="sr-only">Phát video {video.title}</span>
           </button>
         )}

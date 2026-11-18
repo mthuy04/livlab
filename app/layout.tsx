@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import './tenant-giangson.css';
 import StorefrontShell from '@/components/storefront/StorefrontShell';
 import { resolveTenant, resolveTenantContext, tenantCssVars, tenantFontClass } from '@/lib/storefront/resolveTenant';
 import AnalyticsTracker from '@/components/analytics/AnalyticsTracker';

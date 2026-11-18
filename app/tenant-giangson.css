@@ -1,0 +1,47 @@
+/*
+ * Giang Sơn storefront — presentation overrides for shared components.
+ *
+ * Every rule is scoped to [data-tenant="giangson"] (set by StorefrontShell),
+ * so LivLab, Tùng Đăng and other storefronts render exactly as before.
+ * `!important` appears only where a shared component sets the value inline.
+ */
+
+[data-tenant='giangson'] {
+  --gs-navy: #153b55;
+  --gs-ink: #1d2933;
+  --gs-accent: #087da4;
+  --gs-accent-ink: #07739a;
+  --gs-off: #f7f7f4;
+  --gs-stone: #eeece7;
+  --gs-gray: #5f6d78;
+  --gs-line: #dedbd3;
+  background: #fff;
+  color: var(--gs-ink);
+}
+
+/* Header: sentence-case navigation, readable hotline on the dark bar. */
+[data-tenant='giangson'] .home-nav {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 15px;
+  color: var(--gs-ink);
+}
+[data-tenant='giangson'] [data-utility-phone] {
+  color: #9fd3e5 !important;
+}
+[data-tenant='giangson'] [data-header-cta] {
+  letter-spacing: 0 !important;
+  font-size: 14px !important;
+  background: var(--gs-navy) !important;
+}
+[data-tenant='giangson'] [data-header-cta]:hover {
+  background: #0e2b3f !important;
+}
+
+/* Product detail: tighter rhythm between sections, warm muted surfaces. */
+[data-tenant='giangson'] [data-pd-section] {
+  padding-block: clamp(32px, 3.4vw, 56px) !important;
+}
+[data-tenant='giangson'] [data-pd-section][style*='background-color'] {
+  background-color: var(--gs-off) !important;
+}

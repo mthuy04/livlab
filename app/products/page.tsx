@@ -92,11 +92,20 @@ export default async function ProductsPage({ searchParams }: Props) {
           </ol>
         </nav>
 
-        <h1 style={{ marginTop: 20, fontSize: 'clamp(28px, 1.3rem + 1vw, 35px)', fontWeight: 550, lineHeight: 1.1, letterSpacing: '.015em', color: TEXT }}>
+        {tenant.business ? (
+          // A showroom's heading: sentence case, at the page-title size.
+          <h1 style={{ marginTop: 18, fontSize: 'clamp(30px, 1.2rem + 1.6vw, 44px)', fontWeight: 600, lineHeight: 1.1, letterSpacing: '-.025em', color: '#1D2933' }}>
+            {category ?? 'Thiết bị vệ sinh'}
+          </h1>
+        ) : (
+          <h1 style={{ marginTop: 20, fontSize: 'clamp(28px, 1.3rem + 1vw, 35px)', fontWeight: 550, lineHeight: 1.1, letterSpacing: '.015em', color: TEXT }}>
           {(category ?? 'Thiết bị phòng tắm').toUpperCase()}
         </h1>
+        )}
         <p className="max-w-[620px]" style={{ marginTop: 12, fontSize: 15, lineHeight: 1.65, color: TEXT_MUTED }}>
-          Khám phá thiết bị vệ sinh theo danh mục, thương hiệu và thông số phù hợp với không gian của bạn.
+          {tenant.business
+            ? 'Mã sản phẩm, kích thước và giá hãng đề xuất cho từng mẫu. Thêm vào báo giá để showroom xác nhận giá bán.'
+            : 'Khám phá thiết bị vệ sinh theo danh mục, thương hiệu và thông số phù hợp với không gian của bạn.'}
         </p>
       </div>
 

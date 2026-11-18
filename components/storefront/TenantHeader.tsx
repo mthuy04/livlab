@@ -217,6 +217,7 @@ export default function TenantHeader({ tenant }: { tenant: TenantStorefrontConfi
               {header?.primaryCta ? (
                 <Link
                   href={header.primaryCta.href as Route}
+                  data-header-cta
                   className={`ml-3 h-[42px] items-center whitespace-nowrap bg-[color:var(--tenant-accent)] px-4 text-[12px] font-semibold tracking-[.1em] text-[color:var(--tenant-accent-contrast)] transition-colors hover:bg-[color:var(--tenant-accent-hover)] xl:px-5 ${
                     collapseAtXl ? 'hidden xl:inline-flex' : 'hidden lg:inline-flex'
                   }`}
@@ -403,7 +404,7 @@ function RetailUtilityBar({ tenant }: { tenant: TenantStorefrontConfig }) {
               className="flex items-center gap-1.5 whitespace-nowrap transition-opacity hover:opacity-80"
             >
               <span style={{ opacity: 0.82 }}>Hotline</span>
-              <span style={{ fontWeight: 600, color: 'var(--tenant-accent)', letterSpacing: '.02em' }}>{phone}</span>
+              <span data-utility-phone style={{ fontWeight: 600, color: 'var(--tenant-accent)', letterSpacing: '.02em' }}>{phone}</span>
             </a>
           )}
           {copy.demoNotice && (

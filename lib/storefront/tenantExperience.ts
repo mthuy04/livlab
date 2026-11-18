@@ -143,23 +143,9 @@ export interface LandingImage {
   alt: string;
 }
 
-export interface LandingHotspot {
-  label: string;
-  detail: string;
-  href: string;
-  xPct: number;
-  yPct: number;
-}
-
-export interface LandingProduct {
-  name: string;
-  brand: string;
-  sku: string;
-  category: string;
-  image: LandingImage;
-  referencePrice: number;
-  sourceLabel: string;
-  href: string;
+export interface LandingStep {
+  title: string;
+  body: string;
 }
 
 export interface LandingSectionIntro {
@@ -169,26 +155,28 @@ export interface LandingSectionIntro {
 }
 
 /**
- * The showroom's homepage, in reading order: hero, categories, combos,
- * featured products, videos, concepts, Room Studio, the showroom itself, and
- * a closing quotation call. Combos and videos come from
- * lib/storefront/showroomMedia.ts and appear only once approved records exist.
+ * A showroom's homepage, in reading order: hero, categories, combos,
+ * featured products, videos, inspiration, Room Studio, the showroom itself,
+ * a closing quotation call. Products and category counts are read from the
+ * catalogue at render time; combos and videos from
+ * lib/storefront/showroomMedia.ts, and only once approved.
  */
 export interface ArchitecturalLandingContent {
   hero: {
     image: LandingImage;
-    hotspots: LandingHotspot[];
-    /** A quieter third action under the two buttons. */
-    supportLink?: CtaCopy;
+    /** Says what the picture is — a rendered scene is labelled as one. */
+    caption: string;
+    captionHref?: string;
   };
   categories: LandingSectionIntro & {
-    /** `image` is a product photograph on a light stage, not a room scene. */
-    items: Array<{ id: string; name: string; note: string; image: LandingImage; href: string }>;
+    /** `image` is a product photograph; `categories` are the catalogue groups it counts. */
+    items: Array<{ id: string; name: string; note: string; image: LandingImage; href: string; categories: string[] }>;
   };
   combos?: LandingSectionIntro;
   products: LandingSectionIntro & {
     note: string;
-    items: LandingProduct[];
+    /** Catalogue ids, in display order. Missing ones are skipped, never invented. */
+    productIds: string[];
   };
   videos?: LandingSectionIntro & {
     /** Shown under the players: where the video is served from. */
@@ -199,8 +187,9 @@ export interface ArchitecturalLandingContent {
     items: Array<{ title: string; note: string; image: LandingImage; href: string }>;
   };
   roomStudio: LandingSectionIntro & {
+    steps: LandingStep[];
     /** What the 3D view is not: a survey or an installation check. */
-    note?: string;
+    note: string;
     cta: CtaCopy;
     image: LandingImage;
   };
@@ -210,6 +199,8 @@ export interface ArchitecturalLandingContent {
     zaloUrl?: string;
     /** Directions to the verified address. */
     mapsUrl: string;
+    /** Google's embedded map of the same address. */
+    mapEmbedUrl?: string;
     facebookUrl?: string;
     cta: CtaCopy;
   };
@@ -217,6 +208,7 @@ export interface ArchitecturalLandingContent {
     title: string;
     body: string;
     cta: CtaCopy;
+    zaloUrl?: string;
     phone: string;
   };
 }

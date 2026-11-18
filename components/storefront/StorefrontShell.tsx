@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import type { TenantStorefrontConfig } from '@/lib/storefront/tenantConfig';
 import TenantHeader from './TenantHeader';
 import TenantFooter from './TenantFooter';
+import ShowroomFooter from './ShowroomFooter';
 
 /**
  * Owns tenant theming and the customer-facing chrome.
@@ -73,7 +74,8 @@ export default function StorefrontShell({
       {/* `min-h-0` lets an app surface's `h-full` resolve to the leftover space
           rather than to the content's own height. */}
       <main className={isAppSurface ? 'min-h-0 flex-1' : 'flex-1'}>{children}</main>
-      {!isAppSurface && <TenantFooter tenant={tenant} />}
+      {/* A showroom with verified business details gets its own compact footer. */}
+      {!isAppSurface && (tenant.business ? <ShowroomFooter tenant={tenant} /> : <TenantFooter tenant={tenant} />)}
     </div>
   );
 }

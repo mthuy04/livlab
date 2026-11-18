@@ -15,6 +15,8 @@ import {
 import { toggleCompare, toggleSaved, useTenantIds } from '@/lib/storefront/tenantStorage';
 import { TEXT, TEXT_FAINT, DIVIDER, STAGE } from '@/components/storefront/home/editorial';
 import CatalogProductCard from './CatalogProductCard';
+import ShowroomProductCard from './ShowroomProductCard';
+import { useTenant } from '@/components/storefront/TenantContext';
 import { trackEvent } from '@/lib/analytics/events';
 import { AllIcon, iconFor } from './CategoryIcons';
 import { brandLogoFor } from './brandLogos';
@@ -48,6 +50,8 @@ export default function CatalogClient({
 }) {
   const router = useRouter();
   const params = useSearchParams();
+  // A showroom with verified business details gets the showroom card.
+  const showroom = Boolean(useTenant().business);
 
   const [products, setProducts] = useState<CatalogProduct[]>(initialProducts ?? []);
   const [state, setState] = useState<LoadState>(initialProducts ? 'ready' : 'loading');
@@ -455,8 +459,20 @@ export default function CatalogClient({
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-3 lg:gap-x-8">
-                  {visible.map((p, index) => (
+                <div className={showroom ? 'grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3' : 'grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-3 lg:gap-x-8'}>
+                  {visible.map((p, index) => showroom ? (
+                    <ShowroomProductCard
+                      key={p.id}
+                      product={p}
+                      tenantId={tenantId}
+                      eager={index < 3}
+                      saved={savedIds.includes(p.id)}
+                      comparing={compareIds.includes(p.id)}
+                      onToggleSave={handleToggleSave}
+                      onToggleCompare={handleToggleCompare}
+                      onQuickView={setQuickView}
+                    />
+                  ) : (
                     <CatalogProductCard
                       key={p.id}
                       product={p}
