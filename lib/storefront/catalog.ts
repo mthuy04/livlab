@@ -250,7 +250,11 @@ async function fromDatabase(tenant: TenantStorefrontConfig): Promise<Catalog> {
       const verdict = verdicts.get(p.id);
       const status = (verdict?.status ?? 'ACCEPTABLE') as ImageStatus;
       const showroomPrice = offer?.promotionPrice ?? offer?.showroomPrice ?? p.priceMin ?? null;
-      const reference = offer?.promotionPrice ? (offer.showroomPrice ?? p.priceMax) : p.priceMax;
+      // A struck price is a claim of a discount, so it is shown only for a
+      // showroom's own promotion against its own price. `priceMax` is the top
+      // of a reference range gathered from sources, not a list price: struck
+      // through it would turn a range into an invented "−20%".
+      const reference = offer?.promotionPrice ? (offer.showroomPrice ?? null) : null;
 
       // The Product model has no sku column; the slug carries the code.
       const sku = p.slug ?? null;

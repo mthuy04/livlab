@@ -302,16 +302,21 @@ console.log('\ngiao diện theo showroom');
 {
   const livlab = TENANTS.livlab;
   const vars = themeCssVars(livlab.brand, livlab.experience.theme);
-  // LivLab runs on the retail treatment first built for the Tùng Đăng demo,
-  // in LivLab's own colours (its logo's deep teal), never the demo's orange.
+  // LivLab runs on the Tùng Đăng demo's storefront exactly — layout, variants
+  // and warm orange palette — and differs in identity only: its own logo,
+  // name and copy, and none of the showroom's name, address or hotline.
   const tungdang = TENANTS.tungdang;
   check('LivLab: cùng bố cục và biến thể giao diện với storefront Tùng Đăng',
     livlab.experience.home.layout === tungdang.experience.home.layout &&
       JSON.stringify(livlab.experience.variants) === JSON.stringify(tungdang.experience.variants) &&
       JSON.stringify(livlab.experience.home.sections) === JSON.stringify(tungdang.experience.home.sections));
-  check('LivLab: màu chính là xanh teal của logo', vars['--tenant-ui-primary'] === '#04404F' && livlab.brand.accent === '#04404F', vars);
-  check('LivLab: không mang màu cam của Tùng Đăng', !Object.values(vars).some((v) => /#(EF9F00|FCA359|B45309|FDF1DC|8A4500)/i.test(v)));
+  const tdVars = themeCssVars(tungdang.brand, tungdang.experience.theme);
+  check('LivLab: cùng tông màu cam với storefront Tùng Đăng', JSON.stringify(vars) === JSON.stringify(tdVars), { vars, tdVars });
+  check('LivLab: logo của LivLab, không phải logo showroom',
+    livlab.brand.logo === '/images/logo.png' && !/tungdang/i.test(`${livlab.brand.logo} ${livlab.brand.icon ?? ''}`));
   check('LivLab: nội dung không nhắc tên showroom demo', !/tùng đăng|tung dang|tungdang/i.test(JSON.stringify(livlab)));
+  check('LivLab: không mang hotline hay địa chỉ của showroom',
+    !/0983\s?446\s?656|beptungdang/i.test(JSON.stringify(livlab)) && Object.keys(livlab.contact ?? {}).length === 0);
 
   // A library may carry the showroom's name only when it IS the showroom's
   // catalogue — otherwise the heading describes products it does not sell.

@@ -157,5 +157,28 @@ console.log('\nGiang Sơn');
   }
 }
 
+/* ------------------------------------------------------------------ LivLab */
+
+console.log('\nLivLab');
+{
+  const owned = CONCEPT_LIBRARY.filter((c) => c.tenantId === 'livlab');
+  // The retail storefront's lead scenes, in home-page order.
+  const lead = ['livlab-master-spa-retreat', 'livlab-golden-retreat', 'livlab-urban-light-spa', 'livlab-monochrome-architectural-bath'];
+  check('mở đầu bằng các cảnh của storefront bán lẻ', owned.slice(0, 4).map((c) => c.slug).join() === lead.join(), owned.map((c) => c.slug));
+  const sameImage = (a: string, b: string) =>
+    CONCEPT_LIBRARY.find((c) => c.slug === a)?.imageHash === CONCEPT_LIBRARY.find((c) => c.slug === b)?.imageHash;
+  check('hero dùng cùng ảnh với hero Tùng Đăng', sameImage('livlab-master-spa-retreat', 'master-spa-retreat'));
+  check('concept nổi bật dùng cùng ảnh Golden Retreat', sameImage('livlab-golden-retreat', 'tungdang-golden-retreat'));
+  for (const c of owned) {
+    const facing = c.hotspots.filter(isCustomerFacing);
+    check(`${c.slug}: ảnh nằm trong public`, existsSync(`public${c.canonicalImage}`), c.canonicalImage);
+    check(`${c.slug}: đủ điểm để xuất bản`, facing.length >= 2, facing.length);
+    check(`${c.slug}: mọi điểm là gợi ý trong concept`, facing.every((h) => h.matchConfidence === 'CURATED_SUGGESTION'));
+    // Nothing a LivLab page renders — image path, text, notes — names the
+    // showroom whose storefront it shares.
+    check(`${c.slug}: không nhắc tên showroom demo`, !/tùng đăng|tung dang|tungdang/i.test(JSON.stringify(c)));
+  }
+}
+
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed === 0 ? 0 : 1);

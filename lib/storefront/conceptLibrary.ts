@@ -1381,6 +1381,58 @@ const llSerenePremium = tenantConcept(c04, {
   },
 });
 
+/*
+ * The three scenes the retail storefront leads with — the spa master bath in
+ * the hero, Golden Retreat as the featured room, the monochrome bath in the
+ * row — on LivLab's own library. All three images are LivLab-generated.
+ * Objects the library has nothing of the same kind for (a free-standing tub,
+ * a wall-hung WC, a ceiling shower, wall-mounted taps) stay unannotated.
+ */
+const LL_VESSEL_RECT = llPick('llv-lav-toto-lt1705-xw', 'TOTO', 'LT1705#XW', 'Chậu đặt bàn chữ nhật men trắng, 550 × 380 mm — cùng kiểu lắp đặt và tỷ lệ với chậu trong ảnh.');
+const LL_CLOSE_COUPLED_WC = llPick('llv-toi-toto-cs838dt8', 'TOTO', 'CS838DT8', 'Bồn cầu hai khối, két hộp vuông sát tường, nắp êm — cùng kiểu với thiết bị trong ảnh.');
+
+const llMasterSpa = tenantConcept(c05, {
+  tenantId: LIVLAB_TENANT_ID,
+  idPrefix: 'll',
+  slug: 'livlab-master-spa-retreat',
+  titleVi: 'Master bathroom phong cách spa tại nhà',
+  presentation: { leadWithName: true, roomType: 'Master bathroom', styleLabel: 'Spa tại gia', areaLabel: '10–14 m²', budgetLabel: 'Cao cấp' },
+  picks: {
+    2: LL_VESSEL_RECT,
+    3: { ...LL_VESSEL_RECT, note: `${LL_VESSEL_RECT.note} Chậu thứ hai của mặt bàn đôi.` },
+    4: LL_CLOSE_COUPLED_WC,
+  },
+});
+
+const llGoldenRetreat = tenantConcept(
+  // The same LivLab-generated scene, served from the shared concepts folder.
+  { ...td01, canonicalImage: '/concepts/golden-retreat-master-bath.webp', imageSourceId: 'golden-retreat-master-bath.webp (LivLab, 2026-10-18)' },
+  {
+    tenantId: LIVLAB_TENANT_ID,
+    idPrefix: 'll',
+    slug: 'livlab-golden-retreat',
+    titleVi: 'Phòng tắm master thư giãn',
+    presentation: { leadWithName: true, roomType: 'Master bathroom', styleLabel: 'Hiện đại cao cấp', areaLabel: '10–14 m²', budgetLabel: 'Cao cấp' },
+    picks: {
+      1: { ...LL_VESSEL_RECT, note: 'Chậu đặt bàn chữ nhật men trắng dưới gương tròn — cùng kiểu lắp đặt và tỷ lệ.' },
+      2: LL_CLOSE_COUPLED_WC,
+      4: llPick('llv-sho-inax-bfv655t8c', 'INAX', 'BFV-655T-8C', 'Sen cây nhiệt độ lộ thiên, bát sen tròn và tay sen — cùng kiểu thiết bị trong khu tắm kính.'),
+    },
+  }
+);
+
+const llMonochrome = tenantConcept(c07, {
+  tenantId: LIVLAB_TENANT_ID,
+  idPrefix: 'll',
+  slug: 'livlab-monochrome-architectural-bath',
+  titleVi: 'Phòng tắm đen – trắng kiến trúc',
+  presentation: { leadWithName: true, roomType: 'Phòng tắm master', styleLabel: 'Đen – trắng hiện đại', areaLabel: '7–10 m²', budgetLabel: 'Trung – cao cấp' },
+  picks: {
+    2: llPick('llv-lav-toto-lw573jwf', 'TOTO', 'LW573JW/F#W', 'Chậu đặt bàn tròn men trắng, 420 × 420 mm — cùng kiểu lắp đặt và dáng tròn thấp với chậu trong ảnh.'),
+    3: llPick('llv-lav-toto-lw573jwf', 'TOTO', 'LW573JW/F#W', 'Chậu đặt bàn tròn men trắng — chậu thứ hai của mặt bàn đôi, cùng model.'),
+  },
+});
+
 /**
  * Reading order, set by how the rooms look rather than by when they were made.
  *
@@ -1398,6 +1450,8 @@ export const CONCEPT_LIBRARY: StorefrontConcept[] = [
   // A tenant's own concept leads its storefront; every other tenant skips it.
   td01,
   gsMasterSpa, gsScandinavian, gsPremiumSuite,
-  llUrbanLight, llWarmSmart, llScandinavian, llSerenePremium,
+  // LivLab's own, in the order its home page reads them: hero, featured room,
+  // then the row — the same three scenes the retail storefront leads with.
+  llMasterSpa, llGoldenRetreat, llUrbanLight, llMonochrome, llWarmSmart, llScandinavian, llSerenePremium,
   c01, c07, c03, c10, c08, c04, c06, c09, c02, c05,
 ];

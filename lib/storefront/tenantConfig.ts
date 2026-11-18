@@ -13,7 +13,7 @@
  * docs/storefront-tenant-fields.md.
  */
 
-import { EDITORIAL_EXPERIENCE, type TenantExperience } from './tenantExperience';
+import { EDITORIAL_EXPERIENCE, type TenantExperience, type TenantTheme } from './tenantExperience';
 
 export interface TenantBrand {
   /** Shown in the header, the footer and page titles. */
@@ -280,42 +280,53 @@ const LIVLAB_FEATURES: TenantFeatureFlags = {
 };
 
 /**
- * The default storefront, used by livlab.vercel.app and whenever tenant
- * resolution finds nothing. It keeps LivLab's existing navy identity.
+ * The warm retail palette: charcoal ink, an orange primary action and the same
+ * orange darkened for text. Worn by LivLab's own storefront and by the Tùng
+ * Đăng demo, so the two look alike while carrying different names and logos.
+ *
+ * Colours, checked for contrast rather than eyeballed:
+ *   #EF9F00 orange fills the primary action; charcoal on it is 6.3:1, while
+ *     white on it would be 2.2:1, so the action's text is charcoal.
+ *   #B45309 is the same orange as TEXT on white (5.0:1): prices and links.
+ *   #D61A2C is a promo red darkened to 5.2:1 for small text, and appears only
+ *     beside a genuinely higher list price.
  */
+const WARM_RETAIL_THEME: TenantTheme = {
+  ink: '#2E2D2B',
+  inkContrast: '#FFFFFF',
+  accentInk: '#B45309',
+  panel: '#2E2D2B',
+  panelContrast: '#FFFFFF',
+  price: '#B45309',
+  discount: '#D61A2C',
+  surfaceMuted: '#F4F3F1',
+  radius: 6,
+  headingTracking: '.04em',
+  font: 'beVietnamPro',
+  uiPrimary: '#EF9F00',
+  uiPrimaryHover: '#FCA359',
+  uiPrimaryContrast: '#2E2D2B',
+  uiSelected: '#EF9F00',
+  uiSelectedContrast: '#2E2D2B',
+  uiSoft: '#FDF1DC',
+  uiSoftContrast: '#8A4500',
+  uiLink: '#B45309',
+  uiSurface: '#F6F5F3',
+  uiInk: '#2E2D2B',
+};
+
 /**
- * LivLab's own storefront, on the retail treatment the Tùng Đăng demo proved
- * out: the same header, commerce hero, icon rail, price-led cards and section
- * order — with LivLab's colours (taken from its logo), copy, product library
- * and concepts. Nothing here reads a showroom's catalogue or contact details.
+ * LivLab's own storefront — the default, used by livlab.space and whenever
+ * tenant resolution finds nothing. It is the Tùng Đăng demo's storefront
+ * exactly: the same warm palette, header, commerce hero, icon rail, price-led
+ * cards, section order and scene photographs. What differs is identity only —
+ * LivLab's logo, copy, product library and concepts. Nothing here reads a
+ * showroom's catalogue, name, address or contact details.
  */
 const LIVLAB_CATEGORIES = ['Bồn cầu', 'Lavabo', 'Vòi lavabo', 'Sen tắm', 'Gương & phụ kiện'];
 
 const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
-  // Logo colours: deep teal #04404F, light teal #70C0C0, charcoal #282828.
-  theme: {
-    ink: '#2A2A2A',
-    inkContrast: '#FFFFFF',
-    accentInk: '#0A5566',
-    panel: '#04404F',
-    panelContrast: '#FFFFFF',
-    price: '#0A5566',
-    discount: '#D61A2C',
-    surfaceMuted: '#F1F6F6',
-    radius: 6,
-    headingTracking: '.04em',
-    font: 'beVietnamPro',
-    uiPrimary: '#04404F',
-    uiPrimaryHover: '#0A5566',
-    uiPrimaryContrast: '#FFFFFF',
-    uiSelected: '#04404F',
-    uiSelectedContrast: '#FFFFFF',
-    uiSoft: '#E3F4F3',
-    uiSoftContrast: '#04404F',
-    uiLink: '#0A5566',
-    uiSurface: '#F4F7F7',
-    uiInk: '#2A2A2A',
-  },
+  theme: WARM_RETAIL_THEME,
   variants: {
     header: 'retail',
     hero: 'commerce',
@@ -336,12 +347,17 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
       'llv-sho-inax-bfv655t8c',
       'llv-fau-toto-tx109ld',
     ],
-    heroConceptSlug: 'livlab-urban-light-spa',
-    featuredConceptSlug: 'livlab-warm-smart-retreat',
+    // The same scenes the retail storefront leads with, pinned to LivLab's
+    // own products (lib/storefront/conceptLibrary.ts).
+    heroConceptSlug: 'livlab-master-spa-retreat',
+    featuredConceptSlug: 'livlab-golden-retreat',
     conceptCount: 3,
+    // Captured from LivLab's own Room Studio with `?demo=1` (the room below),
+    // 1440 × 1097 and cropped beneath the site header — the same framing as
+    // the retail demo's picture.
     roomStudioImage: {
-      src: '/images/room-studio-ui.png',
-      alt: 'Room Studio của LivLab: nhập kích thước phòng, chọn vật liệu và đặt thiết bị từ thư viện sản phẩm',
+      src: '/images/room-studio-livlab.webp',
+      alt: 'Room Studio của LivLab: phòng 3,0 × 2,0 m với lavabo và bồn cầu từ thư viện sản phẩm LivLab',
     },
   },
   copy: {
@@ -408,6 +424,19 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
   },
   // LivLab's Room Studio offers its whole library, 3D reconstructions included.
   roomStudioCatalog: 'livlab',
+  // `/room-studio?demo=1`: the furnished 3 × 2 m room the home page's Room
+  // Studio picture was captured from — the retail demo's arrangement, with
+  // LivLab's own basin and toilet. A product that cannot be placed is skipped.
+  roomStudioDemo: {
+    dimensions: { length: 3, width: 2, height: 2.7 },
+    floor: { material: 'stone-look', color: 'beige', finish: 'matte' },
+    walls: { material: 'porcelain', color: 'white', finish: 'matte' },
+    products: [
+      { id: 'llv-lav-toto-lt1705-xw', at: [-0.75, -0.75] },
+      { id: 'llv-toi-toto-cs838dt8', at: [0.65, -0.55] },
+    ],
+    selectProductId: 'llv-toi-toto-cs838dt8',
+  },
 };
 
 export const LIVLAB_TENANT: TenantStorefrontConfig = {
@@ -421,9 +450,9 @@ export const LIVLAB_TENANT: TenantStorefrontConfig = {
     // The room mark from the logo, on white — replaces the Next/Vercel
     // triangle that Google was showing beside LivLab's results.
     icon: '/images/livlab-icon.png',
-    accent: '#04404F',
-    accentHover: '#0A5566',
-    accentContrast: '#FFFFFF',
+    accent: '#EF9F00',
+    accentHover: '#FCA359',
+    accentContrast: '#2E2D2B',
   },
   navigation: baseNavigation(LIVLAB_FEATURES, { isDefaultTenant: true, productCategories: LIVLAB_CATEGORIES }),
   contact: {},
@@ -513,39 +542,10 @@ const TUNGDANG_CATEGORIES = ['Bồn cầu', 'Lavabo', 'Vòi lavabo', 'Sen tắm'
  * variants (`retail`, `commerce`, `iconRail`, `priceLed`) are treatments any
  * retailer can take; an editorial showroom takes the other values of the same
  * fields and gets a different header, hero, category navigation and card from
- * the same components.
- *
- * Colours, checked for contrast rather than eyeballed:
- *   #EF9F00 orange fills the primary action; charcoal on it is 6.3:1, while
- *     white on it would be 2.2:1, so the action's text is charcoal.
- *   #B45309 is the same orange as TEXT on white (5.0:1): prices and links.
- *   #D61A2C is the source's promo red darkened to 5.2:1 for small text, and
- *     appears only beside a genuinely higher list price.
+ * the same components. Its palette is WARM_RETAIL_THEME, shared with LivLab.
  */
 const TUNGDANG_EXPERIENCE: TenantExperience = {
-  theme: {
-    ink: '#2E2D2B',
-    inkContrast: '#FFFFFF',
-    accentInk: '#B45309',
-    panel: '#2E2D2B',
-    panelContrast: '#FFFFFF',
-    price: '#B45309',
-    discount: '#D61A2C',
-    surfaceMuted: '#F4F3F1',
-    radius: 6,
-    headingTracking: '.04em',
-    font: 'beVietnamPro',
-    uiPrimary: '#EF9F00',
-    uiPrimaryHover: '#FCA359',
-    uiPrimaryContrast: '#2E2D2B',
-    uiSelected: '#EF9F00',
-    uiSelectedContrast: '#2E2D2B',
-    uiSoft: '#FDF1DC',
-    uiSoftContrast: '#8A4500',
-    uiLink: '#B45309',
-    uiSurface: '#F6F5F3',
-    uiInk: '#2E2D2B',
-  },
+  theme: WARM_RETAIL_THEME,
   variants: {
     header: 'retail',
     hero: 'commerce',
