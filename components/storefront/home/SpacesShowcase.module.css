@@ -1,0 +1,573 @@
+/*
+ * LivLab homepage — the spaces card (see SpacesShowcase.tsx).
+ * Scoped to this section only.
+ *
+ * Calibrated on the approved 1821 × 864 reference, where the card spans
+ * x 46–1775 (1729 px). Every position and size inside the card is a share of
+ * that width in container-query units, so the card scales as one piece on
+ * desktop: 1cqw = 17.29 px of the reference.
+ */
+
+.section {
+  --sp-ink: #1b1b1b;
+  --sp-heading: #202020;
+  --sp-body: #555555;
+  --sp-muted: #6b6b6b;
+  --sp-faint: #a3a2a2;
+  --sp-line: #e4e4e4;
+  --sp-gold: #fec23e;
+  background: #f8f7f5;
+  padding-block: clamp(28px, 2.6vw, 48px);
+}
+
+.wrap {
+  container-type: inline-size;
+  width: min(1729px, 100% - 5vw);
+  margin-inline: auto;
+}
+
+.card {
+  padding: 2.4cqw 2.43cqw 2.54cqw 3.12cqw;
+  border: 1px solid #efefed;
+  border-radius: 1.62cqw;
+  background: #ffffff;
+  box-shadow:
+    0 14px 34px rgba(30, 28, 24, 0.045),
+    0 1px 3px rgba(30, 28, 24, 0.03);
+}
+
+/* ── Heading row ───────────────────────────────────────────────────────── */
+.head {
+  position: relative;
+}
+/* The LivLab section eyebrow, as on Room Studio: golden line, burnt-orange label */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--tenant-accent-ink);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 16px;
+  text-transform: uppercase;
+}
+.eyebrow::before {
+  content: '';
+  flex: none;
+  width: 40px;
+  height: 3px;
+  background: var(--tenant-accent);
+}
+/* The same heading as DANH MỤC THIẾT BỊ VỆ SINH, size rule included */
+.title {
+  margin-top: 14px;
+  color: var(--sp-heading);
+  font-size: clamp(26px, 2.16vw, 32px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+.body {
+  margin-top: 8px;
+  color: var(--sp-body);
+  font-size: max(14px, 1.01cqw);
+  line-height: 1.5;
+}
+.seeAll {
+  position: absolute;
+  top: 40px;
+  right: 0.87cqw;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75cqw;
+  color: var(--sp-ink);
+  font-size: max(11px, 0.87cqw);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.seeAllArrow {
+  width: 1.35em;
+  height: 1.35em;
+  transition: transform 200ms ease;
+}
+.seeAll:hover .seeAllArrow,
+.seeAll:focus-visible .seeAllArrow {
+  transform: translateX(3px);
+}
+.seeAll:focus-visible {
+  outline: 2px solid var(--sp-ink);
+  outline-offset: 4px;
+}
+
+/* ── Copy, photograph, tabs ────────────────────────────────────────────── */
+.main {
+  display: grid;
+  grid-template-columns: 76.29cqw minmax(0, 1fr);
+  column-gap: 1.68cqw;
+  margin-top: 3.12cqw;
+}
+
+/* The four rooms share one cell: the card never changes size. */
+.panels {
+  display: grid;
+}
+.panel {
+  grid-area: 1 / 1;
+  display: grid;
+  grid-template-columns: 20.53cqw minmax(0, 1fr);
+  column-gap: 2.31cqw;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 160ms ease,
+    visibility 0s linear 160ms;
+}
+.panel[data-on] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 260ms ease 80ms;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2.28cqw 0 1.39cqw;
+}
+.status {
+  color: var(--sp-muted);
+  font-size: max(11px, 0.87cqw);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 18px;
+  text-transform: uppercase;
+}
+.name {
+  margin-top: 1.67cqw;
+  color: var(--sp-ink);
+  font-size: 2.78cqw;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+.summary {
+  max-width: 20.5cqw;
+  margin-top: 1.1cqw;
+  color: var(--sp-body);
+  font-size: max(13px, 1.04cqw);
+  line-height: 1.72;
+  text-wrap: pretty;
+}
+.meta {
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  color: var(--sp-ink);
+  font-size: max(11px, 0.87cqw);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9cqw;
+}
+.metaItem + .metaItem {
+  margin-left: 2cqw;
+  padding-left: 2cqw;
+  border-left: 1px solid var(--sp-line);
+}
+.metaItem span {
+  max-width: 7.5em;
+}
+.metaIcon {
+  flex: none;
+  width: 1.39cqw;
+  height: 1.39cqw;
+}
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6cqw;
+  width: 19.84cqw;
+  height: 3.24cqw;
+  margin-top: 3.82cqw;
+  border-radius: 2px;
+  background: var(--sp-gold);
+  color: #1a1a1a;
+  font-size: max(11px, 0.93cqw);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  transition: background-color 200ms ease;
+}
+.cta:hover {
+  background: #ffcd5c;
+}
+.cta:focus-visible {
+  outline: 2px solid var(--sp-ink);
+  outline-offset: 3px;
+}
+.ctaArrow {
+  width: 1.35em;
+  height: 1.35em;
+  transition: transform 200ms ease;
+}
+.cta:hover .ctaArrow,
+.cta:focus-visible .ctaArrow {
+  transform: translateX(3px);
+}
+
+/* The photograph, with its index label cut into the bottom-right corner */
+.figure {
+  --sp-r: 1.39cqw;
+  position: relative;
+  height: 30.36cqw;
+}
+.photoLink {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--sp-r);
+  background: #efece7;
+}
+.stage {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1448 / 1086;
+  transform: translateY(-50%);
+}
+.photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.label {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 11.74cqw;
+  height: 7.29cqw;
+  padding: 0 1.2cqw 0 1.5cqw;
+  border-top-left-radius: var(--sp-r);
+  background: #ffffff;
+}
+/* The two concave joins between the photograph and the label */
+.label::before,
+.label::after {
+  content: '';
+  position: absolute;
+  width: var(--sp-r);
+  height: var(--sp-r);
+  background: radial-gradient(circle at 0 0, transparent calc(var(--sp-r) - 0.5px), #ffffff var(--sp-r));
+}
+.label::before {
+  right: 0;
+  bottom: 100%;
+}
+.label::after {
+  right: 100%;
+  bottom: 0;
+}
+.labelNumber {
+  color: var(--sp-ink);
+  font-size: 2.43cqw;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.labelName {
+  margin-top: 0.95cqw;
+  color: var(--sp-ink);
+  font-size: max(10px, 0.93cqw);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  /* Two lines at most: long names take their short tab label instead. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/* Right: previous / next, then four vertical tabs */
+.nav {
+  display: flex;
+  flex-direction: column;
+  height: 30.36cqw;
+}
+.arrows {
+  display: flex;
+  gap: 4.4cqw;
+  padding: 0.35cqw 0 0 1.56cqw;
+}
+.arrow {
+  display: grid;
+  place-items: center;
+  width: 1.5cqw;
+  height: 1.5cqw;
+  color: #2a2a2a;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    transform 180ms ease;
+}
+.arrow svg {
+  width: 100%;
+  height: 100%;
+}
+.arrow:hover {
+  color: #000000;
+}
+.arrow:first-child:hover {
+  transform: translateX(-2px);
+}
+.arrow:last-child:hover {
+  transform: translateX(2px);
+}
+.arrow:focus-visible {
+  outline: 2px solid var(--sp-ink);
+  outline-offset: 4px;
+}
+.tabs {
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 1.9cqw;
+  margin-bottom: 5.55cqw;
+}
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.54cqw;
+  min-height: 0;
+  padding-bottom: 0.45cqw;
+  border-right: 1px solid var(--sp-line);
+  color: var(--sp-faint);
+  cursor: pointer;
+  transition: color 220ms ease;
+}
+.tab:hover {
+  color: #6a6a6a;
+}
+.tab[data-on] {
+  color: #111111;
+}
+.tab:focus-visible {
+  outline: 2px solid var(--sp-ink);
+  outline-offset: -4px;
+}
+.tabName {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 1.16cqw;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.tabNumber {
+  font-size: 1.85cqw;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* Long names step down so their longest word fits the copy column. */
+.panel[data-size='m'] .name {
+  font-size: 2.43cqw;
+}
+.panel[data-size='s'] .name {
+  font-size: 2.08cqw;
+}
+
+/* ── Below 1100 px: photograph, tabs, then the room's copy ─────────────── */
+@media (max-width: 1099px) {
+  .wrap {
+    width: calc(100% - 32px);
+  }
+  .card {
+    --sp-pad: clamp(18px, 4cqw, 32px);
+    padding: var(--sp-pad);
+    border-radius: 20px;
+  }
+  .body {
+    font-size: 15px;
+  }
+  .seeAll {
+    position: static;
+    margin-top: 16px;
+    gap: 8px;
+    font-size: 12px;
+  }
+  .main {
+    position: relative;
+    display: block;
+    margin-top: 24px;
+  }
+  .panel {
+    grid-template-columns: minmax(0, 1fr);
+    /* The middle row holds the place of the tabs, laid over it below. */
+    grid-template-rows: auto 72px auto;
+    column-gap: 0;
+  }
+  .figure {
+    --sp-r: 14px;
+    grid-row: 1;
+    height: auto;
+    /* Tablets keep the desktop's wide frame; phones show the whole room. */
+    aspect-ratio: 924 / 525;
+  }
+  .copy {
+    grid-row: 3;
+    padding: 20px 0 0;
+  }
+  .status {
+    font-size: 12px;
+  }
+  .name,
+  .panel[data-size='m'] .name,
+  .panel[data-size='s'] .name {
+    margin-top: 10px;
+    font-size: clamp(26px, 6.4cqw, 36px);
+    line-height: 1.15;
+  }
+  .summary {
+    max-width: 560px;
+    margin-top: 10px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .meta {
+    margin-top: 18px;
+    font-size: 12px;
+  }
+  .metaItem {
+    gap: 8px;
+  }
+  .metaItem + .metaItem {
+    margin-left: 16px;
+    padding-left: 16px;
+  }
+  .metaIcon {
+    width: 18px;
+    height: 18px;
+  }
+  .cta {
+    gap: 12px;
+    width: auto;
+    height: 52px;
+    margin-top: 22px;
+    padding-inline: 24px;
+    font-size: 13px;
+  }
+  .label {
+    width: auto;
+    min-width: 128px;
+    height: auto;
+    padding: 12px 14px 10px 16px;
+  }
+  .labelNumber {
+    font-size: 26px;
+  }
+  .labelName {
+    margin-top: 6px;
+    font-size: 11px;
+  }
+  /* The tabs: one horizontal row over the reserved row under the photograph */
+  .nav {
+    position: absolute;
+    top: calc((100cqw - 2 * var(--sp-pad, 24px) - 2px) * var(--sp-frame, 0.5682) + 12px);
+    right: 0;
+    left: 0;
+    height: 48px;
+  }
+  .arrows {
+    display: none;
+  }
+  .tabs {
+    display: flex;
+    gap: 8px;
+    height: 48px;
+    margin: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .tab {
+    flex: none;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--sp-line);
+    border-radius: 999px;
+  }
+  .tab[data-on] {
+    border-color: #111111;
+  }
+  .tabName {
+    writing-mode: horizontal-tb;
+    transform: none;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+  .tabNumber {
+    order: -1;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 767px) {
+  /* As the categories heading on phones */
+  .title {
+    font-size: 24px;
+  }
+  .figure {
+    aspect-ratio: 1448 / 1086;
+  }
+  .nav {
+    --sp-frame: 0.75;
+  }
+}
+
+@media (max-width: 479px) {
+  .cta {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .panel[data-on],
+  .tab,
+  .arrow,
+  .cta,
+  .ctaArrow,
+  .seeAllArrow {
+    transition: none;
+  }
+}

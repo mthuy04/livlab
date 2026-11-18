@@ -9,12 +9,14 @@ import FeaturedProducts from './FeaturedProducts';
 import RoomStudioFeature from './RoomStudioFeature';
 import RoomStudioSteps from './RoomStudioSteps';
 import ClosingScene from './ClosingScene';
+import SpacesShowcase from './SpacesShowcase';
 import ShowroomConsultation from './ShowroomConsultation';
 import CommerceHero from './CommerceHero';
 import CategoryRail from './CategoryRail';
 import EditorialHero from './EditorialHero';
 import CategoryKeywords from './CategoryKeywords';
 import { BrandStrip, ConceptShowcase, RetailProductGrid } from './catalogSections';
+import transition from './HeroTransition.module.css';
 
 /**
  * A showroom's homepage: the sections its experience lists, in that order,
@@ -30,11 +32,33 @@ export default async function CatalogHome({ tenant }: { tenant: TenantStorefront
   const data = await getCatalogHomeData(tenant);
   const { sections } = tenant.experience.home;
 
+  // The `overlap` transition: the hero holds briefly while the categories
+  // section directly after it slides over its lower edge (HeroTransition.module.css).
+  const overlap = tenant.experience.variants.heroTransition === 'overlap';
+  const heroAt = sections.indexOf('hero');
+  const pairs = overlap && heroAt >= 0 && sections[heroAt + 1] === 'categories';
+
   return (
     <>
-      {sections.map((section) => (
-        <Fragment key={section}>{renderSection(section, tenant, data)}</Fragment>
-      ))}
+      {sections.map((section, i) => {
+        const node = renderSection(section, tenant, data);
+        if (pairs && i === heroAt) {
+          return (
+            <div key={section} className={transition.track}>
+              {node}
+              <div className={transition.runway} aria-hidden="true" />
+            </div>
+          );
+        }
+        if (pairs && i === heroAt + 1) {
+          return (
+            <div key={section} className={transition.cover}>
+              {node}
+            </div>
+          );
+        }
+        return <Fragment key={section}>{node}</Fragment>;
+      })}
     </>
   );
 }
@@ -70,6 +94,7 @@ function renderSection(section: HomeSection, tenant: TenantStorefrontConfig, dat
       if (variants.categoryNav === 'keywords') {
         return (
           <CategoryKeywords
+            eyebrow={copy.sections.categoriesEyebrow}
             title={copy.sections.categoriesTitle}
             intro={copy.sections.categoriesIntro}
             categories={data.categories}
@@ -95,6 +120,17 @@ function renderSection(section: HomeSection, tenant: TenantStorefrontConfig, dat
       );
 
     case 'concepts':
+      if (variants.concepts === 'spaces' && copy.sections.spaces) {
+        return (
+          <SpacesShowcase
+            eyebrow={copy.sections.conceptsEyebrow}
+            title={copy.sections.conceptsTitle}
+            body={copy.sections.conceptsBody}
+            copy={copy.sections.spaces}
+            concepts={[...(data.featuredConcept ? [data.featuredConcept.card] : []), ...data.concepts]}
+          />
+        );
+      }
       return (
         <ConceptShowcase
           eyebrow={copy.sections.conceptsEyebrow}

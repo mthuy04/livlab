@@ -144,6 +144,14 @@ export type RoomStudioVariant = 'feature' | 'steps';
  */
 export type ConsultationVariant = 'split' | 'scene';
 
+/**
+ * The homepage concept section. `showcase` (the default): the featured room
+ * large, the others as a card row. `spaces`: one white editorial card showing
+ * one room at a time — copy left, the room's photograph centre, four
+ * vertical tabs right.
+ */
+export type ConceptsVariant = 'showcase' | 'spaces';
+
 export interface TenantVariants {
   header: HeaderVariant;
   hero: HeroVariant;
@@ -155,6 +163,13 @@ export interface TenantVariants {
   roomStudio?: RoomStudioVariant;
   /** Defaults to `split`. */
   consultation?: ConsultationVariant;
+  /** Defaults to `showcase`. */
+  concepts?: ConceptsVariant;
+  /**
+   * `overlap`: on scroll the hero holds for a moment while the categories
+   * section that follows slides over its lower edge. Unset: plain flow.
+   */
+  heroTransition?: 'overlap';
 }
 
 /* ── Homepage ────────────────────────────────────────────────────────────── */
@@ -338,6 +353,8 @@ export interface TenantCopy {
     trust?: { title: string; body: string }[];
   };
   sections: {
+    /** Eyebrow over the category heading (the `keywords` variant). */
+    categoriesEyebrow?: string;
     categoriesTitle: string;
     /** One line under the category heading (the `keywords` variant). */
     categoriesIntro?: string;
@@ -348,6 +365,18 @@ export interface TenantCopy {
     productsTitle: string;
     productsNote?: string;
     brandsTitle: string;
+    /** The `spaces` concept section's own lines. */
+    spaces?: {
+      /** Status line of the featured room ("01 / …") and of the others. */
+      featuredLabel: string;
+      entryLabel: string;
+      cta: string;
+      seeAll: string;
+      /** One short line per room, by concept slug; the subtitle stands in otherwise. */
+      summaries: Record<string, string>;
+      /** Shorter names for the narrow vertical tabs, by concept slug. */
+      navLabels?: Record<string, string>;
+    };
   };
   quote: {
     /** The header's primary action. */

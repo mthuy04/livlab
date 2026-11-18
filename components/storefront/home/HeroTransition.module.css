@@ -1,0 +1,56 @@
+/*
+ * The hero → categories transition (the `overlap` hero transition).
+ *
+ * The hero sits in a track one "overlap" taller than itself and sticks just
+ * under the header for that distance; the categories section, pulled up by
+ * the same amount and stacked above, slides over the hero's lower edge while
+ * it holds. Then both scroll on together. At rest the two meet edge to edge:
+ * the pull-up exactly covers the extra track, so nothing is added to the
+ * page's length. Pure CSS — no scroll handler.
+ *
+ * Header: 74 px + 1 px border from 1024 px up, 64 + 1 below. The two
+ * wrappers are siblings, so each carries the shared values.
+ */
+
+.track,
+.cover {
+  --ht-overlap: 104px;
+  --ht-top: 75px;
+}
+
+.track {
+  position: relative;
+}
+.track > :first-child {
+  position: sticky;
+  top: var(--ht-top);
+  z-index: 0;
+}
+.runway {
+  height: var(--ht-overlap);
+}
+
+.cover {
+  position: relative;
+  z-index: 1;
+  margin-top: calc(-1 * var(--ht-overlap));
+}
+
+@media (max-width: 1023px) {
+  .track,
+  .cover {
+    --ht-overlap: 64px;
+    --ht-top: 65px;
+  }
+}
+
+/* Phones and reduced motion: no hold, no overlap — the sections simply follow. */
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  .track,
+  .cover {
+    --ht-overlap: 0px;
+  }
+  .track > :first-child {
+    position: static;
+  }
+}

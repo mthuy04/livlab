@@ -32,6 +32,26 @@
   justify-content: space-between;
   gap: 12px 40px;
 }
+/* The LivLab section eyebrow: golden line, burnt-orange label */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 14px;
+  color: var(--tenant-accent-ink);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 16px;
+  text-transform: uppercase;
+}
+.eyebrow::before {
+  content: '';
+  flex: none;
+  width: 40px;
+  height: 3px;
+  background: var(--tenant-accent);
+}
 .heading {
   color: var(--ck-ink);
   font-size: clamp(26px, 2.16vw, 32px);
@@ -80,6 +100,26 @@
 .all:focus-visible {
   outline: 2px solid var(--ck-ink);
   outline-offset: 4px;
+}
+
+/* Heading reveal (CategoryKeywords.tsx): eyebrow and heading rise 20 px into
+   place as they come into view, the line under them a beat later. */
+.head[data-reveal] .eyebrow,
+.head[data-reveal] .heading,
+.head[data-reveal] .intro {
+  transition:
+    opacity 760ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 760ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.head[data-reveal='shown'] .intro {
+  transition-delay: 140ms;
+}
+.head[data-reveal='hidden'] .eyebrow,
+.head[data-reveal='hidden'] .heading,
+.head[data-reveal='hidden'] .intro {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: none;
 }
 
 /* ── The gallery ───────────────────────────────────────────────────────── */

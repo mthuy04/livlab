@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo, useRef, useState, type PointerEvent } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Route } from 'next';
@@ -49,12 +49,14 @@ type Item = { name: string; label: string; href: string; count: number; preview?
 const pad = (n: number) => String(n).padStart(2, '0');
 
 export default function CategoryKeywords({
+  eyebrow,
   title,
   intro,
   categories,
   productCount,
   previews,
 }: {
+  eyebrow?: string;
   title: string;
   intro?: string;
   categories: HomeCategory[];
@@ -78,6 +80,31 @@ export default function CategoryKeywords({
   // One shared state for the whole gallery: the active category, or none.
   const [active, setActive] = useState<number | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const headRef = useRef<HTMLDivElement>(null);
+
+  /**
+   * The heading reveal: once, as the heading block comes into view. The
+   * server renders it visible; it is hidden only here, and only while it is
+   * still below the fold, so nothing flashes and nothing depends on script.
+   * A data attribute, not state: no re-render, and React never owns it.
+   */
+  useEffect(() => {
+    const head = headRef.current;
+    if (!head || typeof IntersectionObserver === 'undefined') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (head.getBoundingClientRect().top < window.innerHeight * 0.92) return;
+    head.dataset.reveal = 'hidden';
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        head.dataset.reveal = 'shown';
+        io.disconnect();
+      },
+      { threshold: 0.35, rootMargin: '0px 0px -6% 0px' }
+    );
+    io.observe(head);
+    return () => io.disconnect();
+  }, []);
 
   /** Mouse and pen only: a tap on a touch screen just follows the link. */
   const hover = useCallback(
@@ -103,8 +130,9 @@ export default function CategoryKeywords({
   return (
     <section aria-labelledby="home-category-rail" className={`${s.section} ${inter.className}`}>
       <div className={s.inner}>
-        <div className={s.head}>
+        <div ref={headRef} className={s.head}>
           <div>
+            {eyebrow && <p className={s.eyebrow}>{eyebrow}</p>}
             <h2 id="home-category-rail" className={s.heading}>
               {title}
             </h2>

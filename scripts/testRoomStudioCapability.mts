@@ -308,15 +308,16 @@ console.log('\ngiao diện theo showroom');
   const tungdang = TENANTS.tungdang;
   // Same layout and sections as the retail demo; only LivLab's hero and
   // category list take the editorial variants, so Tùng Đăng is untouched.
-  const { hero: llHero, categoryNav: llNav, roomStudio: llRs, consultation: llCs, ...llRest } = livlab.experience.variants;
-  const { hero: tdHero, categoryNav: tdNav, roomStudio: tdRs, consultation: tdCs, ...tdRest } = tungdang.experience.variants;
+  const { hero: llHero, categoryNav: llNav, roomStudio: llRs, consultation: llCs, concepts: llCo, heroTransition: llHt, ...llRest } = livlab.experience.variants;
+  const { hero: tdHero, categoryNav: tdNav, roomStudio: tdRs, consultation: tdCs, concepts: tdCo, heroTransition: tdHt, ...tdRest } = tungdang.experience.variants;
   check('LivLab: cùng bố cục và thứ tự phần với storefront Tùng Đăng',
     livlab.experience.home.layout === tungdang.experience.home.layout &&
       JSON.stringify(llRest) === JSON.stringify(tdRest) &&
       JSON.stringify(livlab.experience.home.sections) === JSON.stringify(tungdang.experience.home.sections));
   check('LivLab: hero, danh mục và Room Studio biên tập; Tùng Đăng giữ commerce / iconRail / feature',
     llHero === 'editorialCommerce' && llNav === 'keywords' && tdHero === 'commerce' && tdNav === 'iconRail' &&
-      llRs === 'steps' && tdRs === undefined && llCs === 'scene' && tdCs === undefined);
+      llRs === 'steps' && tdRs === undefined && llCs === 'scene' && tdCs === undefined &&
+      llCo === 'spaces' && tdCo === undefined && llHt === 'overlap' && tdHt === undefined);
   // Approved hero (pixel-match brief): literal strings, never paraphrased.
   const llHeroCopy = livlab.experience.copy.hero;
   check('LivLab hero: eyebrow và H1 hai dòng đúng nguyên văn, không dấu chấm',
@@ -365,6 +366,20 @@ console.log('\ngiao diện theo showroom');
       closing?.body === 'Kết nối với showroom để được tư vấn thiết bị vệ sinh phù hợp, kiểm tra phương án bố trí và nhận báo giá chi tiết.' &&
       closing?.primaryCta === 'YÊU CẦU BÁO GIÁ' &&
       closing?.secondaryCta === 'NHỜ SHOWROOM TƯ VẤN');
+  check('LivLab hero: không còn dải ba tính năng dưới hero; hero đứng ngay trước danh mục',
+    !livlab.experience.copy.hero.trust &&
+      livlab.experience.home.sections.indexOf('categories') === livlab.experience.home.sections.indexOf('hero') + 1 &&
+      (tungdang.experience.copy.hero.trust ?? []).length === 3);
+  const spaces = livlab.experience.copy.sections.spaces;
+  check('LivLab spaces: dòng chữ đã duyệt, một dòng mô tả cho mỗi không gian',
+    livlab.experience.copy.sections.conceptsEyebrow === 'BỘ SƯU TẬP & CẢM HỨNG' &&
+      livlab.experience.copy.sections.conceptsTitle === 'GỢI Ý KHÔNG GIAN' &&
+      spaces?.cta === 'KHÁM PHÁ KHÔNG GIAN' && spaces?.seeAll === 'XEM TẤT CẢ KHÔNG GIAN' &&
+      spaces?.featuredLabel === 'KHÔNG GIAN NỔI BẬT' &&
+      ['livlab-golden-retreat', 'livlab-urban-light-spa', 'livlab-monochrome-architectural-bath', 'livlab-warm-smart-retreat']
+        .every((slug) => (spaces?.summaries[slug] ?? '').length > 20) &&
+      livlab.experience.merchandising?.featuredConceptSlug === 'livlab-golden-retreat' &&
+      livlab.experience.merchandising?.conceptCount === 3);
   check('LivLab closing: nền sạch và ảnh phòng tắm cho điện thoại',
     livlab.experience.merchandising?.closingScene?.background.src === '/images/livlab/closing/closing-cta-background.webp' &&
       livlab.experience.merchandising?.closingScene?.mobile.src === '/images/livlab/closing/closing-cta-bathroom-mobile.webp' &&

@@ -351,6 +351,10 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
     roomStudio: 'steps',
     // The full-bleed closing scene (approved 18 Nov 2026). LivLab only.
     consultation: 'scene',
+    // The editorial spaces card (approved 18 Nov 2026). LivLab only.
+    concepts: 'spaces',
+    // Hero → categories: a short hold and overlap on scroll. LivLab only.
+    heroTransition: 'overlap',
   },
   home: {
     layout: 'catalog',
@@ -449,24 +453,9 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
       ],
       primaryCta: { label: 'MỞ ROOM STUDIO', href: '/room-studio' },
       secondaryCta: { label: 'DÀNH CHO SHOWROOM', href: '/showrooms' },
-      // Six capabilities, two to a column; each line is something the
-      // platform does today.
-      trust: [
-        {
-          title: 'DANH MỤC SỐ & BỘ SƯU TẬP',
-          body: 'Danh mục sản phẩm kèm thông số và giá tham khảo, cùng không gian gợi ý gắn sản phẩm thật.',
-        },
-        {
-          title: 'ROOM STUDIO 3D & CẤU HÌNH',
-          body: 'Dựng phòng đúng kích thước, phối vật liệu sàn tường và đặt thiết bị để thấy trước kết quả.',
-        },
-        {
-          title: 'BÁO GIÁ & QUẢN LÝ LEAD',
-          body: 'Yêu cầu báo giá có cấu trúc đổ về dashboard của showroom để theo dõi và chăm sóc khách.',
-        },
-      ],
     },
     sections: {
+      categoriesEyebrow: 'KHÁM PHÁ THEO DANH MỤC',
       categoriesTitle: 'DANH MỤC THIẾT BỊ VỆ SINH',
       categoriesIntro: 'Khám phá danh mục sản phẩm và lựa chọn thiết bị phù hợp với không gian của bạn.',
       conceptsEyebrow: 'BỘ SƯU TẬP & CẢM HỨNG',
@@ -478,6 +467,21 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
       productsTitle: 'SẢN PHẨM NỔI BẬT',
       productsNote: 'Giá tham khảo tại thời điểm cập nhật thư viện. Showroom xác nhận giá cuối khi báo giá.',
       brandsTitle: 'THƯƠNG HIỆU TRONG THƯ VIỆN',
+      // The `spaces` card (approved 18 Nov 2026). Summaries are the approved
+      // one-line descriptions; every figure on the card comes from the data.
+      spaces: {
+        featuredLabel: 'KHÔNG GIAN NỔI BẬT',
+        entryLabel: 'KHÔNG GIAN GỢI Ý',
+        cta: 'KHÁM PHÁ KHÔNG GIAN',
+        seeAll: 'XEM TẤT CẢ KHÔNG GIAN',
+        summaries: {
+          'livlab-golden-retreat': 'Phòng tắm master thư giãn với đá vân ấm, gỗ tự nhiên và ánh sáng dịu.',
+          'livlab-urban-light-spa': 'Phòng tắm sáng và gọn cho căn hộ hiện đại.',
+          'livlab-monochrome-architectural-bath': 'Phòng tắm đen – trắng với đường nét kiến trúc rõ ràng.',
+          'livlab-warm-smart-retreat': 'Phòng tắm tông ấm kết hợp thiết bị thông minh.',
+        },
+        navLabels: { 'livlab-monochrome-architectural-bath': 'Monochrome' },
+      },
     },
     quote: {
       cta: 'YÊU CẦU BÁO GIÁ',

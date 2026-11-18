@@ -200,9 +200,6 @@
   outline-offset: 3px;
 }
 
-.trust {
-  padding-top: 8px;
-}
 
 /* ── Tablet: the rail moves under the photograph ───────────────────────── */
 @media (max-width: 1100px) {

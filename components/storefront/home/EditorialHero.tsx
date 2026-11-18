@@ -2,8 +2,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import type { Route } from 'next';
 import { Inter } from 'next/font/google';
-import { ArrowUpRight, Headset, PackageCheck, Ruler } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import type { TenantCopy } from '@/lib/storefront/tenantExperience';
+import HeroParallax from './HeroParallax';
 import s from './EditorialHero.module.css';
 
 /**
@@ -24,8 +25,6 @@ const inter = Inter({
   weight: ['400', '600', '700'],
   display: 'swap',
 });
-
-const TRUST_ICONS = [PackageCheck, Ruler, Headset];
 
 export default function EditorialHero({
   copy,
@@ -59,7 +58,8 @@ export default function EditorialHero({
       </div>
 
       <div className={s.strip}>
-        <div className={s.visual}>
+        {/* The photograph and its glass drift a few pixels with the scroll. */}
+        <HeroParallax className={s.visual}>
           {glass && (
             // Decorative: reeded glass drawing in from the left on load.
             <div className={s.glass} aria-hidden="true">
@@ -77,7 +77,7 @@ export default function EditorialHero({
               className={s.photo}
             />
           </figure>
-        </div>
+        </HeroParallax>
 
         <aside className={s.rail}>
           {/* Editorial indicators only: not a slider, not interactive. */}
@@ -101,40 +101,6 @@ export default function EditorialHero({
           )}
         </aside>
       </div>
-
-      {/* The feature strip, exactly as the commerce hero renders it. */}
-      {copy.trust && copy.trust.length > 0 && (
-        <div className={`${s.trust} home-container`} data-hero-trust>
-          <ul className="grid md:grid-cols-3" style={{ borderBlock: '1px solid #E7E5E1' }}>
-            {copy.trust.map((item, i) => {
-              const Icon = TRUST_ICONS[i % TRUST_ICONS.length];
-              return (
-                <li
-                  key={item.title}
-                  className={`flex items-start gap-3.5 py-3.5 ${
-                    i > 0 ? 'border-t border-[#E7E5E1] md:border-l md:border-t-0 md:pl-7' : ''
-                  } ${i < copy.trust!.length - 1 ? 'md:pr-7' : ''}`}
-                >
-                  <Icon
-                    className="mt-0.5 h-[22px] w-[22px] shrink-0"
-                    strokeWidth={1.4}
-                    style={{ color: 'var(--tenant-accent-ink)' }}
-                    aria-hidden
-                  />
-                  <div>
-                    <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.11em', color: 'var(--tenant-ink)' }}>
-                      {item.title}
-                    </p>
-                    <p className="mt-1" style={{ fontSize: 13, lineHeight: 1.5, color: '#5E5C58' }}>
-                      {item.body}
-                    </p>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
     </section>
   );
 }
