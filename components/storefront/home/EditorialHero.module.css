@@ -1,0 +1,312 @@
+/*
+ * LivLab homepage hero — approved mockup (see EditorialHero.tsx).
+ *
+ * Calibrated on the 1671 × 941 reference and expressed in vw so the whole
+ * composition scales with the viewport. Reference measurements (px @1671,
+ * measured from the bottom of the header): eyebrow 52, line 1 caps 102–169,
+ * line 2 baseline 277, glass 282–830 at x 0–483, photo 315–806 at x 483–1355,
+ * right rail x 1419–1630. Scoped to this component only.
+ */
+
+.hero {
+  --h-ink: #202020;
+  --h-grey: #bdbdbd;
+  --h-text: #272727;
+  --h-line: #e4e4e4;
+  --h-gutter: 4.19vw;
+  --h-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  background: #fff;
+  color: var(--h-ink);
+  overflow-x: clip;
+}
+
+/* ── Type ──────────────────────────────────────────────────────────────── */
+.head {
+  padding: 3.32vw var(--h-gutter) 0;
+}
+.eyebrow {
+  color: var(--h-ink);
+  font-size: clamp(13px, 1.02vw, 17px);
+  font-weight: 700;
+  letter-spacing: 0.52em;
+  line-height: 1.2;
+}
+.titleRow {
+  position: relative;
+  margin-top: 1.27vw;
+}
+.title {
+  /* Inter's capitals run taller than the mockup's face: a touch smaller,
+     a touch less tight, to match both its cap height and its line width. */
+  font-size: clamp(34px, 5.36vw, 102px);
+  letter-spacing: -0.0275em;
+  line-height: 1;
+}
+.line1,
+.line2 {
+  display: block;
+  white-space: nowrap;
+}
+.line1 {
+  color: var(--h-ink);
+  font-weight: 700;
+}
+/* Same family, lighter weight, pale grey — a solid colour, not opacity. */
+.line2 {
+  margin-top: 0.215em;
+  color: var(--h-grey);
+  font-weight: 600;
+  text-align: right;
+}
+.desc {
+  position: absolute;
+  top: 0.47vw;
+  left: 65.3%;
+  max-width: clamp(170px, 13.6vw, 240px);
+  color: var(--h-text);
+  font-size: clamp(13px, 0.99vw, 17px);
+  font-weight: 400;
+  line-height: 1.5;
+}
+.rule {
+  position: absolute;
+  top: 2.63vw;
+  left: 82.8%;
+  width: 2.33vw;
+  height: 1.5px;
+  background: var(--h-ink);
+}
+
+/* ── Glass, photograph and rail ────────────────────────────────────────── */
+.strip {
+  position: relative;
+  height: 32.8vw;
+  margin-top: -0.45vw;
+}
+.visual {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 81.1%;
+}
+.glass {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 35.64%;
+  overflow: hidden;
+}
+.glassImg {
+  object-fit: cover;
+  object-position: 100% 50%;
+  /* Draws in from the left once, on load; rests as in the reference. */
+  animation: glassIn 1100ms var(--h-ease) 120ms both;
+}
+@keyframes glassIn {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.4;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+.figure {
+  position: absolute;
+  top: 1.97vw;
+  left: 35.64%;
+  width: 64.36%;
+  height: 29.38vw;
+  overflow: hidden;
+  background: #f2f2f0;
+}
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rail {
+  position: absolute;
+  top: 1.97vw;
+  left: 84.9%;
+  width: 12.6%;
+  height: 29.38vw;
+  display: flex;
+  flex-direction: column;
+}
+.index {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5.15vw;
+  color: var(--h-ink);
+  font-size: clamp(12px, 0.96vw, 16px);
+  font-weight: 400;
+}
+.indexLine {
+  width: 1.3vw;
+  height: 1px;
+  background: var(--h-ink);
+}
+.dots {
+  display: grid;
+  gap: calc(1.48vw - 8px);
+  margin-top: 1.75vw;
+  margin-left: 2px;
+}
+.dots li {
+  width: 8px;
+  height: 8px;
+  border: 1px solid #9a9a9a;
+  border-radius: 999px;
+}
+.dots li[data-on] {
+  border-color: var(--h-ink);
+  background: var(--h-ink);
+}
+.links {
+  display: grid;
+  margin-top: auto;
+  margin-bottom: 2.25vw;
+}
+.link {
+  display: flex;
+  align-items: center;
+  gap: 0.85vw;
+  /* Reference: text centre 24px above its divider, 50px link to link. */
+  padding-block: 0.74vw 0.74vw;
+  border-bottom: 1px solid var(--h-line);
+  color: var(--h-ink);
+  font-size: clamp(12px, 0.93vw, 16px);
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  transition: color 180ms ease;
+}
+.link svg {
+  flex: none;
+  width: 1.35em;
+  height: 1.35em;
+  transition: transform 180ms ease;
+}
+.link:hover {
+  color: #000;
+}
+.link:hover svg {
+  transform: translate(2px, -2px);
+}
+.link:focus-visible {
+  outline: 2px solid var(--h-ink);
+  outline-offset: 3px;
+}
+
+.trust {
+  padding-top: 8px;
+}
+
+/* ── Tablet: the rail moves under the photograph ───────────────────────── */
+@media (max-width: 1100px) {
+  .desc {
+    left: auto;
+    right: 0;
+  }
+  .rule {
+    display: none;
+  }
+  .strip {
+    height: auto;
+    margin-top: 2vw;
+  }
+  .visual {
+    position: relative;
+    width: 100%;
+    height: calc((100vw - 2 * var(--h-gutter)) * 0.71 * 487 / 863 + 4vw);
+  }
+  .glass {
+    width: 29%;
+  }
+  .figure {
+    top: 2vw;
+    left: 29%;
+    width: calc(71% - var(--h-gutter));
+    height: calc(100% - 4vw);
+  }
+  .rail {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0 var(--h-gutter);
+  }
+  .index,
+  .dots {
+    display: none;
+  }
+  .links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 32px;
+    margin: 8px 0 16px;
+  }
+  .link {
+    padding-block: 14px;
+    font-size: 14px;
+    gap: 10px;
+  }
+}
+
+/* ── Phone: stacked, a narrower glass band over the photo ──────────────── */
+@media (max-width: 767px) {
+  .hero {
+    --h-gutter: 16px;
+  }
+  .head {
+    padding-top: 28px;
+  }
+  .eyebrow {
+    font-size: 13px;
+  }
+  .titleRow {
+    margin-top: 12px;
+  }
+  .title {
+    font-size: clamp(26px, 8.6vw, 40px);
+  }
+  .desc {
+    position: static;
+    max-width: 300px;
+    margin-top: 16px;
+    font-size: 15px;
+  }
+  .visual {
+    width: auto;
+    height: auto;
+    aspect-ratio: 863 / 487;
+    margin-inline: var(--h-gutter);
+  }
+  .figure {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  /* Over the left of the photograph, not beside it. */
+  .glass {
+    z-index: 1;
+    width: 24%;
+  }
+  .links {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .link {
+    padding-block: 14px;
+    min-height: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glassImg {
+    animation: none;
+  }
+  .link,
+  .link svg {
+    transition: none;
+  }
+}

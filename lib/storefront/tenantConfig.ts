@@ -146,6 +146,11 @@ export interface TenantSeo {
   description: string;
   /** The site's name as search engines should show it (WebSite.name, og:site_name). */
   siteName?: string;
+  /**
+   * The homepage's own title and description, when they differ from the
+   * site default above (which every other page keeps). Social titles follow.
+   */
+  home?: { title: string; description: string };
   /** Other names the business is genuinely known by (WebSite.alternateName). */
   alternateNames?: string[];
   /** Google Search Console HTML-tag token, once the owner has created the property. */
@@ -335,8 +340,10 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
   theme: WARM_RETAIL_THEME,
   variants: {
     header: 'retail',
-    hero: 'commerce',
-    categoryNav: 'iconRail',
+    // LivLab's own homepage: the commerce hero and category list, art-directed
+    // editorially. Tùng Đăng keeps `commerce` / `iconRail`.
+    hero: 'editorialCommerce',
+    categoryNav: 'keywords',
     productCard: 'priceLed',
     conceptDetail: 'commerce',
     hotspot: 'accent',
@@ -361,6 +368,25 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
     // Captured from LivLab's own Room Studio with `?demo=1` (the room below),
     // 1440 × 1097 and cropped beneath the site header — the same framing as
     // the retail demo's picture.
+    // The bathroom scene and fluted-glass layer cropped from the approved
+    // hero mockup (863 × 487 and 477 × 539: the only resolution supplied).
+    heroImage: {
+      src: '/images/livlab/hero-mockup-bathroom.webp',
+      alt: 'Không gian phòng tắm hiện đại với bồn tắm đá, lavabo, gương oval và ánh sáng tự nhiên',
+      width: 863,
+      height: 487,
+    },
+    heroGlassImage: { src: '/images/livlab/hero-fluted-glass.webp', width: 477, height: 539 },
+    // The five owner-supplied hover photographs (18 Nov 2026), cropped 4:5.
+    // Decorative (alt ""): each link names its category. Usage rights are to
+    // be confirmed with the owner before production, as for the hero.
+    categoryPreviews: {
+      'Bồn cầu': { src: '/images/livlab/categories/category_wc_editorial.webp', alt: '', focus: '50% 50%' },
+      Lavabo: { src: '/images/livlab/categories/category_lavabo_editorial.webp', alt: '', focus: '50% 50%' },
+      'Vòi lavabo': { src: '/images/livlab/categories/category_faucet_editorial.webp', alt: '', focus: '45% 55%' },
+      'Sen tắm': { src: '/images/livlab/categories/category_shower_editorial.webp', alt: '', focus: '50% 40%' },
+      'Gương & phụ kiện': { src: '/images/livlab/categories/category_mirror_editorial.webp', alt: '', focus: '50% 45%' },
+    },
     roomStudioImage: {
       src: '/images/room-studio-livlab.webp',
       alt: 'Room Studio của LivLab: phòng 3,0 × 2,0 m với lavabo và bồn cầu từ thư viện sản phẩm LivLab',
@@ -369,15 +395,15 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
   copy: {
     utility: ['Nền tảng thương mại trực quan cho showroom', 'Thiết bị vệ sinh & nội thất'],
     hero: {
+      // Approved hero (pixel-match brief, 18 Nov 2026): exact copy, one H1 in
+      // two lines, no punctuation. The eyebrow is tracked out in CSS.
       eyebrow: 'LIVLAB',
-      kicker: 'NỀN TẢNG THƯƠNG MẠI TRỰC QUAN',
-      // The page's one H1.
-      // Three short lines: the hero column is narrow, and a long first line
-      // breaks mid-phrase.
-      titleLines: ['LivLab — Nền tảng', 'trải nghiệm sản phẩm', 'cho showroom'],
-      body:
-        'Số hoá danh mục sản phẩm, gợi ý không gian, phối phòng 3D và yêu cầu báo giá — trong một ' +
-        'trải nghiệm thống nhất cho showroom thiết bị vệ sinh và nội thất.',
+      titleLines: ['WEBSITE SHOWROOM', 'PHỐI PHÒNG TẮM 3D'],
+      body: 'Khám phá thiết bị vệ sinh, không gian mẫu và phối phòng tắm 3D.',
+      railLinks: [
+        { label: 'KHÁM PHÁ KHÔNG GIAN', href: '/concepts' },
+        { label: 'ROOM STUDIO 3D', href: '/room-studio' },
+      ],
       primaryCta: { label: 'MỞ ROOM STUDIO', href: '/room-studio' },
       secondaryCta: { label: 'DÀNH CHO SHOWROOM', href: '/showrooms' },
       // Six capabilities, two to a column; each line is something the
@@ -398,7 +424,8 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
       ],
     },
     sections: {
-      categoriesTitle: 'DANH MỤC SẢN PHẨM SỐ',
+      categoriesTitle: 'DANH MỤC THIẾT BỊ VỆ SINH',
+      categoriesIntro: 'Khám phá danh mục sản phẩm và lựa chọn thiết bị phù hợp với không gian của bạn.',
       conceptsEyebrow: 'BỘ SƯU TẬP & CẢM HỨNG',
       conceptsTitle: 'GỢI Ý KHÔNG GIAN',
       conceptsBody:
@@ -468,6 +495,13 @@ export const LIVLAB_TENANT: TenantStorefrontConfig = {
   experience: LIVLAB_RETAIL_EXPERIENCE,
   seo: {
     title: 'LivLab | Nền tảng thương mại trực quan & 3D Room Studio',
+    // V3 copy lock: the homepage only.
+    home: {
+      title: 'LivLab | Website showroom thiết bị vệ sinh & phối phòng tắm 3D',
+      description:
+        'Khám phá thiết bị vệ sinh từ nhiều thương hiệu, tham khảo không gian phòng tắm và phối sản phẩm 3D trên ' +
+        'LivLab. Gửi yêu cầu báo giá đến showroom.',
+    },
     description:
       'LivLab giúp showroom số hóa danh mục sản phẩm, xây dựng trải nghiệm phối phòng 3D, quản lý ' +
       'yêu cầu báo giá và phát triển hoạt động kinh doanh trực tuyến.',

@@ -25,8 +25,33 @@ import { SectionHeader, ArrowLink, TEXT, TEXT_MUTED } from '@/components/storefr
  * process diagram.
  */
 export async function generateMetadata(): Promise<Metadata> {
-  // Title and description are the tenant's defaults from the root layout.
-  return { alternates: { canonical: '/' } };
+  // Title and description are the tenant's defaults from the root layout,
+  // unless the tenant gives its homepage its own (LivLab: the V3 copy lock).
+  const { tenant } = await resolveTenantContext();
+  const home = tenant.seo.home;
+  if (!home) return { alternates: { canonical: '/' } };
+  // A page-level openGraph replaces the layout's whole object, so it carries
+  // the same site name, locale and share image.
+  const shareImage = tenant.seo.shareImage ?? tenant.brand.logo;
+  return {
+    title: home.title,
+    description: home.description,
+    alternates: { canonical: '/' },
+    openGraph: {
+      title: home.title,
+      description: home.description,
+      type: 'website',
+      siteName: tenant.seo.siteName ?? tenant.brand.name,
+      locale: 'vi_VN',
+      images: shareImage ? [{ url: shareImage }] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: home.title,
+      description: home.description,
+      images: shareImage ? [shareImage] : undefined,
+    },
+  };
 }
 
 export default async function HomePage() {

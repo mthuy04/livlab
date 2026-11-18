@@ -1,0 +1,214 @@
+/*
+ * LivLab homepage — category keywords (V3 spec; see CategoryKeywords.tsx).
+ * Scoped to this section only.
+ */
+
+.section {
+  --ck-bg: #faf9f6;
+  --ck-ink: #21201e;
+  --ck-pale: #c9c8c4;
+  --ck-label: #77746f;
+  background: var(--ck-bg);
+}
+
+/* ── Heading row: label and intro left, all-products link right ────────── */
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px 32px;
+  padding-top: clamp(36px, 3.6vw, 52px);
+}
+.heading {
+  color: var(--ck-label);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+.intro {
+  margin-top: 8px;
+  color: var(--ck-label);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.all {
+  color: var(--ck-ink);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  transition: color 180ms ease;
+}
+.all:hover {
+  color: var(--tenant-accent-ink);
+}
+
+/* ── The stack ─────────────────────────────────────────────────────────── */
+.stage {
+  position: relative;
+  max-width: 1000px;
+  margin-inline: auto;
+  padding-block: clamp(40px, 4vw, 60px) clamp(48px, 4.6vw, 68px);
+}
+.list {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ck-pale);
+  font-size: clamp(28px, 2.65vw, 42px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  transition: color 260ms ease;
+}
+.item[data-on] {
+  color: var(--ck-ink);
+}
+.item:focus-visible {
+  outline: 2px solid var(--tenant-accent);
+  outline-offset: 4px;
+}
+.word {
+  position: relative;
+  white-space: nowrap;
+}
+.index {
+  position: absolute;
+  top: 0.05em;
+  left: calc(100% + 6px);
+  color: inherit;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.item[data-on] .index {
+  color: var(--ck-label);
+}
+/* The live count, under the index, for the dark word only. */
+.count {
+  position: absolute;
+  bottom: 0.2em;
+  left: calc(100% + 6px);
+  color: var(--ck-label);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+.item[data-on] .count {
+  opacity: 1;
+}
+.thumb {
+  display: none;
+}
+
+/* ── The floating photograph: behind the letters, no pointer events ───── */
+.previews {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.preview {
+  position: absolute;
+  overflow: hidden;
+  background: #efece6;
+  animation: previewIn 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.preview img {
+  object-fit: cover;
+}
+.leaving {
+  animation: previewOut 260ms ease both;
+}
+@keyframes previewIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes previewOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+/* ── Touch and phones: an inline image per word, one tap to follow ─────── */
+@media (hover: none), (max-width: 767px) {
+  .previews {
+    display: none;
+  }
+  .item,
+  .item[data-on] {
+    color: var(--ck-ink);
+  }
+  .item .index,
+  .item[data-on] .index {
+    color: var(--ck-label);
+  }
+  .count {
+    display: none;
+  }
+  .thumb {
+    display: block;
+    flex: none;
+    width: 40px;
+    height: 50px;
+    overflow: hidden;
+    background: #efece6;
+  }
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+@media (max-width: 767px) {
+  .head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .stage {
+    padding-block: 24px 36px;
+  }
+  .list {
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .item {
+    font-size: clamp(22px, 6.4vw, 28px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item,
+  .count {
+    transition: none;
+  }
+  .preview,
+  .leaving {
+    animation: none;
+  }
+}

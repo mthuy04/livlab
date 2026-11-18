@@ -306,10 +306,42 @@ console.log('\ngiao diện theo showroom');
   // and warm orange palette — and differs in identity only: its own logo,
   // name and copy, and none of the showroom's name, address or hotline.
   const tungdang = TENANTS.tungdang;
-  check('LivLab: cùng bố cục và biến thể giao diện với storefront Tùng Đăng',
+  // Same layout and sections as the retail demo; only LivLab's hero and
+  // category list take the editorial variants, so Tùng Đăng is untouched.
+  const { hero: llHero, categoryNav: llNav, ...llRest } = livlab.experience.variants;
+  const { hero: tdHero, categoryNav: tdNav, ...tdRest } = tungdang.experience.variants;
+  check('LivLab: cùng bố cục và thứ tự phần với storefront Tùng Đăng',
     livlab.experience.home.layout === tungdang.experience.home.layout &&
-      JSON.stringify(livlab.experience.variants) === JSON.stringify(tungdang.experience.variants) &&
+      JSON.stringify(llRest) === JSON.stringify(tdRest) &&
       JSON.stringify(livlab.experience.home.sections) === JSON.stringify(tungdang.experience.home.sections));
+  check('LivLab: hero và danh mục biên tập; Tùng Đăng giữ commerce / iconRail',
+    llHero === 'editorialCommerce' && llNav === 'keywords' && tdHero === 'commerce' && tdNav === 'iconRail');
+  // Approved hero (pixel-match brief): literal strings, never paraphrased.
+  const llHeroCopy = livlab.experience.copy.hero;
+  check('LivLab hero: eyebrow và H1 hai dòng đúng nguyên văn, không dấu chấm',
+    llHeroCopy.eyebrow === 'LIVLAB' && !llHeroCopy.kicker &&
+      JSON.stringify(llHeroCopy.titleLines) === JSON.stringify(['WEBSITE SHOWROOM', 'PHỐI PHÒNG TẮM 3D']));
+  check('LivLab hero: mô tả ngắn đúng nguyên văn',
+    llHeroCopy.body === 'Khám phá thiết bị vệ sinh, không gian mẫu và phối phòng tắm 3D.');
+  check('LivLab hero: hai liên kết bên phải trỏ tới route có sẵn',
+    JSON.stringify(llHeroCopy.railLinks) ===
+      JSON.stringify([{ label: 'KHÁM PHÁ KHÔNG GIAN', href: '/concepts' }, { label: 'ROOM STUDIO 3D', href: '/room-studio' }]));
+  check('LivLab: tiêu đề và mô tả trang chủ đúng nguyên văn',
+    livlab.seo.home?.title === 'LivLab | Website showroom thiết bị vệ sinh & phối phòng tắm 3D' &&
+      livlab.seo.home?.description === 'Khám phá thiết bị vệ sinh từ nhiều thương hiệu, tham khảo không gian phòng tắm và phối sản phẩm 3D trên LivLab. Gửi yêu cầu báo giá đến showroom.');
+  check('LivLab: các trang khác giữ tiêu đề mặc định', livlab.seo.title === 'LivLab | Nền tảng thương mại trực quan & 3D Room Studio');
+  check('LivLab V3: tiêu đề và giới thiệu mục danh mục',
+    livlab.experience.copy.sections.categoriesTitle === 'DANH MỤC THIẾT BỊ VỆ SINH' &&
+      livlab.experience.copy.sections.categoriesIntro === 'Khám phá danh mục sản phẩm và lựa chọn thiết bị phù hợp với không gian của bạn.');
+  const previews = livlab.experience.merchandising?.categoryPreviews ?? {};
+  check('LivLab V3: năm ảnh hover đã duyệt, mỗi danh mục một ảnh riêng, không dùng ảnh hero',
+    ['Bồn cầu', 'Lavabo', 'Vòi lavabo', 'Sen tắm', 'Gương & phụ kiện'].every((c) => /category_\w+_editorial\.webp$/.test(previews[c]?.src ?? '')) &&
+      new Set(Object.values(previews).map((p) => p.src)).size === 5 &&
+      !Object.values(previews).some((p) => p.src.includes('hero')));
+  check('LivLab: ảnh hero là cảnh phòng tắm của mockup đã duyệt, kèm lớp kính',
+    livlab.experience.merchandising?.heroImage?.src === '/images/livlab/hero-mockup-bathroom.webp' &&
+      livlab.experience.merchandising?.heroImage?.alt === 'Không gian phòng tắm hiện đại với bồn tắm đá, lavabo, gương oval và ánh sáng tự nhiên' &&
+      livlab.experience.merchandising?.heroGlassImage?.src === '/images/livlab/hero-fluted-glass.webp');
   const tdVars = themeCssVars(tungdang.brand, tungdang.experience.theme);
   check('LivLab: cùng tông màu cam với storefront Tùng Đăng', JSON.stringify(vars) === JSON.stringify(tdVars), { vars, tdVars });
   check('LivLab: logo của LivLab, không phải logo showroom',

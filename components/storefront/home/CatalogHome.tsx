@@ -10,6 +10,8 @@ import RoomStudioFeature from './RoomStudioFeature';
 import ShowroomConsultation from './ShowroomConsultation';
 import CommerceHero from './CommerceHero';
 import CategoryRail from './CategoryRail';
+import EditorialHero from './EditorialHero';
+import CategoryKeywords from './CategoryKeywords';
 import { BrandStrip, ConceptShowcase, RetailProductGrid } from './catalogSections';
 
 /**
@@ -40,7 +42,16 @@ function renderSection(section: HomeSection, tenant: TenantStorefrontConfig, dat
 
   switch (section) {
     case 'hero':
-      return variants.hero === 'commerce' ? (
+      if (variants.hero === 'editorialCommerce' && tenant.experience.merchandising?.heroImage) {
+        return (
+          <EditorialHero
+            copy={copy.hero}
+            image={tenant.experience.merchandising.heroImage}
+            glass={tenant.experience.merchandising.heroGlassImage}
+          />
+        );
+      }
+      return variants.hero === 'commerce' || variants.hero === 'editorialCommerce' ? (
         <CommerceHero
           copy={copy.hero}
           room={data.heroRoom}
@@ -54,6 +65,17 @@ function renderSection(section: HomeSection, tenant: TenantStorefrontConfig, dat
       );
 
     case 'categories':
+      if (variants.categoryNav === 'keywords') {
+        return (
+          <CategoryKeywords
+            title={copy.sections.categoriesTitle}
+            intro={copy.sections.categoriesIntro}
+            categories={data.categories}
+            productCount={data.productCount}
+            previews={tenant.experience.merchandising?.categoryPreviews ?? {}}
+          />
+        );
+      }
       return variants.categoryNav === 'iconRail' ? (
         <CategoryRail
           title={copy.sections.categoriesTitle}

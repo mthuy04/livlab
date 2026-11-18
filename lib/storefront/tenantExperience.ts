@@ -98,10 +98,19 @@ export type HeaderVariant = 'editorial' | 'retail';
  * `commerce`: copy beside a shoppable room — real catalogue products pinned
  * to the scene with their prices — and a row of service facts beneath.
  */
-export type HeroVariant = 'editorial' | 'commerce';
+/**
+ * `editorialCommerce`: the commerce hero's copy, CTAs, live counts and
+ * product callouts, art-directed as an editorial page — wide headline, one
+ * large architectural photograph behind a fine fluted-glass reveal.
+ */
+export type HeroVariant = 'editorial' | 'commerce' | 'editorialCommerce';
 
 /** `stage`: four product photographs. `iconRail`: every category, as line icons with counts. */
-export type CategoryNavVariant = 'stage' | 'iconRail';
+/**
+ * `keywords`: the same categories, links and counts as `iconRail`, shown as a
+ * centred list of words with one small photograph following the active word.
+ */
+export type CategoryNavVariant = 'stage' | 'iconRail' | 'keywords';
 
 /** `editorial`: image-first, price as a footnote. `priceLed`: SKU, price and quote action up front. */
 export type ProductCardVariant = 'editorial' | 'priceLed';
@@ -248,6 +257,15 @@ export interface TenantMerchandising {
   featuredConceptSlug?: string;
   /** A capture of this storefront's own Room Studio, for the homepage teaser. */
   roomStudioImage?: { src: string; alt: string };
+  /** The `editorialCommerce` hero's photograph; intrinsic size keeps its ratio. */
+  heroImage?: { src: string; alt: string; width: number; height: number };
+  /** The fluted-glass layer beside the hero photograph (`editorialCommerce`). */
+  heroGlassImage?: { src: string; width: number; height: number };
+  /**
+   * The `keywords` category list's hover previews, by catalogue category name;
+   * `__all` is the all-products entry. Decorative: they never change data.
+   */
+  categoryPreviews?: Record<string, { src: string; alt: string; /** object-position */ focus?: string }>;
 }
 
 /* ── Copy ────────────────────────────────────────────────────────────────── */
@@ -281,6 +299,8 @@ export interface TenantCopy {
     kicker?: string;
     titleLines: string[];
     body: string;
+    /** Editorial links in the hero's right rail (the `editorialCommerce` hero). */
+    railLinks?: CtaCopy[];
     primaryCta: CtaCopy;
     secondaryCta?: CtaCopy;
     /** Service facts under the `commerce` hero. Each must be true of the product today. */
@@ -288,6 +308,8 @@ export interface TenantCopy {
   };
   sections: {
     categoriesTitle: string;
+    /** One line under the category heading (the `keywords` variant). */
+    categoriesIntro?: string;
     conceptsEyebrow?: string;
     conceptsTitle: string;
     conceptsBody?: string;
