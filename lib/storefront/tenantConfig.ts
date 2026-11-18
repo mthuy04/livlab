@@ -228,7 +228,9 @@ function baseNavigation(
       { href: '/quote-process', label: 'Quy trình báo giá' }
     );
   }
-  if (isDefaultTenant) advice.push({ href: '/about', label: 'Về LivLab' });
+  if (isDefaultTenant) {
+    advice.push({ href: '/showrooms', label: 'Dành cho showroom' }, { href: '/about', label: 'Về LivLab' });
+  }
 
   const items: TenantNavItem[] = [
     {
@@ -281,6 +283,131 @@ const LIVLAB_FEATURES: TenantFeatureFlags = {
  * The default storefront, used by livlab.vercel.app and whenever tenant
  * resolution finds nothing. It keeps LivLab's existing navy identity.
  */
+/**
+ * LivLab's own storefront, on the retail treatment the Tùng Đăng demo proved
+ * out: the same header, commerce hero, icon rail, price-led cards and section
+ * order — with LivLab's colours (taken from its logo), copy, product library
+ * and concepts. Nothing here reads a showroom's catalogue or contact details.
+ */
+const LIVLAB_CATEGORIES = ['Bồn cầu', 'Lavabo', 'Vòi lavabo', 'Sen tắm', 'Gương & phụ kiện'];
+
+const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
+  // Logo colours: deep teal #04404F, light teal #70C0C0, charcoal #282828.
+  theme: {
+    ink: '#2A2A2A',
+    inkContrast: '#FFFFFF',
+    accentInk: '#0A5566',
+    panel: '#04404F',
+    panelContrast: '#FFFFFF',
+    price: '#0A5566',
+    discount: '#D61A2C',
+    surfaceMuted: '#F1F6F6',
+    radius: 6,
+    headingTracking: '.04em',
+    font: 'beVietnamPro',
+    uiPrimary: '#04404F',
+    uiPrimaryHover: '#0A5566',
+    uiPrimaryContrast: '#FFFFFF',
+    uiSelected: '#04404F',
+    uiSelectedContrast: '#FFFFFF',
+    uiSoft: '#E3F4F3',
+    uiSoftContrast: '#04404F',
+    uiLink: '#0A5566',
+    uiSurface: '#F4F7F7',
+    uiInk: '#2A2A2A',
+  },
+  variants: {
+    header: 'retail',
+    hero: 'commerce',
+    categoryNav: 'iconRail',
+    productCard: 'priceLed',
+    conceptDetail: 'commerce',
+    hotspot: 'accent',
+  },
+  home: {
+    layout: 'catalog',
+    sections: ['hero', 'categories', 'concepts', 'featuredProducts', 'brands', 'roomStudio', 'consultation'],
+  },
+  merchandising: {
+    // From LivLab's own product library (the database catalogue).
+    featuredProductIds: [
+      'llv-toi-toto-cs838dt8',
+      'llv-lav-toto-lt1735-xw',
+      'llv-sho-inax-bfv655t8c',
+      'llv-fau-toto-tx109ld',
+    ],
+    heroConceptSlug: 'livlab-urban-light-spa',
+    featuredConceptSlug: 'livlab-warm-smart-retreat',
+    conceptCount: 3,
+    roomStudioImage: {
+      src: '/images/room-studio-ui.png',
+      alt: 'Room Studio của LivLab: nhập kích thước phòng, chọn vật liệu và đặt thiết bị từ thư viện sản phẩm',
+    },
+  },
+  copy: {
+    utility: ['Nền tảng thương mại trực quan cho showroom', 'Thiết bị vệ sinh & nội thất'],
+    hero: {
+      eyebrow: 'LIVLAB',
+      kicker: 'NỀN TẢNG THƯƠNG MẠI TRỰC QUAN',
+      // The page's one H1.
+      titleLines: ['LivLab — Nền tảng trải nghiệm', 'sản phẩm cho showroom'],
+      body:
+        'Số hoá danh mục sản phẩm, gợi ý không gian, phối phòng 3D và yêu cầu báo giá — trong một ' +
+        'trải nghiệm thống nhất cho showroom thiết bị vệ sinh và nội thất.',
+      primaryCta: { label: 'MỞ ROOM STUDIO', href: '/room-studio' },
+      secondaryCta: { label: 'DÀNH CHO SHOWROOM', href: '/showrooms' },
+      // Six capabilities, two to a column; each line is something the
+      // platform does today.
+      trust: [
+        {
+          title: 'DANH MỤC SỐ & BỘ SƯU TẬP',
+          body: 'Danh mục sản phẩm kèm thông số và giá tham khảo, cùng không gian gợi ý gắn sản phẩm thật.',
+        },
+        {
+          title: 'ROOM STUDIO 3D & CẤU HÌNH',
+          body: 'Dựng phòng đúng kích thước, phối vật liệu sàn tường và đặt thiết bị để thấy trước kết quả.',
+        },
+        {
+          title: 'BÁO GIÁ & QUẢN LÝ LEAD',
+          body: 'Yêu cầu báo giá có cấu trúc đổ về dashboard của showroom để theo dõi và chăm sóc khách.',
+        },
+      ],
+    },
+    sections: {
+      categoriesTitle: 'DANH MỤC SẢN PHẨM SỐ',
+      conceptsEyebrow: 'BỘ SƯU TẬP & CẢM HỨNG',
+      conceptsTitle: 'GỢI Ý KHÔNG GIAN',
+      conceptsBody:
+        'Bắt đầu từ phong cách, diện tích và ngân sách — mỗi không gian gắn với sản phẩm thật trong ' +
+        'thư viện LivLab.',
+      productsEyebrow: 'THƯ VIỆN SẢN PHẨM LIVLAB',
+      productsTitle: 'SẢN PHẨM NỔI BẬT',
+      productsNote: 'Giá tham khảo tại thời điểm cập nhật thư viện. Showroom xác nhận giá cuối khi báo giá.',
+      brandsTitle: 'THƯƠNG HIỆU TRONG THƯ VIỆN',
+    },
+    quote: {
+      cta: 'YÊU CẦU BÁO GIÁ',
+      trackLabel: 'Tra cứu báo giá',
+      drawerTitle: 'Giỏ báo giá',
+      drawerBody: 'Lưu lại những thiết bị bạn quan tâm để showroom tư vấn và gửi báo giá.',
+      submit: 'Gửi yêu cầu báo giá',
+      addToQuote: 'THÊM BÁO GIÁ',
+    },
+    roomStudio: { libraryTitle: 'Thư viện sản phẩm LivLab', primaryCta: 'Yêu cầu báo giá' },
+    footerBlurb:
+      'Nền tảng trải nghiệm sản phẩm và thương mại trực quan cho showroom thiết bị vệ sinh và nội thất: ' +
+      'danh mục số, gợi ý không gian, Room Studio 3D và báo giá.',
+    concept: {
+      productsTitle: 'SẢN PHẨM GỢI Ý TRONG CONCEPT',
+      ctaTitle: 'ĐÃ TÌM ĐƯỢC KHÔNG GIAN PHÙ HỢP?',
+      ctaBody: 'Lưu các thiết bị bạn quan tâm vào giỏ báo giá để showroom tư vấn và gửi báo giá.',
+      estimateTitle: 'NGÂN SÁCH THIẾT BỊ THAM KHẢO',
+    },
+  },
+  // LivLab's Room Studio offers its whole library, 3D reconstructions included.
+  roomStudioCatalog: 'livlab',
+};
+
 export const LIVLAB_TENANT: TenantStorefrontConfig = {
   id: 'livlab',
   slug: 'livlab',
@@ -292,22 +419,21 @@ export const LIVLAB_TENANT: TenantStorefrontConfig = {
     // The room mark from the logo, on white — replaces the Next/Vercel
     // triangle that Google was showing beside LivLab's results.
     icon: '/images/livlab-icon.png',
-    accent: '#123C5A',
-    accentHover: '#0D2B42',
+    accent: '#04404F',
+    accentHover: '#0A5566',
     accentContrast: '#FFFFFF',
   },
-  navigation: baseNavigation(LIVLAB_FEATURES, { isDefaultTenant: true }),
+  navigation: baseNavigation(LIVLAB_FEATURES, { isDefaultTenant: true, productCategories: LIVLAB_CATEGORIES }),
   contact: {},
   catalogScope: { showroomId: null, categories: [] },
   features: LIVLAB_FEATURES,
   poweredByLivLab: false,
-  experience: EDITORIAL_EXPERIENCE,
+  experience: LIVLAB_RETAIL_EXPERIENCE,
   seo: {
-    // Brand first, then what people search for; short enough not to be cut.
-    title: 'LivLab – Thiết kế phòng tắm 3D với sản phẩm thật',
+    title: 'LivLab | Nền tảng thương mại trực quan & 3D Room Studio',
     description:
-      'Chọn bồn cầu, lavabo, sen vòi từ showroom thật, dựng thử phòng tắm 3D đúng kích thước ' +
-      'nhà bạn và nhận báo giá từ showroom — thấy trước không gian trước khi mua.',
+      'LivLab giúp showroom số hóa danh mục sản phẩm, xây dựng trải nghiệm phối phòng 3D, quản lý ' +
+      'yêu cầu báo giá và phát triển hoạt động kinh doanh trực tuyến.',
     siteName: 'LivLab',
     shareImage: '/images/livlab-og.png',
     // Search Console HTML-tag token for https://www.livlab.space/, set in Vercel.

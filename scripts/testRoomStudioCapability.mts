@@ -302,19 +302,26 @@ console.log('\ngiao diện theo showroom');
 {
   const livlab = TENANTS.livlab;
   const vars = themeCssVars(livlab.brand, livlab.experience.theme);
-  // Room Studio and the quote drawer keep LivLab's colours as var()
-  // fallbacks; emitting any workspace token for LivLab would override them.
-  check('LivLab không phát token workspace nào', !Object.keys(vars).some((k) => k.startsWith('--tenant-ui-')), vars);
-  check('LivLab: màu chữ nhấn = màu nhấn', vars['--tenant-accent-ink'] === livlab.brand.accent);
-  check('LivLab giữ trang chủ showcase', livlab.experience.home.layout === 'showcase');
+  // LivLab runs on the retail treatment first built for the Tùng Đăng demo,
+  // in LivLab's own colours (its logo's deep teal), never the demo's orange.
+  const tungdang = TENANTS.tungdang;
+  check('LivLab: cùng bố cục và biến thể giao diện với storefront Tùng Đăng',
+    livlab.experience.home.layout === tungdang.experience.home.layout &&
+      JSON.stringify(livlab.experience.variants) === JSON.stringify(tungdang.experience.variants) &&
+      JSON.stringify(livlab.experience.home.sections) === JSON.stringify(tungdang.experience.home.sections));
+  check('LivLab: màu chính là xanh teal của logo', vars['--tenant-ui-primary'] === '#04404F' && livlab.brand.accent === '#04404F', vars);
+  check('LivLab: không mang màu cam của Tùng Đăng', !Object.values(vars).some((v) => /#(EF9F00|FCA359|B45309|FDF1DC|8A4500)/i.test(v)));
+  check('LivLab: nội dung không nhắc tên showroom demo', !/tùng đăng|tung dang|tungdang/i.test(JSON.stringify(livlab)));
 
   // A library may carry the showroom's name only when it IS the showroom's
   // catalogue — otherwise the heading describes products it does not sell.
   for (const tenant of Object.values(TENANTS)) {
     const title = tenant.experience.copy.roomStudio.libraryTitle;
     const namesShowroom = title.toLowerCase().includes(tenant.brand.name.toLowerCase());
+    // LivLab's library is LivLab's own catalogue, so it may carry LivLab's name.
+    const ownLibrary = tenant.experience.roomStudioCatalog === 'tenant' || tenant.id === 'livlab';
     check(`${tenant.id}: tiêu đề thư viện chỉ nêu tên showroom khi là danh mục của showroom`,
-      !namesShowroom || tenant.experience.roomStudioCatalog === 'tenant', title);
+      !namesShowroom || ownLibrary, title);
   }
 }
 

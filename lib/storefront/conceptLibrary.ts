@@ -1182,50 +1182,56 @@ const td01: StorefrontConcept = {
   ],
 };
 
-/* -------------------------------------------------------------- Giang Sơn */
+/* ------------------------------------------------- tenant-owned concepts */
 
 export const GIANGSON_TENANT = 'giangson';
+export const LIVLAB_TENANT_ID = 'livlab';
 
-interface GiangsonPick {
+interface TenantPick {
+  catalogProductId: string;
   brand: string;
   sku: string;
   note: string;
 }
 
 /**
- * A Giang Sơn concept on a LivLab image whose objects were already located for
- * another concept.
+ * A tenant's own concept on a LivLab image whose objects were already located
+ * for another concept.
  *
  * Point and box come from the base hotspot, so each stays on the object it was
- * checked against. An object Giang Sơn's catalogue has a fitting product for is
- * offered as a curated suggestion — never as the exact model in the picture.
- * An object it has nothing fitting for stays in the image unannotated, rather
- * than pointing at a product of a different kind.
+ * checked against. An object the tenant's catalogue has a fitting product for
+ * is offered as a curated suggestion — never as the exact model in the
+ * picture. An object it has nothing fitting for stays in the image
+ * unannotated, rather than pointing at a product of a different kind.
  */
-function giangsonConcept(
+function tenantConcept(
   base: StorefrontConcept,
   {
+    tenantId,
+    idPrefix,
     slug,
     titleVi,
     presentation,
     picks,
   }: {
+    tenantId: string;
+    idPrefix: string;
     slug: string;
     titleVi: string;
     presentation: StorefrontConcept['presentation'];
     /** By the base hotspot's 1-based position. */
-    picks: Record<number, GiangsonPick>;
+    picks: Record<number, TenantPick>;
   }
 ): StorefrontConcept {
-  const id = `gs-${base.id}`;
+  const id = `${idPrefix}-${base.id}`;
   return {
     ...base,
     id,
     slug,
     titleVi,
-    tenantId: GIANGSON_TENANT,
+    tenantId,
     presentation,
-    qaNote: 'Vị trí điểm lấy từ concept gốc đã kiểm tra; sản phẩm gán theo danh mục Giang Sơn, ngày 2026-10-19.',
+    qaNote: 'Vị trí điểm lấy từ concept gốc đã kiểm tra; sản phẩm gán theo danh mục của tenant.',
     hotspots: base.hotspots.map((spot, index) => {
       const pick = picks[index + 1];
       const position = {
@@ -1240,7 +1246,7 @@ function giangsonConcept(
       return pick
         ? {
             ...position,
-            catalogProductId: demoId(GIANGSON_TENANT, pick.brand, pick.sku),
+            catalogProductId: pick.catalogProductId,
             brand: pick.brand,
             sku: pick.sku,
             matchConfidence: 'CURATED_SUGGESTION' as const,
@@ -1251,91 +1257,127 @@ function giangsonConcept(
             ...position,
             matchConfidence: 'GENERIC_FIXTURE' as const,
             qaStatus: 'VERIFIED' as const,
-            note: 'Danh mục Giang Sơn chưa có sản phẩm cùng kiểu với vật thể này.',
+            note: 'Danh mục của tenant chưa có sản phẩm cùng kiểu với vật thể này.',
           };
     }),
   };
 }
 
-const GS_SHOWER_COLUMN: GiangsonPick = {
-  brand: 'INAX',
-  sku: 'BFV-70S',
-  note: 'Sen cây lộ thiên nóng lạnh, bát sen lớn và tay sen — cùng kiểu thiết bị trong khu tắm.',
-};
+/* ---------------------------------------------------------------- Giang Sơn */
 
-const GS_BASIN_MIXER: GiangsonPick = {
-  brand: 'INAX',
-  sku: 'LFV-1402S',
-  note: 'Vòi nóng lạnh một lỗ, thân thấp — cùng kiểu vòi trên chậu.',
-};
+const gsPick = (brand: string, sku: string, note: string): TenantPick => ({
+  catalogProductId: demoId(GIANGSON_TENANT, brand, sku),
+  brand,
+  sku,
+  note,
+});
 
-const GS_VESSEL_RECT: GiangsonPick = {
-  brand: 'INAX',
-  sku: 'L-293V',
-  note: 'Chậu đặt bàn chữ nhật thành mỏng, 500 × 450 × 155 mm — cùng kiểu lắp đặt và tỷ lệ.',
-};
+const GS_SHOWER_COLUMN = gsPick('INAX', 'BFV-70S', 'Sen cây lộ thiên nóng lạnh, bát sen lớn và tay sen — cùng kiểu thiết bị trong khu tắm.');
+const GS_BASIN_MIXER = gsPick('INAX', 'LFV-1402S', 'Vòi nóng lạnh một lỗ, thân thấp — cùng kiểu vòi trên chậu.');
+const GS_VESSEL_RECT = gsPick('INAX', 'L-293V', 'Chậu đặt bàn chữ nhật thành mỏng, 500 × 450 × 155 mm — cùng kiểu lắp đặt và tỷ lệ.');
 
-const gsMasterSpa = giangsonConcept(c05, {
+const gsMasterSpa = tenantConcept(c05, {
+  tenantId: GIANGSON_TENANT,
+  idPrefix: 'gs',
   slug: 'giangson-master-spa',
   titleVi: 'Phòng tắm master phong cách spa',
-  presentation: {
-    leadWithName: true,
-    roomType: 'Master bathroom',
-    styleLabel: 'Spa tại gia',
-    areaLabel: '10–14 m²',
-    budgetLabel: 'Cao cấp',
-  },
+  presentation: { leadWithName: true, roomType: 'Master bathroom', styleLabel: 'Spa tại gia', areaLabel: '10–14 m²', budgetLabel: 'Cao cấp' },
   picks: {
-    1: {
-      brand: 'INAX',
-      sku: 'BF-1656V',
-      note: 'Bồn tắm đặt sàn tách tường, dài 1,6 m — cùng kiểu lắp đặt với bồn trong ảnh.',
-    },
+    1: gsPick('INAX', 'BF-1656V', 'Bồn tắm đặt sàn tách tường, dài 1,6 m — cùng kiểu lắp đặt với bồn trong ảnh.'),
     2: GS_VESSEL_RECT,
     3: { ...GS_VESSEL_RECT, note: `${GS_VESSEL_RECT.note} Chậu thứ hai của mặt bàn đôi.` },
   },
 });
 
-const gsScandinavian = giangsonConcept(c02, {
+const gsScandinavian = tenantConcept(c02, {
+  tenantId: GIANGSON_TENANT,
+  idPrefix: 'gs',
   slug: 'giangson-scandinavian-bath',
   titleVi: 'Phòng tắm Scandinavian ấm sáng',
-  presentation: {
-    leadWithName: true,
-    roomType: 'Phòng tắm gia đình',
-    styleLabel: 'Scandinavian',
-    areaLabel: '4–6 m²',
-    budgetLabel: 'Phổ thông – trung cấp',
-  },
+  presentation: { leadWithName: true, roomType: 'Phòng tắm gia đình', styleLabel: 'Scandinavian', areaLabel: '4–6 m²', budgetLabel: 'Phổ thông – trung cấp' },
   picks: {
-    1: {
-      brand: 'TOTO',
-      sku: 'CS838DT10',
-      note: 'Bồn cầu hai khối, két hộp — cùng kiểu với thiết bị trong ảnh.',
-    },
+    1: gsPick('TOTO', 'CS838DT10', 'Bồn cầu hai khối, két hộp — cùng kiểu với thiết bị trong ảnh.'),
     2: GS_SHOWER_COLUMN,
     4: GS_BASIN_MIXER,
   },
 });
 
-const gsPremiumSuite = giangsonConcept(c04, {
+const gsPremiumSuite = tenantConcept(c04, {
+  tenantId: GIANGSON_TENANT,
+  idPrefix: 'gs',
   slug: 'giangson-premium-suite',
   titleVi: 'Phòng tắm nghỉ dưỡng thanh lịch',
-  presentation: {
-    leadWithName: true,
-    roomType: 'Phòng tắm master',
-    styleLabel: 'Hiện đại thanh lịch',
-    areaLabel: '6–9 m²',
-    budgetLabel: 'Trung – cao cấp',
-  },
+  presentation: { leadWithName: true, roomType: 'Phòng tắm master', styleLabel: 'Hiện đại thanh lịch', areaLabel: '6–9 m²', budgetLabel: 'Trung – cao cấp' },
   picks: {
-    1: {
-      brand: 'INAX',
-      sku: 'AC-912VN',
-      note: 'Bồn cầu một khối bo tròn liền mạch — cùng kiểu thân liền với thiết bị trong ảnh.',
-    },
+    1: gsPick('INAX', 'AC-912VN', 'Bồn cầu một khối bo tròn liền mạch — cùng kiểu thân liền với thiết bị trong ảnh.'),
     2: GS_VESSEL_RECT,
     3: GS_SHOWER_COLUMN,
     4: GS_BASIN_MIXER,
+  },
+});
+
+/* ------------------------------------------------------------------ LivLab */
+
+/**
+ * LivLab's own storefront draws on its own product library (the database
+ * catalogue), never on a showroom's. The images are LivLab-generated scenes.
+ */
+const llPick = (recordId: string, brand: string, sku: string, note: string): TenantPick => ({
+  catalogProductId: `db:${recordId}`,
+  brand,
+  sku,
+  note,
+});
+
+const LL_TAP = llPick('llv-fau-toto-tx109ld', 'TOTO', 'TX109LD', 'Vòi lavabo một lỗ, thân thấp — cùng kiểu vòi trên chậu.');
+
+const llUrbanLight = tenantConcept(c01, {
+  tenantId: LIVLAB_TENANT_ID,
+  idPrefix: 'll',
+  slug: 'livlab-urban-light-spa',
+  titleVi: 'Phòng tắm sáng & gọn cho căn hộ hiện đại',
+  presentation: { leadWithName: true, roomType: 'Phòng tắm căn hộ', styleLabel: 'Hiện đại tối giản', areaLabel: '3–5 m²', budgetLabel: 'Phổ thông – trung cấp' },
+  picks: {
+    1: llPick('llv-toi-toto-cs838dt8', 'TOTO', 'CS838DT8', 'Bồn cầu hai khối, két hộp, nắp êm — cùng kiểu với thiết bị trong ảnh.'),
+    2: llPick('llv-sho-inax-bfv615s3c', 'INAX', 'BFV-615S-3C', 'Sen cây lộ thiên, bát sen vuông — cùng kiểu thiết bị trong khu tắm kính.'),
+    4: LL_TAP,
+  },
+});
+
+const llScandinavian = tenantConcept(c02, {
+  tenantId: LIVLAB_TENANT_ID,
+  idPrefix: 'll',
+  slug: 'livlab-soft-scandinavian-bath',
+  titleVi: 'Phòng tắm Scandinavian ấm sáng',
+  presentation: { leadWithName: true, roomType: 'Phòng tắm gia đình', styleLabel: 'Scandinavian', areaLabel: '4–6 m²', budgetLabel: 'Phổ thông – trung cấp' },
+  picks: {
+    1: llPick('llv-toi-toto-cs818dt2', 'TOTO', 'CS818DT2', 'Bồn cầu hai khối xả nhấn, nắp êm — cùng kiểu với thiết bị trong ảnh.'),
+    2: llPick('llv-sho-inax-bfv655t8c', 'INAX', 'BFV-655T-8C', 'Sen cây nhiệt độ lộ thiên — cùng kiểu thiết bị trong khu tắm.'),
+    4: LL_TAP,
+  },
+});
+
+const llWarmSmart = tenantConcept(c03, {
+  tenantId: LIVLAB_TENANT_ID,
+  idPrefix: 'll',
+  slug: 'livlab-warm-smart-retreat',
+  titleVi: 'Phòng tắm tông ấm cho gia đình trẻ',
+  presentation: { leadWithName: true, roomType: 'Phòng tắm gia đình', styleLabel: 'Ấm áp hiện đại', areaLabel: '5–7 m²', budgetLabel: 'Trung cấp' },
+  picks: {
+    2: llPick('llv-lav-toto-lt1735-xw', 'TOTO', 'LT1735#XW', 'Chậu đặt bàn men trắng — cùng kiểu lắp đặt nổi trên mặt đá.'),
+    3: llPick('llv-sho-inax-bfv615s8c', 'INAX', 'BFV-615S-8C', 'Sen cây tăng áp lộ thiên — cùng kiểu thiết bị trong khu tắm.'),
+  },
+});
+
+const llSerenePremium = tenantConcept(c04, {
+  tenantId: LIVLAB_TENANT_ID,
+  idPrefix: 'll',
+  slug: 'livlab-serene-premium-suite',
+  titleVi: 'Phòng tắm nghỉ dưỡng thanh lịch',
+  presentation: { leadWithName: true, roomType: 'Phòng tắm master', styleLabel: 'Hiện đại thanh lịch', areaLabel: '6–9 m²', budgetLabel: 'Trung – cao cấp' },
+  picks: {
+    2: llPick('llv-lav-toto-lt1705-xw', 'TOTO', 'LT1705#XW', 'Chậu đặt bàn chữ nhật men trắng — cùng kiểu lắp đặt và tỷ lệ.'),
+    3: llPick('llv-sho-inax-bfv655t8c', 'INAX', 'BFV-655T-8C', 'Sen cây nhiệt độ lộ thiên — cùng kiểu thiết bị trong khu tắm.'),
   },
 });
 
@@ -1356,5 +1398,6 @@ export const CONCEPT_LIBRARY: StorefrontConcept[] = [
   // A tenant's own concept leads its storefront; every other tenant skips it.
   td01,
   gsMasterSpa, gsScandinavian, gsPremiumSuite,
+  llUrbanLight, llWarmSmart, llScandinavian, llSerenePremium,
   c01, c07, c03, c10, c08, c04, c06, c09, c02, c05,
 ];

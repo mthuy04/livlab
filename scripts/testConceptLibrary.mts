@@ -119,12 +119,15 @@ console.log('\ncô lập tenant');
   // Every other concept is offered to all storefronts, so it must not name a
   // tenant; a tenant's own concept belongs to a tenant with its own catalogue,
   // and points only at that catalogue.
-  const owners = new Set(['tungdang', 'giangson']);
+  const owners = new Set(['tungdang', 'giangson', 'livlab']);
   const strays = CONCEPT_LIBRARY.filter((c) => c.tenantId !== null && !owners.has(c.tenantId));
   check('không concept nào gán cho tenant khác', strays.length === 0, strays.map((c) => c.slug));
+  // A showroom's concept points at its own fixture; LivLab's at LivLab's
+  // database library — never at a showroom's products.
+  const ownPrefix = (tenantId: string) => (tenantId === 'livlab' ? 'db:' : `demo:${tenantId}:`);
   const crossed = CONCEPT_LIBRARY.filter((c) => c.tenantId !== null).flatMap((c) =>
     c.hotspots
-      .filter((h) => h.catalogProductId && !h.catalogProductId.startsWith(`demo:${c.tenantId}:`))
+      .filter((h) => h.catalogProductId && !h.catalogProductId.startsWith(ownPrefix(c.tenantId!)))
       .map((h) => h.id)
   );
   check('concept riêng chỉ trỏ tới danh mục của chính tenant đó', crossed.length === 0, crossed);
