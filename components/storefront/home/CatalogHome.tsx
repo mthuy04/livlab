@@ -7,6 +7,7 @@ import HomeHero from './HomeHero';
 import HomeCategories from './HomeCategories';
 import FeaturedProducts from './FeaturedProducts';
 import RoomStudioFeature from './RoomStudioFeature';
+import RoomStudioSteps from './RoomStudioSteps';
 import ShowroomConsultation from './ShowroomConsultation';
 import CommerceHero from './CommerceHero';
 import CategoryRail from './CategoryRail';
@@ -139,6 +140,16 @@ function renderSection(section: HomeSection, tenant: TenantStorefrontConfig, dat
       return <BrandStrip title={copy.sections.brandsTitle} brands={data.brands} />;
 
     case 'roomStudio':
+      if (!tenant.features.roomStudio) return null;
+      if (
+        variants.roomStudio === 'steps' &&
+        copy.roomStudio.steps &&
+        tenant.experience.merchandising?.roomStudioSteps
+      ) {
+        return (
+          <RoomStudioSteps steps={copy.roomStudio.steps} images={tenant.experience.merchandising.roomStudioSteps} />
+        );
+      }
       return tenant.features.roomStudio ? (
         <RoomStudioFeature
           image={tenant.experience.merchandising?.roomStudioImage?.src}

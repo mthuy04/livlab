@@ -347,6 +347,8 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
     productCard: 'priceLed',
     conceptDetail: 'commerce',
     hotspot: 'accent',
+    // The four-step Room Studio card (approved 18 Nov 2026). LivLab only.
+    roomStudio: 'steps',
   },
   home: {
     layout: 'catalog',
@@ -396,6 +398,34 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
       src: '/images/room-studio-livlab.webp',
       alt: 'Room Studio của LivLab: phòng 3,0 × 2,0 m với lavabo và bồn cầu từ thư viện sản phẩm LivLab',
     },
+    // The owner's own captures of the editor, one per step, in step order,
+    // cut to the card's frame ratio at full resolution (18 Nov 2026).
+    roomStudioSteps: [
+      {
+        src: '/images/livlab/room-studio/step-01.webp',
+        alt: 'Room Studio, bước nhập phòng: phòng 5 × 4 × 2,7 m, diện tích 20 m² và mô hình phòng tắm 3D còn trống',
+        width: 1867,
+        height: 1170,
+      },
+      {
+        src: '/images/livlab/room-studio/step-02.webp',
+        alt: 'Room Studio, bước chọn vật liệu: sàn porcelain màu be hoàn thiện mờ, tường đá tối trên mô hình 3D',
+        width: 1867,
+        height: 1170,
+      },
+      {
+        src: '/images/livlab/room-studio/step-03.webp',
+        alt: 'Room Studio, bước thêm thiết bị: bồn tắm, bồn cầu, sen cây và lavabo trong phòng 3D, bên cạnh thư viện sản phẩm LivLab',
+        width: 1462,
+        height: 916,
+      },
+      {
+        src: '/images/livlab/room-studio/step-04.webp',
+        alt: 'Room Studio, bước nhận báo giá: hộp thoại gửi yêu cầu báo giá, nhờ showroom tư vấn hoặc kỹ thuật viên kiểm tra',
+        width: 1640,
+        height: 1028,
+      },
+    ],
   },
   copy: {
     utility: ['Nền tảng thương mại trực quan cho showroom', 'Thiết bị vệ sinh & nội thất'],
@@ -449,7 +479,49 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
       submit: 'Gửi yêu cầu báo giá',
       addToQuote: 'THÊM BÁO GIÁ',
     },
-    roomStudio: { libraryTitle: 'Thư viện sản phẩm LivLab', primaryCta: 'Yêu cầu báo giá' },
+    roomStudio: {
+      libraryTitle: 'Thư viện sản phẩm LivLab',
+      primaryCta: 'Yêu cầu báo giá',
+      // Verbatim from the approved SEO copy lock (SEO_COPY_LOCK.json, 18 Nov
+      // 2026). The headline is uppercased in CSS only; the text stays as is.
+      steps: {
+        eyebrow: 'ROOM STUDIO',
+        items: [
+          {
+            id: '01',
+            tab: 'Nhập phòng',
+            title: 'Tạo phòng tắm 3D theo kích thước thực',
+            description: 'Nhập kích thước phòng thực tế để tạo mô hình phòng tắm 3D đúng tỷ lệ và bố trí thiết bị phù hợp.',
+            benefits: ['Nhập kích thước phòng thực tế', 'Dựng mô hình phòng tắm 3D', 'Tùy chỉnh chi tiết kiến trúc'],
+            cta: 'Khám phá bước 1 →',
+          },
+          {
+            id: '02',
+            tab: 'Chọn vật liệu',
+            title: 'Phối vật liệu cho phòng tắm 3D',
+            description: 'Chọn vật liệu lát sàn, ốp tường, màu sắc và bề mặt hoàn thiện ngay trên mô hình phòng tắm 3D.',
+            benefits: ['Chọn vật liệu lát sàn, ốp tường', 'Đổi màu và bề mặt hoàn thiện', 'Xem thay đổi ngay trên mô hình 3D'],
+            cta: 'Khám phá bước 2 →',
+          },
+          {
+            id: '03',
+            tab: 'Thêm thiết bị',
+            title: 'Bố trí thiết bị vệ sinh trong phòng tắm 3D',
+            description: 'Chọn bồn cầu, lavabo, sen tắm từ thư viện LivLab và kéo thả vào mô hình phòng tắm 3D.',
+            benefits: ['Chọn thiết bị vệ sinh từ LivLab', 'Kéo thả vào mô hình phòng tắm 3D', 'Xem thông số và giá tham khảo'],
+            cta: 'Khám phá bước 3 →',
+          },
+          {
+            id: '04',
+            tab: 'Nhận báo giá',
+            title: 'Gửi yêu cầu báo giá đến showroom',
+            description: 'Lưu phương án phòng tắm 3D, gửi danh sách thiết bị đến showroom để xác nhận báo giá.',
+            benefits: ['Gửi yêu cầu báo giá đến showroom', 'Nhận tư vấn chọn thiết bị phù hợp', 'Yêu cầu kiểm tra kỹ thuật lắp đặt'],
+            cta: 'Khám phá bước 4 →',
+          },
+        ],
+      },
+    },
     footerBlurb:
       'Nền tảng trải nghiệm sản phẩm và thương mại trực quan cho showroom thiết bị vệ sinh và nội thất: ' +
       'danh mục số, gợi ý không gian, Room Studio 3D và báo giá.',

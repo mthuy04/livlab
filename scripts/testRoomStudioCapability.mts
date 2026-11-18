@@ -308,14 +308,15 @@ console.log('\ngiao diện theo showroom');
   const tungdang = TENANTS.tungdang;
   // Same layout and sections as the retail demo; only LivLab's hero and
   // category list take the editorial variants, so Tùng Đăng is untouched.
-  const { hero: llHero, categoryNav: llNav, ...llRest } = livlab.experience.variants;
-  const { hero: tdHero, categoryNav: tdNav, ...tdRest } = tungdang.experience.variants;
+  const { hero: llHero, categoryNav: llNav, roomStudio: llRs, ...llRest } = livlab.experience.variants;
+  const { hero: tdHero, categoryNav: tdNav, roomStudio: tdRs, ...tdRest } = tungdang.experience.variants;
   check('LivLab: cùng bố cục và thứ tự phần với storefront Tùng Đăng',
     livlab.experience.home.layout === tungdang.experience.home.layout &&
       JSON.stringify(llRest) === JSON.stringify(tdRest) &&
       JSON.stringify(livlab.experience.home.sections) === JSON.stringify(tungdang.experience.home.sections));
-  check('LivLab: hero và danh mục biên tập; Tùng Đăng giữ commerce / iconRail',
-    llHero === 'editorialCommerce' && llNav === 'keywords' && tdHero === 'commerce' && tdNav === 'iconRail');
+  check('LivLab: hero, danh mục và Room Studio biên tập; Tùng Đăng giữ commerce / iconRail / feature',
+    llHero === 'editorialCommerce' && llNav === 'keywords' && tdHero === 'commerce' && tdNav === 'iconRail' &&
+      llRs === 'steps' && tdRs === undefined);
   // Approved hero (pixel-match brief): literal strings, never paraphrased.
   const llHeroCopy = livlab.experience.copy.hero;
   check('LivLab hero: eyebrow và H1 hai dòng đúng nguyên văn, không dấu chấm',
@@ -338,6 +339,24 @@ console.log('\ngiao diện theo showroom');
     ['Bồn cầu', 'Lavabo', 'Vòi lavabo', 'Sen tắm', 'Gương & phụ kiện'].every((c) => /\/categories\/gallery-\w+\.webp$/.test(previews[c]?.src ?? '')) &&
       new Set(Object.values(previews).map((p) => p.src)).size === 5 &&
       !Object.values(previews).some((p) => p.src.includes('hero')));
+  const rsSteps = livlab.experience.copy.roomStudio.steps;
+  check('LivLab Room Studio: bốn bước, đúng nguyên văn bản SEO đã duyệt',
+    livlab.experience.variants.roomStudio === 'steps' &&
+      rsSteps?.eyebrow === 'ROOM STUDIO' &&
+      JSON.stringify(rsSteps?.items.map((i) => [i.id, i.tab, i.title, i.cta])) ===
+        JSON.stringify([
+          ['01', 'Nhập phòng', 'Tạo phòng tắm 3D theo kích thước thực', 'Khám phá bước 1 →'],
+          ['02', 'Chọn vật liệu', 'Phối vật liệu cho phòng tắm 3D', 'Khám phá bước 2 →'],
+          ['03', 'Thêm thiết bị', 'Bố trí thiết bị vệ sinh trong phòng tắm 3D', 'Khám phá bước 3 →'],
+          ['04', 'Nhận báo giá', 'Gửi yêu cầu báo giá đến showroom', 'Khám phá bước 4 →'],
+        ]) &&
+      rsSteps?.items[3].description === 'Lưu phương án phòng tắm 3D, gửi danh sách thiết bị đến showroom để xác nhận báo giá.' &&
+      (rsSteps?.items ?? []).every((i) => i.benefits.length === 3));
+  check('LivLab Room Studio: mỗi bước một ảnh chụp riêng, đúng thứ tự',
+    JSON.stringify(livlab.experience.merchandising?.roomStudioSteps?.map((i) => i.src)) ===
+      JSON.stringify([1, 2, 3, 4].map((n) => `/images/livlab/room-studio/step-0${n}.webp`)) &&
+      (livlab.experience.merchandising?.roomStudioSteps ?? []).every((i) => i.alt.length > 20));
+  check('Room Studio bốn bước chỉ bật cho LivLab', tungdang.experience.variants.roomStudio === undefined);
   check('LivLab: ảnh hero là cảnh phòng tắm của mockup đã duyệt, kèm lớp kính',
     livlab.experience.merchandising?.heroImage?.src === '/images/livlab/hero-mockup-bathroom.webp' &&
       livlab.experience.merchandising?.heroImage?.alt === 'Không gian phòng tắm hiện đại với bồn tắm đá, lavabo, gương oval và ánh sáng tự nhiên' &&

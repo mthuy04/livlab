@@ -128,6 +128,14 @@ export type ConceptDetailVariant = 'editorial' | 'commerce';
 /** `neutral`: a white dot. `accent`: the tenant's accent with a white "+". */
 export type HotspotVariant = 'neutral' | 'accent';
 
+/**
+ * The homepage Room Studio section. `feature`: one screenshot beside a short
+ * pitch (the default). `steps`: one rounded card walking through the four
+ * steps of the editor — copy left, the step's screenshot right, four working
+ * tabs along the bottom.
+ */
+export type RoomStudioVariant = 'feature' | 'steps';
+
 export interface TenantVariants {
   header: HeaderVariant;
   hero: HeroVariant;
@@ -135,6 +143,8 @@ export interface TenantVariants {
   productCard: ProductCardVariant;
   conceptDetail: ConceptDetailVariant;
   hotspot: HotspotVariant;
+  /** Defaults to `feature`. */
+  roomStudio?: RoomStudioVariant;
 }
 
 /* ── Homepage ────────────────────────────────────────────────────────────── */
@@ -267,6 +277,8 @@ export interface TenantMerchandising {
    * Decorative: they repeat the category links and never change data.
    */
   categoryPreviews?: Record<string, { src: string; alt: string; /** object-position */ focus?: string }>;
+  /** The `steps` Room Studio section: one screenshot of the editor per step, in step order. */
+  roomStudioSteps?: Array<{ src: string; alt: string; width: number; height: number }>;
 }
 
 /* ── Copy ────────────────────────────────────────────────────────────────── */
@@ -332,6 +344,18 @@ export interface TenantCopy {
     /** Title of the product library. Name the showroom only when the library IS its catalogue. */
     libraryTitle: string;
     primaryCta: string;
+    /** The `steps` homepage section: its eyebrow and the four steps, in order. */
+    steps?: {
+      eyebrow: string;
+      items: Array<{
+        id: string;
+        tab: string;
+        title: string;
+        description: string;
+        benefits: string[];
+        cta: string;
+      }>;
+    };
   };
   footerBlurb: string;
   footer?: {

@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
+    // 75 is Next's default; 90 is for screenshots of the app, whose small
+    // interface text blurs at 75 (the homepage Room Studio steps).
+    qualities: [75, 90],
     remotePatterns: [
       {
         protocol: 'https',
