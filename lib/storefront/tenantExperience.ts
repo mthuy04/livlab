@@ -262,8 +262,9 @@ export interface TenantMerchandising {
   /** The fluted-glass layer beside the hero photograph (`editorialCommerce`). */
   heroGlassImage?: { src: string; width: number; height: number };
   /**
-   * The `keywords` category list's hover previews, by catalogue category name;
-   * `__all` is the all-products entry. Decorative: they never change data.
+   * The `keywords` category gallery's photographs, by catalogue category name
+   * (all five shown at once on desktop; a thumbnail per word on phones).
+   * Decorative: they repeat the category links and never change data.
    */
   categoryPreviews?: Record<string, { src: string; alt: string; /** object-position */ focus?: string }>;
 }

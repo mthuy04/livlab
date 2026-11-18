@@ -1,214 +1,334 @@
 /*
- * LivLab homepage — category keywords (V3 spec; see CategoryKeywords.tsx).
- * Scoped to this section only.
+ * LivLab homepage — product categories as an editorial gallery
+ * (see CategoryKeywords.tsx). Scoped to this section only.
+ *
+ * Calibrated on the approved screenshot (1774 × 887, a 1478 px viewport at
+ * 1.2×). Inside the content box (x 97–1680 there, 1583 px wide) every
+ * position, size and type size of the gallery is a share of that width, in
+ * container-query units, so the composition scales as one piece:
+ * 1cqw = 15.83 px of the screenshot.
  */
 
 .section {
-  --ck-bg: #faf9f6;
-  --ck-ink: #21201e;
-  --ck-pale: #c9c8c4;
-  --ck-label: #77746f;
-  background: var(--ck-bg);
+  --ck-ink: #202020;
+  --ck-idle: #808080;
+  --ck-pale: #c8c8c8;
+  --ck-muted: #777777;
+  background: #ffffff;
+  color: var(--ck-ink);
+  padding-block: max(32px, 3.17vw) max(40px, 4.4vw);
 }
 
-/* ── Heading row: label and intro left, all-products link right ────────── */
+.inner {
+  container-type: inline-size;
+  width: min(1600px, 100% - 2 * 5.47vw);
+  margin-inline: auto;
+}
+
+/* ── Heading row: title and intro left, all-products link right ────────── */
 .head {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
-  gap: 10px 32px;
-  padding-top: clamp(36px, 3.6vw, 52px);
+  gap: 12px 40px;
 }
 .heading {
-  color: var(--ck-label);
-  font-size: 11.5px;
+  color: var(--ck-ink);
+  font-size: clamp(26px, 2.16vw, 32px);
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-transform: uppercase;
 }
 .intro {
-  margin-top: 8px;
-  color: var(--ck-label);
-  font-size: 14px;
+  max-width: 700px;
+  margin-top: 6px;
+  color: var(--ck-muted);
+  font-size: 16px;
+  font-weight: 400;
   line-height: 1.5;
 }
 .all {
+  display: inline-flex;
+  flex: none;
+  align-items: baseline;
+  gap: 0.45em;
   color: var(--ck-ink);
-  font-size: 11.5px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  text-transform: uppercase;
   white-space: nowrap;
-  transition: color 180ms ease;
 }
-.all:hover {
-  color: var(--tenant-accent-ink);
+.allLabel {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 200ms ease;
+}
+.allArrow {
+  display: inline-block;
+  transition: transform 200ms ease;
+}
+.all:hover .allLabel,
+.all:focus-visible .allLabel {
+  background-size: 100% 1px;
+}
+.all:hover .allArrow,
+.all:focus-visible .allArrow {
+  transform: translateX(3px);
+}
+.all:focus-visible {
+  outline: 2px solid var(--ck-ink);
+  outline-offset: 4px;
 }
 
-/* ── The stack ─────────────────────────────────────────────────────────── */
+/* ── The gallery ───────────────────────────────────────────────────────── */
 .stage {
   position: relative;
-  max-width: 1000px;
-  margin-inline: auto;
-  padding-block: clamp(40px, 4vw, 60px) clamp(48px, 4.6vw, 68px);
+  height: 44.16cqw;
+  margin-top: max(24px, 2.22vw);
 }
+
+/* Photographs: fixed frames, each cut to its frame's ratio. */
+.photos {
+  position: absolute;
+  inset: 0;
+}
+.photo {
+  position: absolute;
+  display: block;
+  overflow: hidden;
+  background: #f1efea;
+  transition:
+    filter 350ms ease-in-out,
+    opacity 350ms ease-in-out;
+}
+.photo img {
+  object-fit: cover;
+}
+.photo[data-slot='1'] {
+  /* Bồn cầu — upper left */
+  top: 0;
+  left: 19.71cqw;
+  width: 14.47cqw;
+  aspect-ratio: 229 / 244;
+}
+.photo[data-slot='2'] {
+  /* Lavabo — upper right, beside its word */
+  top: 7.14cqw;
+  left: 59.38cqw;
+  width: 20.4cqw;
+  aspect-ratio: 323 / 223;
+}
+.photo[data-slot='3'] {
+  /* Vòi lavabo — middle left */
+  top: 16.05cqw;
+  left: 15.73cqw;
+  width: 13.27cqw;
+  aspect-ratio: 210 / 218;
+}
+.photo[data-slot='4'] {
+  /* Sen tắm — lower right (0.8cqw right of the screenshot, see .row 5) */
+  top: 21.86cqw;
+  left: 65.05cqw;
+  width: 13.52cqw;
+  aspect-ratio: 214 / 260;
+}
+.photo[data-slot='5'] {
+  /* Gương & phụ kiện — bottom left (0.8cqw left of the screenshot) */
+  top: 30.39cqw;
+  left: 10.82cqw;
+  width: 13.77cqw;
+  aspect-ratio: 1;
+}
+
+/* Keywords: one per row, each centred where the screenshot places it, on
+   the screenshot's row centres (7.675cqw apart). Inter sets GƯƠNG & PHỤ KIỆN
+   wider than the screenshot's face, so that row is centred between its two
+   neighbouring photographs, which sit 0.8cqw further apart. */
 .list {
-  position: relative;
+  position: absolute;
+  inset: 4.05cqw 0 auto;
   z-index: 2;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  text-align: center;
+  gap: 3.44cqw;
+}
+.row {
+  display: flex;
+  justify-content: center;
+}
+.row[data-slot='1'] {
+  --cx: 45.17;
+}
+.row[data-slot='2'] {
+  --cx: 46.94;
+}
+.row[data-slot='3'] {
+  --cx: 44.16;
+}
+.row[data-slot='4'] {
+  --cx: 49.02;
+}
+.row[data-slot='5'] {
+  --cx: 43.83;
 }
 .item {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--ck-pale);
-  font-size: clamp(28px, 2.65vw, 42px);
+  position: relative;
+  left: calc((var(--cx, 50) - 50) * 1cqw);
+  display: block;
+  color: var(--ck-idle);
+  font-size: 3.85cqw;
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.035em;
   line-height: 1.1;
-  transition: color 260ms ease;
-}
-.item[data-on] {
-  color: var(--ck-ink);
+  transition: color 250ms ease-in-out;
 }
 .item:focus-visible {
-  outline: 2px solid var(--tenant-accent);
-  outline-offset: 4px;
+  outline: 2px solid var(--ck-ink);
+  outline-offset: 6px;
 }
 .word {
   position: relative;
+  display: inline-block;
   white-space: nowrap;
 }
 .index {
   position: absolute;
-  top: 0.05em;
-  left: calc(100% + 6px);
+  top: -0.16cqw;
+  left: calc(100% + 0.18em);
   color: inherit;
-  font-size: 10.5px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
+  font-size: max(10px, 1.1cqw);
+  font-weight: 400;
+  letter-spacing: 0;
   line-height: 1;
+  vertical-align: baseline;
 }
-.item[data-on] .index {
-  color: var(--ck-label);
-}
-/* The live count, under the index, for the dark word only. */
-.count {
-  position: absolute;
-  bottom: 0.2em;
-  left: calc(100% + 6px);
-  color: var(--ck-label);
-  font-size: 11px;
-  letter-spacing: 0.02em;
-  line-height: 1;
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 220ms ease;
-}
-.item[data-on] .count {
-  opacity: 1;
-}
-.thumb {
+.thumb,
+.meta {
   display: none;
 }
 
-/* ── The floating photograph: behind the letters, no pointer events ───── */
-.previews {
+/* Index and live count, far right. */
+.stats {
   position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-.preview {
-  position: absolute;
-  overflow: hidden;
-  background: #efece6;
-  animation: previewIn 340ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-.preview img {
-  object-fit: cover;
-}
-.leaving {
-  animation: previewOut 260ms ease both;
-}
-@keyframes previewIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-@keyframes previewOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
+  top: 10.94cqw;
+  left: 87.56cqw;
+  display: grid;
+  gap: 3.5cqw;
+  color: var(--ck-ink);
+  font-size: max(11px, 1.3cqw);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  word-spacing: 0.12em;
+  white-space: nowrap;
 }
 
-/* ── Touch and phones: an inline image per word, one tap to follow ─────── */
-@media (hover: none), (max-width: 767px) {
-  .previews {
-    display: none;
+/* One active category: its photograph keeps its colour, the other four go
+   grey; its word goes dark, the other four fade. Nothing moves. */
+@media (min-width: 768px) {
+  .stage[data-active] .photo:not([data-on]) {
+    filter: grayscale(100%);
+    opacity: 0.7;
   }
-  .item,
-  .item[data-on] {
+  .stage[data-active] .item {
+    color: var(--ck-pale);
+  }
+  .stage[data-active] .item[data-on] {
     color: var(--ck-ink);
   }
-  .item .index,
-  .item[data-on] .index {
-    color: var(--ck-label);
+  /* The rows span the gallery; only the words take the pointer, so the
+     photographs between them stay hoverable and clickable. */
+  .list {
+    pointer-events: none;
   }
-  .count {
-    display: none;
-  }
-  .thumb {
-    display: block;
-    flex: none;
-    width: 40px;
-    height: 50px;
-    overflow: hidden;
-    background: #efece6;
-  }
-  .thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .item {
+    pointer-events: auto;
   }
 }
 
+/* ── Phones: a stacked list, each word paired with its photograph ──────── */
 @media (max-width: 767px) {
+  .inner {
+    width: calc(100% - 32px);
+  }
   .head {
     flex-direction: column;
     align-items: flex-start;
   }
+  .heading {
+    font-size: 24px;
+  }
+  .intro {
+    font-size: 15px;
+  }
   .stage {
-    padding-block: 24px 36px;
+    height: auto;
+    margin-top: 20px;
+  }
+  .photos,
+  .stats {
+    display: none;
   }
   .list {
-    align-items: flex-start;
-    gap: 6px;
+    position: static;
+    display: block;
+  }
+  .row {
+    display: block;
+    border-top: 1px solid #ebebeb;
+  }
+  .row:last-child {
+    border-bottom: 1px solid #ebebeb;
   }
   .item {
-    font-size: clamp(22px, 6.4vw, 28px);
+    left: 0;
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    align-items: center;
+    gap: 16px;
+    min-height: 48px;
+    padding-block: 12px;
+    color: var(--ck-ink);
+    font-size: clamp(22px, 6.6vw, 28px);
+    letter-spacing: -0.03em;
+  }
+  .thumb {
+    position: relative;
+    display: block;
+    width: 72px;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: #f1efea;
+  }
+  .thumb img {
+    object-fit: cover;
+  }
+  .text {
+    display: block;
+    min-width: 0;
+  }
+  .index {
+    top: 0;
+    left: calc(100% + 5px);
+    font-size: 11px;
+    color: var(--ck-muted);
+  }
+  .meta {
+    display: block;
+    margin-top: 6px;
+    color: var(--ck-muted);
+    font-size: 13px;
+    letter-spacing: 0;
+    line-height: 1.3;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .photo,
   .item,
-  .count {
+  .allLabel,
+  .allArrow {
     transition: none;
-  }
-  .preview,
-  .leaving {
-    animation: none;
   }
 }

@@ -380,12 +380,17 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
     // The five owner-supplied hover photographs (18 Nov 2026), cropped 4:5.
     // Decorative (alt ""): each link names its category. Usage rights are to
     // be confirmed with the owner before production, as for the hero.
+    // The five photographs of the categories gallery, cut from the owner's
+    // originals to the frames of the approved screenshot (18 Nov 2026). The
+    // screenshot's mirror photograph has no original yet: the mirror slot
+    // uses the closest supplied photo until it arrives. `focus` positions the
+    // phone thumbnail (4:5); on desktop each frame matches its image.
     categoryPreviews: {
-      'Bồn cầu': { src: '/images/livlab/categories/category_wc_editorial.webp', alt: '', focus: '50% 50%' },
-      Lavabo: { src: '/images/livlab/categories/category_lavabo_editorial.webp', alt: '', focus: '50% 50%' },
-      'Vòi lavabo': { src: '/images/livlab/categories/category_faucet_editorial.webp', alt: '', focus: '45% 55%' },
-      'Sen tắm': { src: '/images/livlab/categories/category_shower_editorial.webp', alt: '', focus: '50% 40%' },
-      'Gương & phụ kiện': { src: '/images/livlab/categories/category_mirror_editorial.webp', alt: '', focus: '50% 45%' },
+      'Bồn cầu': { src: '/images/livlab/categories/gallery-wc.webp', alt: '', focus: '55% 50%' },
+      Lavabo: { src: '/images/livlab/categories/gallery-lavabo.webp', alt: '', focus: '60% 50%' },
+      'Vòi lavabo': { src: '/images/livlab/categories/gallery-faucet.webp', alt: '', focus: '50% 50%' },
+      'Sen tắm': { src: '/images/livlab/categories/gallery-shower.webp', alt: '', focus: '45% 50%' },
+      'Gương & phụ kiện': { src: '/images/livlab/categories/gallery-mirror.webp', alt: '', focus: '50% 40%' },
     },
     roomStudioImage: {
       src: '/images/room-studio-livlab.webp',

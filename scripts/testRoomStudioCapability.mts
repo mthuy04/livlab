@@ -334,8 +334,8 @@ console.log('\ngiao diện theo showroom');
     livlab.experience.copy.sections.categoriesTitle === 'DANH MỤC THIẾT BỊ VỆ SINH' &&
       livlab.experience.copy.sections.categoriesIntro === 'Khám phá danh mục sản phẩm và lựa chọn thiết bị phù hợp với không gian của bạn.');
   const previews = livlab.experience.merchandising?.categoryPreviews ?? {};
-  check('LivLab V3: năm ảnh hover đã duyệt, mỗi danh mục một ảnh riêng, không dùng ảnh hero',
-    ['Bồn cầu', 'Lavabo', 'Vòi lavabo', 'Sen tắm', 'Gương & phụ kiện'].every((c) => /category_\w+_editorial\.webp$/.test(previews[c]?.src ?? '')) &&
+  check('LivLab gallery: năm ảnh danh mục, mỗi danh mục một ảnh riêng, không dùng ảnh hero',
+    ['Bồn cầu', 'Lavabo', 'Vòi lavabo', 'Sen tắm', 'Gương & phụ kiện'].every((c) => /\/categories\/gallery-\w+\.webp$/.test(previews[c]?.src ?? '')) &&
       new Set(Object.values(previews).map((p) => p.src)).size === 5 &&
       !Object.values(previews).some((p) => p.src.includes('hero')));
   check('LivLab: ảnh hero là cảnh phòng tắm của mockup đã duyệt, kèm lớp kính',
