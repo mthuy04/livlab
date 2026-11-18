@@ -350,7 +350,9 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
       eyebrow: 'LIVLAB',
       kicker: 'NỀN TẢNG THƯƠNG MẠI TRỰC QUAN',
       // The page's one H1.
-      titleLines: ['LivLab — Nền tảng trải nghiệm', 'sản phẩm cho showroom'],
+      // Three short lines: the hero column is narrow, and a long first line
+      // breaks mid-phrase.
+      titleLines: ['LivLab — Nền tảng', 'trải nghiệm sản phẩm', 'cho showroom'],
       body:
         'Số hoá danh mục sản phẩm, gợi ý không gian, phối phòng 3D và yêu cầu báo giá — trong một ' +
         'trải nghiệm thống nhất cho showroom thiết bị vệ sinh và nội thất.',
