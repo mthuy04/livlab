@@ -53,8 +53,12 @@ console.log('\nngữ cảnh site');
 
   const preview = siteContext({ host: 'www.livlab.space', previewTenant: TD });
   check('preview Tùng Đăng trên LivLab: không index', preview.tenant.id === 'tungdang' && preview.via === 'PREVIEW' && !preview.indexable);
-  const gsPreview = siteContext({ host: 'livlab.vercel.app', previewTenant: GS });
-  check('preview Giang Sơn ở host khác: canonical vẫn về domain Giang Sơn, không index', gsPreview.origin === GS_ORIGIN && !gsPreview.indexable);
+  // A showroom with its own domain is never painted onto LivLab's hosts, even
+  // by a cookie left from before it had one.
+  const gsCookieOnLivlab = siteContext({ host: 'www.livlab.space', previewTenant: GS });
+  check('cookie Giang Sơn trên www.livlab.space: vẫn là LivLab', gsCookieOnLivlab.tenant.id === 'livlab' && gsCookieOnLivlab.origin === 'https://www.livlab.space');
+  const gsCookieOnAlias = siteContext({ host: 'livlab.vercel.app', previewTenant: GS });
+  check('cookie Giang Sơn trên alias LivLab: vẫn là LivLab, không index', gsCookieOnAlias.tenant.id === 'livlab' && !gsCookieOnAlias.indexable);
 
   const www = siteContext({ host: 'www.livlab.space', previewTenant: null });
   check('www.livlab.space: LivLab, được index, origin www', www.tenant.id === 'livlab' && www.indexable && www.origin === 'https://www.livlab.space');
@@ -108,7 +112,7 @@ console.log('\nsitemap.xml');
   check('LivLab: không liệt kê trang sản phẩm (vẫn noindex như trước)', !ll.some((e) => e.url.includes('/products/')));
   check('LivLab: chỉ URL của www.livlab.space', ll.every((e) => new URL(e.url).host === 'www.livlab.space'));
   check('host không index: sitemap rỗng', sitemapFor(siteContext({ host: 'livlab.vercel.app', previewTenant: null }), input).length === 0);
-  check('preview: sitemap rỗng', sitemapFor(siteContext({ host: 'www.livlab.space', previewTenant: GS }), input).length === 0);
+  check('preview: sitemap rỗng', sitemapFor(siteContext({ host: 'www.livlab.space', previewTenant: TD }), input).length === 0);
 }
 
 console.log('\nstructured data');
@@ -116,7 +120,8 @@ console.log('\nstructured data');
   const site = websiteJsonLd(GS, GS_ORIGIN);
   check('WebSite.name = "Thiết bị vệ sinh Giang Sơn"', site.name === 'Thiết bị vệ sinh Giang Sơn');
   check('WebSite.url là trang chủ subdomain', site.url === `${GS_ORIGIN}/`);
-  check('WebSite.name khớp tiêu đề hiển thị trên trang (H1)', GS.experience.copy.hero.titleLines.join(' ') === site.name);
+  // The H1 adds where ("… tại Hà Nội"); it must still lead with the site name Google is told.
+  check('H1 bắt đầu bằng WebSite.name', GS.experience.copy.hero.titleLines.join(' ').startsWith(String(site.name)));
   const biz = localBusinessJsonLd(GS, GS_ORIGIN)!;
   check('LocalBusiness: điện thoại theo trang Facebook', biz.telephone === '+84329690164');
   check('LocalBusiness: địa chỉ 240 Hồ Tùng Mậu, Hà Nội', JSON.stringify(biz.address).includes('240 Hồ Tùng Mậu') && JSON.stringify(biz.address).includes('Hà Nội'));

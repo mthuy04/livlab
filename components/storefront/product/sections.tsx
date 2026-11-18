@@ -322,11 +322,12 @@ export function Simulation({ vm }: { vm: ProductDetailViewModel }) {
               style={both ? { borderLeft: `1px solid ${DIVIDER}`, paddingLeft: 40 } : undefined}
             >
               <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: '.12em', color: TEXT_FAINT }}>
-                {manufacturerSimulator.brand.toUpperCase()}
+                {manufacturerSimulator.official ? manufacturerSimulator.brand.toUpperCase() : 'CÔNG CỤ BÊN NGOÀI'}
               </p>
               <p className="mt-3.5" style={{ fontSize: 15.5, lineHeight: 1.65, color: TEXT }}>
-                Sử dụng công cụ mô phỏng do {manufacturerSimulator.brand} cung cấp để khám phá các
-                phương án của hãng.
+                {manufacturerSimulator.official
+                  ? `Công cụ do ${manufacturerSimulator.brand} cung cấp trên website của hãng.`
+                  : `Xem sản phẩm ${manufacturerSimulator.brand} trong không gian 3D trên một nền tảng bên ngoài.`}
               </p>
               <p className="mt-5">
                 <a
@@ -335,7 +336,7 @@ export function Simulation({ vm }: { vm: ProductDetailViewModel }) {
                   className="transition-opacity duration-150 hover:opacity-60"
                   style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.09em', color: 'var(--tenant-accent-ink)' }}
                 >
-                  MỞ MÔ PHỎNG →
+                  {manufacturerSimulator.label.toUpperCase()} {manufacturerSimulator.external ? '↗' : '→'}
                 </a>
               </p>
               <p className="mt-4" style={{ fontSize: 12, color: TEXT_MUTED }}>

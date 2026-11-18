@@ -10,5 +10,10 @@
       "path": "/images/room-studio-ui.png",
       "description": "Screenshot of the running LivLab Room Studio already maintained in the repository."
     }
-  ]
+  ],
+  "roomStudioCapture": {
+    "file": "/demo/giangson/room-studio.webp",
+    "source": "LivLab's own UI: /room-studio?demo=1 on the Giang Sơn storefront, captured 2026-11-18 at 1440x1097 and cropped below the site header.",
+    "note": "Products are INAX 3D reconstructions built by LivLab from manufacturer dimensions; not manufacturer files."
+  }
 }

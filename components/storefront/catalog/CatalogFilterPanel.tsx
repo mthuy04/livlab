@@ -89,10 +89,17 @@ export default function CatalogFilterPanel({
   filters,
   facets,
   onChange,
+  railed = { categories: false, brands: false },
 }: {
   filters: CatalogFilters;
   facets: Facets;
   onChange: (next: Partial<CatalogFilters>) => void;
+  /**
+   * Facets the page already offers as a rail above the results. The same
+   * choice twice — icons on top, checkboxes at the side — reads as two
+   * different filters, so the panel leaves those out.
+   */
+  railed?: { categories: boolean; brands: boolean };
 }) {
   const toggle = (list: string[], value: string) =>
     list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
@@ -101,7 +108,7 @@ export default function CatalogFilterPanel({
 
   return (
     <div>
-      {facets.categories.length > 1 && (
+      {!railed.categories && facets.categories.length > 1 && (
         <Group title="DANH MỤC">
           {facets.categories.map((f) => (
             <CheckRow
@@ -117,7 +124,7 @@ export default function CatalogFilterPanel({
         </Group>
       )}
 
-      {facets.brands.length > 1 && (
+      {!railed.brands && facets.brands.length > 1 && (
         <Group title="THƯƠNG HIỆU" defaultOpen={filters.brands.length > 0}>
           {facets.brands.map((f) => (
             <CheckRow

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { shortBusinessName } from '@/lib/seo/pageMetadata';
 import { resolveTenant } from '@/lib/storefront/resolveTenant';
 import RoomStudioClient from './RoomStudioClient';
 
@@ -12,6 +13,14 @@ import RoomStudioClient from './RoomStudioClient';
  */
 export async function generateMetadata(): Promise<Metadata> {
   const tenant = await resolveTenant();
+  if (tenant.business) {
+    const name = shortBusinessName(tenant.business.name);
+    return {
+      title: `Phối phòng tắm 3D với thiết bị vệ sinh | ${name}`,
+      description: `Nhập kích thước phòng và đặt thử bồn cầu, lavabo, sen vòi của ${name} trong không gian 3D trước khi gửi yêu cầu báo giá.`,
+      alternates: { canonical: '/room-studio' },
+    };
+  }
   return {
     title: `Room Studio | ${tenant.brand.name}`,
     description:

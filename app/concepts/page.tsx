@@ -1,6 +1,7 @@
 import type { Metadata, Route } from 'next';
 import Link from 'next/link';
 import { resolveTenant } from '@/lib/storefront/resolveTenant';
+import { shortBusinessName } from '@/lib/seo/pageMetadata';
 import { getPublishedConcepts } from '@/lib/storefront/concepts';
 import { toCardModel } from '@/lib/storefront/conceptTypes';
 import { DIVIDER, TEXT, TEXT_MUTED } from '@/components/storefront/home/editorial';
@@ -24,11 +25,15 @@ import ConceptsBrowser from '@/components/storefront/concepts/ConceptsBrowser';
 export async function generateMetadata(): Promise<Metadata> {
   const tenant = await resolveTenant();
   const published = await getPublishedConcepts(tenant).catch(() => []);
+  const showroom = tenant.business ? shortBusinessName(tenant.business.name) : null;
   return {
-    title: `Không gian phòng tắm | ${tenant.brand.name}`,
-    description:
-      'Những không gian phòng tắm được tuyển chọn theo phong cách, diện tích và ngân sách, ' +
-      'với các sản phẩm có thể xem trực tiếp trong từng concept.',
+    title: showroom
+      ? `Mẫu phối phòng tắm theo diện tích và phong cách | ${showroom}`
+      : `Không gian phòng tắm | ${tenant.brand.name}`,
+    description: showroom
+      ? `Phối cảnh phòng tắm theo diện tích và phong cách, kèm thiết bị gợi ý từ danh mục ${showroom}.`
+      : 'Những không gian phòng tắm được tuyển chọn theo phong cách, diện tích và ngân sách, ' +
+        'với các sản phẩm có thể xem trực tiếp trong từng concept.',
     alternates: { canonical: '/concepts' },
     // An empty library is not a page worth a search result; it becomes one
     // the moment a concept resolves against this catalogue.

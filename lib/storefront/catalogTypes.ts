@@ -108,6 +108,13 @@ export interface CatalogProduct {
   showroomPrice: number | null;
   /** List/reference price, shown struck through only when it is higher. */
   referencePrice: number | null;
+  /**
+   * What the headline price is, in the shopper's words — "Giá hãng đề xuất",
+   * "Giá khuyến mãi hãng đề xuất", "Giá thị trường tham khảo" — when the
+   * source says. A manufacturer's figure must never read as the showroom's
+   * confirmed price. Null when the source does not say.
+   */
+  priceBasis?: string | null;
 
   dimensions: CatalogDimensions | null;
   dimensionsRaw: string | null;

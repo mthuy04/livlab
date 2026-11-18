@@ -333,11 +333,15 @@ function buildSimulator(product: CatalogProduct): SimulatorRef | null {
   if (!entry?.supportsSimulator) return null;
 
   const tool = Object.values(MANUFACTURER_TOOLS).find(
-    (t) => t.brand.toLowerCase() === entry.canonicalBrand.toLowerCase()
+    (t) =>
+      t.brand.toLowerCase() === entry.canonicalBrand.toLowerCase() &&
+      (!t.categories || t.categories.includes(product.category))
   );
   if (!tool) return null;
 
-  const external = tool.embedStatus !== 'EMBED_ALLOWED';
+  // Framed under LivLab's own address only when it is the manufacturer's
+  // tool; a third-party experience opens on its own site, under its name.
+  const external = tool.embedStatus !== 'EMBED_ALLOWED' || !tool.official;
   const query = tool.account ? `?account=${encodeURIComponent(tool.account)}` : '';
 
   return {
@@ -348,6 +352,7 @@ function buildSimulator(product: CatalogProduct): SimulatorRef | null {
     attribution: tool.attribution,
     brand: tool.brand,
     external,
+    official: tool.official,
   };
 }
 
@@ -567,7 +572,11 @@ export async function getProductDetail(
       promotionPrice: null,
       showroomReferencePrice: product.referencePrice,
       manufacturerReferencePrice: product.manufacturerReferencePrice,
-      displayPriceLabel: commercialConfirmed ? 'GIÁ SHOWROOM' : 'GIÁ THAM KHẢO',
+      displayPriceLabel: commercialConfirmed
+        ? 'GIÁ SHOWROOM'
+        : product.priceBasis
+          ? product.priceBasis.toUpperCase()
+          : 'GIÁ THAM KHẢO',
       // One reference figure beside the headline, never three competing ones.
       // The showroom's own list price is the relevant comparison; the
       // manufacturer's is only used when the showroom states none.
@@ -579,7 +588,9 @@ export async function getProductDetail(
           : null,
       discountPercent: product.referencePrice ? discount : null,
       note: product.showroomPrice
-        ? 'Giá cuối cùng được showroom xác nhận theo tình trạng cung ứng và phương án lắp đặt.'
+        ? product.priceBasis && product.priceBasis.includes('hãng')
+          ? `Giá do ${product.brand} công bố, không phải giá bán của showroom. Showroom xác nhận giá theo số lượng, tình trạng cung ứng và phương án lắp đặt.`
+          : 'Giá cuối cùng được showroom xác nhận theo tình trạng cung ứng và phương án lắp đặt.'
         : null,
     },
 

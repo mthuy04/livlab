@@ -1766,6 +1766,86 @@
         "originalHeight": 506,
         "checkedAt": "2026-10-18T09:12:56Z"
       }
+    },
+    "inax-bf-1656v": {
+      "localPath": "/demo/manufacturers/inax/bf-1656v-primary.webp",
+      "width": 846,
+      "height": 846,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://www.inax.com.vn/wp-content/uploads/2026/09/BF-1656V-1.png",
+        "assetOwner": "INAX",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 750,
+        "originalHeight": 756,
+        "checkedAt": "2026-11-18T03:50:17Z"
+      }
+    },
+    "inax-bfv-70s": {
+      "localPath": "/demo/manufacturers/inax/bfv-70s-primary.webp",
+      "width": 812,
+      "height": 812,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "ALPHA",
+      "provenance": {
+        "imageSourceUrl": "https://www.inax.com.vn/wp-content/uploads/2026/03/BFV-70S-1.png",
+        "assetOwner": "INAX",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "PNG",
+        "originalWidth": 750,
+        "originalHeight": 750,
+        "checkedAt": "2026-11-18T03:50:17Z"
+      }
+    },
+    "toto-lt710ctr": {
+      "localPath": "/demo/manufacturers/toto/lt710ctr-primary.webp",
+      "width": 537,
+      "height": 537,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://vn.toto.com/wp-content/uploads/2024/02/lt710ctrm_3.jpg",
+        "assetOwner": "TOTO",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "JPEG",
+        "originalWidth": 600,
+        "originalHeight": 600,
+        "checkedAt": "2026-11-18T03:50:17Z"
+      }
+    },
+    "inax-lfv-1402s": {
+      "localPath": "/demo/manufacturers/inax/lfv-1402s-primary.webp",
+      "width": 851,
+      "height": 851,
+      "processing": [
+        "TRIMMED_WHITESPACE",
+        "NORMALIZED_CANVAS",
+        "CONVERTED_WEBP"
+      ],
+      "trimMethod": "NEAR_WHITE",
+      "provenance": {
+        "imageSourceUrl": "https://www.inax.com.vn/wp-content/uploads/2025/11/voi-chau-dat-ban-lfv-1402s-1.jpg",
+        "assetOwner": "INAX",
+        "sourceType": "MANUFACTURER",
+        "originalFormat": "JPEG",
+        "originalWidth": 760,
+        "originalHeight": 732,
+        "checkedAt": "2026-11-18T03:50:17Z"
+      }
     }
   }
 }

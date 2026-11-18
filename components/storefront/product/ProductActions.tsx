@@ -120,7 +120,7 @@ export default function ProductActions({ vm }: { vm: ProductDetailViewModel }) {
             className="transition-opacity hover:opacity-60"
             style={{ fontSize: 12, fontWeight: 600, letterSpacing: '.08em', color: 'var(--tenant-accent-ink)' }}
           >
-            MÔ PHỎNG SẢN PHẨM →
+            {manufacturerSimulator.label.toUpperCase()} {manufacturerSimulator.external ? '↗' : '→'}
           </a>
         </p>
       )}

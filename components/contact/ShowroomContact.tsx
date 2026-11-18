@@ -3,6 +3,7 @@ import type { Route } from 'next';
 import { ArrowRight, MapPin, MessageCircle, Phone } from 'lucide-react';
 import type { TenantStorefrontConfig } from '@/lib/storefront/tenantConfig';
 import { DIVIDER, TEXT, TEXT_MUTED } from '@/components/storefront/home/editorial';
+import ContactInquiry from './ContactInquiry';
 
 /**
  * A showroom's contact page, rendered on the server from the business facts
@@ -41,8 +42,7 @@ export default function ShowroomContact({ tenant }: { tenant: TenantStorefrontCo
             Liên hệ {business.name}
           </h1>
           <p className="max-w-[560px]" style={{ marginTop: 14, fontSize: 15, lineHeight: 1.7, color: TEXT_MUTED }}>
-            Gọi hoặc nhắn Zalo để được tư vấn chọn thiết bị, hỏi giá và đặt lịch xem sản phẩm tại showroom.
-            Bạn cũng có thể lưu các mẫu quan tâm vào giỏ báo giá và gửi yêu cầu trực tiếp trên website.
+            Gọi hoặc nhắn Zalo để hỏi giá, chọn thiết bị và hẹn xem mẫu tại showroom.
           </p>
           <div className="flex flex-wrap gap-3" style={{ marginTop: 26 }}>
             <Link
@@ -98,6 +98,18 @@ export default function ShowroomContact({ tenant }: { tenant: TenantStorefrontCo
           )}
         </address>
       </div>
+
+      {/* A written request reaches the showroom's workspace through the same
+          endpoint as the quote basket, so this form is real, not decorative. */}
+      <section aria-labelledby="contact-form-title" className="max-w-[860px]" style={{ marginTop: 'clamp(40px, 5vw, 64px)', borderTop: `1px solid ${DIVIDER}`, paddingTop: 32 }}>
+        <h2 id="contact-form-title" style={{ fontSize: 22, fontWeight: 550, color: TEXT }}>Gửi yêu cầu nhanh</h2>
+        <p className="mt-2" style={{ fontSize: 15, lineHeight: 1.65, color: TEXT_MUTED }}>
+          Ghi mã sản phẩm, số lượng hoặc kích thước cần làm; showroom sẽ gọi lại để tư vấn và báo giá.
+        </p>
+        <div className="mt-6">
+          <ContactInquiry />
+        </div>
+      </section>
     </div>
   );
 }

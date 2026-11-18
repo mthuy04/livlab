@@ -162,42 +162,56 @@ export interface LandingProduct {
   href: string;
 }
 
+export interface LandingSectionIntro {
+  eyebrow: string;
+  title: string;
+  description: string;
+}
+
+/**
+ * The showroom's homepage, in reading order: hero, categories, combos,
+ * featured products, videos, concepts, Room Studio, the showroom itself, and
+ * a closing quotation call. Combos and videos come from
+ * lib/storefront/showroomMedia.ts and appear only once approved records exist.
+ */
 export interface ArchitecturalLandingContent {
   hero: {
     image: LandingImage;
     hotspots: LandingHotspot[];
+    /** A quieter third action under the two buttons. */
+    supportLink?: CtaCopy;
   };
-  categories: {
-    eyebrow: string;
-    title: string;
-    description: string;
+  categories: LandingSectionIntro & {
+    /** `image` is a product photograph on a light stage, not a room scene. */
     items: Array<{ id: string; name: string; note: string; image: LandingImage; href: string }>;
   };
-  concepts: {
-    eyebrow: string;
-    title: string;
-    description: string;
-    cta: CtaCopy;
-    items: Array<{ title: string; note: string; image: LandingImage; href: string }>;
-  };
-  products: {
-    eyebrow: string;
-    title: string;
-    description: string;
+  combos?: LandingSectionIntro;
+  products: LandingSectionIntro & {
     note: string;
     items: LandingProduct[];
   };
-  roomStudio: {
-    eyebrow: string;
-    title: string;
-    description: string;
+  videos?: LandingSectionIntro & {
+    /** Shown under the players: where the video is served from. */
+    note: string;
+  };
+  concepts: LandingSectionIntro & {
+    cta: CtaCopy;
+    items: Array<{ title: string; note: string; image: LandingImage; href: string }>;
+  };
+  roomStudio: LandingSectionIntro & {
+    /** What the 3D view is not: a survey or an installation check. */
+    note?: string;
     cta: CtaCopy;
     image: LandingImage;
   };
-  about: {
-    eyebrow: string;
-    title: string;
-    body: string;
+  showroom: LandingSectionIntro & {
+    address: string;
+    phone: string;
+    zaloUrl?: string;
+    /** Directions to the verified address. */
+    mapsUrl: string;
+    facebookUrl?: string;
+    cta: CtaCopy;
   };
   contact: {
     title: string;

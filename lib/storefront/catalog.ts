@@ -91,7 +91,19 @@ interface DemoFixture {
     roughIn: string | null;
     technologies: string[];
     shortDescription: string | null;
+    /** How the fixture's price was sourced, in the importer's words. */
+    priceSource?: { label?: string | null; url?: string | null } | null;
   }[];
+}
+
+/** The fixture's own price-source note, reduced to a label a shopper reads. */
+export function priceBasisFrom(label: string | null | undefined): string | null {
+  if (!label) return null;
+  const l = label.toLowerCase();
+  if (l.includes('khuyến mãi') && l.includes('hãng')) return 'Giá khuyến mãi hãng đề xuất';
+  if (l.includes('thị trường')) return 'Giá thị trường tham khảo';
+  if (l.includes('hãng')) return 'Giá hãng đề xuất';
+  return null;
 }
 
 // Keyed by file: with more than one fixture tenant, a single slot would hand
@@ -167,6 +179,7 @@ async function fromFixture(tenant: TenantStorefrontConfig, file: string): Promis
         additionalImages: p.additionalImages ?? [],
         technicalDrawing: p.technicalDrawing,
         showroomPrice: p.showroomPrice,
+        priceBasis: priceBasisFrom(p.priceSource?.label),
         // Only a genuinely higher list price is a reference price.
         referencePrice:
           p.referencePrice && p.showroomPrice && p.referencePrice > p.showroomPrice

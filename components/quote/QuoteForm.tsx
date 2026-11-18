@@ -8,6 +8,7 @@ import { CheckCircle, Loader2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useAuth } from '@/lib/context/AuthContext';
 import { trackEvent, visitAttribution } from '@/lib/analytics/events';
+import { useTenant } from '@/components/storefront/TenantContext';
 
 interface QuoteFormProps {
   quoteItems: QuoteItem[];
@@ -62,6 +63,8 @@ const labelCls = 'block text-xs font-bold text-[#627386] uppercase tracking-wide
 export default function QuoteForm({ quoteItems, onSuccess }: QuoteFormProps) {
   const searchParams = useSearchParams();
   const { user } = useAuth();
+  const tenant = useTenant();
+  const seller = tenant.business?.name ?? (tenant.id === 'livlab' ? 'showroom' : tenant.brand.name);
   
   const isCustomer = user?.role === 'CUSTOMER';
 
@@ -107,8 +110,8 @@ export default function QuoteForm({ quoteItems, onSuccess }: QuoteFormProps) {
     const errs: FormErrors = {};
     if (!form.customerName.trim()) errs.customerName = 'Vui lòng nhập họ và tên';
     if (!form.phone.trim())        errs.phone        = 'Vui lòng nhập số điện thoại';
-    if (!form.roomType)            errs.roomType     = 'Vui lòng chọn loại phòng';
-    if (!form.budgetRange)         errs.budgetRange  = 'Vui lòng chọn ngân sách';
+    // Room type and budget help the showroom but are not required: a
+    // customer who has chosen the products should not be stopped by them.
     if (!form.consent)             errs.consent      = 'Vui lòng đồng ý với chính sách xử lý dữ liệu';
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -226,7 +229,7 @@ export default function QuoteForm({ quoteItems, onSuccess }: QuoteFormProps) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className={labelCls}>Loại phòng *</label>
+          <label className={labelCls}>Loại phòng</label>
           <select value={form.roomType} onChange={set('roomType')} className={inputCls(errors.roomType)}>
             <option value="">Chọn loại phòng</option>
             {roomTypes.map((r) => <option key={r} value={r}>{r}</option>)}
@@ -241,7 +244,7 @@ export default function QuoteForm({ quoteItems, onSuccess }: QuoteFormProps) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className={labelCls}>Ngân sách *</label>
+          <label className={labelCls}>Ngân sách</label>
           <select value={form.budgetRange} onChange={set('budgetRange')} className={inputCls(errors.budgetRange)}>
             <option value="">Chọn ngân sách</option>
             {budgetRanges.map((b) => <option key={b} value={b}>{b}</option>)}
@@ -291,7 +294,7 @@ export default function QuoteForm({ quoteItems, onSuccess }: QuoteFormProps) {
         <div className="flex items-start gap-3">
           <input type="checkbox" id="consent" checked={form.consent} onChange={set('consent')} className="w-4 h-4 accent-copper mt-0.5" />
           <label htmlFor="consent" className="text-xs text-[#0B1623] cursor-pointer leading-relaxed">
-            Tôi đồng ý để LivLab liên hệ tư vấn và xử lý thông tin theo <a href="/privacy" className="underline hover:text-[#C8A96A]">Chính sách bảo mật</a>. LivLab không bán dữ liệu cá nhân cho bên thứ ba.
+            Tôi đồng ý để {seller} liên hệ tư vấn và báo giá. Yêu cầu được lưu trên nền tảng LivLab và chỉ chuyển đến {seller}, theo <a href="/privacy" className="underline hover:text-[#C8A96A]">Chính sách bảo mật</a>. LivLab không bán dữ liệu cá nhân cho bên thứ ba.
           </label>
         </div>
         {errors.consent && <p className="text-xs text-red-500 mt-2 ml-7">{errors.consent}</p>}

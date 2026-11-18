@@ -158,6 +158,8 @@ export interface SimulatorRef {
   brand: string;
   /** EMBED_ALLOWED opens the LivLab wrapper; EXTERNAL_ONLY opens the brand's own tool. */
   external: boolean;
+  /** Published by the manufacturer on its own site, rather than a third party's. */
+  official: boolean;
 }
 
 export interface RoomStudioRef {

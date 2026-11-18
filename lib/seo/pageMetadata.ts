@@ -16,3 +16,8 @@ export async function livlabPageMetadata(path: string, base: Metadata): Promise<
   if (tenant.id !== LIVLAB_TENANT.id) return { ...base, robots: { index: false, follow: true } };
   return { ...base, alternates: { canonical: path } };
 }
+
+/** "Thiết bị vệ sinh Giang Sơn" → "Giang Sơn": the name a title has room for. */
+export function shortBusinessName(name: string): string {
+  return name.replace(/^Thiết bị vệ sinh\s+/i, '');
+}

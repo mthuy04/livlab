@@ -1213,12 +1213,15 @@ function tenantConcept(
     titleVi,
     presentation,
     picks,
+    story,
   }: {
     tenantId: string;
     idPrefix: string;
     slug: string;
     titleVi: string;
     presentation: StorefrontConcept['presentation'];
+    /** A shorter story in the tenant's own terms, replacing the base concept's essay. */
+    story?: string;
     /** By the base hotspot's 1-based position. */
     picks: Record<number, TenantPick>;
   }
@@ -1231,6 +1234,7 @@ function tenantConcept(
     titleVi,
     tenantId,
     presentation,
+    ...(story ? { conceptStory: story } : {}),
     qaNote: 'Vị trí điểm lấy từ concept gốc đã kiểm tra; sản phẩm gán theo danh mục của tenant.',
     hotspots: base.hotspots.map((spot, index) => {
       const pick = picks[index + 1];
@@ -1280,6 +1284,9 @@ const gsMasterSpa = tenantConcept(c05, {
   tenantId: GIANGSON_TENANT,
   idPrefix: 'gs',
   slug: 'giangson-master-spa',
+  story:
+    'Phòng tắm master 10–14 m²: bồn tắm đặt sàn trước cửa sổ, mặt bàn đôi hai chậu và khu tắm kính riêng. ' +
+    'Thiết bị gợi ý từ danh mục Giang Sơn: bồn tắm đặt sàn và chậu đặt bàn chữ nhật.',
   titleVi: 'Phòng tắm master phong cách spa',
   presentation: { leadWithName: true, roomType: 'Master bathroom', styleLabel: 'Spa tại gia', areaLabel: '10–14 m²', budgetLabel: 'Cao cấp' },
   picks: {
@@ -1293,6 +1300,9 @@ const gsScandinavian = tenantConcept(c02, {
   tenantId: GIANGSON_TENANT,
   idPrefix: 'gs',
   slug: 'giangson-scandinavian-bath',
+  story:
+    'Phòng tắm gia đình 4–6 m² tông sáng, điểm nhấn gỗ ấm. ' +
+    'Thiết bị gợi ý từ danh mục Giang Sơn: bồn cầu hai khối, sen cây nóng lạnh và vòi lavabo một lỗ.',
   titleVi: 'Phòng tắm Scandinavian ấm sáng',
   presentation: { leadWithName: true, roomType: 'Phòng tắm gia đình', styleLabel: 'Scandinavian', areaLabel: '4–6 m²', budgetLabel: 'Phổ thông – trung cấp' },
   picks: {
@@ -1306,6 +1316,9 @@ const gsPremiumSuite = tenantConcept(c04, {
   tenantId: GIANGSON_TENANT,
   idPrefix: 'gs',
   slug: 'giangson-premium-suite',
+  story:
+    'Phòng tắm 6–9 m² tông sáng, ít chi tiết, dễ vệ sinh. ' +
+    'Thiết bị gợi ý từ danh mục Giang Sơn: bồn cầu một khối, chậu đặt bàn chữ nhật, vòi một lỗ và sen cây nóng lạnh.',
   titleVi: 'Phòng tắm nghỉ dưỡng thanh lịch',
   presentation: { leadWithName: true, roomType: 'Phòng tắm master', styleLabel: 'Hiện đại thanh lịch', areaLabel: '6–9 m²', budgetLabel: 'Trung – cao cấp' },
   picks: {

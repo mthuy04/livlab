@@ -15,6 +15,7 @@
     "test:room-studio": "npx tsx scripts/testRoomStudioCapability.mts",
     "test:inax-3d": "npx tsx scripts/testInaxReconstructions.mts",
     "test:tenant-seo": "npx tsx scripts/testTenantSeo.mts",
+    "test:showroom-media": "npx tsx scripts/testShowroomMedia.mts",
     "check:showroom-db": "node --experimental-strip-types scripts/checkShowroomDbReadiness.mts",
     "configure:tungdang-demo": "node --experimental-strip-types scripts/configureTungDangDemoWorkspace.mts",
     "seed:tungdang-demo": "node --experimental-strip-types scripts/seedTungDangDemoData.mts",

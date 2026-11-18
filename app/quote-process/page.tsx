@@ -2,8 +2,18 @@ import { livlabPageMetadata } from '@/lib/seo/pageMetadata';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle } from 'lucide-react';
+import { resolveTenantContext } from '@/lib/storefront/resolveTenant';
+import ShowroomQuoteProcess from '@/components/contact/ShowroomQuoteProcess';
 
 export async function generateMetadata(): Promise<Metadata> {
+  const { tenant } = await resolveTenantContext();
+  if (tenant.business) {
+    return {
+      title: `Quy trình báo giá | ${tenant.business.name}`,
+      description: `Cách ${tenant.business.name} tiếp nhận yêu cầu báo giá: gửi mã sản phẩm, số lượng hoặc kích thước, showroom kiểm tra và xác nhận báo giá.`,
+      alternates: { canonical: '/quote-process' },
+    };
+  }
   return livlabPageMetadata('/quote-process', {
     title: 'Quy trình báo giá - LivLab',
     description:
@@ -11,7 +21,10 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export default function QuoteProcessPage() {
+export default async function QuoteProcessPage() {
+  const { tenant } = await resolveTenantContext();
+  // A showroom describes its own process, not LivLab's.
+  if (tenant.business) return <ShowroomQuoteProcess tenant={tenant} />;
   return (
     <div className="pt-24 pb-20 bg-[#F3F7FA] min-h-screen">
       <div className="max-w-4xl mx-auto px-6">
@@ -64,8 +77,9 @@ export default function QuoteProcessPage() {
             </div>
 
             <h2 className="text-2xl font-bold text-[#0B1623] mt-10 mb-4">Khi nào tôi nhận được phản hồi?</h2>
+            {/* No response time is promised: none has been agreed with the showrooms. */}
             <p className="mb-8">
-              Thông thường, đội ngũ tư vấn từ showroom đối tác sẽ liên hệ lại với bạn trong vòng <strong>24-48 giờ làm việc</strong> kể từ khi bạn gửi yêu cầu báo giá thành công trên hệ thống.
+              Showroom tiếp nhận yêu cầu sẽ liên hệ lại theo số điện thoại bạn để lại. Bạn có thể theo dõi trạng thái bằng mã yêu cầu tại trang Tra cứu báo giá.
             </p>
 
             <h2 className="text-2xl font-bold text-[#0B1623] mt-10 mb-4">Cần chuẩn bị thông tin gì?</h2>

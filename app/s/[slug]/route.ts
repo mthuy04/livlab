@@ -50,6 +50,16 @@ export async function GET(request: Request, context: { params: Promise<{ slug: s
     return NextResponse.json({ error: 'Not found.' }, { status: 404 });
   }
 
+  // A showroom with its own domain is not previewed on LivLab's: the link
+  // goes to its own address, and any old preview cookie is cleared so this
+  // host returns to LivLab's storefront.
+  const site = TENANTS[slug].site;
+  if (site) {
+    const away = NextResponse.redirect(new URL(next, `${site.entryOrigin ?? site.origin}/`));
+    away.cookies.delete(TENANT_PREVIEW_COOKIE);
+    return away;
+  }
+
   response.cookies.set(TENANT_PREVIEW_COOKIE, slug, {
     path: '/',
     httpOnly: false,

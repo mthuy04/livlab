@@ -44,8 +44,21 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const brands = [...new Set((products ?? []).filter((p) => !category || p.category === category).map((p) => p.brand).filter(Boolean))];
   const brandText = brands.length > 0 && brands.length <= 4 ? ` ${brands.join(', ')}` : '';
   const subject = category ?? 'Thiết bị phòng tắm';
+  // A showroom's full catalogue is titled by what it sells, in the words
+  // people search with: "Bồn cầu, lavabo, sen vòi | <showroom>".
+  const groups = new Set((products ?? []).map((p) => p.category));
+  const sells = [
+    groups.has('Bồn cầu') && 'Bồn cầu',
+    groups.has('Lavabo') && 'lavabo',
+    (groups.has('Sen tắm') || groups.has('Vòi lavabo')) && 'sen vòi',
+    groups.has('Bồn tắm') && 'bồn tắm',
+  ].filter(Boolean);
+  const title =
+    !category && tenant.business && sells.length >= 2
+      ? `${sells.join(', ')} | ${tenant.brand.name}`
+      : `${subject}${brandText} | ${tenant.brand.name}`;
   return {
-    title: `${subject}${brandText} | ${tenant.brand.name}`,
+    title,
     description: count
       ? `Xem ${count} mẫu ${subject.toLowerCase()}${brandText} kèm hình ảnh, thông số kỹ thuật và giá tham khảo tại ${tenant.brand.name}.`
       : undefined,

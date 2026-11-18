@@ -1,9 +1,19 @@
 import { livlabPageMetadata } from '@/lib/seo/pageMetadata';
 import type { Metadata } from 'next';
+import { resolveTenantContext } from '@/lib/storefront/resolveTenant';
+import SellerNotice from '@/components/legal/SellerNotice';
 import Link from 'next/link';
 import { Shield, ArrowRight } from 'lucide-react';
 
 export async function generateMetadata(): Promise<Metadata> {
+  const { tenant } = await resolveTenantContext();
+  if (tenant.business) {
+    return {
+      title: `Chính sách bảo mật | ${tenant.business.name}`,
+      description: 'Cách thông tin bạn gửi trên website được lưu trữ và chuyển đến showroom.',
+      alternates: { canonical: '/privacy' },
+    };
+  }
   return livlabPageMetadata('/privacy', {
     title: 'Chính sách bảo mật - LivLab',
     description:
@@ -11,7 +21,8 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export default function PrivacyPage() {
+export default async function PrivacyPage() {
+  const { tenant } = await resolveTenantContext();
   return (
     <div className="pt-24 pb-20 bg-[#F3F7FA] min-h-screen">
       <div className="max-w-4xl mx-auto px-6">
@@ -21,6 +32,7 @@ export default function PrivacyPage() {
           </div>
           <h1 className="text-4xl font-bold text-[#0B1623] mb-6">Chính sách bảo mật</h1>
           
+          <SellerNotice tenant={tenant} topic="privacy" />
           <div className="prose prose-lg text-[#627386] max-w-none">
             <p className="mb-8">
               Tại LivLab, chúng tôi cam kết bảo vệ thông tin cá nhân của bạn. Chính sách này mô tả cách chúng tôi thu thập, sử dụng và bảo vệ dữ liệu khi bạn sử dụng nền tảng của chúng tôi để chọn nội thất và yêu cầu báo giá.

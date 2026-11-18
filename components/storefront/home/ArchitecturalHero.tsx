@@ -4,18 +4,20 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Route } from 'next';
-import { ArrowRight, Grid3X3, Headset, Ruler } from 'lucide-react';
-import type { LandingHotspot, LandingImage, TenantCopy } from '@/lib/storefront/tenantExperience';
+import { ArrowRight, Box, Grid3X3, Headset, Ruler } from 'lucide-react';
+import type { CtaCopy, LandingHotspot, LandingImage, TenantCopy } from '@/lib/storefront/tenantExperience';
 import styles from './ArchitecturalLanding.module.css';
 
 export default function ArchitecturalHero({
   copy,
   image,
   hotspots,
+  supportLink,
 }: {
   copy: TenantCopy['hero'];
   image: LandingImage;
   hotspots: LandingHotspot[];
+  supportLink?: CtaCopy;
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const active = hotspots[activeIndex];
@@ -48,6 +50,13 @@ export default function ArchitecturalHero({
               </Link>
             )}
           </div>
+          {supportLink && (
+            <Link href={supportLink.href as Route} className={styles.heroSupportLink}>
+              <Box aria-hidden="true" />
+              {supportLink.label}
+              <ArrowRight aria-hidden="true" />
+            </Link>
+          )}
         </div>
 
         <div className={styles.heroVisual}>

@@ -1,9 +1,19 @@
 import { livlabPageMetadata } from '@/lib/seo/pageMetadata';
 import type { Metadata } from 'next';
+import { resolveTenantContext } from '@/lib/storefront/resolveTenant';
+import SellerNotice from '@/components/legal/SellerNotice';
 import Link from 'next/link';
 import { FileText, ArrowRight } from 'lucide-react';
 
 export async function generateMetadata(): Promise<Metadata> {
+  const { tenant } = await resolveTenantContext();
+  if (tenant.business) {
+    return {
+      title: `Điều khoản sử dụng | ${tenant.business.name}`,
+      description: 'Điều khoản sử dụng website và vai trò của showroom và nền tảng LivLab.',
+      alternates: { canonical: '/terms' },
+    };
+  }
   return livlabPageMetadata('/terms', {
     title: 'Điều khoản sử dụng - LivLab',
     description:
@@ -11,7 +21,8 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export default function TermsPage() {
+export default async function TermsPage() {
+  const { tenant } = await resolveTenantContext();
   return (
     <div className="pt-24 pb-20 bg-[#F3F7FA] min-h-screen">
       <div className="max-w-4xl mx-auto px-6">
@@ -21,6 +32,7 @@ export default function TermsPage() {
           </div>
           <h1 className="text-4xl font-bold text-[#0B1623] mb-6">Điều khoản sử dụng</h1>
           
+          <SellerNotice tenant={tenant} topic="terms" />
           <div className="prose prose-lg text-[#627386] max-w-none">
             <p className="mb-8">
               Chào mừng bạn đến với LivLab. Bằng việc truy cập và sử dụng nền tảng của chúng tôi, bạn đồng ý tuân thủ các điều khoản và điều kiện dưới đây.

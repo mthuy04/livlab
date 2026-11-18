@@ -104,6 +104,10 @@ export default function CatalogProductCard({
           <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--tenant-discount, #597080)' }}>−{discount}%</span>
         )}
       </div>
+      {/* Whose price this is: a manufacturer's figure is not the showroom's. */}
+      {product.showroomPrice && product.priceBasis && (
+        <p className="mt-1" style={{ fontSize: 11, color: '#6B6B6B' }}>{product.priceBasis}</p>
+      )}
 
       {product.roomStudioReady && (
         <Link

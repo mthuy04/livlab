@@ -88,12 +88,17 @@ export function siteContext({
     return { tenant: owner, via: 'HOST', host, origin: owner.site!.origin, indexable: entry.indexable };
   }
 
-  if (previewTenant && previewTenant.id !== LIVLAB_TENANT.id) {
+  // A preview cookie paints LivLab's hosts only with a demo that has no
+  // address of its own. A showroom with its own domain is served there and
+  // nowhere else, so livlab.space never shows its products, logo or contacts
+  // — even to a browser still holding a cookie from before it had a domain.
+  if (previewTenant && previewTenant.id !== LIVLAB_TENANT.id && !previewTenant.site) {
     return {
       tenant: previewTenant,
       via: 'PREVIEW',
       host,
-      origin: previewTenant.site?.origin ?? LIVLAB_ORIGIN,
+      // A demo without a domain of its own: canonicals stay on LivLab.
+      origin: LIVLAB_ORIGIN,
       indexable: false,
     };
   }

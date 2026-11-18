@@ -117,6 +117,16 @@ export async function createPublicQuoteRequest(
   if (!phone || !isPlausiblePhone(phone)) {
     throw new PublicQuoteError('Vui lòng nhập số điện thoại hợp lệ.');
   }
+  // A request without basket items is a written inquiry; it must say what is
+  // wanted, or the showroom receives a phone number and nothing to quote.
+  const hasItems = Array.isArray(body.items) && body.items.length > 0;
+  const notes = body.notes?.trim() ?? '';
+  if (!hasItems && notes.length < 3) {
+    throw new PublicQuoteError('Vui lòng mô tả sản phẩm hoặc nhu cầu cần báo giá.');
+  }
+  if (notes.length > 4000) {
+    throw new PublicQuoteError('Nội dung yêu cầu quá dài (tối đa 4.000 ký tự).');
+  }
 
   const normalizedPhone = normalizePhone(phone);
   const submissionKey = (idempotencyKey || body.submissionKey || randomUUID()).trim().slice(0, 120);

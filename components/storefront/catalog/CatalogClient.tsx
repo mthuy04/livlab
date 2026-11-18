@@ -163,6 +163,7 @@ export default function CatalogClient({
     }
     return [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([name, count]) => ({ name, count }));
   }, [products, filters]);
+  const railed = { categories: categoryRail.length > 1, brands: brandRail.length > 1 };
 
   const activeCount = activeFilterCount(filters);
 
@@ -193,7 +194,7 @@ export default function CatalogClient({
     <>
       {/* ── Category rail ───────────────────────────────────────────────── */}
       {!loading && categoryRail.length > 1 && (
-        <div className="home-container relative" style={{ borderBottom: `1px solid ${DIVIDER}` }}>
+        <div className="home-container relative overflow-x-clip" style={{ borderBottom: `1px solid ${DIVIDER}` }}>
           <RailFade />
           <div className="no-scrollbar -mx-5 flex overflow-x-auto px-5 md:mx-0 md:px-0">
             {[{ name: 'TẤT CẢ', key: null as string | null }, ...categoryRail.map((c) => ({ name: c.name, key: c.name }))].map(
@@ -236,7 +237,7 @@ export default function CatalogClient({
 
       {/* ── Brand rail ──────────────────────────────────────────────────── */}
       {!loading && brandRail.length > 1 && (
-        <div className="home-container relative pb-1 pt-6" style={{ borderBottom: `1px solid ${DIVIDER}` }}>
+        <div className="home-container relative overflow-x-clip pb-1 pt-6" style={{ borderBottom: `1px solid ${DIVIDER}` }}>
           <p className="mb-2" style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: '.12em', color: TEXT_FAINT }}>
             THƯƠNG HIỆU
           </p>
@@ -301,14 +302,14 @@ export default function CatalogClient({
       {/* ── Toolbar + results ───────────────────────────────────────────── */}
       <div className="home-container pb-24 pt-7">
         <div
-          className="flex flex-wrap items-center gap-x-6 gap-y-3 md:flex-nowrap"
+          className="flex flex-wrap items-center gap-x-6 gap-y-3 lg:flex-nowrap"
           style={{ minHeight: 54, borderBottom: `1px solid ${DIVIDER}` }}
         >
           <p className="shrink-0" style={{ fontSize: 14, color: TEXT }}>
             {loading ? 'Đang tải…' : `${sorted.length} sản phẩm`}
           </p>
 
-          <div className="order-last w-full md:order-none md:mx-auto md:w-auto">
+          <div className="order-last w-full lg:order-none lg:mx-auto lg:w-auto">
             <div className="relative">
               <svg
                 viewBox="0 0 24 24"
@@ -327,7 +328,7 @@ export default function CatalogClient({
                 onChange={(e) => setSearchDraft(e.target.value)}
                 placeholder="Tìm theo tên, SKU hoặc thương hiệu"
                 aria-label="Tìm trong danh mục"
-                className="w-full bg-white pl-10 pr-3.5 md:w-[360px]"
+                className="w-full bg-white pl-10 pr-3.5 lg:w-[420px]"
                 style={{ height: 42, border: '1px solid #D9D9D6', fontSize: 14 }}
               />
             </div>
@@ -342,7 +343,7 @@ export default function CatalogClient({
             LỌC{activeCount > 0 ? ` · ${activeCount}` : ''}
           </button>
 
-          <div className="ml-auto flex shrink-0 items-center gap-6 md:ml-0">
+          <div className="ml-auto flex shrink-0 items-center gap-6 lg:ml-0">
             {compareIds.length > 0 ? (
               <Link
                 href={`/compare?ids=${compareIds.join(',')}` as Route}
@@ -421,7 +422,7 @@ export default function CatalogClient({
         <div className="mt-8 grid gap-10 xl:grid-cols-[220px_minmax(0,1fr)] xl:gap-10">
           <aside className="hidden xl:block">
             <div className="sticky top-[92px]">
-              {!loading && <CatalogFilterPanel filters={filters} facets={facets} onChange={update} />}
+              {!loading && <CatalogFilterPanel filters={filters} facets={facets} onChange={update} railed={railed} />}
             </div>
           </aside>
 
@@ -494,7 +495,7 @@ export default function CatalogClient({
             <button type="button" onClick={() => setDrawerOpen(false)} aria-label="Đóng bộ lọc" style={{ fontSize: 20 }}>×</button>
           </div>
           <div className="h-[calc(100%-110px)] overflow-auto px-5">
-            <CatalogFilterPanel filters={filters} facets={facets} onChange={update} />
+            <CatalogFilterPanel filters={filters} facets={facets} onChange={update} railed={railed} />
           </div>
           <div className="px-5 py-4" style={{ borderTop: `1px solid ${DIVIDER}` }}>
             <button
