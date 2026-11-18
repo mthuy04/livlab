@@ -1,0 +1,253 @@
+/*
+ * LivLab homepage — the closing scene (see ClosingScene.tsx).
+ * Scoped to this section only.
+ *
+ * Calibrated on the approved 1920 × 819 reference and expressed in vw, so the
+ * scene and its copy scale together: 1vw = 19.2 px of the reference. The
+ * wall ends at x ≈ 914 there (47.6 %); the copy stays on the wall.
+ */
+
+.section {
+  position: relative;
+  background: #6c5949;
+  color: #ffffff;
+}
+
+.scene {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: max(560px, 42.66vw);
+  overflow: hidden;
+}
+.backdrop {
+  position: absolute;
+  inset: 0;
+}
+/* Anchored left: when the scene is cropped, the wall and the copy keep
+   their place and the bathroom gives way at the far right. */
+.background {
+  object-fit: cover;
+  object-position: 0% 50%;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  padding: 0 0 0.94vw 5.625vw;
+}
+
+/* Eyebrow, then a thin rule to its right */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1.72vw;
+  color: #ffffff;
+  font-size: max(12px, 0.91vw);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+}
+.eyebrow::after {
+  content: '';
+  flex: none;
+  width: 14.95vw;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+/* One H2; each line a span, kept whole on wide screens */
+.title {
+  margin-top: 3.11vw;
+  color: #fafafa;
+  /* Inter sets these capitals a little narrower than the reference's face:
+     slightly larger, so each line spans the same width on the wall. */
+  font-size: 2.93vw;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.314;
+  text-transform: uppercase;
+}
+.line {
+  display: block;
+  white-space: nowrap;
+}
+
+.body {
+  max-width: 35vw;
+  margin-top: 1.93vw;
+  color: #d8d4cf;
+  font-size: 1.17vw;
+  font-weight: 400;
+  line-height: 1.556;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.03vw;
+  margin-top: 3.05vw;
+}
+.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.15vw;
+  height: 3.49vw;
+  padding-inline: 2.03vw;
+  border-radius: 3px;
+  font-size: 0.91vw;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
+}
+.primary {
+  min-width: 16.4vw;
+  background: #eeb236;
+  color: #1c1a17;
+}
+.primary:hover {
+  background: #f5bf4a;
+}
+.secondary {
+  min-width: 20.1vw;
+  border: 1.5px solid rgba(255, 255, 255, 0.92);
+  color: #ffffff;
+}
+.secondary:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+.action:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+.arrow {
+  flex: none;
+  width: 1.35em;
+  height: 1.35em;
+  transition: transform 200ms ease;
+}
+.action:hover .arrow,
+.action:focus-visible .arrow {
+  transform: translateX(3px);
+}
+
+/* Phones only: the bathroom below the copy */
+.photo {
+  display: none;
+}
+
+/* ── Tablet: the same scene, type set for reading distance ─────────────── */
+@media (max-width: 1199px) {
+  .content {
+    padding: 0 0 12px clamp(32px, 5.625vw, 64px);
+  }
+  .eyebrow {
+    gap: 18px;
+    font-size: 13px;
+  }
+  .eyebrow::after {
+    width: 120px;
+  }
+  .title {
+    margin-top: 28px;
+    font-size: clamp(30px, 3.2vw, 38px);
+    line-height: 1.25;
+  }
+  .body {
+    max-width: 470px;
+    margin-top: 18px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .actions {
+    gap: 14px;
+    margin-top: 30px;
+  }
+  .action {
+    gap: 12px;
+    height: 50px;
+    padding-inline: 22px;
+    font-size: 13px;
+  }
+  .primary,
+  .secondary {
+    min-width: 0;
+  }
+}
+
+/* ── Phones and narrow tablets: copy on the wall, the bathroom below ───── */
+@media (max-width: 899px) {
+  .scene {
+    display: block;
+    min-height: 0;
+  }
+  /* Twice and a bit the panel's width: the wall (47.6 % of the scene) then
+     always covers the whole panel, so no copy sits over the bathroom. */
+  .backdrop {
+    right: auto;
+    width: 210%;
+  }
+  .content {
+    padding: 56px clamp(20px, 5.2vw, 48px) 48px;
+  }
+  .eyebrow::after {
+    width: 72px;
+  }
+  .title {
+    margin-top: 22px;
+    font-size: clamp(28px, 8.2vw, 36px);
+    line-height: 1.2;
+  }
+  .line {
+    display: inline;
+    white-space: normal;
+  }
+  .body {
+    max-width: 560px;
+  }
+  .actions {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .action {
+    justify-content: space-between;
+    width: 100%;
+    height: 52px;
+    padding-inline: 20px;
+    font-size: 13.5px;
+  }
+  .photo {
+    position: relative;
+    display: block;
+    aspect-ratio: 1006 / 819;
+  }
+  .photoImage {
+    object-fit: cover;
+    object-position: 40% 50%;
+  }
+}
+
+/* Wide enough for both actions side by side */
+@media (min-width: 600px) and (max-width: 899px) {
+  .actions {
+    flex-direction: row;
+  }
+  .action {
+    justify-content: center;
+    width: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .action,
+  .arrow {
+    transition: none;
+  }
+}

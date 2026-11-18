@@ -349,6 +349,8 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
     hotspot: 'accent',
     // The four-step Room Studio card (approved 18 Nov 2026). LivLab only.
     roomStudio: 'steps',
+    // The full-bleed closing scene (approved 18 Nov 2026). LivLab only.
+    consultation: 'scene',
   },
   home: {
     layout: 'catalog',
@@ -426,6 +428,12 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
         height: 1028,
       },
     ],
+    // The closing scene: a clean render with no text in it, and its bathroom
+    // alone for phones (approved pack, 18 Nov 2026).
+    closingScene: {
+      background: { src: '/images/livlab/closing/closing-cta-background.webp', width: 1920, height: 819 },
+      mobile: { src: '/images/livlab/closing/closing-cta-bathroom-mobile.webp', width: 1006, height: 819 },
+    },
   },
   copy: {
     utility: ['Nền tảng thương mại trực quan cho showroom', 'Thiết bị vệ sinh & nội thất'],
@@ -521,6 +529,14 @@ const LIVLAB_RETAIL_EXPERIENCE: TenantExperience = {
           },
         ],
       },
+    },
+    // Verbatim from the approved SEO copy lock (closing CTA, 18 Nov 2026).
+    closing: {
+      eyebrow: 'TƯ VẤN SHOWROOM',
+      titleLines: ['HOÀN THIỆN KHÔNG GIAN', 'PHÒNG TẮM CÙNG LIVLAB.'],
+      body: 'Kết nối với showroom để được tư vấn thiết bị vệ sinh phù hợp, kiểm tra phương án bố trí và nhận báo giá chi tiết.',
+      primaryCta: 'YÊU CẦU BÁO GIÁ',
+      secondaryCta: 'NHỜ SHOWROOM TƯ VẤN',
     },
     footerBlurb:
       'Nền tảng trải nghiệm sản phẩm và thương mại trực quan cho showroom thiết bị vệ sinh và nội thất: ' +

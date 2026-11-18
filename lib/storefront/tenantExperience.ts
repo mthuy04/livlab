@@ -136,6 +136,14 @@ export type HotspotVariant = 'neutral' | 'accent';
  */
 export type RoomStudioVariant = 'feature' | 'steps';
 
+/**
+ * The homepage's closing consultation section. `split` (the default): a
+ * showroom photograph beside a dark panel. `scene`: one full-bleed scene —
+ * an architectural wall carrying the copy and both actions, a bathroom
+ * beyond it — stacked as copy over photograph on phones.
+ */
+export type ConsultationVariant = 'split' | 'scene';
+
 export interface TenantVariants {
   header: HeaderVariant;
   hero: HeroVariant;
@@ -145,6 +153,8 @@ export interface TenantVariants {
   hotspot: HotspotVariant;
   /** Defaults to `feature`. */
   roomStudio?: RoomStudioVariant;
+  /** Defaults to `split`. */
+  consultation?: ConsultationVariant;
 }
 
 /* ── Homepage ────────────────────────────────────────────────────────────── */
@@ -279,6 +289,14 @@ export interface TenantMerchandising {
   categoryPreviews?: Record<string, { src: string; alt: string; /** object-position */ focus?: string }>;
   /** The `steps` Room Studio section: one screenshot of the editor per step, in step order. */
   roomStudioSteps?: Array<{ src: string; alt: string; width: number; height: number }>;
+  /**
+   * The `scene` closing section: the full-bleed background (no text in it)
+   * and the bathroom alone for phones. Both decorative.
+   */
+  closingScene?: {
+    background: { src: string; width: number; height: number };
+    mobile: { src: string; width: number; height: number };
+  };
 }
 
 /* ── Copy ────────────────────────────────────────────────────────────────── */
@@ -356,6 +374,15 @@ export interface TenantCopy {
         cta: string;
       }>;
     };
+  };
+  /** The `scene` closing section's copy. Its actions keep the section's routes. */
+  closing?: {
+    eyebrow: string;
+    /** One heading; each entry is a line on wide screens. */
+    titleLines: string[];
+    body: string;
+    primaryCta: string;
+    secondaryCta: string;
   };
   footerBlurb: string;
   footer?: {

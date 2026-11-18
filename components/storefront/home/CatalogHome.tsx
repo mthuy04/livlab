@@ -8,6 +8,7 @@ import HomeCategories from './HomeCategories';
 import FeaturedProducts from './FeaturedProducts';
 import RoomStudioFeature from './RoomStudioFeature';
 import RoomStudioSteps from './RoomStudioSteps';
+import ClosingScene from './ClosingScene';
 import ShowroomConsultation from './ShowroomConsultation';
 import CommerceHero from './CommerceHero';
 import CategoryRail from './CategoryRail';
@@ -158,6 +159,15 @@ function renderSection(section: HomeSection, tenant: TenantStorefrontConfig, dat
       ) : null;
 
     case 'consultation':
+      if (variants.consultation === 'scene' && copy.closing && tenant.experience.merchandising?.closingScene) {
+        return (
+          <ClosingScene
+            copy={copy.closing}
+            scene={tenant.experience.merchandising.closingScene}
+            quotations={tenant.features.quotations}
+          />
+        );
+      }
       return <ShowroomConsultation quotations={tenant.features.quotations} />;
   }
 }
