@@ -63,6 +63,13 @@ export interface ProductTechnicalMetadata {
   plumbingOrigin: MetadataOrigin;
 
   installationNotes?: string;
+
+  /**
+   * Metres the product is designed to sit BELOW the finished floor (a linear
+   * drain's body). Its top is then the face that meets the floor. Declared
+   * only by a model's own mounting record; never inferred.
+   */
+  insetDepth?: number;
 }
 
 /**
@@ -157,7 +164,7 @@ function reconstructionMetadata(product: RoomStudioProduct) {
   const model = findReconstruction(product.brand, product.sku);
   if (!model) return undefined;
   const placementType: TechnicalPlacementType =
-    recon.mounting.kind === 'WALL_MIXER' ? 'WALL' : recon.mounting.kind === 'COUNTERTOP' ? 'COUNTERTOP' : 'FLOOR';
+    recon.mounting.kind === 'WALL_MIXER' || recon.mounting.kind === 'WALL' ? 'WALL' : recon.mounting.kind === 'COUNTERTOP' ? 'COUNTERTOP' : 'FLOOR';
   return {
     placementType,
     allowedSurfaces: [placementType] as Array<'FLOOR' | 'WALL' | 'COUNTERTOP' | 'CEILING'>,
@@ -165,6 +172,7 @@ function reconstructionMetadata(product: RoomStudioProduct) {
       model.technical.heuristicFrontClearanceM !== undefined ? { front: model.technical.heuristicFrontClearanceM } : undefined,
     plumbing: model.technical.plumbing,
     installationNotes: model.technical.drawingNotes.join(' '),
+    insetDepth: recon.mounting.kind === 'FLOOR_INSET' ? recon.mounting.insetDepthMm / 1000 : undefined,
   };
 }
 
@@ -201,6 +209,7 @@ export function getProductTechnicalMetadata(product: RoomStudioProduct): Product
     plumbingOrigin: curated?.plumbing ? 'CURATED_DEMO' : 'MISSING',
 
     installationNotes: curated?.installationNotes,
+    insetDepth: curated && 'insetDepth' in curated ? (curated.insetDepth as number | undefined) : undefined,
   };
 }
 

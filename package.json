@@ -19,6 +19,7 @@
     "test:entrance-doors": "npx tsx scripts/testEntranceDoors.mts",
     "test:room-transactions": "npx tsx scripts/testRoomTransactions.mts",
     "test:inax-3d": "npx tsx scripts/testInaxReconstructions.mts",
+    "test:catalog-migration": "npx tsx --import ./scripts/support/serverOnlyStub.mjs scripts/testCatalogMigration.mts",
     "test:tenant-seo": "npx tsx scripts/testTenantSeo.mts",
     "test:showroom-media": "npx tsx scripts/testShowroomMedia.mts",
     "check:showroom-db": "node --experimental-strip-types scripts/checkShowroomDbReadiness.mts",

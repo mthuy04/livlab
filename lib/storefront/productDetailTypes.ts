@@ -16,9 +16,9 @@
  * sticky bar — need these types in the browser.
  */
 
-import type { Availability, ProductSourceType } from './catalogTypes';
+import type { Availability, CatalogModel3d, ProductSourceType } from './catalogTypes';
 
-export type MediaSource = 'MANUFACTURER' | 'SHOWROOM' | 'RETAILER' | 'PLACEHOLDER';
+export type MediaSource = 'MANUFACTURER' | 'SHOWROOM' | 'RETAILER' | 'PLACEHOLDER' | 'LIVLAB_RENDER';
 
 /* ── Identity ─────────────────────────────────────────────────────────── */
 
@@ -200,6 +200,7 @@ export interface ProductProvenance {
 
 export type SectionId =
   | 'tong-quan'
+  | 'mo-hinh-3d'
   | 'thong-so'
   | 'ban-ve'
   | 'cong-nghe'
@@ -227,11 +228,14 @@ export interface ProductDetailViewModel {
   roomStudio: RoomStudioRef;
   relatedProducts: RelatedProductRef[];
   provenance: ProductProvenance;
+  /** LivLab's 3D model of this exact SKU, with its own confidence flag and caveats. */
+  model3d: CatalogModel3d | null;
 }
 
 /** Anchors are rendered only for sections the view model actually fills. */
 export const SECTION_LABELS: Record<SectionId, string> = {
   'tong-quan': 'TỔNG QUAN',
+  'mo-hinh-3d': 'MÔ HÌNH 3D',
   'thong-so': 'THÔNG SỐ',
   'ban-ve': 'BẢN VẼ',
   'cong-nghe': 'CÔNG NGHỆ',
@@ -242,6 +246,7 @@ export const SECTION_LABELS: Record<SectionId, string> = {
 
 export function activeSections(vm: ProductDetailViewModel): SectionId[] {
   const ids: SectionId[] = ['tong-quan'];
+  if (vm.model3d) ids.push('mo-hinh-3d');
   if (vm.specifications.some((g) => g.rows.length > 0)) ids.push('thong-so');
   if (vm.media.technicalDrawing || vm.dimensions) ids.push('ban-ve');
   if (vm.technologies.length > 0) ids.push('cong-nghe');

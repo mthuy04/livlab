@@ -7,6 +7,11 @@ import { imageVerdicts, isRejected, type ImageStatus } from './imageQuality';
 import { manufacturerRecords, type ImageSource, type ManufacturerRecord } from './manufacturerData';
 import { imageAssets } from './imageAssets';
 import {
+  libraryProductId,
+  listedReconstructions,
+  type ReconstructedModel,
+} from '@/lib/room-studio/reconstructionRegistry';
+import {
   catalogIdentity,
   isRoomStudioReady,
   isSanitaryware,
@@ -403,6 +408,234 @@ function isFrom(url: string | null | undefined, hosts: string[]): boolean {
   return hosts.some((h) => host === h || host.endsWith(`.${h}`));
 }
 
+/* ── Catalogues shown inside another tenant's catalogue ─────────────────── */
+
+/**
+ * Tenants whose PUBLIC catalogue also appears in another tenant's, by the
+ * tenant that shows them. Only what the source tenant's own storefront
+ * shows is eligible — the image audit's withheld rows stay withheld.
+ *
+ * What does not move: the row's id, `catalogProductId`, source record and
+ * source URL (ownership stays traceable), and its price, which is shown as a
+ * public reference rather than as the showing tenant's own offer.
+ */
+interface AggregatedSource {
+  tenantId: string;
+  /**
+   * Whether the showing tenant may display the source showroom's OWN
+   * photography (its `ownedImageHosts`). Off by default: without a recorded
+   * licence those rows show the catalogue placeholder instead.
+   */
+  photographyLicensed: boolean;
+  /** Who confirmed the licence, and when — kept with the switch that relies on it. */
+  licenceNote?: string;
+}
+
+const AGGREGATED_SOURCES: Record<string, AggregatedSource[]> = {
+  livlab: [
+    {
+      tenantId: 'tungdang',
+      photographyLicensed: true,
+      licenceNote: 'Chủ dự án xác nhận LivLab có quyền dùng ảnh beptungdang.vn, 2026-11-20.',
+    },
+  ],
+};
+
+/** Price label for a row shown outside its own tenant's storefront. */
+export const AGGREGATED_PRICE_BASIS = 'Giá tham khảo từ nguồn công khai';
+
+/** Tenants that also show LivLab's own 3D library as catalogue products. */
+const LIBRARY_TENANTS = new Set(['livlab']);
+
+/** Dedupe key: brand + normalised SKU. */
+const productKey = (brand: string, sku: string) => `${brand.toUpperCase()}::${sku}`;
+
+/**
+ * Every key one of the tenant's own rows answers to. A database row has no
+ * sku column, so its id tail (`llv-toi-toto-cs818dt2` → CS818DT2) counts too.
+ */
+function ownKeys(p: CatalogProduct): string[] {
+  const keys: string[] = [];
+  if (p.normalizedSku) keys.push(productKey(p.brand, p.normalizedSku));
+  const marker = `-${p.brand.toLowerCase()}-`;
+  const at = p.id.toLowerCase().indexOf(marker);
+  if (at >= 0) {
+    const tail = normalizeSku(p.id.slice(at + marker.length));
+    if (tail) keys.push(productKey(p.brand, tail));
+  }
+  return keys;
+}
+
+/**
+ * One source tenant's public rows, re-scoped for the tenant showing them.
+ *
+ * The showing tenant's image rule still holds unless the source's licence
+ * says otherwise: photography a showroom owns stays on that showroom's
+ * storefront. A row whose only picture is unlicensed photography keeps its
+ * listing, its data and its link, and shows the catalogue placeholder instead
+ * — it is never dropped and never re-pictured with something that is not
+ * that product. Every other showroom's photography stays excluded either way.
+ */
+async function aggregatedRows(tenant: TenantStorefrontConfig, entry: AggregatedSource): Promise<CatalogProduct[]> {
+  const source = TENANTS[entry.tenantId];
+  if (!source || source.id === tenant.id) return [];
+  const theirs = await getCatalog(source, { aggregate: false });
+  const licensed = new Set(entry.photographyLicensed ? source.ownedImageHosts ?? [] : []);
+  const foreign = foreignImageHosts(tenant).filter((host) => !licensed.has(host));
+  const allowed = (url: string | null | undefined) => Boolean(url) && !isFrom(url, foreign);
+  const scope = tenant.catalogScope.categories;
+
+  return theirs.products
+    .filter((p) => scope.length === 0 || scope.includes(p.category))
+    .map((p) => {
+      const ownedPhoto = isFrom(p.image, foreign) || isFrom(p.imageProvenance?.sourceUrl, foreign);
+      const fallback = ownedPhoto ? p.galleryImages.find(allowed) ?? null : null;
+      const image = ownedPhoto ? fallback ?? '' : p.image;
+      return {
+        ...p,
+        sourceTenantId: source.id,
+        image,
+        imageSource: ownedPhoto ? (fallback ? 'MANUFACTURER' : 'PLACEHOLDER') : p.imageSource,
+        imageProvenance: ownedPhoto ? null : p.imageProvenance,
+        additionalImages: p.additionalImages.filter(allowed),
+        galleryImages: p.galleryImages.filter(allowed),
+        technicalDrawing: allowed(p.technicalDrawing) ? p.technicalDrawing : null,
+        priceBasis: p.showroomPrice ? p.priceBasis ?? AGGREGATED_PRICE_BASIS : p.priceBasis,
+        // Another tenant's stock is not this tenant's to state.
+        availability: null,
+      } satisfies CatalogProduct;
+    });
+}
+
+const MOUNTING_TEXT = (m: ReconstructedModel['mounting']): string => {
+  switch (m.kind) {
+    case 'WALL':
+      return `Treo tường · ${m.heightLabel.toLowerCase()} mặc định ${m.heightMm.default} mm (chỉnh được ${m.heightMm.min}–${m.heightMm.max} mm)`;
+    case 'FLOOR_INSET':
+      return `Âm sàn · mặt nắp ngang sàn hoàn thiện, thân sâu ${m.insetDepthMm} mm`;
+    case 'WALL_MIXER':
+      return 'Gắn tường';
+    case 'COUNTERTOP':
+      return 'Đặt trên mặt bàn';
+    default:
+      return 'Đặt sàn';
+  }
+};
+
+/** One model from LivLab's 3D library, as a catalogue row. It has no price. */
+function libraryRow(tenant: TenantStorefrontConfig, model: ReconstructedModel): CatalogProduct {
+  const listing = model.listing!;
+  const file = model.files[model.defaultVariant]!;
+  const id = libraryProductId(model);
+  const brand = normaliseBrand(model.brand) as string;
+  const { width, height, depth } = listing.dimensionsMm;
+  const mm = (v: number) => String(v).replace('.', ',');
+  return {
+    id,
+    catalogProductId: catalogIdentity({
+      sourceType: 'LIVLAB_LIBRARY',
+      sourceRecordId: model.id,
+      tenantId: tenant.id,
+      brand,
+      sku: model.sku,
+      name: model.name,
+    }),
+    sourceType: 'LIVLAB_LIBRARY',
+    sourceRecordId: model.id,
+    normalizedSku: normalizeSku(model.sku),
+    href: `/products/${id}`,
+    sku: model.sku,
+    name: model.name,
+    brand,
+    category: model.catalogueCategory,
+    subcategory: model.subCategory,
+    image: model.thumbnailUrl,
+    additionalImages: [],
+    technicalDrawing: null,
+    // The approval pack carries no price, and none is made up here.
+    showroomPrice: null,
+    referencePrice: null,
+    priceBasis: null,
+    dimensions: null,
+    dimensionsRaw: `Rộng ${mm(width)} × Sâu ${mm(depth)} × Cao ${mm(height)} mm`,
+    color: listing.color,
+    finish: listing.finish,
+    material: listing.material,
+    origin: null,
+    warranty: null,
+    installationType: MOUNTING_TEXT(model.mounting),
+    seatType: null,
+    flushType: null,
+    flushVolume: null,
+    roughIn: null,
+    technologies: [],
+    shortDescription: listing.summary,
+    availability: null,
+    roomStudioReady: true,
+    sourceUrl: model.manufacturerPage ?? null,
+    sourceCheckedAt: model.provenance.receivedAt,
+    imageStatus: 'ACCEPTABLE',
+    imagePresentable: true,
+    imageSource: 'LIVLAB_RENDER',
+    manufacturerUrl: model.manufacturerPage ?? null,
+    manufacturerReferencePrice: null,
+    documents: listing.documents.map((d) => ({
+      type: /catalog/i.test(d.label) ? 'CATALOG' : /bản vẽ/i.test(d.label) ? 'TECHNICAL_DRAWING' : 'TECHNICAL_SPEC',
+      sourceUrl: d.url,
+    })),
+    galleryImages: [],
+    compatibleSkus: [],
+    imageProvenance: null,
+    sourceTenantId: null,
+    model3d: {
+      url: file.url,
+      bytes: file.bytes,
+      triangles: file.triangles,
+      previewIsRender: listing.previewIsRender,
+      technicalConfidence: listing.technicalConfidence,
+      caveats: listing.caveats,
+      provenance: `Mô hình LivLab dựng lại độc lập từ ${model.provenance.reconstructedFrom.charAt(0).toLowerCase()}${model.provenance.reconstructedFrom.slice(1)} — không phải CAD của hãng, chưa được hãng phê duyệt.`,
+      manufacturerCadUsed: model.provenance.manufacturerCadUsed,
+      mountingLabel: MOUNTING_TEXT(model.mounting),
+      dimensionsMm: listing.dimensionsMm,
+      emissive: model.emissive
+        ? { materialName: model.emissive.materialName, colorTemperatureK: model.emissive.colorTemperatureK }
+        : null,
+      auditReport: model.provenance.auditReport ?? '',
+    },
+  };
+}
+
+/**
+ * Rows the tenant shows besides its own: other tenants' public rows and
+ * LivLab's 3D library. Its own rows always win a brand + SKU tie, nothing is
+ * overwritten, and nothing appears twice.
+ */
+async function withAggregates(tenant: TenantStorefrontConfig, own: CatalogProduct[]): Promise<CatalogProduct[]> {
+  const sources = AGGREGATED_SOURCES[tenant.id] ?? [];
+  const library = LIBRARY_TENANTS.has(tenant.id);
+  if (sources.length === 0 && !library) return own;
+
+  const keys = new Set(own.flatMap(ownKeys));
+  const ids = new Set(own.map((p) => p.id));
+  const out = [...own];
+  const take = (p: CatalogProduct) => {
+    const key = p.normalizedSku ? productKey(p.brand, p.normalizedSku) : null;
+    if (ids.has(p.id) || (key && keys.has(key))) return;
+    ids.add(p.id);
+    if (key) keys.add(key);
+    out.push(p);
+  };
+
+  // The tenant's own 3D library ranks with its own rows; another tenant's
+  // rows follow, pictured ones first so a grid never opens on placeholders.
+  if (library) listedReconstructions().forEach((m) => take(libraryRow(tenant, m)));
+  const rows = (await Promise.all(sources.map((entry) => aggregatedRows(tenant, entry)))).flat();
+  rows.filter((p) => p.image).forEach(take);
+  rows.filter((p) => !p.image).forEach(take);
+  return out;
+}
+
 /** Fixture-backed tenants, by tenant id. Everything else reads the database. */
 const FIXTURE_TENANTS: Record<string, string> = {
   tungdang: 'tungdang-sanitaryware.json',
@@ -421,7 +654,14 @@ const FIXTURE_TENANTS: Record<string, string> = {
  */
 export async function getCatalog(
   tenant: TenantStorefrontConfig,
-  { includeUnpresentable = false }: { includeUnpresentable?: boolean } = {}
+  {
+    includeUnpresentable = false,
+    aggregate = true,
+  }: {
+    includeUnpresentable?: boolean;
+    /** False reads only the tenant's own rows — used when one tenant's rows are shown in another's. */
+    aggregate?: boolean;
+  } = {}
 ): Promise<Catalog> {
   const fixture = FIXTURE_TENANTS[tenant.id];
   let catalog: Catalog;
@@ -461,12 +701,12 @@ export async function getCatalog(
     }),
   };
 
-  if (includeUnpresentable) return catalog;
-
   const presentable = catalog.products.filter((p) => p.imagePresentable);
+  const withheld = catalog.products.length - presentable.length;
+  const own = includeUnpresentable ? catalog.products : presentable;
   return {
     ...catalog,
-    products: presentable,
-    withheldForImageQuality: catalog.products.length - presentable.length,
+    products: aggregate ? await withAggregates(tenant, own) : own,
+    withheldForImageQuality: includeUnpresentable ? 0 : withheld,
   };
 }

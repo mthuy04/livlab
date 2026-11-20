@@ -1,0 +1,107 @@
+[
+  {
+    "sku": "A812401000",
+    "valid_glb": true,
+    "exact_bbox_under_0.1mm": true,
+    "bbox_xyz_mm": [
+      800.0,
+      800.0,
+      25.0
+    ],
+    "triangle_count": 4224,
+    "nodes": 12,
+    "materials": [
+      "BACK__BLACK_PROTECTED_HOUSING",
+      "WALL_CLEAT__ALUMINIUM_APPROX",
+      "LED_ON__3000K_PERIMETER_DIFFUSER",
+      "GLASS__SILVERED_SEALED_BACK",
+      "GLASS__POLISHED_CLEAR_EDGE_FAINT_GREEN",
+      "MIRROR__NEUTRAL_SILVERED_REFLECTOR__ENVIRONMENT_REQUIRED"
+    ],
+    "degenerate_faces_under_1e-15m2": [],
+    "size_kb": 75.1,
+    "geometry_origin_m": [
+      [
+        -0.4000000059604645,
+        0.0,
+        0.0
+      ],
+      [
+        0.4000000059604645,
+        0.800000011920929,
+        0.02500000037252903
+      ]
+    ],
+    "materials_cannot_establish_90pct_CAD_fidelity": true
+  },
+  {
+    "sku": "A851693513",
+    "valid_glb": true,
+    "exact_bbox_under_0.1mm": true,
+    "bbox_xyz_mm": [
+      1000.0,
+      645.0,
+      460.0
+    ],
+    "triangle_count": 25140,
+    "nodes": 20,
+    "materials": [
+      "ROCA_ONA_513__GREEN_MDF_SIDE",
+      "DRAWER_SHADOW_GAP__INTERIOR",
+      "ROCA_ONA_513__MATT_GREEN_MDF",
+      "ROCA_ONA_513__MATT_GREEN_EDGE",
+      "ROCA_ONA__FINECERAMIC_WHITE_GLOSS",
+      "FINECERAMIC__UNDERSIDE",
+      "CHROME__INAX_PBFV600__NICKEL_CHROMIUM_PLATED_BRASS",
+      "DRAIN__DARK_RECESSED"
+    ],
+    "degenerate_faces_under_1e-15m2": [],
+    "size_kb": 448.8,
+    "geometry_origin_m": [
+      [
+        -0.5,
+        0.0,
+        0.0
+      ],
+      [
+        0.5,
+        0.6449999809265137,
+        0.46000000834465027
+      ]
+    ],
+    "materials_cannot_establish_90pct_CAD_fidelity": true
+  },
+  {
+    "sku": "PBFV-600",
+    "valid_glb": true,
+    "exact_bbox_under_0.1mm": true,
+    "bbox_xyz_mm": [
+      600.0,
+      101.0,
+      126.0
+    ],
+    "triangle_count": 708,
+    "nodes": 60,
+    "materials": [
+      "CHROME__HIGHLIGHT_EDGES",
+      "CHROME__INAX_PBFV600__NICKEL_CHROMIUM_PLATED_BRASS",
+      "CHROME__CHANNEL_POLISHED_NI_CR",
+      "INAX_DRAIN__INTERNAL_SHADOW"
+    ],
+    "degenerate_faces_under_1e-15m2": [],
+    "size_kb": 36.9,
+    "geometry_origin_m": [
+      [
+        -0.30000001192092896,
+        -0.10100000351667404,
+        -0.06300000101327896
+      ],
+      [
+        0.30000001192092896,
+        0.0,
+        0.06300000101327896
+      ]
+    ],
+    "materials_cannot_establish_90pct_CAD_fidelity": true
+  }
+]

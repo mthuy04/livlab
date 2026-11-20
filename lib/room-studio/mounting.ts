@@ -47,10 +47,25 @@ export function placementContextFor(
     ctx.wallGap = FLUSH_TO_WALL;
     ctx.centreYRange = [min / 1000 + offset, max / 1000 + offset];
     ctx.preferredCentreY = preferred / 1000 + offset;
+  } else if (mounting.kind === 'WALL') {
+    const offset = wallRefOffset(product, mounting.heightRef);
+    const { default: preferred, min, max } = mounting.heightMm;
+    ctx.wallGap = FLUSH_TO_WALL;
+    ctx.centreYRange = [min / 1000 + offset, max / 1000 + offset];
+    ctx.preferredCentreY = preferred / 1000 + offset;
+  } else if (mounting.kind === 'FLOOR_INSET') {
+    // The model's top is its origin (y = 0) and its body hangs below it, so
+    // the envelope's centre sits half its height under the floor.
+    ctx.restingCentreY = originToCentreY(product);
   } else if (mounting.kind === 'COUNTERTOP') {
     ctx.counterHeight = placed?.mountHeight ?? mounting.counterHeightMm.default / 1000;
   }
   return ctx;
+}
+
+/** Centre y minus the installation height, for a WALL product's reference point. */
+function wallRefOffset(product: RoomStudioProduct, ref: 'CENTRE' | 'TOP'): number {
+  return ref === 'TOP' ? -getRealWorldSize(product).height / 2 : 0;
 }
 
 /**
@@ -61,6 +76,7 @@ export function placementContextFor(
 export function installationHeight(product: RoomStudioProduct, placed: PlacedProduct): number | null {
   const mounting = product.reconstruction?.mounting;
   if (mounting?.kind === 'WALL_MIXER') return placed.position[1] - originToCentreY(product);
+  if (mounting?.kind === 'WALL') return placed.position[1] - wallRefOffset(product, mounting.heightRef);
   if (product.placementType === 'counter') {
     return placed.mountHeight ?? (mounting?.kind === 'COUNTERTOP' ? mounting.counterHeightMm.default / 1000 : COUNTER_HEIGHT);
   }
@@ -71,6 +87,7 @@ export function installationHeight(product: RoomStudioProduct, placed: PlacedPro
 export function installationHeightRange(product: RoomStudioProduct): [number, number] | null {
   const mounting = product.reconstruction?.mounting;
   if (mounting?.kind === 'WALL_MIXER') return [mounting.mixerHeightMm.min / 1000, mounting.mixerHeightMm.max / 1000];
+  if (mounting?.kind === 'WALL') return [mounting.heightMm.min / 1000, mounting.heightMm.max / 1000];
   if (mounting?.kind === 'COUNTERTOP') return [mounting.counterHeightMm.min / 1000, mounting.counterHeightMm.max / 1000];
   if (product.placementType === 'counter') return [0.7, 0.95];
   return null;
@@ -80,6 +97,7 @@ export function installationHeightRange(product: RoomStudioProduct): [number, nu
 export function installationHeightLabel(product: RoomStudioProduct): string | null {
   const mounting = product.reconstruction?.mounting;
   if (mounting?.kind === 'WALL_MIXER') return 'Cao độ bộ trộn';
+  if (mounting?.kind === 'WALL') return mounting.heightLabel;
   if (product.placementType === 'counter') return 'Cao mặt bàn';
   return null;
 }
@@ -93,6 +111,7 @@ export function installationHeightLabel(product: RoomStudioProduct): string | nu
 export function centreYForInstallationHeight(product: RoomStudioProduct, height: number): number {
   const mounting = product.reconstruction?.mounting;
   if (mounting?.kind === 'WALL_MIXER') return height + originToCentreY(product);
+  if (mounting?.kind === 'WALL') return height + wallRefOffset(product, mounting.heightRef);
   return height + getRealWorldSize(product).height / 2;
 }
 

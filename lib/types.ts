@@ -200,7 +200,7 @@ export interface QuoteItem {
    * record the customer was looking at.
    */
   catalogProductId?: string;
-  sourceType?: 'DATABASE' | 'DEMO_FIXTURE';
+  sourceType?: 'DATABASE' | 'DEMO_FIXTURE' | 'LIVLAB_LIBRARY';
   tenantId?: string;
   /** Where the line was added from, e.g. PRODUCT_DETAIL. */
   sourceContext?: string;

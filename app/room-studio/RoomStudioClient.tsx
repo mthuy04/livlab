@@ -561,6 +561,7 @@ function RoomWorkspace({ tenant }: { tenant: ReturnType<typeof useTenant> }) {
       findings={shownFindings.filter((f) => f.affectedInstanceIds.includes(studio.selected!.placed.instanceId))}
       dimensions={studio.state.dimensions}
       onSetVariant={studio.setPlacementVariant}
+      onSetLight={studio.setPlacementLight}
       onSetInstallationHeight={studio.setInstallationHeight}
     />
   );

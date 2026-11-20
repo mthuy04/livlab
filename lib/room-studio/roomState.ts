@@ -56,6 +56,11 @@ export interface PlacedProduct {
    * position. Absent means the product's own default.
    */
   mountHeight?: number;
+  /**
+   * Whether a product's own light is on (an LED mirror). Absent means on —
+   * the way the product is shown and sold. Never changes what is quoted.
+   */
+  lightOn?: boolean;
 }
 
 export interface RoomState {
@@ -231,7 +236,7 @@ export function removeProduct(state: RoomState, instanceId: string): RoomState {
 export function updatePlacement(
   state: RoomState,
   instanceId: string,
-  updates: Partial<Pick<PlacedProduct, 'position' | 'rotationY' | 'wall' | 'variant' | 'mountHeight'>>
+  updates: Partial<Pick<PlacedProduct, 'position' | 'rotationY' | 'wall' | 'variant' | 'mountHeight' | 'lightOn'>>
 ): RoomState {
   return {
     ...state,
@@ -351,6 +356,7 @@ export function deserializeRoomState(raw: unknown): RoomState {
           ...(typeof p.mountHeight === 'number' && Number.isFinite(p.mountHeight) && p.mountHeight > 0
             ? { mountHeight: p.mountHeight }
             : {}),
+          ...(typeof p.lightOn === 'boolean' ? { lightOn: p.lightOn } : {}),
         }))
     : [];
 

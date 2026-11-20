@@ -38,6 +38,8 @@ export function catalogIdentity(input: {
 }): string {
   const token = normalizeSku(input.sku);
   if (input.sourceType === 'DATABASE') return `db:${input.sourceRecordId}`;
+  // LivLab's own 3D library: one record per model, owned by no showroom.
+  if (input.sourceType === 'LIVLAB_LIBRARY') return `lib3d:${input.brand.toUpperCase()}:${token}`;
   // Without a SKU the name is the only thing left that identifies the row.
   const tail = token || normalizeSku(input.name).slice(0, 32);
   return `demo:${input.tenantId}:${input.brand.toUpperCase()}:${tail}`;
@@ -66,7 +68,31 @@ export interface CatalogDimensions {
 }
 
 /** Which adapter produced a row. The page never branches on it; dedupe does. */
-export type ProductSourceType = 'DATABASE' | 'DEMO_FIXTURE';
+export type ProductSourceType = 'DATABASE' | 'DEMO_FIXTURE' | 'LIVLAB_LIBRARY';
+
+/**
+ * A 3D model LivLab holds for this exact SKU, as the catalogue describes it.
+ * Its confidence flag and caveats are the model's own and travel unedited.
+ */
+export interface CatalogModel3d {
+  url: string;
+  bytes: number;
+  triangles: number;
+  /** The listing image is a render of this model, not a photograph. */
+  previewIsRender: boolean;
+  technicalConfidence: string;
+  caveats: string[];
+  /** How the model was made, in the customer's words. */
+  provenance: string;
+  manufacturerCadUsed: boolean;
+  /** How it mounts in a room, e.g. "Treo tường · cao độ tâm gương 1500 mm". */
+  mountingLabel: string;
+  dimensionsMm: { width: number; height: number; depth: number };
+  /** An LED mirror's glowing material, so a viewer can light it. */
+  emissive: { materialName: string; colorTemperatureK: number } | null;
+  /** The docs folder the approval pack was filed in. */
+  auditReport: string;
+}
 
 export interface CatalogProduct {
   /**
@@ -149,7 +175,7 @@ export interface CatalogProduct {
   /* ── Manufacturer-sourced, where an exact SKU match exists ───────────── */
 
   /** Where the picture came from. Reported internally, never shown as a claim. */
-  imageSource: 'MANUFACTURER' | 'SHOWROOM' | 'RETAILER' | 'PLACEHOLDER';
+  imageSource: 'MANUFACTURER' | 'SHOWROOM' | 'RETAILER' | 'PLACEHOLDER' | 'LIVLAB_RENDER';
   /** The manufacturer's own product page, kept for auditability. */
   manufacturerUrl: string | null;
   /** The manufacturer's list price. Never conflated with the showroom's. */
@@ -161,6 +187,14 @@ export interface CatalogProduct {
   compatibleSkus: string[];
   /** Set when the normalised local copy is being served. */
   imageProvenance: ImageProvenance | null;
+
+  /**
+   * The tenant whose catalogue this row belongs to, when it is shown in
+   * another tenant's catalogue. Ownership and the source record do not move.
+   */
+  sourceTenantId?: string | null;
+  /** LivLab's 3D model of this SKU, when it has one. */
+  model3d?: CatalogModel3d | null;
 }
 
 /**

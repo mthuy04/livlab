@@ -40,6 +40,11 @@ export interface PlacementContext {
   centreYRange?: [number, number];
   /** Where a wall product's centre goes when it is first placed, metres. */
   preferredCentreY?: number;
+  /**
+   * For a floor product set INTO the floor (a linear drain): its centre y,
+   * metres — below zero, so the grate's top is flush with the finished floor.
+   */
+  restingCentreY?: number;
 }
 
 /** Half-extents of a footprint after yaw, the exact form for any angle. */
@@ -138,7 +143,7 @@ export function getDefaultPlacement(
   const { halfX, halfZ } = rotatedHalfExtents(size, rotationY);
   const position: Vec3 = [
     clampToRange(-dimensions.length * 0.25 + nudge, bounds.minX + halfX, bounds.maxX - halfX),
-    getRestingHeight(placementType, size, ctx.counterHeight),
+    ctx.restingCentreY ?? getRestingHeight(placementType, size, ctx.counterHeight),
     clampToRange(bounds.minZ + halfZ + (ctx.wallGap ?? CLEARANCE), bounds.minZ + halfZ, bounds.maxZ - halfZ),
   ];
   return { position, rotationY, wall };
@@ -186,7 +191,8 @@ export function clampToRoom(position: Vec3, ctx: PlacementContext): Vec3 {
   // across their surface, it never lifts them off it. The footprint is the
   // rotated one, so a turned bath cannot be pushed through a side wall.
   const { halfX, halfZ } = rotatedHalfExtents(size, ctx.rotationY ?? 0);
-  const restingY = Math.min(getRestingHeight(placementType, size, ctx.counterHeight), bounds.maxY - halfH - CLEARANCE);
+  const restingY =
+    ctx.restingCentreY ?? Math.min(getRestingHeight(placementType, size, ctx.counterHeight), bounds.maxY - halfH - CLEARANCE);
   return [
     clampToRange(position[0], bounds.minX + halfX, bounds.maxX - halfX),
     restingY,

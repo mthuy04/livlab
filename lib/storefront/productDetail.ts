@@ -627,6 +627,7 @@ export async function getProductDetail(
       href: product.roomStudioReady ? '/room-studio' : null,
     },
     relatedProducts: buildRelated(product, presentable),
+    model3d: product.model3d ?? null,
 
     provenance: {
       manufacturerUrl: product.manufacturerUrl,

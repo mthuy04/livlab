@@ -13,7 +13,7 @@
 
 import { createHash } from 'node:crypto';
 import { readFileSync, statSync } from 'node:fs';
-import { NodeIO } from '@gltf-transform/core';
+import { getBounds, NodeIO } from '@gltf-transform/core';
 import {
   allReconstructions,
   canRenderReconstruction,
@@ -92,30 +92,31 @@ console.log('\nA. file GLB khớp với bản đã kiểm tra');
         createHash('sha256').update(bytes).digest('hex') === file.sha256
       );
       const doc = await io.read(path);
-      const min = [Infinity, Infinity, Infinity];
-      const max = [-Infinity, -Infinity, -Infinity];
+      const scene = doc.getRoot().getDefaultScene() ?? doc.getRoot().listScenes()[0];
+      const { min, max } = getBounds(scene);
       let triangles = 0;
       let transforms = false;
+      let fittingTransformsOnly = true;
       for (const node of doc.getRoot().listNodes()) {
         const t = node.getTranslation();
         const r = node.getRotation();
         const s = node.getScale();
-        if (t.some((v) => v !== 0) || r[3] !== 1 || s.some((v) => v !== 1)) transforms = true;
+        const rotated = r.slice(0, 3).some((v) => v !== 0) || Math.abs(r[3]) !== 1;
+        if (t.some((v) => v !== 0) || rotated || s.some((v) => v !== 1)) transforms = true;
+        if (rotated || s.some((v) => Math.abs(v - 1) > 0.02) || !t.every(Number.isFinite)) fittingTransformsOnly = false;
         const mesh = node.getMesh();
         if (!mesh) continue;
         for (const prim of mesh.listPrimitives()) {
           const pos = prim.getAttribute('POSITION')!;
           const idx = prim.getIndices();
           triangles += (idx ? idx.getCount() : pos.getCount()) / 3;
-          const pmin = pos.getMin([]);
-          const pmax = pos.getMax([]);
-          for (let k = 0; k < 3; k++) {
-            min[k] = Math.min(min[k], pmin[k]);
-            max[k] = Math.max(max[k], pmax[k]);
-          }
         }
       }
-      check(`${model.sku} ${variant}: không có biến đổi node (scale 1, gốc nguyên)`, !transforms);
+      if (file.nodeTransforms === 'TRANSLATE_AND_FIT') {
+        check(`${model.sku} ${variant}: chỉ tịnh tiến và hiệu chỉnh tỉ lệ trong 2%`, transforms && fittingTransformsOnly);
+      } else {
+        check(`${model.sku} ${variant}: không có biến đổi node (scale 1, gốc nguyên)`, !transforms);
+      }
       check(`${model.sku} ${variant}: số tam giác`, Math.round(triangles) === file.triangles, Math.round(triangles));
       check(
         `${model.sku} ${variant}: hộp bao khớp bản ghi (≤ 0,01 mm)`,
@@ -200,11 +201,14 @@ console.log('\nE. thư viện 3D của LivLab');
   const csv = parseCSV(readFileSync('public/data/livlab-seed/livlab_verified_products_master.csv', 'utf8'));
   const mapped = csv.map(mapCsvRowToProduct).map(toRoomStudioProduct);
   const library = livlab3dLibraryProducts(mapped);
-  check('năm sản phẩm 3D có trong thư viện LivLab', library.length === 5, library.map((p) => p.sku));
+  const expectedSkus = ['AC-1017VRN', 'AC-912VN', 'BF-1656V', 'BFV-70S', 'L-293V',
+    'KF-6075VAR', 'KF-6090VA', 'K-30638-CPL', 'A812401000', 'KF-545VW', 'KF-546V', 'KF-541V', 'A851693513', 'PBFV-600'];
+  const skus = new Set(library.map((p) => p.sku));
+  check('thư viện LivLab chứa đúng các mã 3D đã duyệt', library.length === expectedSkus.length && expectedSkus.every((sku) => skus.has(sku)), [...skus]);
   check('không giá, không tồn kho bịa', library.every((p) => !p.priceMin && p.source.priceRange === 'Liên hệ' && !p.source.availability));
-  check('mỗi sản phẩm một id ổn định', new Set(library.map((p) => p.id)).size === 5);
+  check('mỗi sản phẩm một id ổn định', new Set(library.map((p) => p.id)).size === library.length);
   const already = livlab3dLibraryProducts([...mapped, library[0]]);
-  check('mã đã có trong danh mục thì không thêm lần hai', already.length === 4);
+  check('mã đã có trong danh mục thì không thêm lần hai', already.length === library.length - 1 && already.every((p) => p.id !== library[0].id));
 }
 
 /* -------------------------------------------- F. Tùng Đăng */

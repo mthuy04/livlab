@@ -105,9 +105,9 @@ export default function CatalogProductCard({
         )}
       </div>
       {/* Whose price this is: a manufacturer's figure is not the showroom's. */}
-      {product.showroomPrice && product.priceBasis && (
+      {product.showroomPrice ? product.priceBasis && (
         <p className="mt-1" style={{ fontSize: 11, color: '#6B6B6B' }}>{product.priceBasis}</p>
-      )}
+      ) : null}
 
       {product.roomStudioReady && (
         <Link

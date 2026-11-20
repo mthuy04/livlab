@@ -78,7 +78,8 @@ export const roomBoundsRule: TechnicalRule = {
           : []),
         ...(knownAxes.vertical
           ? [
-              { side: 'sàn', by: bounds.minY - box.minY },
+              // A floor-inset product (a linear drain) reaches below the floor by design.
+              { side: 'sàn', by: bounds.minY - box.minY - (metadata.insetDepth ?? 0) },
               { side: 'trần', by: box.maxY - bounds.maxY },
             ]
           : []),

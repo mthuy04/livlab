@@ -18,6 +18,7 @@ import { findProduct3DAssetForKeys } from './product3dRegistry';
 import { deriveCapability, type RoomStudioCapability } from './productCapability';
 import type { PlacementType } from './placementRules';
 import {
+  libraryProductId,
   allReconstructions,
   canRenderReconstruction,
   envelopeOf,
@@ -87,6 +88,10 @@ export interface RoomStudioProduct {
     mounting: ReconstructionMounting;
     /** Parts of this variant that are not the product, in a customer's words. */
     illustrativeParts?: string;
+    /** A light the product carries (an LED mirror): the material that glows, and its colour. */
+    emissive?: ReconstructedModel['emissive'];
+    /** A mirror's silvered face, which Room Studio draws as a live reflection. */
+    mirrorFace?: ReconstructedModel['mirrorFace'];
   };
   /** The original record, so existing flows (quote basket) keep working as-is. */
   source: Product;
@@ -199,6 +204,8 @@ const PLACEMENT_FOR_MOUNTING: Record<ReconstructionMounting['kind'], PlacementTy
   FLOOR: 'floor',
   WALL_MIXER: 'wall',
   COUNTERTOP: 'counter',
+  WALL: 'wall',
+  FLOOR_INSET: 'floor',
 };
 
 /**
@@ -246,6 +253,8 @@ export function withReconstruction(
       boundsM: file.boundsM,
       mounting: model.mounting,
       illustrativeParts: file.illustrativeParts,
+      emissive: model.emissive,
+      mirrorFace: model.mirrorFace,
     },
   };
 }
@@ -343,7 +352,7 @@ export function livlab3dLibraryProducts(existing: RoomStudioProduct[]): RoomStud
   return allReconstructions()
     .filter((model) => canRenderReconstruction(model) && !listed.has(model.id))
     .map((model) => {
-      const id = `livlab-3d-${model.sku.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+      const id = libraryProductId(model);
       const source: Product = {
         id,
         slug: id,

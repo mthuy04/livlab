@@ -98,7 +98,9 @@ const Wall = memo(function Wall({ room, wall, openings, wallStyle, resolution, c
     });
   });
   const tint = wall === 'left' ? 0.94 : wall === 'right' ? 0.9 : 1;
-  return <group ref={group}>
+  // Tagged so a mirror's reflection pass can draw a cut-away wall solid: the
+  // fade is for the viewer's camera, and a mirror shows the room as it is.
+  return <group ref={group} userData={{ livlabCutawayWall: true }}>
     <Surface mineralMap={mineralMap} sunlightOccluder={sunlightOccluder} pack={pack} style={wallStyle} width={frame.span} height={room.height} position={[centre.x, room.height/2, centre.z]}
       rotation={[0, frame.yaw, 0]} openings={openings} tint={tint} resolution={resolution} doubleSided={wallElements.length > 0} />
     {solids.filter(r => r.y === 0).map(r => {

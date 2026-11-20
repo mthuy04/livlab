@@ -41,7 +41,7 @@ interface QuoteContextValue {
 export interface CatalogQuoteEntry {
   catalogProductId: string;
   productId: string;
-  sourceType: 'DATABASE' | 'DEMO_FIXTURE';
+  sourceType: 'DATABASE' | 'DEMO_FIXTURE' | 'LIVLAB_LIBRARY';
   tenantId: string;
   name: string;
   brand: string;

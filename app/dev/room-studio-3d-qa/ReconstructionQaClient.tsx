@@ -40,6 +40,9 @@ const PERF_PLACEMENT: Record<ReconstructedModel['category'], PlacementType> = {
   bathtub: 'FREESTANDING_BATHTUB',
   shower: 'SHOWER_COLUMN',
   lavabo: 'COUNTERTOP_BASIN',
+  mirror: 'WALL_MIRROR',
+  vanity: 'WALL_HUNG_VANITY',
+  accessory: 'ACCESSORY_WALL',
 };
 
 /** The same synthetic catalogue row `livlab3dLibraryProducts` builds — but ungated. */
@@ -272,6 +275,13 @@ export default function ReconstructionQaClient() {
       } else if (c.model.category === 'shower') {
         orientation = Math.abs(b.min[2]) < 1e-4 && b.min[1] < 0 && b.max[1] > 0;
         orientationNote = 'mặt tường z=0, gốc tại tâm bộ trộn (y=0 nằm trong thân)';
+      } else if (c.model.mounting.kind === 'WALL') {
+        orientation = Math.abs(b.min[1]) < 1e-4 && Math.abs(b.min[2]) < 1e-4 && Math.abs(b.min[0] + b.max[0]) < 1e-4 && b.max[2] > 0;
+        orientationNote = 'đáy y=0, mặt tường z=0, tâm X, mặt trước +Z';
+      } else if (c.model.mounting.kind === 'FLOOR_INSET') {
+        orientation =
+          Math.abs(b.max[1]) < 1e-4 && b.min[1] < 0 && Math.abs(b.min[0] + b.max[0]) < 1e-4 && Math.abs(b.min[2] + b.max[2]) < 1e-4;
+        orientationNote = 'mặt nắp y=0, thân âm xuống −Y, tâm X và Z';
       } else {
         orientation = Math.abs(b.min[1]) < 1e-4 && Math.abs(b.min[2]) < 1e-4 && (!a || a.rearMaxY >= a.frontMaxY - 1e-4);
         orientationNote = 'đáy chậu y=0, mặt sau z=0';
@@ -291,12 +301,20 @@ export default function ReconstructionQaClient() {
         const mixer = installationHeight(c.product, placed) ?? NaN;
         mounting = Math.abs(mixer - mt.mixerHeightMm.default / MM) < 1e-4 && Math.abs(back) < 0.002;
         mountingNote = `bộ trộn ${Math.round(mixer * MM)} mm · sát tường ${Math.round(back * MM)} mm`;
-      } else {
+      } else if (mt.kind === 'COUNTERTOP') {
         mounting = Math.abs(bottom - mt.counterHeightMm.default / MM) < 1e-4;
         mountingNote = `đáy chậu ${Math.round(bottom * MM)} mm trên sàn (mặt bàn)`;
+      } else if (mt.kind === 'WALL') {
+        const height = installationHeight(c.product, placed) ?? NaN;
+        mounting = Math.abs(height - mt.heightMm.default / MM) < 1e-4 && Math.abs(back) < 0.002;
+        mountingNote = `${mt.heightLabel}: ${Math.round(height * MM)} mm`;
+      } else {
+        const top = bottom + env.height;
+        mounting = Math.abs(top) < 1e-4 && Math.abs(bottom + mt.insetDepthMm / MM) < 1e-4;
+        mountingNote = `mặt trên ${Math.round(top * MM)} mm · đáy ${Math.round(bottom * MM)} mm`;
       }
 
-      const target = performanceTargetFor(PERF_PLACEMENT[c.model.category]);
+      const target = performanceTargetFor(mt.kind === 'FLOOR_INSET' ? 'ACCESSORY_FLOOR' : PERF_PLACEMENT[c.model.category]);
       const performance = !!target && file.bytes <= target.maxBytes && file.triangles <= target.triangles[1];
       const hasMetal = !!a && a.materials.some((mm) => mm.metalness >= 0.7);
       const allPbr = !!a && a.materials.length > 0 && a.materials.every((mm) => /MeshStandardMaterial|MeshPhysicalMaterial/.test(mm.type));

@@ -23,6 +23,7 @@
  */
 
 import { normalizeSku } from '@/lib/storefront/catalogTypes';
+import { APPROVED_GLB_MODELS } from './approvedGlbModels';
 
 /* ------------------------------------------------------------------ states */
 
@@ -69,7 +70,25 @@ export type ReconstructionMounting =
   | {
       kind: 'COUNTERTOP';
       counterHeightMm: { default: number; min: number; max: number; source: string };
-    };
+    }
+  /**
+   * A wall-hung fixture — a mirror, a rail, a hook, a wall-hung vanity.
+   * Origin on the wall plane at the bottom-centre of its back, +Z out of the
+   * wall. How high it hangs is an installation choice, so it is a range with
+   * a LivLab default, read against the envelope's centre or its top.
+   */
+  | {
+      kind: 'WALL';
+      heightRef: 'CENTRE' | 'TOP';
+      heightMm: { default: number; min: number; max: number; source: string };
+      /** What that height is called, in the customer's words. */
+      heightLabel: string;
+    }
+  /**
+   * Set into the floor: origin at the centre of the top face, the top flush
+   * with the finished floor and the body below it. Never stands on the floor.
+   */
+  | { kind: 'FLOOR_INSET'; insetDepthMm: number };
 
 export interface ReconstructionFile {
   url: string;
@@ -83,6 +102,58 @@ export interface ReconstructionFile {
   label: string;
   /** Parts of this variant that are not the SKU (an illustrative faucet). */
   illustrativeParts?: string;
+  /**
+   * The file places parts with node translations and sub-2% fitting scales
+   * (no rotation). `boundsM` is then the world-space envelope, as the
+   * renderer measures it. Absent: no node transforms at all.
+   */
+  nodeTransforms?: 'TRANSLATE_AND_FIT';
+}
+
+/**
+ * A light the product itself carries — an LED mirror's perimeter strip.
+ * The file only carries the glowing material; the light it casts on the wall
+ * is the room's job, drawn by the scene and switchable per placement.
+ */
+/**
+ * The silvered face of a mirror, by its material name in the file. Room Studio
+ * draws that face as a live planar reflection of the room; the file's own
+ * material stays underneath as the static fallback.
+ */
+export interface ReconstructionMirrorFace {
+  materialName: string;
+}
+
+export interface ReconstructionEmissive {
+  /** The glTF material whose emissive is the LED. */
+  materialName: string;
+  colorTemperatureK: number;
+  /** Rated power, as the manufacturer states it. */
+  powerW?: number;
+}
+
+/**
+ * What the public catalogue shows for a 3D-library product that no catalogue
+ * lists yet: facts from the approval pack, in Vietnamese, with the pack's own
+ * uncertainty flags kept verbatim beside them. No price: the pack has none.
+ */
+export interface ReconstructionListing {
+  summary: string;
+  material: string | null;
+  finish: string | null;
+  color: string | null;
+  /** The manufacturer's outer size, mm. */
+  dimensionsMm: { width: number; height: number; depth: number };
+  /** Manufacturer or reference documents named by the pack. */
+  documents: Array<{ label: string; url: string; official: boolean }>;
+  /** The pack's confidence flag, verbatim. */
+  technicalConfidence: string;
+  /** The pack's caveats, in Vietnamese. */
+  caveats: string[];
+  /** The pack's notes, verbatim, for traceability. */
+  sourceNotes: string[];
+  /** Preview image rendered from the GLB — a QA render, not a product photo. */
+  previewIsRender: true;
 }
 
 export interface ReconstructedModel {
@@ -93,7 +164,7 @@ export interface ReconstructedModel {
   normalizedSkus: string[];
   name: string;
   /** Room Studio's normalised category. */
-  category: 'toilet' | 'bathtub' | 'shower' | 'lavabo';
+  category: 'toilet' | 'bathtub' | 'shower' | 'lavabo' | 'mirror' | 'accessory' | 'vanity';
   /** Display category for the LivLab library, in the CSV's vocabulary. */
   catalogueCategory: string;
   subCategory: string;
@@ -110,6 +181,12 @@ export interface ReconstructedModel {
   /** Variants a customer may switch to in the room. */
   roomVariants: Array<'web' | 'basin_only'>;
   thumbnailUrl: string;
+  /** An LED or other light the product carries. */
+  emissive?: ReconstructionEmissive;
+  /** The mirror face Room Studio reflects the room in, for a mirror. */
+  mirrorFace?: ReconstructionMirrorFace;
+  /** Present when the public catalogue lists this model as its own product. */
+  listing?: ReconstructionListing;
   technical: {
     plumbing: {
       requiresColdWater?: boolean;
@@ -149,6 +226,12 @@ export interface ReconstructedModel {
     };
     /** Accepted conditions, in the words a customer is shown. */
     conditions: string[];
+    /**
+     * A failed check the project owner accepted for this exact file, with the
+     * reason. The check stays false — the record never claims a pass it did
+     * not get — and the model may still be drawn.
+     */
+    waived?: Partial<Record<keyof ReconstructedModel['runtimeQa']['checks'], string>>;
   };
 }
 
@@ -568,8 +651,11 @@ export const RECONSTRUCTION_DISCLOSURE = RECONSTRUCTION_NOTE;
 
 /* ----------------------------------------------------------------- lookup */
 
+/** The approved library models (pack of 2026-11-20), in their own module. */
+const ALL_MODELS: ReconstructedModel[] = [...MODELS, ...APPROVED_GLB_MODELS];
+
 const BY_KEY = new Map<string, ReconstructedModel>();
-for (const model of MODELS) {
+for (const model of ALL_MODELS) {
   for (const sku of model.normalizedSkus) BY_KEY.set(`${model.brand.toUpperCase()}::${sku}`, model);
 }
 
@@ -588,13 +674,27 @@ export function findReconstruction(
 }
 
 export function allReconstructions(): ReconstructedModel[] {
-  return MODELS;
+  return ALL_MODELS;
+}
+
+/** The library models the public catalogue lists as products of their own. */
+/** The product id a model's LivLab library row carries, in Room Studio and on /products alike. */
+export function libraryProductId(model: Pick<ReconstructedModel, 'sku'>): string {
+  return `livlab-3d-${model.sku.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+}
+
+export function listedReconstructions(): ReconstructedModel[] {
+  return ALL_MODELS.filter((model) => model.listing && canRenderReconstruction(model));
 }
 
 /** Drawn as geometry only once the runtime check passed with nothing outstanding. */
 export function canRenderReconstruction(model: ReconstructedModel | null | undefined): boolean {
   if (!model) return false;
-  return model.runtimeQa.readiness === '3D_READY' && Object.values(model.runtimeQa.checks).every(Boolean);
+  const { readiness, checks, waived } = model.runtimeQa;
+  return (
+    readiness === '3D_READY' &&
+    (Object.entries(checks) as [keyof typeof checks, boolean][]).every(([check, ok]) => ok || Boolean(waived?.[check]))
+  );
 }
 
 export type ReconstructionVariant = keyof ReconstructedModel['files'];

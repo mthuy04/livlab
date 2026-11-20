@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Route } from 'next';
 import { StageImage, ProductImagePlaceholder } from '@/components/storefront/catalog/ProductImage';
 import DimensionsBlock from './DimensionsBlock';
+import Model3DViewerLazy from './Model3DViewerLazy';
 import { ANCHOR_OFFSET } from './ProductNav';
 import { DIVIDER, TEXT, TEXT_MUTED, TEXT_FAINT } from '@/components/storefront/home/editorial';
 import {
@@ -84,6 +85,83 @@ export function Section({
         {children}
       </div>
     </section>
+  );
+}
+
+/* ── 3D model ─────────────────────────────────────────────────────────── */
+
+/** The model's confidence flag, in a customer's words. The raw code is shown beside it. */
+function confidenceText(flag: string): string {
+  if (/PROVISIONAL/.test(flag)) return 'Kích thước tạm thời — cần đối chiếu CAD của hãng';
+  if (/TRAP_APPROX/.test(flag)) return 'Mặt trên dựng theo hình ảnh; phần âm sàn là xấp xỉ';
+  if (/ENVELOPE/.test(flag)) return 'Kích thước ngoài đúng sản phẩm; chi tiết bên trong là ước lượng';
+  if (/DIMENSIONS VERIFIED/.test(flag)) return 'Kích thước ngoài đã đối chiếu; hình dáng chi tiết suy ra một phần';
+  if (/PARTIALLY_ESTIMATED/.test(flag)) return 'Một phần kích thước là ước lượng';
+  return 'Chưa phân loại';
+}
+
+export function Model3D({ vm }: { vm: ProductDetailViewModel }) {
+  const model = vm.model3d;
+  if (!model) return null;
+  const { width, height, depth } = model.dimensionsMm;
+  const mm = (v: number) => String(v).replace('.', ',');
+  const kb = Math.round(model.bytes / 1024);
+  const poster = vm.media.primary?.url ?? '';
+  return (
+    <Section id="mo-hinh-3d">
+      <div className="grid gap-8 lg:grid-cols-[1.35fr_1fr] lg:gap-[56px]">
+        <Model3DViewerLazy url={model.url} poster={poster} name={vm.identity.name} emissive={model.emissive} />
+        <div>
+          <SectionHeading>Mô hình 3D</SectionHeading>
+          <p className="mt-4 max-w-[500px]" style={{ fontSize: 15, lineHeight: 1.6, color: '#4A4A4A' }}>
+            {model.provenance}
+          </p>
+          <dl className="mt-6 max-w-[500px]">
+            {[
+              ['Kích thước mô hình', `Rộng ${mm(width)} × Sâu ${mm(depth)} × Cao ${mm(height)} mm`],
+              ['Kiểu lắp trong Room Studio', model.mountingLabel],
+              ['Mức tin cậy kỹ thuật', confidenceText(model.technicalConfidence)],
+              ['Tệp', `GLB · ${kb} KB · ${model.triangles.toLocaleString('vi-VN')} tam giác`],
+            ].map(([label, value]) => (
+              <div
+                key={label}
+                className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1"
+                style={{ borderBottom: `1px solid ${DIVIDER}`, minHeight: 46, paddingBlock: 11 }}
+              >
+                <dt style={{ fontSize: 13, color: '#737373' }}>{label}</dt>
+                <dd className="text-right" style={{ fontSize: 14, color: TEXT }}>
+                  {value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <p className="mt-2" style={{ fontSize: 11, color: TEXT_FAINT, fontFamily: 'ui-monospace, monospace' }}>
+            {model.technicalConfidence}
+          </p>
+          {model.caveats.length > 0 && (
+            <ul className="mt-5 max-w-[500px] list-disc space-y-1.5 pl-4" style={{ fontSize: 13, lineHeight: 1.55, color: TEXT_MUTED }}>
+              {model.caveats.map((c) => (
+                <li key={c}>{c}</li>
+              ))}
+            </ul>
+          )}
+          {model.previewIsRender && (
+            <p className="mt-5 max-w-[500px]" style={{ fontSize: 12, lineHeight: 1.5, color: TEXT_FAINT }}>
+              Ảnh sản phẩm trên trang là ảnh dựng từ mô hình này, không phải ảnh chụp sản phẩm thật.
+            </p>
+          )}
+          {vm.roomStudio.href && (
+            <Link
+              href={vm.roomStudio.href as Route}
+              className="mt-6 inline-flex items-center rounded-full border px-5 py-2.5 transition-opacity hover:opacity-70"
+              style={{ fontSize: 13, fontWeight: 500, color: TEXT, borderColor: TEXT }}
+            >
+              Thử trong Room Studio
+            </Link>
+          )}
+        </div>
+      </div>
+    </Section>
   );
 }
 

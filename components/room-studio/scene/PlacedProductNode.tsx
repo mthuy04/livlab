@@ -12,6 +12,7 @@ import { STYLE_PACKS, type StylePackId } from '@/lib/room-studio/stylePacks';
 import type { PlacementStatus } from '@/lib/room-studio/placementStatus';
 import { PLACEMENT_STATUS_COLOR } from '@/lib/room-studio/placementStatus';
 import { BASIN_COUNTER, basinCounterExtent } from '@/lib/room-studio/environment';
+import { useMirrorReflections } from './mirrorReflections';
 
 /**
  * Largest disagreement, per axis, between the model the renderer loaded and
@@ -105,15 +106,95 @@ export function measureGlbForPlacement(
  * The scale factor itself is computed by assetResolver; nothing here hardcodes
  * a number.
  */
+/** Switches an instance's own LED materials on or off. Three.js objects are mutable by design. */
+function setLedLight(materials: THREE.MeshStandardMaterial[], on: boolean) {
+  for (const m of materials) {
+    m.emissiveIntensity = on ? m.userData.livlabEmissiveIntensity : 0;
+    m.needsUpdate = true;
+  }
+}
+
+/**
+ * The light a perimeter LED throws on the wall around its mirror: a soft,
+ * continuous glow that follows the mirror's outline and fades over about
+ * ten centimetres. Drawn by the scene, not taken from photometric data — the
+ * file carries only the glowing diffuser material. A glow rather than point
+ * lights: it is even all the way round and costs no extra lighting.
+ */
+const LED_GLOW_MARGIN = 0.32;
+function LedWallWash({ product, color }: { product: RoomStudioProduct; color: THREE.Color }) {
+  const { width, height, depth } = getRealWorldSize(product);
+  const round = Math.abs(width - height) < 1e-3;
+  const material = useMemo(
+    () =>
+      new THREE.ShaderMaterial({
+        name: 'LivLabLedWallGlow',
+        uniforms: {
+          glowColor: { value: color },
+          halfSize: { value: new THREE.Vector2(width / 2, height / 2) },
+          corner: { value: round ? width / 2 : 0.02 },
+          strength: { value: 0.6 },
+          falloff: { value: 0.075 },
+        },
+        vertexShader: /* glsl */ `
+          varying vec2 vPos;
+          void main() {
+            vPos = position.xy;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }`,
+        fragmentShader: /* glsl */ `
+          uniform vec3 glowColor;
+          uniform vec2 halfSize;
+          uniform float corner;
+          uniform float strength;
+          uniform float falloff;
+          varying vec2 vPos;
+          void main() {
+            vec2 q = abs(vPos) - halfSize + corner;
+            float outside = max(length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - corner, 0.0);
+            gl_FragColor = vec4(glowColor * strength * exp(-outside / falloff), 1.0);
+            #include <tonemapping_fragment>
+            #include <colorspace_fragment>
+          }`,
+        blending: THREE.AdditiveBlending,
+        transparent: true,
+        depthWrite: false,
+        polygonOffset: true,
+        polygonOffsetFactor: -1,
+        polygonOffsetUnits: -4,
+      }),
+    [color, width, height, round]
+  );
+  useEffect(() => () => material.dispose(), [material]);
+  return (
+    <mesh name="livlab-led-wall-glow" position={[0, 0, -depth / 2 - 0.0005]} material={material} renderOrder={1}>
+      <planeGeometry args={[width + LED_GLOW_MARGIN * 2, height + LED_GLOW_MARGIN * 2]} />
+    </mesh>
+  );
+}
+
+/** Kelvin to an sRGB light colour (Tanner Helland's fit, 1000–40000 K). */
+function kelvinToColor(kelvin: number): THREE.Color {
+  const t = kelvin / 100;
+  const r = t <= 66 ? 255 : 329.698727446 * Math.pow(t - 60, -0.1332047592);
+  const g = t <= 66 ? 99.4708025861 * Math.log(t) - 161.1195681661 : 288.1221695283 * Math.pow(t - 60, -0.0755148492);
+  const b = t >= 66 ? 255 : t <= 19 ? 0 : 138.5177312231 * Math.log(t - 10) - 305.0447927307;
+  const c = (v: number) => Math.min(255, Math.max(0, v)) / 255;
+  return new THREE.Color().setRGB(c(r), c(g), c(b), THREE.SRGBColorSpace);
+}
+
 function GlbProduct({
   product,
   selected,
   statusColor,
+  lightOn = true,
   onMeasured,
 }: {
   product: RoomStudioProduct;
   selected: boolean;
   statusColor?: string;
+  /** For a product with its own light (an LED mirror): whether it is on. */
+  lightOn?: boolean;
   /** Dev harness only. Undefined in the customer workspace. */
   onMeasured?: (measurement: ReturnType<typeof measureGlbForPlacement>) => void;
 }) {
@@ -136,8 +217,38 @@ function GlbProduct({
     return copy;
   }, [scene]);
 
+  // A product's own light (an LED mirror's diffuser) is a named material in
+  // the file. It is cloned for this instance only, so switching one mirror
+  // off never darkens another copy of the same SKU.
+  const emissive = product.reconstruction?.emissive;
+  const ledMaterials = useMemo(() => {
+    if (!emissive) return [] as THREE.MeshStandardMaterial[];
+    const found: THREE.MeshStandardMaterial[] = [];
+    instance.traverse((node) => {
+      const mesh = node as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      const swap = (m: THREE.Material) => {
+        if (m.name !== emissive.materialName) return m;
+        const own = (m as THREE.MeshStandardMaterial).clone();
+        own.userData.livlabEmissiveIntensity = (m as THREE.MeshStandardMaterial).emissiveIntensity || 1;
+        found.push(own);
+        return own;
+      };
+      mesh.material = Array.isArray(mesh.material) ? mesh.material.map(swap) : swap(mesh.material);
+    });
+    return found;
+  }, [instance, emissive]);
+  useEffect(() => () => ledMaterials.forEach((m) => m.dispose()), [ledMaterials]);
+  useEffect(() => setLedLight(ledMaterials, lightOn), [ledMaterials, lightOn]);
+  const lightColor = useMemo(() => (emissive ? kelvinToColor(emissive.colorTemperatureK) : null), [emissive]);
+
   const measurement = useMemo(() => measureGlbForPlacement(instance, product), [instance, product]);
   const { scale, offset: yOffset } = measurement;
+
+  // A mirror's face reflects the room live. Built after measuring, and drawn
+  // beside the instance rather than inside it, so placement still measures
+  // exactly the file.
+  const reflectors = useMirrorReflections(instance, product.reconstruction?.mirrorFace?.materialName);
 
   // A reconstruction is drawn at scale 1, as authored and as measured. If what
   // loaded is not the envelope on record, the file is not the one that passed
@@ -163,7 +274,12 @@ function GlbProduct({
     <group>
       <group position={[yOffset.x, yOffset.y, yOffset.z]} scale={scale}>
         <primitive object={instance} />
+        {reflectors.map((reflector) => (
+          <primitive key={reflector.uuid} object={reflector} />
+        ))}
       </group>
+      {/* The halo a perimeter LED throws on its wall (see LedWallWash). */}
+      {lightColor && lightOn && ledMaterials.length > 0 && <LedWallWash product={product} color={lightColor} />}
       {selected && <SelectionFrame product={product} color={statusColor} />}
     </group>
   );
@@ -502,7 +618,13 @@ function PlacedProductNode({
           }}
         >
           <Suspense fallback={<LoadingVolume product={product} />}>
-            <GlbProduct product={product} selected={selected} statusColor={statusColor} onMeasured={onMeasured} />
+            <GlbProduct
+              product={product}
+              selected={selected}
+              statusColor={statusColor}
+              lightOn={placed.lightOn !== false}
+              onMeasured={onMeasured}
+            />
           </Suspense>
         </ModelBoundary>
       ) : (

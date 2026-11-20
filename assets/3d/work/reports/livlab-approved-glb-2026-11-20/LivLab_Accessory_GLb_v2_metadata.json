@@ -1,0 +1,104 @@
+[
+  {
+    "sku": "KF-545VW",
+    "brand": "INAX",
+    "name": "MR Series dual towel bar, polished Cr-Ni",
+    "official": "https://www.inax.com.vn/products/accessories/kf-545vw/",
+    "catalogue": "https://www.inax.com.vn/wp-content/uploads/2026/04/Cataogue_A5_Ver_042026.pdf",
+    "whd_mm": [
+      620.0,
+      22.0,
+      110.0
+    ],
+    "notes": "OEM 2026 W620, H22 assumed vertical, D110 wall projection; other retailer listings W660. Tube radii and rail spacing inferred from product photo; verify CAD.",
+    "status": "PARTIALLY_ESTIMATED",
+    "glb": "glb/INAX_KF-545VW.glb",
+    "measured_whd_mm": [
+      620.0,
+      22.0,
+      110.0
+    ],
+    "difference_mm": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangle_count": 8928,
+    "material_names": [
+      "INAX_MR__CHROME_NICKEL__POLISHED_EDGE",
+      "INAX_MR__CHROME_NICKEL__POLISHED_MIRROR_FINISH",
+      "INAX_MR__CHROME_NICKEL__SOFT_HIGHLIGHTS"
+    ],
+    "file_size_bytes": 109852,
+    "units": "metres",
+    "orientation": "Y-up, +Z front wall-out, nominal wall at z=0, origin bottom-centre"
+  },
+  {
+    "sku": "KF-546V",
+    "brand": "INAX",
+    "name": "MR Series chrome toilet-roll holder with curved protective cover",
+    "official": "https://www.inax.com.vn/products/accessories/kf-546v/",
+    "catalogue": "https://www.inax.com.vn/wp-content/uploads/2026/04/Cataogue_A5_Ver_042026.pdf",
+    "whd_mm": [
+      147.9,
+      150.2,
+      88.8
+    ],
+    "notes": "2026 catalogue D88.8 W147.9 H150.2; alternate official product page labels D155 H120 W145. Protective stamped chrome cover visible in Taiwan INAX catalogue; exact panel curvature, roll spindle and mount details are estimated until CAD is obtained.",
+    "status": "PROVISIONAL_REQUIRES_CAD",
+    "glb": "glb/INAX_KF-546V.glb",
+    "measured_whd_mm": [
+      147.9,
+      150.2,
+      88.8
+    ],
+    "difference_mm": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangle_count": 36508,
+    "material_names": [
+      "INAX_MR__CHROME_NICKEL__POLISHED_EDGE",
+      "INAX_MR__CHROME_NICKEL__POLISHED_MIRROR_FINISH",
+      "INAX_MR__CHROME_NICKEL__SOFT_HIGHLIGHTS"
+    ],
+    "file_size_bytes": 654160,
+    "units": "metres",
+    "orientation": "Y-up, +Z front wall-out, nominal wall at z=0, origin bottom-centre"
+  },
+  {
+    "sku": "KF-541V",
+    "brand": "INAX",
+    "name": "MR Series cylindrical chrome robe hook with upright peg",
+    "official": "https://www.inax.com.vn/vi/product-category/40-spec-depth-accessories/",
+    "catalogue": "https://www.inax.com.vn/wp-content/uploads/2026/04/Cataogue_A5_Ver_042026.pdf",
+    "whd_mm": [
+      22.0,
+      40.0,
+      50.0
+    ],
+    "notes": "2026 INAX catalogue and Taiwan catalogue use D50 W22 H40; official VN HTML currently labels D40 H50 W22 in conflicting axis order. Chrome cylindrical hook with small upright retention peg; small unseen dimensions inferred from reference photos.",
+    "status": "PARTIALLY_ESTIMATED",
+    "glb": "glb/INAX_KF-541V.glb",
+    "measured_whd_mm": [
+      22.0,
+      40.0,
+      50.0
+    ],
+    "difference_mm": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangle_count": 4960,
+    "material_names": [
+      "INAX_MR__CHROME_NICKEL__POLISHED_EDGE",
+      "INAX_MR__CHROME_NICKEL__POLISHED_MIRROR_FINISH",
+      "INAX_MR__CHROME_NICKEL__SOFT_HIGHLIGHTS"
+    ],
+    "file_size_bytes": 87384,
+    "units": "metres",
+    "orientation": "Y-up, +Z front wall-out, nominal wall at z=0, origin bottom-centre"
+  }
+]

@@ -12,6 +12,7 @@ import ProductGallery from '@/components/storefront/product/ProductGallery';
 import ProductActions from '@/components/storefront/product/ProductActions';
 import ProductNav, { ANCHOR_OFFSET } from '@/components/storefront/product/ProductNav';
 import {
+  Model3D,
   Compatibility,
   Consultation,
   DimensionsAndDrawing,
@@ -282,6 +283,7 @@ export default async function ProductDetailPage({ params }: Props) {
 
       <ProductNav vm={vm} sections={sections} />
 
+      <Model3D vm={vm} />
       <Specifications groups={vm.specifications} />
       <DimensionsAndDrawing vm={vm} />
       <Technologies vm={vm} />

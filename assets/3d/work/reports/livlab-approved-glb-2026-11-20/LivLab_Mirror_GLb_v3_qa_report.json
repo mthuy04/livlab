@@ -1,0 +1,95 @@
+[
+  {
+    "filename": "INAX_KF-6075VAR.glb",
+    "actual_whd_mm": [
+      610.0,
+      760.0,
+      5.0
+    ],
+    "expected_whd_mm": [
+      610,
+      760,
+      5
+    ],
+    "max_dimension_error_mm": 0.0,
+    "glb_header": "VALID",
+    "gltf_version": 2,
+    "mirror_front_metallic": 1.0,
+    "mirror_front_roughness": 0.012,
+    "mirror_front_base_rgb": [
+      252,
+      253,
+      253
+    ],
+    "glass_shape": "shallow arch",
+    "chrome_present": false,
+    "mirror_front_faces_have_positive_z_normals": true,
+    "triangles": 1368,
+    "degenerate_triangles": 0,
+    "file_bytes": 28548,
+    "qa": "PASS: structural, materials and external dimensions",
+    "not_verified": "Exact CAD feature fidelity, proprietary silvering layer stack, real LivLab environment or planar reflection and manufacturer approval"
+  },
+  {
+    "filename": "INAX_KF-6090VA.glb",
+    "actual_whd_mm": [
+      610.0,
+      910.0,
+      5.0
+    ],
+    "expected_whd_mm": [
+      610,
+      910,
+      5
+    ],
+    "max_dimension_error_mm": 0.0,
+    "glb_header": "VALID",
+    "gltf_version": 2,
+    "mirror_front_metallic": 1.0,
+    "mirror_front_roughness": 0.012,
+    "mirror_front_base_rgb": [
+      252,
+      253,
+      253
+    ],
+    "glass_shape": "rectangular",
+    "chrome_present": false,
+    "mirror_front_faces_have_positive_z_normals": true,
+    "triangles": 288,
+    "degenerate_triangles": 0,
+    "file_bytes": 9080,
+    "qa": "PASS: structural, materials and external dimensions",
+    "not_verified": "Exact CAD feature fidelity, proprietary silvering layer stack, real LivLab environment or planar reflection and manufacturer approval"
+  },
+  {
+    "filename": "KOHLER_K-30638-CPL.glb",
+    "actual_whd_mm": [
+      508.0,
+      813.0,
+      35.0
+    ],
+    "expected_whd_mm": [
+      508,
+      813,
+      35
+    ],
+    "max_dimension_error_mm": 0.0,
+    "glb_header": "VALID",
+    "gltf_version": 2,
+    "mirror_front_metallic": 1.0,
+    "mirror_front_roughness": 0.012,
+    "mirror_front_base_rgb": [
+      252,
+      253,
+      253
+    ],
+    "glass_shape": "semicircular arched metal frame",
+    "chrome_present": true,
+    "mirror_front_faces_have_positive_z_normals": true,
+    "triangles": 2547,
+    "degenerate_triangles": 0,
+    "file_bytes": 51652,
+    "qa": "PASS: structural, materials and external dimensions",
+    "not_verified": "Exact CAD feature fidelity, proprietary silvering layer stack, real LivLab environment or planar reflection and manufacturer approval"
+  }
+]

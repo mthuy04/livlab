@@ -116,7 +116,7 @@ export async function manufacturerRecords(): Promise<Map<string, ManufacturerRec
 }
 
 /** Where the picture on a card came from. Reported, never shown as a claim. */
-export type ImageSource = 'MANUFACTURER' | 'SHOWROOM' | 'RETAILER' | 'PLACEHOLDER';
+export type ImageSource = 'MANUFACTURER' | 'SHOWROOM' | 'RETAILER' | 'PLACEHOLDER' | 'LIVLAB_RENDER';
 
 /**
  * Re-exported so server callers that already depend on this module keep one

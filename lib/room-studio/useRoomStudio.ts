@@ -283,6 +283,16 @@ export function useRoomStudio(catalog: RoomStudioCatalog = 'livlab', storageScop
     [commit, resolveProduct]
   );
 
+  /** Turns a product's own light (an LED mirror) on or off. Undoable; never touches the quote. */
+  const setPlacementLight = useCallback(
+    (instanceId: string, on: boolean) => {
+      commit(on ? 'Bật đèn gương' : 'Tắt đèn gương', (prev) =>
+        prev.placedProducts.some((p) => p.instanceId === instanceId) ? ops.updatePlacement(prev, instanceId, { lightOn: on }) : prev
+      );
+    },
+    [commit]
+  );
+
   /**
    * Sets the installation height a customer reasons in — a shower's mixer,
    * a basin's counter top — kept inside the product's own range and the room.
@@ -415,6 +425,7 @@ export function useRoomStudio(catalog: RoomStudioCatalog = 'livlab', storageScop
     resetRoom,
     explainPlacement,
     setPlacementVariant,
+    setPlacementLight,
     setInstallationHeight,
     setLighting,
     setArchitecture,

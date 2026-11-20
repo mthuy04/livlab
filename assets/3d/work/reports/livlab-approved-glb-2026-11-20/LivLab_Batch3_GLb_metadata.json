@@ -1,0 +1,144 @@
+[
+  {
+    "sku": "A812401000",
+    "brand": "Roca",
+    "name": "Luna Ambient 800 mm round perimetral LED mirror",
+    "type": "wall-mounted LED bathroom mirror",
+    "dimensions_mm": {
+      "width": 800,
+      "height": 800,
+      "depth": 25
+    },
+    "official": "https://www.uk.roca.com/products/round-mirror-perimeter-lighting-colour-temperature-3000k-812401000",
+    "notes": [
+      "13 W perimeter LED, 3000 K, IP44 - manufacturer specs, not safety certified by mesh",
+      "No demister specified for this SKU, none modeled",
+      "Mirror surface uses silver-like PBR; live reflection depends on renderer",
+      "LED diffuser/driver/mount proportions are estimates; front ~8.4mm emissive ring is a visual interpretation, not OEM CAD",
+      "LED emissive is controlled by named material; light spill on wall requires Room Studio spot/area light"
+    ],
+    "status": "PRODUCT_ACCURATE_ENVELOPE__INNER_DETAILS_ESTIMATED",
+    "expected": [
+      800,
+      800,
+      25
+    ],
+    "glb": "glb/Roca_A812401000.glb",
+    "measured_dimensions_xyz_mm": [
+      800.0,
+      800.0,
+      25.0
+    ],
+    "expected_xyz_mm": [
+      800.0,
+      800.0,
+      25.0
+    ],
+    "triangles": 4224,
+    "materials": [
+      "BACK__BLACK_PROTECTED_HOUSING",
+      "GLASS__POLISHED_CLEAR_EDGE_FAINT_GREEN",
+      "GLASS__SILVERED_SEALED_BACK",
+      "LED_ON__3000K_PERIMETER_DIFFUSER",
+      "MIRROR__NEUTRAL_SILVERED_REFLECTOR__ENVIRONMENT_REQUIRED",
+      "WALL_CLEAT__ALUMINIUM_APPROX"
+    ],
+    "bytes": 76952,
+    "coordinate_system": "GLB meters Y-up, +Z front; drain top surface y=0"
+  },
+  {
+    "sku": "A851693513",
+    "brand": "Roca",
+    "name": "Ona Unik wall-hung two-drawer vanity + Fineceramic basin, 513 Matt Green",
+    "type": "wall-mounted vanity set",
+    "dimensions_mm": {
+      "width": 1000,
+      "height": 645,
+      "depth": 460
+    },
+    "official": "https://www.export.roca.com/products/unik-base-unit-two-drawers-fineceramic-basin-851693...",
+    "drawing": "https://peralba.com/pdfs/ROCA851693513/ficha_ROCA851693513.pdf",
+    "notes": [
+      "Matt Green MDF structure, white Fineceramic integrated basin, center faucet hole, two soft-close drawers",
+      "Includes basin and cabinet only; faucet is not part of the SKU and is intentionally absent",
+      "Outer size per Roca 1000x460x645, internal width of drawer body approximated from 985mm drawing",
+      "Bowl curved surface, exact depth and tap-hole placement inferred because no manufacturer CAD model obtained",
+      "Cabinet approximate green tone sampled visually from available photography, not spectrophotometer specification"
+    ],
+    "status": "PRODUCT_ACCURATE_ENVELOPE__BOWL_INTERIOR_ESTIMATED",
+    "expected": [
+      1000,
+      645,
+      460
+    ],
+    "glb": "glb/Roca_A851693513.glb",
+    "measured_dimensions_xyz_mm": [
+      1000.0,
+      645.0,
+      460.0
+    ],
+    "expected_xyz_mm": [
+      1000.0,
+      645.0,
+      460.0
+    ],
+    "triangles": 25140,
+    "materials": [
+      "CHROME__INAX_PBFV600__NICKEL_CHROMIUM_PLATED_BRASS",
+      "DRAIN__DARK_RECESSED",
+      "DRAWER_SHADOW_GAP__INTERIOR",
+      "FINECERAMIC__UNDERSIDE",
+      "ROCA_ONA_513__GREEN_MDF_SIDE",
+      "ROCA_ONA_513__MATT_GREEN_EDGE",
+      "ROCA_ONA_513__MATT_GREEN_MDF",
+      "ROCA_ONA__FINECERAMIC_WHITE_GLOSS"
+    ],
+    "bytes": 459524,
+    "coordinate_system": "GLB meters Y-up, +Z front; drain top surface y=0"
+  },
+  {
+    "sku": "PBFV-600",
+    "brand": "INAX",
+    "name": "600 mm chrome-plated brass linear floor drain",
+    "type": "linear floor drain",
+    "dimensions_mm": {
+      "width": 600,
+      "vertical_depth": 101,
+      "top_width": 126
+    },
+    "official": "https://www.inax.com.vn/products/accessories/pbfv-600/",
+    "notes": [
+      "Top footprint 600x126mm, stated manufacturer Depth=101mm mapped to underfloor vertical depth",
+      "Manufacturer describes brass with polished Ni-Cr plating",
+      "Grate has actual open slots; pitch/count approximate from visual reference",
+      "Underfloor trap and grate thickness are visual approximations, not a plumbing shop drawing; cannot substitute for installation CAD",
+      "Fits inside floor plane with top at Y=0 and body Y=-101mm"
+    ],
+    "status": "TOP_GEOMETRY_VISUALLY_RECONSTRUCTED__TRAP_APPROX",
+    "expected": [
+      600,
+      101,
+      126
+    ],
+    "glb": "glb/INAX_PBFV-600.glb",
+    "measured_dimensions_xyz_mm": [
+      600.0,
+      101.0,
+      126.0
+    ],
+    "expected_xyz_mm": [
+      600.0,
+      101.0,
+      126.0
+    ],
+    "triangles": 708,
+    "materials": [
+      "CHROME__CHANNEL_POLISHED_NI_CR",
+      "CHROME__HIGHLIGHT_EDGES",
+      "CHROME__INAX_PBFV600__NICKEL_CHROMIUM_PLATED_BRASS",
+      "INAX_DRAIN__INTERNAL_SHADOW"
+    ],
+    "bytes": 37816,
+    "coordinate_system": "GLB meters Y-up, +Z front; drain top surface y=0"
+  }
+]

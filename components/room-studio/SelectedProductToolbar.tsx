@@ -35,6 +35,8 @@ interface SelectedProductToolbarProps {
   findings?: TechnicalValidationResult[];
   dimensions?: RoomDimensions;
   onSetVariant?: (instanceId: string, variant: string) => void;
+  /** Turns the product's own light on or off — shown only for a product that has one. */
+  onSetLight?: (instanceId: string, on: boolean) => void;
   onSetInstallationHeight?: (instanceId: string, metres: number) => void;
 }
 
@@ -66,6 +68,7 @@ export default function SelectedProductToolbar({
   findings = [],
   dimensions,
   onSetVariant,
+  onSetLight,
   onSetInstallationHeight,
 }: SelectedProductToolbarProps) {
   const { placed, product } = selection;
@@ -175,6 +178,18 @@ export default function SelectedProductToolbar({
                   <Plus className="h-3 w-3" aria-hidden />
                 </button>
               </span>
+            )}
+            {recon?.emissive && onSetLight && (
+              <button
+                type="button"
+                aria-pressed={placed.lightOn !== false}
+                onClick={() => onSetLight(placed.instanceId, placed.lightOn === false)}
+                className={`rounded border border-[#D8E2EA] px-2 py-0.5 ${
+                  placed.lightOn !== false ? 'bg-[#EEF4F7] font-semibold text-[#0B1623]' : 'text-[#5B6B7A] hover:bg-[#F8FAFC]'
+                }`}
+              >
+                {placed.lightOn !== false ? 'Đèn: bật' : 'Đèn: tắt'}
+              </button>
             )}
             {recon && recon.variants.length > 1 && onSetVariant && (
               <span className="flex overflow-hidden rounded border border-[#D8E2EA]" role="group" aria-label="Phiên bản mô hình">

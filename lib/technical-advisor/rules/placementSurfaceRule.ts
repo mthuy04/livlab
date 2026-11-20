@@ -116,7 +116,8 @@ export const placementSurfaceRule: TechnicalRule = {
               : box.minZ - bounds.minZ;
       } else if (metadata.placementType === 'FLOOR') {
         surfaceName = 'sàn';
-        gap = box.minY - bounds.minY;
+        // An inset product meets the floor with its top, not its underside.
+        gap = metadata.insetDepth ? Math.abs(box.maxY - bounds.minY) : box.minY - bounds.minY;
       } else if (metadata.placementType === 'CEILING') {
         surfaceName = 'trần';
         gap = bounds.maxY - box.maxY;

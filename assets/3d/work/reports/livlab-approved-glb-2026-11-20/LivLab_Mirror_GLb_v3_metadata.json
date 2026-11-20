@@ -1,0 +1,152 @@
+[
+  {
+    "sku": "KF-6075VAR",
+    "brand": "INAX",
+    "name": "Arched frameless silvered-glass bathroom mirror",
+    "w": 610,
+    "h": 760,
+    "d": 5,
+    "shape": "shallow circular segment arch, shoulder approximately 639 mm",
+    "frame": "none",
+    "finish": "neutral silver-coated frameless mirror; anti-mould protective rear",
+    "official": "https://www.inax.com.vn/vi/products/accessories/guong-treo-tuong-nha-tam-kf-6075var/",
+    "image": "https://www.inax.com.vn/wp-content/uploads/2026/09/KF-6075VAR.png",
+    "drawing": "https://hailinh.com.vn/guong-nha-tam-inax/guong-inax-kf-6075var-116.html",
+    "measured": [
+      "610x760x5 mm external size",
+      "arched top and 639 mm shoulder seen in third-party reproduction of drawing"
+    ],
+    "estimated": [
+      "glass edge bevel approximately 0.5 mm",
+      "mounting clips omitted pending true CAD"
+    ],
+    "glb_file": "INAX_KF-6075VAR.glb",
+    "export_type": "glTF 2.0 binary / GLB",
+    "units": "metres",
+    "measured_whd_mm": [
+      610.0,
+      760.0,
+      5.0
+    ],
+    "envelope_error_mm": [
+      0.0,
+      -0.0,
+      -0.0
+    ],
+    "geometry_triangles": 1368,
+    "mesh_count": 5,
+    "material_names": [
+      "GLASS_EDGE__POLISHED_CLEAR_FAINT_GREEN",
+      "GLASS_EDGE__SUBTLE_POLISHED_BEVEL",
+      "MIRROR_FACE__SILVERED_GLASS__ENVIRONMENT_REQUIRED",
+      "REAR__SILVERING_COATING_AND_MOISTURE_SEAL"
+    ],
+    "file_bytes": 28548,
+    "quality_status": "DIMENSIONS VERIFIED; VISUAL/CAD FIDELITY PARTIALLY INFERRED",
+    "reflection_note": "Mirrored silver-glass is PBR neutral metallic reflectance. For visible reflections host renderer must supply scene.environment / planar mirror capture; the GLB itself cannot store live reflections.",
+    "coord": "Y-up, +Z front/out from wall, back to wall at z=0; origin bottom-centre",
+    "provenance": "Independent reconstruction from public official photography/specification and referenced dimensional drawings. Not a converted manufacturer CAD."
+  },
+  {
+    "sku": "KF-6090VA",
+    "brand": "INAX",
+    "name": "Rectangular frameless silvered-glass bathroom mirror",
+    "w": 610,
+    "h": 910,
+    "d": 5,
+    "shape": "vertical rectangle, almost-square polished corners",
+    "frame": "none",
+    "finish": "neutral silver-coated frameless mirror; anti-mould protective rear",
+    "official": "https://www.inax.com.vn/vi/products/accessories/guong-treo-tuong-nha-tam-kf-6090va/",
+    "image": "https://www.inax.com.vn/wp-content/uploads/2026/09/KF-6090VA.png",
+    "drawing": "https://www.tdm.vn/guong-lavabo-inax-kf-6090va.html",
+    "measured": [
+      "610x910x5 mm external size",
+      "510 mm horizontal hanger spacing depicted in third-party installation diagram"
+    ],
+    "estimated": [
+      "glass corner radius approximately 1.3 mm",
+      "mounting clips omitted pending true CAD"
+    ],
+    "glb_file": "INAX_KF-6090VA.glb",
+    "export_type": "glTF 2.0 binary / GLB",
+    "units": "metres",
+    "measured_whd_mm": [
+      610.0,
+      910.0,
+      5.0
+    ],
+    "envelope_error_mm": [
+      0.0,
+      0.0,
+      -0.0
+    ],
+    "geometry_triangles": 288,
+    "mesh_count": 5,
+    "material_names": [
+      "GLASS_EDGE__POLISHED_CLEAR_FAINT_GREEN",
+      "GLASS_EDGE__SUBTLE_POLISHED_BEVEL",
+      "MIRROR_FACE__SILVERED_GLASS__ENVIRONMENT_REQUIRED",
+      "REAR__SILVERING_COATING_AND_MOISTURE_SEAL"
+    ],
+    "file_bytes": 9080,
+    "quality_status": "DIMENSIONS VERIFIED; VISUAL/CAD FIDELITY PARTIALLY INFERRED",
+    "reflection_note": "Mirrored silver-glass is PBR neutral metallic reflectance. For visible reflections host renderer must supply scene.environment / planar mirror capture; the GLB itself cannot store live reflections.",
+    "coord": "Y-up, +Z front/out from wall, back to wall at z=0; origin bottom-centre",
+    "provenance": "Independent reconstruction from public official photography/specification and referenced dimensional drawings. Not a converted manufacturer CAD."
+  },
+  {
+    "sku": "K-30638-CPL",
+    "brand": "KOHLER",
+    "name": "Essential arched metal framed mirror, Polished Chrome",
+    "w": 508,
+    "h": 813,
+    "d": 35,
+    "shape": "semi-circular arched top with vertical sides",
+    "frame": "premium metal frame",
+    "finish": "CPL = Polished Chrome (not brushed nickel, not dark gray)",
+    "official": "https://www.kohler.com/en/products/mirrors-and-medicine-cabinets/shop-mirrors-and-medicine-cabinets/essential-20-x-32-arched-framed-mirror-30638?skuId=30638-CPL",
+    "image": "https://kohler.scene7.com/is/image/PAWEB/30638-CPL_ISO_d2c0144770_rgb",
+    "drawing": "https://techcomm.kohler.com/techcomm/pdf/K-30638_spec_US-CA_Kohler_en.pdf",
+    "measured": [
+      "508x813x35 mm official specification",
+      "metal + mirrored glass construction",
+      "arched front, mounting cleat approximately 233 mm below crown on drawing"
+    ],
+    "estimated": [
+      "front bezel approximately 7 mm wide",
+      "glass face inset 4.2 mm from front frame",
+      "rear casing profile and bracket detail approximation"
+    ],
+    "glb_file": "KOHLER_K-30638-CPL.glb",
+    "export_type": "glTF 2.0 binary / GLB",
+    "units": "metres",
+    "measured_whd_mm": [
+      508.0,
+      813.0,
+      35.0
+    ],
+    "envelope_error_mm": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "geometry_triangles": 2547,
+    "mesh_count": 9,
+    "material_names": [
+      "BACK__MOUNTING_RAIL_APPROX_FROM_DRAWING",
+      "BACK__NEUTRAL_PROTECTED_REAR_CASING",
+      "FRAME__CHROME_INNER_CHANNEL",
+      "FRAME__KOHLER_CPL_POLISHED_CHROME",
+      "FRAME__POLISHED_CHROME_HIGHLIGHT_BEVEL",
+      "GLASS_EDGE__POLISHED_CLEAR_FAINT_GREEN",
+      "MIRROR_FACE__SILVERED_GLASS__ENVIRONMENT_REQUIRED",
+      "REAR__SILVERING_COATING_AND_MOISTURE_SEAL"
+    ],
+    "file_bytes": 51652,
+    "quality_status": "DIMENSIONS VERIFIED; VISUAL/CAD FIDELITY PARTIALLY INFERRED",
+    "reflection_note": "Mirrored silver-glass is PBR neutral metallic reflectance. For visible reflections host renderer must supply scene.environment / planar mirror capture; the GLB itself cannot store live reflections.",
+    "coord": "Y-up, +Z front/out from wall, back to wall at z=0; origin bottom-centre",
+    "provenance": "Independent reconstruction from public official photography/specification and referenced dimensional drawings. Not a converted manufacturer CAD."
+  }
+]

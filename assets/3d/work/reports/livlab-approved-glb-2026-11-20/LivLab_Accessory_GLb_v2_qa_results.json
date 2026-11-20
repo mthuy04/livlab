@@ -1,0 +1,47 @@
+[
+  {
+    "sku": "KF-545VW",
+    "file": "INAX_KF-545VW.glb",
+    "valid_glb2": true,
+    "exact_nominal_dimensions": true,
+    "triangles": 8928,
+    "meshes": 12,
+    "metallic_materials": [
+      "INAX_MR__CHROME_NICKEL__POLISHED_EDGE",
+      "INAX_MR__CHROME_NICKEL__POLISHED_MIRROR_FINISH",
+      "INAX_MR__CHROME_NICKEL__SOFT_HIGHLIGHTS"
+    ],
+    "size_bytes": 109852,
+    "quality": "PARTIALLY_ESTIMATED"
+  },
+  {
+    "sku": "KF-546V",
+    "file": "INAX_KF-546V.glb",
+    "valid_glb2": true,
+    "exact_nominal_dimensions": true,
+    "triangles": 36508,
+    "meshes": 7,
+    "metallic_materials": [
+      "INAX_MR__CHROME_NICKEL__POLISHED_EDGE",
+      "INAX_MR__CHROME_NICKEL__POLISHED_MIRROR_FINISH",
+      "INAX_MR__CHROME_NICKEL__SOFT_HIGHLIGHTS"
+    ],
+    "size_bytes": 654160,
+    "quality": "PROVISIONAL_REQUIRES_CAD"
+  },
+  {
+    "sku": "KF-541V",
+    "file": "INAX_KF-541V.glb",
+    "valid_glb2": true,
+    "exact_nominal_dimensions": true,
+    "triangles": 4960,
+    "meshes": 5,
+    "metallic_materials": [
+      "INAX_MR__CHROME_NICKEL__POLISHED_EDGE",
+      "INAX_MR__CHROME_NICKEL__POLISHED_MIRROR_FINISH",
+      "INAX_MR__CHROME_NICKEL__SOFT_HIGHLIGHTS"
+    ],
+    "size_bytes": 87384,
+    "quality": "PARTIALLY_ESTIMATED"
+  }
+]

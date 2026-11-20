@@ -1,0 +1,173 @@
+[
+  {
+    "sku": "KF-6075VAR",
+    "file": "INAX_KF-6075VAR.glb",
+    "gltfHeaderValid": true,
+    "trimeshLoaded": true,
+    "dimensionsMmExpected": [
+      610,
+      760,
+      5
+    ],
+    "dimensionsMmMeasured": [
+      610.0,
+      760.0,
+      5.0
+    ],
+    "meshCount": 5,
+    "sha256": "38e14e68ba0a3a0766e0f857e5659a255b0753be38062bb726f0d783800a4df5",
+    "fileBytes": 28548
+  },
+  {
+    "sku": "KF-6090VA",
+    "file": "INAX_KF-6090VA.glb",
+    "gltfHeaderValid": true,
+    "trimeshLoaded": true,
+    "dimensionsMmExpected": [
+      610,
+      910,
+      5
+    ],
+    "dimensionsMmMeasured": [
+      610.0,
+      910.0,
+      5.0
+    ],
+    "meshCount": 5,
+    "sha256": "21149a6023769460e7ddaae765a90ff5ef362b08cbb31c72a395bf0476b1176d",
+    "fileBytes": 9080
+  },
+  {
+    "sku": "K-30638-CPL",
+    "file": "KOHLER_K-30638-CPL.glb",
+    "gltfHeaderValid": true,
+    "trimeshLoaded": true,
+    "dimensionsMmExpected": [
+      508,
+      813,
+      35
+    ],
+    "dimensionsMmMeasured": [
+      508.0,
+      813.0,
+      35.0
+    ],
+    "meshCount": 9,
+    "sha256": "38d95534860b5565912265cd8f6b7cf1c62b46783cc0ceadeaa0921e4c1c0035",
+    "fileBytes": 51652
+  },
+  {
+    "sku": "KF-545VW",
+    "file": "INAX_KF-545VW.glb",
+    "gltfHeaderValid": true,
+    "trimeshLoaded": true,
+    "dimensionsMmExpected": [
+      620.0,
+      22.0,
+      110.0
+    ],
+    "dimensionsMmMeasured": [
+      620.0,
+      22.0,
+      110.0
+    ],
+    "meshCount": 12,
+    "sha256": "a8025a8de384f772336145f9b2820b36a67ac64e4bb1fb1f73e8a0c2f88b08de",
+    "fileBytes": 109852
+  },
+  {
+    "sku": "KF-546V",
+    "file": "INAX_KF-546V.glb",
+    "gltfHeaderValid": true,
+    "trimeshLoaded": true,
+    "dimensionsMmExpected": [
+      147.9,
+      150.2,
+      88.8
+    ],
+    "dimensionsMmMeasured": [
+      147.9,
+      150.2,
+      88.8
+    ],
+    "meshCount": 7,
+    "sha256": "1c6c667d0eec437a82cb8d6512b8d031693b0cfd8aae69a76486c5f505c188a1",
+    "fileBytes": 654160
+  },
+  {
+    "sku": "KF-541V",
+    "file": "INAX_KF-541V.glb",
+    "gltfHeaderValid": true,
+    "trimeshLoaded": true,
+    "dimensionsMmExpected": [
+      22.0,
+      40.0,
+      50.0
+    ],
+    "dimensionsMmMeasured": [
+      22.0,
+      40.0,
+      50.0
+    ],
+    "meshCount": 5,
+    "sha256": "43bf8a42311776b76914f4ca6183ed3df29bb2504fbc8880046fced698a09e61",
+    "fileBytes": 87384
+  },
+  {
+    "sku": "A812401000",
+    "file": "Roca_A812401000.glb",
+    "gltfHeaderValid": true,
+    "trimeshLoaded": true,
+    "dimensionsMmExpected": [
+      800,
+      800,
+      25
+    ],
+    "dimensionsMmMeasured": [
+      800.0,
+      800.0,
+      25.0
+    ],
+    "meshCount": 11,
+    "sha256": "e6a2b081e0fd2459f5a1fe2bb841ccc41c4519ec599b7fb70f0a42ea1b9abce9",
+    "fileBytes": 76952
+  },
+  {
+    "sku": "A851693513",
+    "file": "Roca_A851693513.glb",
+    "gltfHeaderValid": true,
+    "trimeshLoaded": true,
+    "dimensionsMmExpected": [
+      1000,
+      645,
+      460
+    ],
+    "dimensionsMmMeasured": [
+      1000.0,
+      645.0,
+      460.0
+    ],
+    "meshCount": 19,
+    "sha256": "014575daac50bd440f3474d2b4664d64fdf90a8519a9f47a16688f93480c1498",
+    "fileBytes": 459524
+  },
+  {
+    "sku": "PBFV-600",
+    "file": "INAX_PBFV-600.glb",
+    "gltfHeaderValid": true,
+    "trimeshLoaded": true,
+    "dimensionsMmExpected": [
+      600,
+      101,
+      126
+    ],
+    "dimensionsMmMeasured": [
+      600.0,
+      101.0,
+      126.0
+    ],
+    "meshCount": 59,
+    "sha256": "01dea0490028419c0e8e6cbaca5b715acfc88926101dc6da06eaf3df5f329df2",
+    "fileBytes": 37816
+  }
+]
