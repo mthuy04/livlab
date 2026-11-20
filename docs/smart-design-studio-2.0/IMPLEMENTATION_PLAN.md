@@ -15,7 +15,7 @@ This section supersedes the 19 November planning draft preserved below. The firs
 | P0.6 · Live budget and quotation | Show committed and proposed reference ranges and unpriced counts. Enable mirroring only after explicit linking or saving. Key room lines by tenant, design and provenance. Exercise duplicate SKUs, quantity changes, replacement, undo and idempotent reconciliation with the existing basket and showroom handoff. |
 | P0.7 · End-to-end QA | Run the 18 scenarios from the brief, legacy and tenant fixtures, responsive browser checks, technical and build suites. Measure actual validation, search and rendering costs separately. |
 
-P1 Phase 1 now adds the three visual style packs to the existing R3F renderer, product pipeline and proposal history. Camera direction, walkthrough and the P2 copilot remain future milestones.
+P1 Phase 1 now adds the three visual style packs to the existing R3F renderer, product pipeline and proposal history. P1 Phase 2 extends the same scene with a camera director and a first-person walkthrough.
 
 ### P1 Phase 1 · visual transformation
 
@@ -25,7 +25,15 @@ RoomState v3 accepts an optional visual style ID and a list of manually overridd
 
 The surfaces use full-wall UVs in metres and one local, losslessly encoded mineral map. The map contains travertine bedding, fine calcite fractures and stone grain. Metal frames retain the chosen graphite or ivory finish. Directional daylight uses the largest valid window and casts through its parametric opening. A hemisphere fill, local reflection panels and ceiling lights supply the other layers. The renderer blends surface weights, light and exposure on demand and observes reduced motion.
 
-The [visual QA record](../../artifacts/room-studio-p11/QA.md) contains the same-room comparisons, device checks and measured performance. The camera director and navigable collision body require separate implementation and tests.
+The [visual QA record](../../artifacts/room-studio-p11/QA.md) contains the same-room comparisons, device checks and measured performance.
+
+### P1 Phase 2 · immersive experience
+
+Room Studio has overview, orthographic plan, product focus, proposal focus and first-person walkthrough modes. Product and proposal framing uses the extents of the affected fixtures and architecture. The director retains the design camera position, target, projection and zoom for the return trip. Camera input stays outside the persisted design and its transaction history.
+
+Walkthrough builds its collision world from the shared wall openings, door leaves, window sashes, shower panels and rotated fixture volumes. It uses a virtual standing body, admits movement through modeled open passages, and looks for an unoccupied spawn near the entrance. A legacy design starts from a free point within its original layout. Unknown product bounds or a room without a free spawn keep the editing views available with an explanation.
+
+The [walkthrough QA record](../../artifacts/room-studio-p12/QA.md) includes desktop and touch interactions, collision tests, camera restoration, screenshots and frame measurements.
 
 ### Local baseline
 

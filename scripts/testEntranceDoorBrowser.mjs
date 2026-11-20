@@ -119,7 +119,7 @@ async function exercise(page, mobile) {
   await cameraScreenshot(page, side + '-plan');
   if (mobile) await panel();
   else {
-    await button('Phối cảnh').click();
+    await button('Toàn cảnh').click();
     await page.getByLabel('Tường đặt cửa').selectOption('front');
     await page.getByLabel('Hiện cửa mở').uncheck();
     await button('Áp dụng').click();

@@ -1,7 +1,7 @@
 'use client';
 
 import { Line } from '@react-three/drei';
-import { ENTRANCE_FRAME_DEPTH, doorGeometry, type EntranceDoor } from '@/lib/room-studio/architecture';
+import { ENTRANCE_LEAF_THICKNESS, ENTRANCE_FRAME_DEPTH, doorGeometry, type EntranceDoor } from '@/lib/room-studio/architecture';
 import type { RoomDimensions } from '@/lib/room-studio/roomGeometry';
 
 /** Local X runs along the wall. Jambs and the revolving leaf share the plan pivot. */
@@ -30,7 +30,7 @@ export default function EntranceDoorNode({ room, door, plan, selected }: {
       </group>
       <group position={[g.hinge.x + dx/2, g.leafHeight/2, g.hinge.z + dz/2]} rotation={[0, -Math.atan2(dz, dx), 0]}>
         <mesh name="door-leaf" castShadow receiveShadow>
-          <boxGeometry args={[g.radius, g.leafHeight, 0.036]} />
+          <boxGeometry args={[g.radius, g.leafHeight, ENTRANCE_LEAF_THICKNESS]} />
           <meshStandardMaterial color="#C4A888" roughness={0.62} />
         </mesh>
         {!plan && [-1, 1].map(side => (

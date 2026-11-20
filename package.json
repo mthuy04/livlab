@@ -11,6 +11,7 @@
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "inspect:glb-materials": "node scripts/inspectGlbMaterials.mjs",
+    "test:room-camera": "npx tsx scripts/testRoomCamera.mts",
     "test:room-styles": "npx tsx scripts/testRoomStyles.mts",
     "test:smart-studio": "npx tsx scripts/testSmartStudio.mts",
     "test:technical": "npx tsx scripts/testTechnicalAdvisor.mts",
@@ -58,7 +59,8 @@
     "react-dom": "19.2.4",
     "recharts": "^3.8.1",
     "tailwind-merge": "^3.6.0",
-    "three": "^0.184.0"
+    "three": "^0.184.0",
+    "three-stdlib": "2.36.1"
   },
   "devDependencies": {
     "@gltf-transform/core": "^4.4.1",

@@ -13,7 +13,7 @@ import {
 import StyledSurfaceMaterial, {motionFraction} from './StyledSurfaceMaterial';
 import { STYLE_PACKS, styledChannel, type StylePackId, type VisualStyle } from '@/lib/room-studio/stylePacks';
 
-import { elementsForFlags, isWallElement, renderedWalls, openingFitsWall, wallFrame, wallOpenings, wallCutaway, type ArchitecturalElement, type RoomWall, type WallElement, type WallOpening } from '@/lib/room-studio/architecture';
+import { WALLS, elementsForFlags, isWallElement, renderedWalls, openingFitsWall, wallFrame, wallOpenings, wallCutaway, type ArchitecturalElement, type RoomWall, type WallElement, type WallOpening } from '@/lib/room-studio/architecture';
 import { solidWallRects, surfaceGeometry } from '@/lib/room-studio/wallMesh';
 import { WindowNode, PartitionNode } from './GlassArchitecture';
 import { canDrawPartition } from '@/lib/room-studio/glassGeometry';
@@ -193,6 +193,7 @@ function Downlights({ dimensions, lighting, visible, styled }: { dimensions: Roo
 }
 
 interface RoomShellProps {
+  enclosed?:boolean;
   visualStyle?: VisualStyle;
   dimensions: RoomDimensions;
   floorStyle: SurfaceStyle;
@@ -218,7 +219,7 @@ function RoomShell({
   architecture, elements, selectedElementId,
   lighting,
   textureResolution,
-  planView = false,
+  planView = false, enclosed=false,
 }: RoomShellProps) {
   const { length, width, height } = dimensions;
 
@@ -241,9 +242,9 @@ function RoomShell({
   const walls = useMemo(() => {
     const valid = layout.filter(isWallElement).filter(d => openingFitsWall(dimensions, d));
     const openings = wallOpenings(dimensions, architecture, valid);
-    return renderedWalls(valid).map(wall => ({ wall, openings: openings.filter(o => o.wall === wall),
+    return (enclosed ? WALLS : renderedWalls(valid)).map(wall => ({ wall, openings: openings.filter(o => o.wall === wall),
       wallElements: valid.filter(d => d.wall === wall) }));
-  }, [dimensions, architecture, layout]);
+  }, [dimensions, architecture, layout, enclosed]);
 
   const wallPack = styledChannel(visualStyle, 'walls');
   const skirtColor = useMemo(() => {
@@ -265,7 +266,7 @@ function RoomShell({
       />
 
       {walls.map(w => <Wall mineralMap={mineralMap} sunlightOccluder={!!styledChannel(visualStyle, 'lighting') && w.wallElements.some(e=>e.type==='window')} pack={styledChannel(visualStyle,'walls')} key={w.wall} {...w} room={dimensions} wallStyle={wallStyle} resolution={textureResolution}
-        legacy={!layout.length} cutaway={architecture.cutaway} skirting={architecture.skirting} skirtColor={skirtColor} plan={planView} selected={w.wallElements.some(e => e.id === selectedElementId) ? selectedElementId : undefined} />)}
+        legacy={!layout.length} cutaway={!enclosed && architecture.cutaway} skirting={architecture.skirting} skirtColor={skirtColor} plan={planView} selected={w.wallElements.some(e => e.id === selectedElementId) ? selectedElementId : undefined} />)}
 
       {showCeiling && !planView && (
         <mesh position={[0, height, 0]} rotation={[Math.PI / 2, 0, 0]}>

@@ -1,0 +1,58 @@
+{
+  "device": "mobile",
+  "width": 390,
+  "height": 844,
+  "browser": "159.0.8154.6",
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1, Unspecified Version)",
+  "samples": 32,
+  "fps": 60.0375234521576,
+  "frameMedianMs": 16.600000023841858,
+  "frameP95Ms": 17,
+  "warm": {
+    "resources": {
+      "geometries": 110,
+      "textures": 15,
+      "programs": 20
+    },
+    "listeners": 28
+  },
+  "after": {
+    "resources": {
+      "geometries": 110,
+      "textures": 15,
+      "programs": 20
+    },
+    "listeners": 28
+  },
+  "spawn": {
+    "position": [
+      0,
+      1.6,
+      0.9949999999999999
+    ],
+    "quaternion": [
+      0,
+      1.2246467991473532e-16,
+      0,
+      -1
+    ],
+    "zoom": 1,
+    "projection": "perspective"
+  },
+  "restored": {
+    "position": [
+      2.635234742809545,
+      4.611943622825281,
+      7.40375475360777
+    ],
+    "quaternion": [
+      -0.20488020538613258,
+      0.1664250928240898,
+      0.03537474550630281,
+      0.9638855830957291
+    ],
+    "zoom": 1,
+    "projection": "perspective"
+  },
+  "errors": []
+}

@@ -1,6 +1,7 @@
 import { nicheRect, glassPartitionRect, windowRect, type ArchitectureSettings } from './environment';
 import type { RoomDimensions } from './roomGeometry';
 
+export const ENTRANCE_LEAF_THICKNESS = 0.036;
 export const ENTRANCE_FRAME_DEPTH = 0.07;
 export const WALLS = ['back', 'right', 'front', 'left'] as const;
 export type RoomWall = typeof WALLS[number];

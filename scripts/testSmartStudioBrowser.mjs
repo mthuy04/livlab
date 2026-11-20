@@ -108,7 +108,7 @@ try {
           (k) => JSON.parse(localStorage.getItem(k)).placedProducts[0].position[0] < 0,
           room
         );
-        await button('Phối cảnh').click();
+        await button('Toàn cảnh').click();
       }
       const before = (await read(room)).placedProducts[0];
       if (touch) {

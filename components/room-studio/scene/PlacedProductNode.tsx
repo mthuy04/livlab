@@ -296,6 +296,7 @@ function SelectionFrame({ product, color = '#C8A96A' }: { product: RoomStudioPro
     () => new THREE.EdgesGeometry(new THREE.BoxGeometry(size.width, size.height, size.depth)),
     [size.width, size.height, size.depth]
   );
+  useEffect(() => () => edges.dispose(), [edges]);
   return (
     <lineSegments geometry={edges}>
       <lineBasicMaterial color={color} transparent opacity={0.95} />
@@ -316,6 +317,7 @@ function FloorFootprint({ product, centreY, color }: { product: RoomStudioProduc
     return g;
   }, [size.width, size.depth]);
   const edges = useMemo(() => new THREE.EdgesGeometry(geometry), [geometry]);
+  useEffect(() => () => { edges.dispose(); geometry.dispose(); }, [edges, geometry]);
   return (
     <group position={[0, -centreY + 0.004, 0]}>
       <mesh geometry={geometry} renderOrder={1}>
@@ -510,6 +512,7 @@ class ModelBoundary extends React.Component<
 }
 
 interface PlacedProductNodeProps {
+  interactive?: boolean;
   placed: PlacedProduct;
   product: RoomStudioProduct;
   selected: boolean;
@@ -531,7 +534,7 @@ function PlacedProductNode({
   product,
   selected,
   status,
-  showCounter = false, stylePack,
+  interactive = true, showCounter = false, stylePack,
   onSelect,
   onDragStart,
   onMeasured,
@@ -593,7 +596,7 @@ function PlacedProductNode({
     onDragStart(placed, e);
   };
 
-  const showLabel = hovered || selected;
+  const showLabel = interactive && (hovered || selected);
   const statusColor = status ? PLACEMENT_STATUS_COLOR[status] : undefined;
 
   return (
@@ -601,8 +604,9 @@ function PlacedProductNode({
       ref={groupRef}
       position={placed.position}
       rotation={[0, placed.rotationY, 0]}
-      onPointerDown={handlePointerDown}
+      onPointerDown={interactive ? handlePointerDown : undefined}
       onPointerOver={(e) => {
+        if (!interactive) return;
         e.stopPropagation();
         setHovered(true);
       }}

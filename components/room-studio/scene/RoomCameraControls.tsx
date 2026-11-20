@@ -1,223 +1,287 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { OrbitControls, OrthographicCamera } from '@react-three/drei';
+import { useLayoutEffect, useRef, type RefObject } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
+import { OrbitControls } from 'three-stdlib';
 import * as THREE from 'three';
-import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
-import type { RoomDimensions } from '@/lib/room-studio/roomGeometry';
-import { getDefaultCameraFraming } from '@/lib/room-studio/roomGeometry';
+import { DEFAULT_CAMERA_FOV, getDefaultCameraFraming } from '@/lib/room-studio/roomGeometry';
+import {
+  focusShot,
+  glideShot,
+  overviewShot,
+  planZoom,
+  type CameraRequest,
+  type Shot,
+} from '@/lib/room-studio/cameraDirector';
+import { VISITOR, hit, walkDelta, walkMove, walkSpawn, type WalkWorld } from '@/lib/room-studio/walkthrough';
+import type { WalkInput } from '@/lib/room-studio/walkInput';
 
-export type ViewMode = 'perspective' | 'plan';
-
-/** A box to frame: the selected product's centre and size, metres. */
-export interface FocusTarget {
-  center: [number, number, number];
-  size: [number, number, number];
-  /** Bumped on every request, so asking twice re-frames twice. */
-  nonce: number;
+type Mode = CameraRequest['mode'];
+type Snapshot = { shot: Shot; request: CameraRequest | null; zoom: number };
+type Flight =
+  | { kind: 'glide'; from: Shot; to: Shot; start: number }
+  | { kind: 'cut'; swap: (() => void) | null; start: number };
+interface Rig {
+  perspective: THREE.PerspectiveCamera;
+  ortho: THREE.OrthographicCamera;
+  controls: OrbitControls | null;
+  saved: Snapshot | null;
+  flight: Flight | null;
+  mode: Mode;
+  request: CameraRequest | null;
+  yaw: number;
+  pitch: number;
+  activate: (mode: Mode) => void;
+}
+function pose(r: Rig): Shot {
+  const cam = r.mode === 'plan' ? r.ortho : r.perspective;
+  return {
+    eye: cam.position.clone(),
+    target: r.controls?.target.clone() ?? cam.getWorldDirection(new THREE.Vector3()).add(cam.position),
+  };
+}
+function apply(r: Rig, s: Shot) {
+  const cam = r.mode === 'plan' ? r.ortho : r.perspective;
+  cam.position.copy(s.eye);
+  cam.lookAt(s.target);
+  cam.updateMatrixWorld();
+  r.controls?.target.copy(s.target);
 }
 
-interface RoomCameraControlsProps {
-  dimensions: RoomDimensions;
-  /** Disabled while a product is being dragged, so one gesture does one thing. */
-  enabled: boolean;
-  /** Incrementing this value re-frames the room. */
-  resetSignal: number;
-  viewMode?: ViewMode;
-  focus?: FocusTarget | null;
-}
-
-const PLAN_POLAR = 0.0001;
-
-/** How long a re-frame takes. Short enough to feel direct, long enough to follow. */
-const TRANSITION_S = 0.45;
-
-/**
- * Orbit / zoom / pan with limits chosen so the customer cannot lose the room:
- * the camera stays above floor level, cannot pass under the floor, and cannot
- * zoom further out than a few room-lengths away.
- *
- * `plan` swaps to an orthographic camera looking straight down: a floor plan
- * where every product's footprint is its true shape and size, pan and zoom
- * only. `focus` glides the perspective camera to frame one product, keeping
- * the angle the customer was looking from.
- *
- * Touch is handled by OrbitControls natively (one finger orbits, two pinch/pan).
- */
 export default function RoomCameraControls({
-  dimensions,
+  request,
+  world,
+  spawn,
+  input,
+  curtain,
   enabled,
-  resetSignal,
-  viewMode = 'perspective',
-  focus = null,
-}: RoomCameraControlsProps) {
-  const controlsRef = useRef<OrbitControlsImpl>(null);
-  const get = useThree((s) => s.get);
-  /**
-   * The plan's own camera, once it exists. The plan's controls are created
-   * only against it: built a frame early against the default camera, their
-   * pinned-vertical limit flattened the PERSPECTIVE camera to a top-down view,
-   * and "Phối cảnh" came back looking straight down.
-   */
-  const [orthoCam, setOrthoCam] = useState<THREE.OrthographicCamera | null>(null);
-  const size = useThree((s) => s.size);
-  const aspect = size.height > 0 ? size.width / size.height : undefined;
-  const framing = getDefaultCameraFraming(dimensions, aspect);
-  const plan = viewMode === 'plan';
+  obstruction,
+  onProjection,
+}: {
+  request: CameraRequest;
+  world: WalkWorld;
+  spawn: ReturnType<typeof walkSpawn>;
+  input: WalkInput;
+  obstruction: RefObject<HTMLParagraphElement | null>;
+  curtain: RefObject<HTMLDivElement | null>;
+  enabled: boolean;
+  onProjection: (projection: 'orbit' | 'plan' | 'inside') => void;
+}) {
+  const get = useThree((s) => s.get),
+    size = useThree((s) => s.size);
+  const rig = useRef<Rig | null>(null);
+  useLayoutEffect(() => {
+    const state = get(),
+      perspective = state.camera as THREE.PerspectiveCamera;
+    const ortho = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.05, 80);
+    // R3F resizes the main perspective camera. The plan frustum is in CSS pixels.
+    Object.assign(ortho, { manual: true });
+    const r: Rig = {
+      perspective,
+      ortho,
+      controls: null,
+      saved: null,
+      mode: 'overview',
+      request: null,
+      flight: null,
+      yaw: 0,
+      pitch: 0,
+      activate,
+    };
+    function interrupt() {
+      if (r.flight?.kind === 'cut') r.flight.swap?.();
+      r.flight = null;
+      if (curtain.current) curtain.current.style.setProperty('opacity', '0');
+    }
+    function activate(mode: Mode) {
+      r.controls?.dispose();
+      r.controls = null;
+      r.mode = mode;
+      const plan = mode === 'plan',
+        cam = plan ? ortho : perspective;
+      perspective.fov = mode === 'walkthrough' ? 67 : DEFAULT_CAMERA_FOV;
+      perspective.updateProjectionMatrix();
+      if (mode !== 'walkthrough') {
+        const c = new OrbitControls(cam, state.events.connected || state.gl.domElement);
+        c.enableDamping = true;
+        c.dampingFactor = 0.12;
+        c.rotateSpeed = 0.7;
+        c.zoomSpeed = 0.8;
+        c.panSpeed = 0.8;
+        c.screenSpacePanning = true;
+        c.enableRotate = !plan;
+        if (plan) {
+          c.mouseButtons.LEFT = THREE.MOUSE.PAN;
+          c.touches.ONE = THREE.TOUCH.PAN;
+        }
+        c.minPolarAngle = plan ? 0.0001 : 0.06;
+        c.maxPolarAngle = plan ? 0.0001 : Math.PI / 2 - 0.12;
+        c.minDistance = 0.25;
+        c.maxDistance = 80;
+        c.addEventListener('change', () => state.invalidate());
+        r.controls = c;
+      }
+      state.set({ camera: cam, controls: r.controls });
+      onProjection(plan ? 'plan' : mode === 'walkthrough' ? 'inside' : 'orbit');
+    }
+    const canvas = state.gl.domElement;
+    canvas.addEventListener('pointerdown', interrupt, true);
+    canvas.addEventListener('wheel', interrupt, true);
+    rig.current = r;
+    input.connect(() => {
+      if (r.mode === 'walkthrough' || r.request?.mode === 'walkthrough') interrupt();
+      state.invalidate();
+    });
+    return () => {
+      r.controls?.dispose();
+      canvas.removeEventListener('pointerdown', interrupt, true);
+      canvas.removeEventListener('wheel', interrupt, true);
+      state.set({ camera: perspective, controls: null });
+      input.connect(null);
+      rig.current = null;
+    };
+  }, [get, input, curtain, onProjection]);
 
-  /**
-   * Put `enabled` back on the instance whenever it changes.
-   *
-   * `PlacedProductNode` switches this off imperatively at pointerdown, because
-   * waiting for this prop to arrive gives OrbitControls time to start an orbit
-   * in the same gesture. That write is invisible to React, so this effect is
-   * what guarantees the camera comes back when the drag ends rather than
-   * relying on drei re-applying a prop whose value it already believes it has.
-   */
-  useEffect(() => {
-    const controls = controlsRef.current;
-    if (controls) controls.enabled = enabled;
+  const zoomBase = useRef(1);
+  useLayoutEffect(() => {
+    const r = rig.current;
+    if (!r) return;
+    const z = planZoom(world.room, size.width, size.height),
+      cam = r.ortho;
+    cam.left = -size.width / 2;
+    cam.right = size.width / 2;
+    cam.top = size.height / 2;
+    cam.bottom = -size.height / 2;
+    cam.zoom *= z / zoomBase.current;
+    zoomBase.current = z;
+    cam.updateProjectionMatrix();
+    if (r.mode === 'plan' && r.controls) {
+      r.controls.minZoom = z * 0.45;
+      r.controls.maxZoom = z * 8;
+    }
+    get().invalidate();
+  }, [size.width, size.height, world.room, get]);
+
+  useLayoutEffect(() => {
+    const r = rig.current;
+    if (!r || r.request === request) return;
+    const previousRequest = r.request;
+    const initial = !previousRequest;
+    if (request.mode === 'walkthrough' && r.flight?.kind === 'cut') r.flight.swap?.();
+    const active = r.mode;
+    const from = pose(r);
+    r.flight = null;
+    r.request = request;
+    if (curtain.current) curtain.current.style.setProperty('opacity', '0');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const state = get(),
+      aspect = state.size.width / state.size.height;
+    const saved = r.saved;
+    if (request.mode === 'walkthrough' && !saved)
+      r.saved = { shot: from, request: previousRequest, zoom: r.ortho.zoom / zoomBase.current };
+    const entering = request.mode === 'walkthrough',
+      restoring = !!saved && !entering && saved.request === request;
+    if (!entering && !restoring) r.saved = null;
+    const goal = restoring
+      ? saved.shot
+      : request.bounds
+      ? focusShot(request.bounds, world, aspect, from.eye.clone().sub(from.target))
+      : overviewShot(world.room, aspect);
+    function swap() {
+      if (!r) return;
+      r.activate(request.mode);
+      if (entering && spawn) {
+        r.yaw = spawn.yaw;
+        r.pitch = 0;
+        r.perspective.rotation.order = 'YXZ';
+        r.perspective.position.set(spawn.x, VISITOR.eye, spawn.z);
+        r.perspective.rotation.set(0, spawn.yaw, 0, 'YXZ');
+      } else if (request.mode === 'plan') {
+        const z = zoomBase.current;
+        r.ortho.zoom = restoring ? saved!.zoom * z : z;
+        r.ortho.updateProjectionMatrix();
+        if (r.controls) {
+          r.controls.minZoom = z * 0.45;
+          r.controls.maxZoom = z * 8;
+        }
+        apply(
+          r,
+          restoring
+            ? goal
+            : { eye: new THREE.Vector3(0, world.room.height + 6, 0.0008), target: new THREE.Vector3() }
+        );
+      } else {
+        r.perspective.rotation.order = 'XYZ';
+        apply(r, goal);
+        if (r.controls)
+          r.controls.maxDistance = Math.max(
+            goal.eye.distanceTo(goal.target) * 2,
+            getDefaultCameraFraming(world.room, aspect).maxDistance
+          );
+      }
+      if (restoring) r.saved = null;
+    }
+    let cut = entering || restoring || request.mode === 'plan' || active === 'plan';
+    // Don't run a visible flight through a wall or the body of another fixture.
+    if (!cut && !initial)
+      for (let i = 1; i <= 12; i++) {
+        const { eye } = glideShot(from, goal, i / 12);
+        if (hit(world, eye, 0.09, eye.y - 0.08, eye.y + 0.08)) {
+          cut = true;
+          break;
+        }
+      }
+    if (initial || reduced) swap();
+    else if (cut) {
+      r.flight = { kind: 'cut', swap, start: performance.now() };
+    } else {
+      r.activate(request.mode);
+      apply(r, from);
+      r.flight = { kind: 'glide', from, to: goal, start: performance.now() };
+    }
+    state.invalidate();
+  }, [request, world, spawn, get, input, curtain]);
+
+  useLayoutEffect(() => {
+    if (rig.current?.controls) rig.current.controls.enabled = enabled;
   }, [enabled]);
 
-  /** An in-flight glide from where the camera is to where it should be. */
-  const glide = useRef<{
-    fromPos: THREE.Vector3;
-    toPos: THREE.Vector3;
-    fromTarget: THREE.Vector3;
-    toTarget: THREE.Vector3;
-    t: number;
-  } | null>(null);
-
-  const startGlide = (toPos: THREE.Vector3, toTarget: THREE.Vector3) => {
-    const controls = controlsRef.current;
-    if (!controls) return;
-    get().invalidate();
-    glide.current = {
-      fromPos: get().camera.position.clone(),
-      toPos,
-      fromTarget: controls.target.clone(),
-      toTarget,
-      t: 0,
-    };
-  };
-
-  // Re-frame on explicit reset. `dimensions` and `aspect` are intentionally
-  // excluded: resizing the room, or the window, should not yank the camera
-  // away from the angle the customer chose. Only mount and a reset re-frame;
-  // leaving the plan view returns to whatever angle the customer had.
-  const firstFrame = useRef(true);
-  const appliedReset = useRef(resetSignal);
-  useEffect(() => {
-    const controls = controlsRef.current;
-    if (!controls || plan) return;
-    const { position, target } = getDefaultCameraFraming(dimensions, aspect);
-    if (firstFrame.current) {
-      firstFrame.current = false;
-      get().camera.position.set(position[0], position[1], position[2]);
-      controls.target.set(target[0], target[1], target[2]);
-      controls.update();
+  useFrame((state, dt) => {
+    const r = rig.current;
+    if (!r) return;
+    const f = r.flight,
+      now = performance.now();
+    if (f) {
+      const t = Math.min(1, (now - f.start) / (f.kind === 'cut' ? 260 : 420));
+      if (f.kind === 'glide') apply(r, glideShot(f.from, f.to, t));
+      else {
+        if (t >= 0.5 && f.swap) {
+          const swap = f.swap;
+          f.swap = null;
+          swap();
+        }
+        if (curtain.current) curtain.current.style.setProperty('opacity', String(1 - Math.abs(2 * t - 1)));
+      }
+      if (t === 1) r.flight = null;
+      state.invalidate();
       return;
     }
-    if (appliedReset.current === resetSignal) return;
-    appliedReset.current = resetSignal;
-    startGlide(new THREE.Vector3(...position), new THREE.Vector3(...target));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resetSignal, plan]);
-
-  // Frame one product: keep the viewing direction, move in until its bounding
-  // sphere fills about a third of the view.
-  useEffect(() => {
-    const controls = controlsRef.current;
-    if (!focus || !controls || plan) return;
-    const center = new THREE.Vector3(...focus.center);
-    const radius = Math.max(0.25, Math.hypot(...focus.size) / 2);
-    const live = get().camera;
-    const fov = ((live as THREE.PerspectiveCamera).fov ?? 50) * (Math.PI / 180);
-    const distance = Math.max(framing.minDistance, (radius / Math.sin(fov / 2)) * 1.6);
-    const dir = live.position.clone().sub(controls.target).normalize();
-    // Never frame from below the floor or flat along it.
-    if (dir.y < 0.35) dir.y = 0.35;
-    dir.normalize();
-    startGlide(center.clone().add(dir.multiplyScalar(distance)), center);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focus?.nonce]);
-
-  // Plan view: centre the room and fit it, every time the plan is entered or
-  // the canvas changes shape. Orthographic zoom is pixels per metre.
-  const planZoom = Math.max(
-    10,
-    Math.min(size.width / (dimensions.length + 0.8), size.height / (dimensions.width + 0.8))
-  );
-  useEffect(() => {
-    const controls = controlsRef.current;
-    const ortho = get().camera as THREE.OrthographicCamera;
-    if (!plan || !controls || !orthoCam || !ortho.isOrthographicCamera) return;
-    ortho.position.set(0, dimensions.height + 6, 0.0001);
-    ortho.zoom = planZoom;
-    ortho.updateProjectionMatrix();
-    controls.target.set(0, 0, 0);
-    controls.update();
-  }, [plan, orthoCam, planZoom, dimensions.height, get]);
-
-  useFrame((_, delta) => {
-    const g = glide.current;
-    const controls = controlsRef.current;
-    if (!g || !controls) return;
-    g.t = Math.min(1, g.t + delta / TRANSITION_S);
-    const k = 1 - Math.pow(1 - g.t, 3);
-    get().camera.position.lerpVectors(g.fromPos, g.toPos, k);
-    controls.target.lerpVectors(g.fromTarget, g.toTarget, k);
-    controls.update();
-    if (g.t >= 1) glide.current = null;
-    else get().invalidate();
-  });
-
-
-  return (
-    <>
-      {plan && (
-        <OrthographicCamera
-          ref={setOrthoCam}
-          makeDefault
-          position={[0, dimensions.height + 6, 0.0001]}
-          zoom={planZoom}
-          near={0.1}
-          far={dimensions.height + 20}
-        />
-      )}
-      {(!plan || orthoCam) && (
-      <OrbitControls
-        ref={controlsRef}
-        key={viewMode}
-        camera={plan ? orthoCam! : undefined}
-        enabled={enabled}
-        enablePan
-        enableZoom
-        enableRotate={!plan}
-        enableDamping
-        dampingFactor={0.12}
-        // Plan view pans across the floor, not across the screen's own plane
-        // tilted by whatever angle the perspective camera last had.
-        screenSpacePanning
-        minDistance={plan ? undefined : framing.minDistance}
-        maxDistance={plan ? undefined : framing.maxDistance}
-        minZoom={plan ? planZoom * 0.5 : undefined}
-        maxZoom={plan ? planZoom * 6 : undefined}
-        // Plan: pinned a hair off vertical, which also fixes the orientation —
-        // the camera sits a fraction toward the open front, so the back wall
-        // is the top edge of the screen, as on a drawing.
-        minPolarAngle={plan ? PLAN_POLAR : 0.15}
-        maxPolarAngle={plan ? PLAN_POLAR : framing.maxPolarAngle}
-        target={plan ? [0, 0, 0] : framing.target}
-        makeDefault
-        // Gentler rotation and zoom than the defaults: a bathroom is small,
-        // and the default speeds swing it past the angle you wanted.
-        rotateSpeed={0.7}
-        zoomSpeed={0.8}
-        panSpeed={0.8}
-      />
-      )}
-    </>
-  );
+    if (r.mode !== 'walkthrough') {
+      if (r.controls?.enabled) r.controls.update();
+      return;
+    }
+    const { dx, dy, side, forward, elapsed } = input.read(dt, now);
+    r.yaw -= dx * 0.004;
+    r.pitch = THREE.MathUtils.clamp(r.pitch - dy * 0.004, -1.18, 1.18);
+    r.perspective.rotation.set(r.pitch, r.yaw, 0, 'YXZ');
+    if (side || forward) {
+      const delta = walkDelta(r.yaw, side, forward, VISITOR.speed * elapsed);
+      const p = walkMove(world, r.perspective.position, delta.x, delta.z);
+      const note = obstruction.current;
+      if (note?.hidden === p.blocked) note.toggleAttribute('hidden', !p.blocked);
+      r.perspective.position.set(p.x, VISITOR.eye, p.z);
+      state.invalidate();
+    }
+  }, -1);
+  return null;
 }

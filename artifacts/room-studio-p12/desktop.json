@@ -1,0 +1,70 @@
+{
+  "device": "desktop",
+  "width": 1440,
+  "height": 900,
+  "browser": "159.0.8154.6",
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1, Unspecified Version)",
+  "collision": {
+    "stopped": [
+      5.56985670240209e-16,
+      1.6,
+      -0.3494784472368024
+    ],
+    "afterContinuedInput": [
+      6.326246462035678e-16,
+      1.6,
+      -0.3494995409855451
+    ]
+  },
+  "samples": 108,
+  "fps": 60.04002668405841,
+  "frameMedianMs": 16.69999998807907,
+  "frameP95Ms": 16.900000035762787,
+  "warm": {
+    "resources": {
+      "geometries": 114,
+      "textures": 15,
+      "programs": 22
+    },
+    "listeners": 28
+  },
+  "after": {
+    "resources": {
+      "geometries": 114,
+      "textures": 15,
+      "programs": 22
+    },
+    "listeners": 28
+  },
+  "spawn": {
+    "position": [
+      0,
+      1.6,
+      0.9949999999999999
+    ],
+    "quaternion": [
+      0,
+      1.2246467991473532e-16,
+      0,
+      -1
+    ],
+    "zoom": 1,
+    "projection": "perspective"
+  },
+  "restored": {
+    "position": [
+      -0.32531114746809275,
+      1.4688412031295557,
+      1.0094501162841114
+    ],
+    "quaternion": [
+      -0.180317986412844,
+      0.16727034872469274,
+      0.031133817283819795,
+      0.9687810586685079
+    ],
+    "zoom": 1,
+    "projection": "perspective"
+  },
+  "errors": []
+}

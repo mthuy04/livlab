@@ -9,6 +9,7 @@ import {isPlaceable} from '@/lib/room-studio/productCapability';
 import StyleSwitcher from '@/components/room-studio/panels/StyleSwitcher';
 import { roomLighting, STYLE_PACKS } from '@/lib/room-studio/stylePacks';
 import SmartFixPanel from '@/components/room-studio/panels/SmartFixPanel';
+import {buildWalkWorld} from '@/lib/room-studio/walkthrough';
 import SpatialOverlay from '@/components/room-studio/scene/SpatialOverlay';
 import {snapPlacement} from '@/lib/room-studio/snapPlacement';
 import { useQuote } from '@/lib/context/QuoteContext';
@@ -108,6 +109,7 @@ function RoomWorkspace({ tenant }: { tenant: ReturnType<typeof useTenant> }) {
   );
   const isDesktop = useIsDesktop();
 
+  const [tour,setTour]=useState(false);
   const [showCeiling, setShowCeiling] = useState(false);
   const [toast, setToast] = useState<{ message: string; undo?: () => void } | null>(null);
   const [toolTab, setToolTab] = useState<ToolTabId>('room');
@@ -460,8 +462,13 @@ function RoomWorkspace({ tenant }: { tenant: ReturnType<typeof useTenant> }) {
   );
 
 
+  const proposalSubject=useMemo(()=>{
+    if(!studio.proposal?.operations.some(op=>'instanceId' in op || 'elementId' in op || 'element' in op))return null;
+    const base=studio.state;
+    return {operations:studio.proposal.operations,before:buildWalkWorld(base.dimensions,base.elements,buildEntries(studio.placedViews),parseArchitecture(base.architecture).basinCounter)};
+  },[studio.proposal,studio.state,studio.placedViews]);
   const viewport = (
-    <RoomScene3D
+    <RoomScene3D onTourChange={setTour} proposalSubject={proposalSubject} incompletePlacements={studio.visualViews.length!==scene.placedProducts.length}
       dimensions={scene.dimensions}
       floorStyle={scene.surfaceStyles.floor}
       wallStyle={scene.surfaceStyles.walls}
@@ -512,6 +519,7 @@ function RoomWorkspace({ tenant }: { tenant: ReturnType<typeof useTenant> }) {
   useEffect(() => {
     const selected = studio.selected;
     const onKeyDown = (event: KeyboardEvent) => {
+      if(tour)return;
       const target = event.target as HTMLElement | null;
       // Never steal the arrows from a field the customer is typing in.
       if (event.defaultPrevented || event.isComposing || event.altKey || document.querySelector('[aria-modal="true"]')) return;
@@ -544,7 +552,7 @@ function RoomWorkspace({ tenant }: { tenant: ReturnType<typeof useTenant> }) {
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [studio]);
+  }, [studio,tour]);
 
   const selectedToolbar = studio.selected && (
     <SelectedProductToolbar
@@ -570,7 +578,7 @@ function RoomWorkspace({ tenant }: { tenant: ReturnType<typeof useTenant> }) {
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-[#F3F7FA]">
-      <WorkspaceHeader
+      <div inert={tour}><WorkspaceHeader
         dimensions={studio.state.dimensions}
         saved={studio.isSaved}
         undoLabel={studio.undoLabel}
@@ -578,7 +586,7 @@ function RoomWorkspace({ tenant }: { tenant: ReturnType<typeof useTenant> }) {
         onUndo={studio.undo}
         onRedo={studio.redo}
         onOpenGuide={() => setShowGuide(true)}
-      />
+      /></div>
 
       {studio.loadError && (
         <div
@@ -595,7 +603,7 @@ function RoomWorkspace({ tenant }: { tenant: ReturnType<typeof useTenant> }) {
               is left, which is ~56% at 1280 and ~60% at 1536. Below that the
               panels stop shrinking rather than becoming unusable — a 230px
               product card is not a product card. */}
-          <aside className="w-[264px] shrink-0 overflow-hidden border-r border-[#E1E8ED] 2xl:w-[288px]">
+          <aside inert={tour} className="w-[264px] shrink-0 overflow-hidden border-r border-[#E1E8ED] 2xl:w-[288px]">
             {toolPanel}
           </aside>
 
@@ -604,10 +612,10 @@ function RoomWorkspace({ tenant }: { tenant: ReturnType<typeof useTenant> }) {
             {/* `relative` is load-bearing: the canvas fills this box absolutely
                 rather than by percentage height. See RoomScene3D. */}
             <div className="relative min-h-0 flex-1">{viewport}</div>
-            {selectedToolbar}
+            {!tour && selectedToolbar}
           </section>
 
-          <aside className="w-[304px] shrink-0 overflow-hidden border-l border-[#E1E8ED] 2xl:w-[324px]">
+          <aside inert={tour} className="w-[304px] shrink-0 overflow-hidden border-l border-[#E1E8ED] 2xl:w-[324px]">
             {libraryPanel}
           </aside>
         </div>
@@ -622,16 +630,16 @@ function RoomWorkspace({ tenant }: { tenant: ReturnType<typeof useTenant> }) {
                 makes the scene rebuild its drawing buffer for a panel that is
                 about to close again. The room keeps its height and stays
                 visible above the sheet. */}
-            {mobilePanel !== 'none' && (
+            {!tour && mobilePanel !== 'none' && (
               <div className="absolute inset-x-0 bottom-0 top-[28%] z-30 overflow-hidden border-t border-[#E1E8ED] bg-white shadow-[0_-8px_24px_rgba(11,22,35,0.12)]">
                 {mobilePanel === 'tools' ? toolPanel : libraryPanel}
               </div>
             )}
           </div>
 
-          {selectedToolbar}
+          {!tour && selectedToolbar}
 
-          <nav
+          <nav inert={tour}
             aria-label="Khu vực làm việc"
             className="flex shrink-0 border-t border-[#E1E8ED] bg-white"
           >
@@ -667,7 +675,7 @@ function RoomWorkspace({ tenant }: { tenant: ReturnType<typeof useTenant> }) {
         </div>
       )}
 
-      <CommandBar
+      <div inert={tour}><CommandBar
         budget={studio.budget}
         uniqueCount={uniquePlacedCount}
         technical={technicalSummary}
@@ -679,7 +687,7 @@ function RoomWorkspace({ tenant }: { tenant: ReturnType<typeof useTenant> }) {
         onRequestQuote={() => openImplementation()}
         requestQuoteLabel={tenant.experience.copy.roomStudio.primaryCta}
         onResetRoom={studio.resetRoom}
-      />
+      /></div>
 
       <RoomPresetDialog
         open={showPresets}

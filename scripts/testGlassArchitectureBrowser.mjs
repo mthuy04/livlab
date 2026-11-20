@@ -207,7 +207,7 @@ async function exercise(page, name, touch) {
     if (touch) await nav.click();
     await button('Mặt bằng').click();
     if (name === 'desktop') await screenshot(mechanism + '-plan');
-    await button('Phối cảnh').click();
+    await button('Toàn cảnh').click();
     if (touch) await nav.click();
   }
   await field('Tâm X (cm)').fill('650'); assert.equal(await button('Áp dụng').isEnabled(), false);

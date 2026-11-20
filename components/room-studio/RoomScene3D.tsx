@@ -1,10 +1,10 @@
 'use client';
 
-import React, { Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { ContactShadows, PerformanceMonitor, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
-import { AlertCircle, Box, Eye, EyeOff, Focus, LayoutGrid, Maximize } from 'lucide-react';
+import { AlertCircle, Box, Eye, EyeOff, Focus, LayoutGrid, Footprints } from 'lucide-react';
 import type { RoomDimensions } from '@/lib/room-studio/roomGeometry';
 import { DEFAULT_CAMERA_FOV } from '@/lib/room-studio/roomGeometry';
 import type { PlacedProductView } from '@/lib/room-studio/useRoomStudio';
@@ -21,7 +21,14 @@ import PlacedProductNode, { type measureGlbForPlacement } from './scene/PlacedPr
 /** What `measureGlbForPlacement` returns; named so the dev prop can state it. */
 type GlbMeasurement = ReturnType<typeof measureGlbForPlacement>;
 import { trackPlaneDrag } from './scene/DragPlane';
-import RoomCameraControls, { type FocusTarget, type ViewMode } from './scene/RoomCameraControls';
+import RoomCameraControls from './scene/RoomCameraControls';
+import WalkthroughOverlay from './scene/WalkthroughOverlay';
+import {WalkInput} from '@/lib/room-studio/walkInput';
+import {affectedIds, subjectBounds, type CameraRequest} from '@/lib/room-studio/cameraDirector';
+import {buildWalkWorld, walkSpawn, type WalkWorld} from '@/lib/room-studio/walkthrough';
+import {buildEntries} from '@/lib/technical-advisor/engine';
+import {elementsForFlags} from '@/lib/room-studio/architecture';
+import type {RoomOperation} from '@/lib/room-studio/roomOperations';
 
 /**
  * Keeps a ref on whichever camera is the default right now. The drop raycast
@@ -82,6 +89,9 @@ class EnvironmentBoundary extends React.Component<{ children: React.ReactNode },
 }
 
 interface RoomScene3DProps {
+  onTourChange?: (active:boolean)=>void;
+  incompletePlacements?:boolean;
+  proposalSubject?: {before:WalkWorld;operations:RoomOperation[]} | null;
   visualStyle?: import('@/lib/room-studio/stylePacks').VisualStyle;
   dimensions: RoomDimensions;
   /** Chrome rendered over the canvas's top-left corner (the layout toggle). */
@@ -125,7 +135,7 @@ interface RoomScene3DProps {
 
 export default function RoomScene3D({
   dimensions,
-  overlayTopLeft, visualStyle,
+  overlayTopLeft, visualStyle, onTourChange, incompletePlacements, proposalSubject,
   floorStyle,
   wallStyle,
   lighting,
@@ -145,9 +155,20 @@ export default function RoomScene3D({
   onModelMeasured,
   onModelLoadError,
 }: RoomScene3DProps) {
-  const [resetSignal, setResetSignal] = useState(0);
-  const [viewMode, setViewMode] = useState<ViewMode>('perspective');
-  const [focus, setFocus] = useState<FocusTarget | null>(null);
+  const [request,setRequest]=useState<CameraRequest>({mode:'overview'});
+  const [projection,setProjection]=useState<'orbit'|'plan'|'inside'>('orbit');
+  const enterButton=useRef<HTMLButtonElement>(null);
+  const walking=request.mode==='walkthrough';
+  const previous=useRef<CameraRequest>({mode:'overview'});
+  const obstruction=useRef<HTMLParagraphElement>(null);
+  const curtain=useRef<HTMLDivElement>(null);
+  const [input]=useState(()=>new WalkInput());
+  const layout=useMemo(()=>elements??elementsForFlags(dimensions,[],architecture),[elements,dimensions,architecture]);
+  const world=useMemo(()=>buildWalkWorld(dimensions,layout,buildEntries(placedViews),architecture.basinCounter),[dimensions,layout,placedViews,architecture.basinCounter]);
+  const spawn=useMemo(()=>incompletePlacements?null:walkSpawn(world),[world,incompletePlacements]);
+  const proposed=useMemo(()=>proposalSubject && subjectBounds(affectedIds(proposalSubject.operations),proposalSubject.before,world),[proposalSubject,world]);
+  const exit=useCallback(()=>{setRequest(previous.current);onTourChange?.(false);requestAnimationFrame(()=>enterButton.current?.focus({preventScroll:true}));},[onTourChange]);
+  useEffect(()=>()=>onTourChange?.(false),[onTourChange]);
   const [quality, setQualityTier] = useRenderQuality();
   /**
    * A lost WebGL context — the GPU reclaimed by the browser or the system —
@@ -170,9 +191,14 @@ export default function RoomScene3D({
   const selectedView = placedViews.find((v) => v.placed.instanceId === selectedInstanceId) ?? null;
   const focusSelected = () => {
     if (!selectedView) return;
-    const size = getRealWorldSize(selectedView.product);
-    setViewMode('perspective');
-    setFocus({ center: selectedView.placed.position, size: [size.width, size.height, size.depth], nonce: Date.now() });
+    const id=selectedView.placed.instanceId;
+    const bounds=subjectBounds(new Set([id]),world);
+    if(bounds){setRequest({mode:'product',bounds});return;}
+    // A visual placeholder is focusable even when its installation envelope is unknown.
+    const size=getRealWorldSize(selectedView.product);
+    const centre=new THREE.Vector3(...selectedView.placed.position);
+    const radius=new THREE.Vector3(size.width,size.height,size.depth).length()/2;
+    setRequest({mode:'product',bounds:{min:centre.clone().addScalar(-radius),max:centre.clone().addScalar(radius)}});
   };
   const [dragging, setDragging] = useState(false);
   const cancelDrag = useRef<(() => void) | null>(null);
@@ -201,7 +227,7 @@ export default function RoomScene3D({
 
   const handleDragStart = useCallback<React.ComponentProps<typeof PlacedProductNode>['onDragStart']>((placed, e) => {
     const canvas = containerRef.current;
-    if (!canvas) return;
+    if (!canvas || walking) return;
     cancelDrag.current?.();
     onBeginDrag?.(placed.instanceId);
     setDragging(true);
@@ -212,12 +238,13 @@ export default function RoomScene3D({
         setDragging(false);
         onEndDrag?.(cancelled);
       });
-  }, [onBeginDrag, onEndDrag, onMove]);
+  }, [walking,onBeginDrag, onEndDrag, onMove]);
 
   /** Projects a drop point from screen coordinates onto the floor plane. */
   const handleHtmlDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDropTarget(false);
+    if(walking)return;
     const productId = e.dataTransfer.getData('application/livlab-product');
     const camera = cameraRef.current;
     const container = containerRef.current;
@@ -241,6 +268,7 @@ export default function RoomScene3D({
       ref={containerRef}
       onDragOver={(e) => {
         e.preventDefault();
+        if(walking)return;
         e.dataTransfer.dropEffect = 'copy';
         setIsDropTarget(true);
       }}
@@ -258,61 +286,29 @@ export default function RoomScene3D({
       // selection. Without it the hint strip and the labels sitting over the
       // canvas highlight blue mid-drag, which reads as the drag having gone
       // wrong at exactly the moment it is going right.
+      data-camera-mode={request.mode}
       data-render-tier={quality.tier}
-      className={`absolute inset-0 touch-none select-none overflow-hidden bg-[#E9EEF1] transition-colors ${
+      className={`${walking ? 'fixed z-[100]' : 'absolute'} inset-0 touch-none select-none overflow-hidden bg-[#E9EEF1] transition-colors ${
         isDropTarget ? 'ring-2 ring-inset ring-[#C8A96A]' : ''
       }`}
     >
-      {overlayTopLeft && <div className="absolute left-3 top-3 z-10 flex gap-2">{overlayTopLeft}</div>}
-
-      <div className="absolute right-3 top-3 z-10 flex flex-wrap justify-end gap-1.5">
-        {/* One segmented control for the two ways to look at the room. */}
-        <div className="flex overflow-hidden rounded border border-[#D8E2EA] bg-white/92 shadow-sm backdrop-blur">
-          {(
-            [
-              { id: 'perspective', label: 'Phối cảnh', icon: Box },
-              { id: 'plan', label: 'Mặt bằng', icon: LayoutGrid },
-            ] as const
-          ).map(({ id, label, icon: Icon }) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setViewMode(id)}
-              aria-label={label}
-              aria-pressed={viewMode === id}
-              title={id === 'plan' ? 'Nhìn thẳng từ trên xuống như bản vẽ mặt bằng' : 'Góc nhìn phối cảnh trong phòng'}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 text-[12px] font-medium transition-colors ${
-                viewMode === id ? 'bg-[color:var(--tenant-ui-selected,#0B2239)] text-[color:var(--tenant-ui-selected-contrast,#FFFFFF)]' : 'text-[#0B1623] hover:bg-white'
-              }`}
-            >
-              <Icon className="h-3.5 w-3.5" aria-hidden />
-              <span className="hidden sm:inline">{label}</span>
-            </button>
-          ))}
-        </div>
-        <button
-          type="button"
-          onClick={() => {
-            setViewMode('perspective');
-            setResetSignal((n) => n + 1);
-          }}
-          title="Đưa cả phòng vào khung nhìn"
-          className="flex items-center gap-1.5 rounded border border-[#D8E2EA] bg-white/92 px-2.5 py-1.5 text-[12px] font-medium text-[#0B1623] shadow-sm backdrop-blur transition-colors hover:bg-white"
-        >
-          <Maximize className="h-3.5 w-3.5" aria-hidden />
-          <span className="hidden sm:inline">Vừa phòng</span>
-        </button>
-        {selectedView && (
-          <button
-            type="button"
-            onClick={focusSelected}
-            title="Phóng tới sản phẩm đang chọn"
-            className="flex items-center gap-1.5 rounded border border-[#D8E2EA] bg-white/92 px-2.5 py-1.5 text-[12px] font-medium text-[#0B1623] shadow-sm backdrop-blur transition-colors hover:bg-white"
-          >
-            <Focus className="h-3.5 w-3.5" aria-hidden />
-            <span className="hidden lg:inline">Xem sản phẩm</span>
-          </button>
-        )}
+      <div ref={curtain} aria-hidden className="pointer-events-none absolute inset-0 z-10 bg-[#eef1f2] opacity-0" />
+      {walking && <WalkthroughOverlay obstruction={obstruction} input={input} exit={exit}/>}
+      {!walking && overlayTopLeft && <div className="absolute bottom-12 left-3 z-10 flex gap-2">{overlayTopLeft}</div>}
+      {!walking && <div className="absolute right-2 top-2 z-10 flex flex-wrap justify-end gap-1 rounded border border-[#d8e2ea] bg-white/95 p-1 shadow-sm">
+        {([
+          {mode:'overview',label:'Toàn cảnh',title:'Đưa cả phòng vào khung nhìn',icon:Box,action:()=>setRequest({mode:'overview'})},
+          {mode:'plan',label:'Mặt bằng',title:'Nhìn thẳng từ trên xuống như bản vẽ mặt bằng',icon:LayoutGrid,action:()=>setRequest({mode:'plan'})},
+          ...(proposed?[{mode:'proposal',label:'Đề xuất',title:'Tập trung vào thay đổi đề xuất',icon:Focus,action:()=>setRequest({mode:'proposal',bounds:proposed})}]:[]),
+          ...(selectedView?[{mode:'product',label:'Tập trung',title:'Phóng tới sản phẩm đang chọn',icon:Focus,action:focusSelected}]:[]),
+        ]).map(({mode,label,title,icon:Icon,action})=><button key={mode} type="button" aria-label={label} aria-pressed={request.mode===mode}
+          title={title} onClick={action}
+          className={'flex min-h-9 items-center gap-1 rounded px-2 text-xs font-semibold disabled:opacity-45 '+(request.mode===mode?'bg-[#e9dfca] text-[#30291d]':'text-[#253641] hover:bg-[#f3f4f4]')}>
+          <Icon size={15}/><span className="hidden sm:inline">{label}</span></button>)}
+        <button ref={enterButton} type="button" aria-label="Tham quan 3D" disabled={!spawn} onClick={()=>{
+          if(!spawn)return;cancelDrag.current?.();previous.current=request;setRequest({mode:'walkthrough'});onTourChange?.(true);
+        }} className="flex min-h-9 items-center gap-1 rounded px-2 text-xs font-semibold text-[#253641] hover:bg-[#f3f4f4] disabled:opacity-45">
+          <Footprints size={15}/>Tham quan 3D</button>
         <button
           type="button"
           onClick={() => onToggleCeiling(!showCeiling)}
@@ -327,18 +323,19 @@ export default function RoomScene3D({
           )}
           <span className="hidden lg:inline">Trần</span>
         </button>
-      </div>
+      </div>}
+      {!walking && !spawn && <p role="status" className="absolute right-2 top-16 z-10 max-w-xs rounded bg-white/95 px-2 text-xs">{incompletePlacements || world.unknown.length ? 'Chưa đủ kích thước thiết bị để tham quan an toàn.' : 'Không có vị trí trống để bắt đầu tham quan.'}</p>}
 
       {/* The hint changes with the selection rather than listing everything at
           once: the arrow keys only do something while a product is selected,
           and a line that mentions them the rest of the time is noise. */}
-      <div className="pointer-events-none absolute bottom-3 left-3 z-10 hidden rounded bg-white/85 px-2.5 py-1.5 text-[12px] text-[#5B6B7A] shadow-sm backdrop-blur sm:block">
+      {!walking && <div className="pointer-events-none absolute bottom-3 left-3 z-10 hidden rounded bg-white/85 px-2.5 py-1.5 text-[12px] text-[#5B6B7A] shadow-sm backdrop-blur sm:block">
         {selectedInstanceId
           ? 'Kéo sản phẩm để đổi vị trí · Phím mũi tên chỉnh từng centimét · Giữ Shift để bước 10cm'
-          : viewMode === 'plan'
+          : request.mode === 'plan'
             ? 'Mặt bằng · Kéo để di chuyển khung nhìn · Cuộn để phóng to · Kéo sản phẩm để đổi vị trí'
             : 'Kéo để xoay · Cuộn để phóng to · Kéo sản phẩm để đổi vị trí'}
-      </div>
+      </div>}
 
       <CanvasErrorBoundary>
         <Canvas
@@ -358,7 +355,7 @@ export default function RoomScene3D({
             });
             canvas.addEventListener('webglcontextrestored', () => setContextLost(false));
           }}
-          onPointerMissed={() => onSelect(null)}
+          onPointerMissed={() => {if(!walking)onSelect(null);}}
           className="h-full w-full bg-[#E9EEF1]"
           frameloop="demand"
           dpr={quality.dpr}
@@ -381,26 +378,19 @@ export default function RoomScene3D({
             </Suspense>
           </EnvironmentBoundary>
 
-          <RoomCameraControls
-            dimensions={dimensions}
-            enabled={!dragging}
-            resetSignal={resetSignal}
-            viewMode={viewMode}
-            focus={focus}
-          />
-
+          <RoomCameraControls obstruction={obstruction} onProjection={setProjection} request={request} world={world} spawn={spawn} input={input} curtain={curtain} enabled={!dragging} />
           <RoomShell visualStyle={visualStyle}
             dimensions={dimensions}
             floorStyle={floorStyle}
             wallStyle={wallStyle}
-            showCeiling={showCeiling}
+            enclosed={projection==='inside'} showCeiling={projection==='inside' || showCeiling}
             architecture={architecture} elements={elements} selectedElementId={selectedElementId}
             lighting={lighting}
             textureResolution={quality.textureResolution}
-            planView={viewMode === 'plan'}
+            planView={projection==='plan'}
           />
 
-          <ContactShadows
+          <ContactShadows frames={walking ? 8 : Infinity}
             position={[0, 0.002, 0]}
             scale={Math.max(dimensions.length, dimensions.width) * 1.5}
             opacity={0.42}
@@ -415,7 +405,7 @@ export default function RoomScene3D({
               key={placed.instanceId}
               placed={placed}
               product={product}
-              selected={placed.instanceId === selectedInstanceId}
+              interactive={!walking} selected={!walking && placed.instanceId === selectedInstanceId}
               status={placementStatus?.[placed.instanceId]}
               stylePack={placed.placementType==='counter' ? visualStyle?.id : undefined} showCounter={architecture.basinCounter}
               onSelect={onSelect}
@@ -425,7 +415,7 @@ export default function RoomScene3D({
             />
           ))}
 
-          {spatialOverlay}{devSceneOverlay}
+          {!walking && spatialOverlay}{devSceneOverlay}
 
         </Canvas>
       </CanvasErrorBoundary>
@@ -441,7 +431,7 @@ export default function RoomScene3D({
       {/* An empty room is a valid state, not an error — the prompt suggests the
           three products a bathroom is actually planned around and gets out of
           the way of the space itself. */}
-      {placedViews.length === 0 && !elements?.length && (
+      {!walking && placedViews.length === 0 && !elements?.length && (
         <div className="absolute inset-x-0 bottom-10 flex justify-center px-6">
           <div className="rounded border border-[#D8E2EA] bg-white/95 px-4 py-3 text-center shadow-sm backdrop-blur">
             <p className="text-[13px] font-medium text-[#0B1623]">Bắt đầu với một thiết bị chính.</p>
