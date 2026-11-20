@@ -2,12 +2,16 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode, useMemo } from 'react';
 import { Product, QuoteItem } from '@/lib/types';
-import { getQuoteItems, addQuoteItem, removeQuoteItem, clearQuoteItems, updateQuoteItemQty, calculateQuoteTotalRange } from '@/lib/storage';
+import { useTenant } from '@/components/storefront/TenantContext';
+import { quoteLineKey,reconcileRoomQuote } from '../room-studio/roomQuote';
+import type { RoomStudioProduct } from '../room-studio/productAdapter';
+import { saveQuoteItems,getQuoteItems, addQuoteItem, removeQuoteItem, clearQuoteItems, updateQuoteItemQty, calculateQuoteTotalRange } from '@/lib/storage';
 
 interface QuoteContextValue {
   items: QuoteItem[];
   count: number;
   isDrawerOpen: boolean;
+  syncRoom: (designId:string,products:RoomStudioProduct[])=>void;
   openDrawer: () => void;
   closeDrawer: () => void;
   toggleDrawer: () => void;
@@ -52,12 +56,29 @@ export interface CatalogQuoteEntry {
 const QuoteContext = createContext<QuoteContextValue | null>(null);
 
 export function QuoteProvider({ children }: { children: ReactNode }) {
+  const {id}=useTenant();
+  return <TenantBasket key={id} tenant={id}>{children}</TenantBasket>;
+}
+function TenantBasket({tenant,children}:{tenant:string;children:ReactNode}) {
   const [items, setItemsState] = useState<QuoteItem[]>([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
-    setItemsState(getQuoteItems());
-  }, []);
+    let mounted = true;
+    const refresh = () => { if (mounted) setItemsState(getQuoteItems(tenant)); };
+    queueMicrotask(refresh);
+    window.addEventListener('storage', refresh);
+    return () => {
+      mounted = false;
+      window.removeEventListener('storage', refresh);
+    };
+  }, [tenant]);
+
+  const syncRoom=useCallback((designId:string,products:RoomStudioProduct[])=>{
+    const before=getQuoteItems(tenant);
+    const next=reconcileRoomQuote(before,tenant,designId,products,new Date().toISOString());
+    if(next!==before){saveQuoteItems(next,tenant);setItemsState(next);}
+  },[tenant]);
 
   const addItem = useCallback((product: Product, conceptId?: string) => {
     const quoteItem: QuoteItem = {
@@ -80,10 +101,10 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
       addedAt: new Date().toISOString()
     };
     console.log(`[Quote] Adding item: ${product.name}`);
-    const updated = addQuoteItem(quoteItem);
+    const updated = addQuoteItem(quoteItem,tenant);
     setItemsState(updated);
     setIsDrawerOpen(true);
-  }, []);
+  }, [tenant]);
 
   /**
    * Adds a storefront catalogue product.
@@ -95,6 +116,7 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
    * client-supplied showroom name is not evidence of who owns the lead.
    */
   const addCatalogItem = useCallback((entry: CatalogQuoteEntry) => {
+    if (entry.tenantId !== tenant) return;
     const price = entry.showroomPrice ?? 0;
     const quoteItem: QuoteItem = {
       productId: entry.productId,
@@ -117,41 +139,41 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
       showroomLocation: '',
       addedAt: new Date().toISOString(),
     };
-    const updated = addQuoteItem(quoteItem);
+    const updated = addQuoteItem(quoteItem,tenant);
     setItemsState(updated);
     setIsDrawerOpen(true);
-  }, []);
+  }, [tenant]);
 
   const removeItem = useCallback((productId: string) => {
-    const updated = removeQuoteItem(productId);
+    const updated = removeQuoteItem(productId,tenant);
     setItemsState(updated);
-  }, []);
+  }, [tenant]);
 
   const updateQty = useCallback((productId: string, qty: number) => {
-    const updated = updateQuoteItemQty(productId, qty);
+    const updated = updateQuoteItemQty(productId, qty,tenant);
     setItemsState(updated);
-  }, []);
+  }, [tenant]);
 
   const increase = useCallback((productId: string) => {
     setItemsState(prev => {
-      const item = prev.find(i => i.productId === productId);
+      const item = prev.find(i => quoteLineKey(i) === productId);
       if (!item) return prev;
-      return updateQuoteItemQty(productId, item.quantity + 1);
+      return updateQuoteItemQty(productId, item.quantity + 1,tenant);
     });
-  }, []);
+  }, [tenant]);
 
   const decrease = useCallback((productId: string) => {
     setItemsState(prev => {
-      const item = prev.find(i => i.productId === productId);
+      const item = prev.find(i => quoteLineKey(i) === productId);
       if (!item) return prev;
-      return updateQuoteItemQty(productId, item.quantity - 1);
+      return updateQuoteItemQty(productId, item.quantity - 1,tenant);
     });
-  }, []);
+  }, [tenant]);
 
   const clearAll = useCallback(() => {
-    clearQuoteItems();
+    clearQuoteItems(tenant);
     setItemsState([]);
-  }, []);
+  }, [tenant]);
 
   const hasItem = useCallback((productId: string) => {
     return items.some((i) => i.productId === productId);
@@ -172,7 +194,7 @@ export function QuoteProvider({ children }: { children: ReactNode }) {
       items,
       count: items.reduce((s, i) => s + i.quantity, 0),
       isDrawerOpen, openDrawer, closeDrawer, toggleDrawer,
-      addItem, addCatalogItem, removeItem, updateQty, increase, decrease, clearAll, hasItem, setItems,
+      addItem, addCatalogItem, syncRoom, removeItem, updateQty, increase, decrease, clearAll, hasItem, setItems,
       totalMin, totalMax
     }}>
       {children}

@@ -1,0 +1,125 @@
+
+> livlab@0.1.0 build
+> prisma generate && next build
+
+Environment variables loaded from .env
+Prisma schema loaded from prisma/schema.prisma
+
+✔ Generated Prisma Client (v5.22.0) to ./node_modules/@prisma/client in 243ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Want to react to database changes in your app as they happen? Discover how with Pulse: https://pris.ly/tip-1-pulse
+
+▲ Next.js 16.2.7 (Turbopack)
+- Environments: .env.local, .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 8.7s
+  Running TypeScript ...
+  Finished TypeScript in 10.7s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/101) ...
+  Generating static pages using 7 workers (25/101) 
+  Generating static pages using 7 workers (50/101) 
+  Generating static pages using 7 workers (75/101) 
+✓ Generating static pages using 7 workers (101/101) in 2.3s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /about
+├ ƒ /account
+├ ƒ /admin
+├ ƒ /admin/concepts
+├ ƒ /admin/leads
+├ ƒ /admin/products
+├ ƒ /admin/showrooms
+├ ƒ /admin/users
+├ ƒ /ai-suggestion
+├ ƒ /api/admin/concepts
+├ ƒ /api/admin/concepts/[id]
+├ ƒ /api/admin/leads
+├ ƒ /api/admin/leads/[id]
+├ ƒ /api/admin/products
+├ ƒ /api/admin/products/[id]
+├ ƒ /api/admin/showrooms
+├ ƒ /api/admin/users
+├ ƒ /api/admin/users/[id]/role
+├ ƒ /api/ai/chat
+├ ƒ /api/ai/expert
+├ ƒ /api/ai/suggest
+├ ƒ /api/auth/login
+├ ƒ /api/auth/logout
+├ ƒ /api/auth/me
+├ ƒ /api/auth/register
+├ ƒ /api/concepts
+├ ƒ /api/image-proxy
+├ ƒ /api/products
+├ ƒ /api/quote
+├ ƒ /api/quote/lookup
+├ ƒ /api/remove-background
+├ ƒ /api/showroom/activities
+├ ƒ /api/showroom/catalog
+├ ƒ /api/showroom/customers
+├ ƒ /api/showroom/customers/export
+├ ƒ /api/showroom/dashboard
+├ ƒ /api/showroom/leads
+├ ƒ /api/showroom/leads/[id]
+├ ƒ /api/showroom/leads/export
+├ ƒ /api/showroom/profile
+├ ƒ /api/showroom/quotes
+├ ƒ /api/showroom/quotes/[id]
+├ ƒ /api/showroom/quotes/export
+├ ƒ /api/showroom/reports
+├ ƒ /api/showroom/reports/export
+├ ƒ /api/stats/concept-popularity
+├ ƒ /api/storefront/products
+├ ƒ /blog
+├ ƒ /blog/[slug]
+├ ƒ /compare
+├ ƒ /concepts
+├ ƒ /concepts/[slug]
+├ ƒ /contact
+├ ƒ /dev/3d-assets
+├ ƒ /dev/hotspot-calibrator
+├ ƒ /dev/room-studio-3d-qa
+├ ƒ /dev/room-studio-3d-test
+├ ƒ /dev/tenant
+├ ƒ /image-check
+├ ƒ /login
+├ ƒ /my-quotes
+├ ƒ /privacy
+├ ƒ /products
+├ ƒ /products/[slug]
+├ ƒ /pub/tool/kb-b2c/showroom/[experienceId]
+├ ƒ /quote
+├ ƒ /quote-process
+├ ƒ /register
+├ ƒ /robots.txt
+├ ƒ /room-studio
+├ ƒ /s/[slug]
+├ ƒ /saved
+├ ƒ /showroom
+├ ƒ /showroom/catalog
+├ ƒ /showroom/customers
+├ ƒ /showroom/leads
+├ ƒ /showroom/leads/[id]
+├ ƒ /showroom/quotes
+├ ƒ /showroom/quotes/[id]
+├ ƒ /showroom/reports
+├ ƒ /showroom/settings
+├ ƒ /showrooms
+├ ƒ /sitemap.xml
+├ ƒ /small-bathroom-combo
+├ ƒ /suggestion
+├ ƒ /terms
+├ ƒ /track-quote
+└ ƒ /visual-studio
+
+
+ƒ Proxy (Middleware)
+
+ƒ  (Dynamic)  server-rendered on demand
+

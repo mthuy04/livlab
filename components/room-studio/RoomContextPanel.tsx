@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ImageOff, Upload, X } from 'lucide-react';
 import type { Concept } from '@/lib/types';
 import SafeImage from '@/components/ui/SafeImage';
@@ -21,7 +21,6 @@ interface RoomContextPanelProps {
  */
 export default function RoomContextPanel({ contextImage, contextLabel, onContextChange }: RoomContextPanelProps) {
   const [sampleRooms, setSampleRooms] = useState<Concept[]>([]);
-  const objectUrlRef = useRef<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -40,28 +39,15 @@ export default function RoomContextPanel({ contextImage, contextLabel, onContext
     };
   }, []);
 
-  // Revoke the previous object URL whenever it is replaced or the panel unmounts,
-  // so uploaded photos do not pin blobs in memory for the session.
-  useEffect(() => {
-    return () => {
-      if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
-    };
-  }, []);
-
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !file.type.startsWith('image/')) return;
-    if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
+    // The room owns the URL until its last undo/redo snapshot is evicted.
     const url = URL.createObjectURL(file);
-    objectUrlRef.current = url;
     onContextChange(url, file.name);
   };
 
   const handleClear = () => {
-    if (objectUrlRef.current) {
-      URL.revokeObjectURL(objectUrlRef.current);
-      objectUrlRef.current = null;
-    }
     onContextChange(undefined, undefined);
   };
 

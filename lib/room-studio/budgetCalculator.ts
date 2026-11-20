@@ -66,6 +66,7 @@ export function formatProductPrice(product: { priceMin?: number; priceMax?: numb
 }
 
 export function formatBudgetRange(estimate: BudgetEstimate): string {
+  if (estimate.itemCount === 0) return 'Phòng trống';
   if (estimate.min <= 0 && estimate.max <= 0) return 'Liên hệ';
   if (estimate.min === estimate.max) return formatVnd(estimate.min);
   return `${formatVnd(estimate.min)} – ${formatVnd(estimate.max)}`;

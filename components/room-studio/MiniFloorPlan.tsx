@@ -1,5 +1,8 @@
 'use client';
 
+import ArchitecturePlanLayer, { type PlanEditing } from './ArchitecturePlanLayer';
+import { isWallElement, openingFitsWall, type ArchitecturalElement, type RoomWall } from '@/lib/room-studio/architecture';
+import { canDrawPartition } from '@/lib/room-studio/glassGeometry';
 import { useRef } from 'react';
 import type { PlacedProductView } from '@/lib/room-studio/useRoomStudio';
 import type { UtilityPoint, UtilityPointType } from '@/lib/technical-advisor/types';
@@ -53,6 +56,8 @@ const CATEGORY_FILL: Record<string, string> = {
 
 interface MiniFloorPlanProps {
   dimensions: RoomDimensions;
+  elements?: ArchitecturalElement[];
+  editing?: PlanEditing;
   placedViews: PlacedProductView[];
   utilityPoints: UtilityPoint[];
   selectedInstanceId: string | null;
@@ -69,7 +74,7 @@ interface MiniFloorPlanProps {
 const PAD = 14;
 
 export default function MiniFloorPlan({
-  dimensions,
+  dimensions, elements = [], editing,
   placedViews,
   utilityPoints,
   selectedInstanceId,
@@ -81,8 +86,13 @@ export default function MiniFloorPlan({
   const bounds = getRoomBounds(dimensions);
   const roomW = dimensions.length * 100;
   const roomD = dimensions.width * 100;
-  const viewW = roomW + PAD * 2;
-  const viewH = roomD + PAD * 2;
+  const visible = elements.filter(el => isWallElement(el) ? openingFitsWall(dimensions, el) : canDrawPartition(dimensions, el));
+  const selected = elements.find(el => el.id === editing?.selected);
+  const padFor = (wall: RoomWall) => Math.max(0, ...visible.flatMap(el => isWallElement(el) && el.wall === wall &&
+    (el.type === 'window' ? el.mechanism === 'casement' : el.swing === 'outward') ? [el.width*100] : []));
+  const left = padFor('left'), top = padFor('back');
+  const viewW = left + padFor('right') + roomW + PAD * 2;
+  const viewH = top + padFor('front') + roomD + PAD * 2;
 
   /** Room metres (centre origin) → SVG units (top-left origin). */
   const sx = (x: number) => PAD + (x - bounds.minX) * 100;
@@ -110,15 +120,16 @@ export default function MiniFloorPlan({
     <div>
       <svg
         ref={svgRef}
-        viewBox={`0 0 ${viewW} ${viewH}`}
+        style={editing?.onDrag ? { touchAction: 'none' } : undefined}
+        viewBox={`${-left} ${-top} ${viewW} ${viewH}`}
         onClick={handleClick}
-        role={pickingLabel ? 'button' : 'img'}
+        role={pickingLabel ? 'button' : editing ? 'group' : 'img'}
         aria-label={
           pickingLabel
             ? `Chọn vị trí ${pickingLabel} trên sơ đồ phòng`
             : `Sơ đồ phòng ${dimensions.length} × ${dimensions.width} mét, ${placedViews.length} sản phẩm`
         }
-        className={`w-full rounded-lg border bg-white ${
+        className={`max-h-56 w-full rounded-lg border bg-white ${
           pickingLabel ? 'cursor-crosshair border-[#C8A96A]' : 'border-[#E6EDF2]'
         }`}
       >
@@ -146,20 +157,14 @@ export default function MiniFloorPlan({
 
         {placedViews.map(({ placed, product }) => {
           const size = getRealWorldSize(product);
-          // Yaw is about the vertical axis, so a quarter turn swaps the
-          // footprint's two horizontal sides. Anything between reads as the
-          // larger of the two, which keeps the plan honest about the space the
-          // product needs without drawing a rotated polygon at this size.
-          const quarterTurns = Math.round(placed.rotationY / (Math.PI / 2));
-          const swapped = Math.abs(quarterTurns % 2) === 1;
-          const w = (swapped ? size.depth : size.width) * 100;
-          const d = (swapped ? size.width : size.depth) * 100;
+          const w=size.width*100,d=size.depth*100;
           const isSelected = placed.instanceId === selectedInstanceId;
           const fill = CATEGORY_FILL[product.normalizedCategory] ?? '#9FB0BD';
 
           return (
             <g
-              key={placed.instanceId}
+              key={placed.instanceId} data-product-instance={placed.instanceId}
+              transform={`rotate(${-placed.rotationY*180/Math.PI} ${sx(placed.position[0])} ${sz(placed.position[2])})`}
               onClick={(e) => {
                 if (pickingLabel) return;
                 e.stopPropagation();
@@ -182,6 +187,8 @@ export default function MiniFloorPlan({
             </g>
           );
         })}
+
+        <ArchitecturePlanLayer room={dimensions} elements={visible} editing={pickingLabel ? undefined : editing} transform={`translate(${sx(0)} ${sz(0)}) scale(100)`} />
 
         {utilityPoints.map((point) => {
           const cx = sx(point.position[0]);
@@ -208,9 +215,15 @@ export default function MiniFloorPlan({
       </svg>
 
       <p className="mt-2 text-[12px] text-[#7C8C9A]">
+        {selected && <span className="block font-medium text-[#52616C]">
+          {isWallElement(selected)
+            ? `${Number((selected.width*100).toFixed(2))} × ${Number((selected.height*100).toFixed(2))} cm · Cách đầu tường ${Number((selected.offset*100).toFixed(2))} cm`
+            : `Dài ${Number((selected.length*100).toFixed(2))} cm · Góc xoay ${selected.rotation}°`}
+
+        </span>}
         {pickingLabel
           ? `Chạm vào sơ đồ để đặt ${pickingLabel.toLowerCase()}.`
-          : `Nhìn từ trên xuống · ${dimensions.length.toFixed(1)} × ${dimensions.width.toFixed(1)} m · tường đậm là tường trong`}
+          : editing?.onDrag ? (selected?.type === 'shower-partition' ? 'Kéo vách để di chuyển, kéo nút tròn để xoay.' : 'Kéo dọc theo tường để đổi vị trí.') : `Nhìn từ trên xuống · ${dimensions.length.toFixed(1)} × ${dimensions.width.toFixed(1)} m · tường đậm là tường trong`}
       </p>
     </div>
   );

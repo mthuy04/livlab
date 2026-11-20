@@ -1,0 +1,17 @@
+{
+  "warmup": {
+    "Texture": 19,
+    "Buffer": 305,
+    "Program": 18
+  },
+  "initial": {
+    "Texture": 19,
+    "Buffer": 305,
+    "Program": 18
+  },
+  "final": {
+    "Texture": 19,
+    "Buffer": 305,
+    "Program": 18
+  }
+}

@@ -56,6 +56,7 @@ export const REQUEST_TYPES: Record<ImplementationRequestType, RequestTypeMeta> =
 // ─── Snapshot pieces ──────────────────────────────────────────────────────────
 
 export interface RoomSnapshot {
+  elements?: import('../room-studio/architecture').ArchitecturalElement[];
   /** Metres. */
   length: number;
   width: number;

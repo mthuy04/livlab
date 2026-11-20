@@ -44,6 +44,7 @@ function buildRoomSnapshot(state: RoomState): RoomSnapshot {
     length: state.dimensions.length,
     width: state.dimensions.width,
     height: state.dimensions.height,
+    ...(state.elements?.length ? { elements: state.elements.map(el => ({ ...el })) } : {}),
     floorAreaM2: Number(getFloorArea(state.dimensions).toFixed(2)),
     floorFinish: describeSurfaceStyle(state.surfaceStyles.floor),
     wallFinish: describeSurfaceStyle(state.surfaceStyles.walls),

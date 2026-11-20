@@ -43,7 +43,7 @@ export interface PlacementContext {
 }
 
 /** Half-extents of a footprint after yaw, the exact form for any angle. */
-export function rotatedHalfExtents(size: RealWorldSize, rotationY = 0): { halfX: number; halfZ: number } {
+export function rotatedHalfExtents(size: Pick<RealWorldSize, 'width' | 'depth'>, rotationY = 0): { halfX: number; halfZ: number } {
   const cos = Math.abs(Math.cos(rotationY));
   const sin = Math.abs(Math.sin(rotationY));
   return {

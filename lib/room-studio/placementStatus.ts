@@ -10,9 +10,11 @@
 
 import type { TechnicalValidationResult } from '@/lib/technical-advisor/types';
 
-export type PlacementStatus = 'VALID' | 'CLEARANCE_WARNING' | 'COLLISION' | 'OUTSIDE_ROOM' | 'UNSUPPORTED_SURFACE';
+export type PlacementStatus = 'VALID' | 'CLEARANCE_WARNING' | 'COLLISION' | 'OUTSIDE_ROOM' | 'UNSUPPORTED_SURFACE' | 'DOOR_SWING' | 'GLASS_INTERFERENCE';
 
 const RANK: Record<PlacementStatus, number> = {
+  GLASS_INTERFERENCE: 3,
+  DOOR_SWING: 3,
   VALID: 0,
   CLEARANCE_WARNING: 1,
   UNSUPPORTED_SURFACE: 2,
@@ -25,9 +27,14 @@ const FROM_ISSUE: Record<NonNullable<TechnicalValidationResult['placementIssue']
   COLLISION: 'COLLISION',
   UNSUPPORTED_SURFACE: 'UNSUPPORTED_SURFACE',
   CLEARANCE: 'CLEARANCE_WARNING',
+  ARCHITECTURE: 'GLASS_INTERFERENCE',
+  DOOR_OPENING: 'OUTSIDE_ROOM',
+  DOOR_SWING: 'DOOR_SWING',
 };
 
 export const PLACEMENT_STATUS_COLOR: Record<PlacementStatus, string> = {
+  GLASS_INTERFERENCE: '#D2463C',
+  DOOR_SWING: '#D2463C',
   VALID: '#2F9E6B',
   CLEARANCE_WARNING: '#D99A1E',
   COLLISION: '#D2463C',
@@ -36,7 +43,9 @@ export const PLACEMENT_STATUS_COLOR: Record<PlacementStatus, string> = {
 };
 
 export const PLACEMENT_STATUS_LABEL: Record<PlacementStatus, string> = {
-  VALID: 'Đặt hợp lệ',
+  GLASS_INTERFERENCE: 'Vướng vách kính hoặc lối vào buồng tắm',
+  DOOR_SWING: 'Vướng cánh cửa ra vào',
+  VALID: 'Chưa thấy xung đột hình học',
   CLEARANCE_WARNING: 'Đặt được, khoảng trống còn hẹp',
   COLLISION: 'Đang chồng lên sản phẩm khác',
   OUTSIDE_ROOM: 'Vượt ra ngoài phòng',

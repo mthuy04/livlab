@@ -21,6 +21,8 @@ import {
 
 interface SelectedProductToolbarProps {
   selection: PlacedProductView;
+  replacements?: PlacedProductView['product'][];
+  onReplace?: (id:string)=>void;
   isInQuote: boolean;
   onRotate: (instanceId: string, deltaRadians: number) => void;
   onDuplicate: (instanceId: string) => void;
@@ -53,7 +55,7 @@ const QUARTER_TURN = Math.PI / 2;
  * leaving the grey volume in the scene to be read as the product's shape.
  */
 export default function SelectedProductToolbar({
-  selection,
+  selection,replacements,onReplace,
   isInQuote,
   onRotate,
   onDuplicate,
@@ -82,7 +84,8 @@ export default function SelectedProductToolbar({
     <div className="flex flex-col gap-3 border-t border-[#E1E8ED] bg-white px-4 py-3 md:flex-row md:items-center md:px-6">
       <div className="flex min-w-0 flex-1 items-center gap-3">
         <div className="h-12 w-12 shrink-0 overflow-hidden rounded border border-[#EDF2F5] bg-[#F8F8F7]">
-          {product.imageUrl ? (
+
+      {product.imageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={product.imageUrl}
@@ -204,6 +207,8 @@ export default function SelectedProductToolbar({
       </div>
 
       <div className="flex shrink-0 flex-wrap items-center gap-1.5">
+        {!!replacements?.length && <select className="max-w-40 rounded border bg-white p-1 text-xs" value="" aria-label="Thay sản phẩm" onChange={e=>onReplace?.(e.target.value)}>
+        <option value="">Thay sản phẩm…</option>{replacements.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}</select>}
         <IconAction
           label="Xoay 90°"
           onClick={() => onRotate(placed.instanceId, QUARTER_TURN)}

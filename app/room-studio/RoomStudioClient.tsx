@@ -4,6 +4,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { CheckCircle, Layers, Package, Wrench } from 'lucide-react';
+import {formatBudgetRange} from '@/lib/room-studio/budgetCalculator';
+import {isPlaceable} from '@/lib/room-studio/productCapability';
+import StyleSwitcher from '@/components/room-studio/panels/StyleSwitcher';
+import { roomLighting, STYLE_PACKS } from '@/lib/room-studio/stylePacks';
+import SmartFixPanel from '@/components/room-studio/panels/SmartFixPanel';
+import SpatialOverlay from '@/components/room-studio/scene/SpatialOverlay';
+import {snapPlacement} from '@/lib/room-studio/snapPlacement';
 import { useQuote } from '@/lib/context/QuoteContext';
 import { useTenant } from '@/components/storefront/TenantContext';
 import { trackEvent } from '@/lib/analytics/events';
@@ -15,8 +22,13 @@ import type { RoomDimensions } from '@/lib/room-studio/roomGeometry';
 import type { UtilityPointType } from '@/lib/technical-advisor/types';
 import WorkspaceHeader from '@/components/room-studio/WorkspaceHeader';
 import WorkspaceDialog from '@/components/room-studio/WorkspaceDialog';
+import RoomProposalDialog from '@/components/room-studio/RoomProposalDialog';
 import RoomPresetDialog from '@/components/room-studio/RoomPresetDialog';
 import LeftToolPanel, { type ToolTabId } from '@/components/room-studio/LeftToolPanel';
+import ArchitectureEditor from '@/components/room-studio/panels/ArchitectureEditor';
+import { defaultWindow, defaultPartition, ELEMENT_LABEL, wallFrame, type ArchitecturalElement } from '@/lib/room-studio/architecture';
+import { createInstanceId } from '@/lib/room-studio/roomState';
+import type { RoomProposal } from '@/lib/room-studio/roomProposal';
 import RoomTab from '@/components/room-studio/panels/RoomTab';
 import TechnicalTab, { utilityPointFrom } from '@/components/room-studio/panels/TechnicalTab';
 import SurfaceMaterialPanel from '@/components/room-studio/SurfaceMaterialPanel';
@@ -30,12 +42,12 @@ import LivLabExpertPanel from '@/components/room-studio/expert/LivLabExpertPanel
 import ImplementationFlow from '@/components/room-studio/implementation/ImplementationFlow';
 import type { ImplementationRequestType } from '@/lib/implementation/types';
 import { useTechnicalAdvisor } from '@/lib/technical-advisor/useTechnicalAdvisor';
-import { summarise } from '@/lib/technical-advisor/engine';
+import { buildEntries, runTechnicalAdvisor, livePlacementFindings, liveArchitectureFindings, summarise } from '@/lib/technical-advisor/engine';
 import type { ExpertIntent } from '@/lib/room-studio/expertNudges';
 import LightingPanel from '@/components/room-studio/LightingPanel';
 import { LIGHTING_PRESETS, parseArchitecture, parseLighting } from '@/lib/room-studio/environment';
 import { placementStatusByInstance } from '@/lib/room-studio/placementStatus';
-import { getStarterRoom, type StarterRoomPreset } from '@/lib/room-studio/roomPresets';
+import { getStarterRoom } from '@/lib/room-studio/roomPresets';
 
 /**
  * The 3D canvas is client-only and pulls in three.js, so it is loaded on demand
@@ -71,11 +83,15 @@ type MobilePanel = 'none' | 'tools' | 'products';
  */
 export default function RoomStudioClient() {
   const tenant = useTenant();
+  return <RoomWorkspace key={tenant.id} tenant={tenant} />;
+}
+
+function RoomWorkspace({ tenant }: { tenant: ReturnType<typeof useTenant> }) {
   useEffect(() => {
     trackEvent('room_studio_open', { catalog: tenant.experience.roomStudioCatalog });
   }, [tenant.experience.roomStudioCatalog]);
   const studio = useRoomStudio(tenant.experience.roomStudioCatalog, tenant.id);
-  const { addItem, addCatalogItem, hasItem, items: quoteItems } = useQuote();
+  const { syncRoom, addItem, addCatalogItem, hasItem, items: quoteItems } = useQuote();
 
   /**
    * One door into the basket for every caller here. A storefront-catalogue
@@ -128,9 +144,15 @@ export default function RoomStudioClient() {
   const technicalFindings = useTechnicalAdvisor({
     dimensions: studio.state.dimensions,
     placedViews: studio.placedViews,
-    utilityPoints: studio.state.utilityPoints ?? [],
+    utilityPoints: studio.state.utilityPoints,
+    architecture: studio.state.architecture, elements: studio.state.elements,
     counterSupport: parseArchitecture(studio.state.architecture).basinCounter,
   });
+  const handoffFindings = useMemo(() => implementation.open ? runTechnicalAdvisor({
+    room: studio.state.dimensions, entries: buildEntries(studio.placedViews), utilityPoints: studio.state.utilityPoints ?? [],
+    architecture: studio.state.architecture, elements: studio.state.elements,
+    counterSupport: parseArchitecture(studio.state.architecture).basinCounter,
+  }) : [], [implementation.open, studio.state, studio.placedViews]);
   const technicalSummary = useMemo(() => summarise(technicalFindings), [technicalFindings]);
 
   // One word per placement for its outline colour: valid, clearance warning,
@@ -204,15 +226,17 @@ export default function RoomStudioClient() {
    * name had to mean the thing that is NOT automatic. The alternative was two
    * buttons, one of which did nothing.
    */
-  const handleSaveDesign = useCallback(() => {
-    const seen = new Set<string>();
-    studio.placedViews.forEach(({ product }) => {
-      if (seen.has(product.id)) return;
-      seen.add(product.id);
-      addToQuote(product);
-    });
-    showToast(`Đã lưu ${seen.size} sản phẩm vào giỏ báo giá.`);
-  }, [studio.placedViews, addToQuote, showToast]);
+  const handleSaveDesign=()=>{
+    if(!studio.isHydrated || studio.isLoadingProducts || studio.loadError)return;
+    studio.linkQuote();
+    showToast('Đã liên kết thiết kế với giỏ báo giá.');
+  };
+  const linkedId=studio.state.quoteDesignId;
+  useEffect(()=>{
+    if(!studio.isHydrated || studio.isLoadingProducts || studio.loadError || studio.placedViews.length !== studio.state.placedProducts.length)return;
+    if(linkedId) syncRoom(linkedId,studio.placedViews.map(v=>v.product));
+    else if(studio.unlinkedDesignId)syncRoom(studio.unlinkedDesignId,[]);
+  },[linkedId,syncRoom,studio.placedViews,studio.state.placedProducts,studio.isHydrated,studio.loadError,studio.isLoadingProducts,studio.unlinkedDesignId]);
 
   const handleOpenCombo = useCallback(() => {
     setExpertRequest({
@@ -224,28 +248,24 @@ export default function RoomStudioClient() {
 
   const applyPreset = useCallback(
     (dimensions: RoomDimensions) => {
-      studio.setDimensions(dimensions);
+      studio.preview({ source: 'architecture', label: 'Đổi kích thước phòng',
+        operations: [{ op: 'dimensions', dimensions }] });
       setToolTab('room');
     },
     [studio]
   );
 
-  const applyStarterRoom = useCallback(
-    (preset: StarterRoomPreset) => {
-      const result = studio.applyStarterRoom(preset);
-      const placed = result.placed.length;
-      const skipped = result.skipped.length;
-      const message =
-        preset.id === 'empty'
-          ? 'Đã làm trống phòng.'
-          : `Đã áp dụng “${preset.name}”: ${placed} sản phẩm${
-              skipped ? `, ${skipped} vị trí bỏ trống vì danh mục không có sản phẩm phù hợp` : ''
-            }.`;
-      showToast(message, studio.undoStarterRoom);
-      setToolTab('room');
-    },
-    [studio, showToast]
-  );
+  const acceptProposal = () => {
+    const proposal = studio.proposal;
+    if (!proposal?.eligible) return;
+    studio.apply(proposal);
+    if (proposal.source === 'demo' || proposal.source === 'starter') {
+      studio.setSelectedInstanceId(proposal.selectOnApply ?? null);
+    }
+    const snapshot = proposal.preview;
+    showToast('Đã áp dụng · ' + proposal.label, proposal.source === 'starter' && snapshot
+      ? () => studio.undoStarterRoom(snapshot) : undefined);
+  };
 
   const handlePickUtilityPosition = useCallback(
     ({ fromLeft, fromBack }: { fromLeft: number; fromBack: number }) => {
@@ -278,7 +298,7 @@ export default function RoomStudioClient() {
     const url = new URL(window.location.href);
     if (url.searchParams.get('demo') !== '1') return;
     demoApplied.current = true;
-    studio.loadPresetRoom(demoRoom);
+    studio.previewDemoRoom(demoRoom);
     url.searchParams.delete('demo');
     window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
   }, [demoRoom, studio]);
@@ -299,23 +319,76 @@ export default function RoomStudioClient() {
     if (!id) return;
     starterApplied.current = true;
     const preset = getStarterRoom(id);
-    // After this commit, not inside it: applying replaces the room state and
-    // announces itself, and neither belongs in the render that read the URL.
-    if (preset && studio.placedViews.length === 0) setTimeout(() => applyStarterRoom(preset), 0);
+    if (preset && studio.state.placedProducts.length === 0) studio.previewStarterRoom(preset);
     url.searchParams.delete('starter');
     window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
-  }, [studio, applyStarterRoom]);
+  }, [studio]);
 
   /* ----------------------------------------------------------- the panels */
 
+  const [snap,setSnap]=useState(true),[dimensionsOn,setDimensionsOn]=useState(false),[zones,setZones]=useState(false);
+  const [snapLabel,setSnapLabel]=useState('');
+  const moveWithSnap=(id:string,point:Vec3,tolerance=0)=>{
+    const active=studio.placedViews.find(v=>v.placed.instanceId===id);
+    if(!snap || !active){studio.dragProduct(id,point);return;}
+    const result=snapPlacement(studio.state,studio.placedViews,active,point,tolerance);
+    setSnapLabel(result.labels.join(' · '));studio.dragProduct(id,result.position);
+  };
+  const scene = studio.proposal?.preview ?? studio.state;
+  const styleProposal = studio.proposal?.source === 'style' ? studio.proposal : null;
+  const sceneArchitecture = useMemo(() => parseArchitecture(scene.architecture), [scene.architecture]);
+  const [selection, setSelection] = useState<string | null>(null);
+  const [gesture, setGesture] = useState<{ element: ArchitecturalElement; revision: number; proposal: RoomProposal | null } | null>(null);
+  const elementProposal = studio.proposal?.operations[0]?.op.startsWith('element.') ? studio.proposal : null;
+  const operation = elementProposal?.operations[0];
+  const lockedId = operation && 'element' in operation ? operation.element.id : undefined;
+  const draft = gesture?.revision === studio.revision && gesture.proposal === studio.proposal ? gesture.element : null;
+  const elements = draft ? scene.elements.map(el => el.id === draft.id ? draft : el) : scene.elements;
+  const entries=useMemo(()=>buildEntries(studio.visualViews),[studio.visualViews]);
+  const spatialContext=useMemo(()=>({room:scene.dimensions,entries,architecture:sceneArchitecture,elements,utilityPoints:scene.utilityPoints??[],counterSupport:sceneArchitecture.basinCounter}),[scene.dimensions,entries,sceneArchitecture,elements,scene.utilityPoints]);
+  const liveFindings = useMemo(() => {
+    if (studio.dragId) return livePlacementFindings(spatialContext, studio.dragId);
+    return draft ? liveArchitectureFindings(spatialContext) : null;
+  }, [studio.dragId, draft, spatialContext]);
+  const baseFindings = studio.proposal?.findings ?? technicalFindings;
+  const shownFindings = liveFindings ? [
+    ...baseFindings.filter(f => studio.dragId
+      ? f.ruleId !== 'clearance' && !f.affectedInstanceIds.includes(studio.dragId)
+      : !['entrance-door', 'glass-architecture', 'placement-surface', 'clearance'].includes(f.ruleId)),
+    ...liveFindings,
+  ] : baseFindings;
+  const gestureWarning = liveFindings?.find(f => f.placementIssue && (
+    studio.dragId ? f.affectedInstanceIds.includes(studio.dragId) : !baseFindings.some(before => before.id === f.id && before.placementIssue)
+  ))?.message;
+  const shownStatus=liveFindings || studio.proposal ? placementStatusByInstance(shownFindings,entries.map(e=>e.placed.instanceId)):placementStatus;
+  const ghostEntries=useMemo(()=>studio.proposal?.source==='smart-fix' ? buildEntries(studio.placedViews.filter(v=>studio.proposal?.preview?.placedProducts.find(p=>p.instanceId===v.placed.instanceId)!==v.placed)):[],[studio.proposal,studio.placedViews]);
+  const selectedElement = elements.find(el => el.id === (lockedId ?? selection)) ?? elements[0];
+  const previewElement = (element: ArchitecturalElement) => {
+    const exists = studio.state.elements.some(el => el.id === element.id);
+    studio.preview({ source: 'architecture', label: (exists ? 'Chỉnh ' : 'Thêm ') + ELEMENT_LABEL[element.type].toLowerCase(),
+      operations: [{ op: exists ? 'element.update' : 'element.add', element }] });
+  };
+  const addElement = (type: ArchitecturalElement['type']) => {
+    const id = createInstanceId(type);
+    setSelection(id);
+    if (type === 'window') return previewElement(defaultWindow(scene.dimensions,id));
+    if (type === 'shower-partition') return previewElement(defaultPartition(scene.dimensions,id));
+    const width = 0.8;
+    const offset = Math.round((wallFrame(scene.dimensions, 'front').span - width) * 50) / 100;
+    previewElement({ type, id, wall: 'front', offset, width, height: 2, mechanism: 'hinged', hinge: 'left', swing: 'inward', open: true });
+  };
   const floorPlan = (
-    <MiniFloorPlan
-      dimensions={studio.state.dimensions}
-      placedViews={studio.placedViews}
+    <MiniFloorPlan key={studio.revision} dimensions={scene.dimensions} placedViews={studio.visualViews}
+      elements={elements} editing={{
+        selected: selectedElement?.id, lockedId,
+        onSelect: id => { setSelection(id); setToolTab('room'); },
+        onDrag: toolTab === 'room' ? d => setGesture(d ? { element: d, revision: studio.revision, proposal: studio.proposal } : null) : undefined,
+        onDrop: previewElement,
+      }}
       utilityPoints={utilityPoints}
       selectedInstanceId={studio.selectedInstanceId}
       onSelect={studio.setSelectedInstanceId}
-      pickingLabel={pendingUtilityType ? 'điểm kỹ thuật' : null}
+      pickingLabel={toolTab === 'technical' && pendingUtilityType ? 'điểm kỹ thuật' : null}
       onPick={handlePickUtilityPosition}
     />
   );
@@ -329,7 +402,13 @@ export default function RoomStudioClient() {
       {toolTab === 'room' && (
         <RoomTab
           dimensions={studio.state.dimensions}
-          onDimensionsChange={studio.setDimensions}
+          confirmDimensions={studio.state.elements.length > 0}
+          onDimensionsChange={studio.state.elements.length ? applyPreset : studio.setDimensions}
+          architectureEditor={<><details className="my-2 border-b pb-2 text-xs"><summary className="cursor-pointer">Công cụ hình học</summary>
+          {([[snap,setSnap,'Bắt dính'],[dimensionsOn,setDimensionsOn,'Số đo (cm)'],[zones,setZones,'Vùng chiếm chỗ, khoảng trống và vùng ướt/khô']] as const).map(([value,change,label])=><label className="mt-2 flex gap-2" key={label}><input type="checkbox" checked={value} onChange={e=>change(e.target.checked)}/>{label}</label>)}</details><ArchitectureEditor key={studio.revision} selected={selectedElement} elements={elements} plan={floorPlan} proposal={elementProposal}
+            onChange={previewElement} onAdd={addElement} onSelect={setSelection} onApply={acceptProposal} onDiscard={studio.discard}
+            onRemove={() => selectedElement && studio.preview({ source: 'architecture', label: 'Gỡ ' + ELEMENT_LABEL[selectedElement.type].toLowerCase(),
+              operations: [{ op: 'element.remove', elementId: selectedElement.id }] })} /></>}
           showCeiling={showCeiling}
           onToggleCeiling={setShowCeiling}
           onOpenReferenceImage={() => setShowReferenceImage(true)}
@@ -341,25 +420,29 @@ export default function RoomStudioClient() {
       )}
       {toolTab === 'material' && (
         <div className="space-y-4">
-          <SurfaceMaterialPanel
+          <StyleSwitcher room={studio.state} proposal={styleProposal}
+            choose={id=>studio.preview({source:'style',label:STYLE_PACKS[id].name,operations:[{op:'style',id}]})}
+            apply={acceptProposal} discard={studio.discard}/>
+          {!styleProposal && <><SurfaceMaterialPanel
             surfaceStyles={studio.state.surfaceStyles}
             onStyleChange={studio.setSurfaceStyle}
           />
-          <LightingPanel value={lighting.id} onChange={studio.setLighting} />
+          <LightingPanel value={lighting.id} onChange={studio.setLighting} /></>}
         </div>
       )}
       {toolTab === 'technical' && (
+        <>{studio.proposal?.source==='smart-fix' ? <RoomProposalDialog inline proposal={studio.proposal} onApply={acceptProposal} onDiscard={studio.discard}/> : <SmartFixPanel key={studio.revision} state={studio.state} products={studio.products} views={studio.placedViews} findings={shownFindings} preview={studio.preview}/>}
         <TechnicalTab
           dimensions={studio.state.dimensions}
           points={utilityPoints}
-          findings={technicalFindings}
+          findings={shownFindings}
           onAdd={studio.addUtilityPoint}
           onRemove={studio.removeUtilityPoint}
           pendingType={pendingUtilityType}
           onPendingTypeChange={setPendingUtilityType}
           onRequestTechnicalCheck={() => openImplementation('TECHNICAL_CHECK')}
           floorPlan={floorPlan}
-        />
+        /></>
       )}
     </LeftToolPanel>
   );
@@ -376,20 +459,33 @@ export default function RoomStudioClient() {
     />
   );
 
+
   const viewport = (
     <RoomScene3D
-      dimensions={studio.state.dimensions}
-      floorStyle={studio.state.surfaceStyles.floor}
-      wallStyle={studio.state.surfaceStyles.walls}
-      lighting={lighting}
-      architecture={architecture}
-      placementStatus={placementStatus}
-      placedViews={studio.placedViews}
+      dimensions={scene.dimensions}
+      floorStyle={scene.surfaceStyles.floor}
+      wallStyle={scene.surfaceStyles.walls}
+      visualStyle={scene.visualStyle}
+      lighting={roomLighting(scene.visualStyle,scene.lighting)}
+      architecture={sceneArchitecture}
+      elements={elements}
+      selectedElementId={selectedElement?.id}
+      spatialOverlay={<SpatialOverlay context={spatialContext} dimensions={dimensionsOn} zones={zones} selected={studio.selectedInstanceId} status={shownStatus} ghosts={ghostEntries}/>}
+      overlayTopLeft={styleProposal ? <button className="rounded bg-white/95 px-2 py-1 text-xs" onClick={()=>{setToolTab('material');if(!isDesktop)setMobilePanel('tools');}}>Xem trước · {styleProposal.label}</button> : studio.proposal?.source==='smart-fix'  ? <button className="rounded bg-white px-2 py-1 text-xs" onClick={()=>{setToolTab('technical');if(!isDesktop)setMobilePanel('tools');}}>Xem trước Smart Fix · Vị trí cũ màu xanh</button> : studio.dragId ? <span role="status" aria-label="Vị trí đang kéo" className="rounded bg-white/95 px-2 text-xs">{[snapLabel,gestureWarning].filter(Boolean).join(' · ')}</span> : elementProposal && !isDesktop && mobilePanel !== 'tools' ? (
+        <button type="button" className="rounded border border-[#D8E2EA] bg-white px-2 py-1.5 text-xs"
+          onClick={() => { setToolTab('room'); setMobilePanel('tools'); }}>Xem trước · Chỉnh sửa</button>
+      ) : (elementProposal || draft) ? (
+        <span className="rounded border border-[#C8A96A] bg-white/95 px-2 py-1.5 text-xs font-medium">{gestureWarning ?? 'Xem trước kiến trúc'}</span>
+      ) : undefined}
+      placementStatus={shownStatus}
+      placedViews={studio.visualViews}
       selectedInstanceId={studio.selectedInstanceId}
       showCeiling={showCeiling}
       onToggleCeiling={setShowCeiling}
       onSelect={studio.setSelectedInstanceId}
-      onMove={studio.moveProduct}
+      onMove={moveWithSnap}
+      onBeginDrag={studio.beginDrag}
+      onEndDrag={cancel=>{studio.endDrag(cancel);setSnapLabel('');}}
       onDropProduct={handleDropProduct}
       onPickCategory={(normalizedCategory) => {
         setCategoryRequest({ id: normalizedCategory, nonce: Date.now() });
@@ -415,12 +511,22 @@ export default function RoomStudioClient() {
    */
   useEffect(() => {
     const selected = studio.selected;
-    if (!selected) return;
-
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       // Never steal the arrows from a field the customer is typing in.
-      if (target && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) return;
+      if (event.defaultPrevented || event.isComposing || event.altKey || document.querySelector('[aria-modal="true"]')) return;
+      if (target?.isContentEditable || target?.closest('input, textarea, select, [role="textbox"], [role="searchbox"]')) return;
+      if (event.ctrlKey || event.metaKey) {
+        const key = event.key.toLowerCase();
+        const redo = key === 'y' || (key === 'z' && event.shiftKey);
+        if ((redo && studio.redoLabel) || (key === 'z' && !redo && studio.undoLabel)) {
+          event.preventDefault();
+          if (redo) studio.redo();
+          else studio.undo();
+        }
+        return;
+      }
+      if (!selected) return;
 
       const step = event.shiftKey ? 0.1 : 0.01;
       const [x, y, z] = selected.placed.position;
@@ -443,14 +549,16 @@ export default function RoomStudioClient() {
   const selectedToolbar = studio.selected && (
     <SelectedProductToolbar
       selection={studio.selected}
+      replacements={studio.products.filter(p=>p.id!==studio.selected!.product.id && p.placementType===studio.selected!.placed.placementType && p.normalizedCategory===studio.selected!.product.normalizedCategory && isPlaceable(p.capability))}
+      onReplace={productId=>studio.preview({source:'replacement',label:'Thay sản phẩm',operations:[{op:'replace',instanceId:studio.selected!.placed.instanceId,productId}]})}
       isInQuote={hasItem(studio.selected.product.id)}
       onRotate={studio.rotateProduct}
       onDuplicate={studio.duplicateProduct}
       onRemove={studio.removeProduct}
       onAddToQuote={handleAddToQuote}
       onDeselect={() => studio.setSelectedInstanceId(null)}
-      status={placementStatus[studio.selected.placed.instanceId]}
-      findings={technicalFindings.filter((f) => f.affectedInstanceIds.includes(studio.selected!.placed.instanceId))}
+      status={shownStatus[studio.selected.placed.instanceId]}
+      findings={shownFindings.filter((f) => f.affectedInstanceIds.includes(studio.selected!.placed.instanceId))}
       dimensions={studio.state.dimensions}
       onSetVariant={studio.setPlacementVariant}
       onSetInstallationHeight={studio.setInstallationHeight}
@@ -464,6 +572,10 @@ export default function RoomStudioClient() {
       <WorkspaceHeader
         dimensions={studio.state.dimensions}
         saved={studio.isSaved}
+        undoLabel={studio.undoLabel}
+        redoLabel={studio.redoLabel}
+        onUndo={studio.undo}
+        onRedo={studio.redo}
         onOpenGuide={() => setShowGuide(true)}
       />
 
@@ -573,9 +685,10 @@ export default function RoomStudioClient() {
         onClose={() => setShowPresets(false)}
         onApply={applyPreset}
         products={studio.products}
-        placedCount={studio.placedViews.length}
-        onApplyStarter={applyStarterRoom}
+        onApplyStarter={studio.previewStarterRoom}
       />
+
+      {studio.proposal && !styleProposal && !(studio.proposal.source==='smart-fix' && toolTab==='technical') && (!elementProposal || toolTab !== 'room') && <RoomProposalDialog proposal={studio.proposal} onApply={acceptProposal} onDiscard={studio.discard} />}
 
       <WorkspaceDialog
         open={showBudget}
@@ -583,6 +696,10 @@ export default function RoomStudioClient() {
         description="Không bắt buộc. Có mốc này, LivLab mới nói được combo đang vượt hay còn dư."
         onClose={() => setShowBudget(false)}
       >
+        <p className="mb-2 text-xs">{linkedId?'Thiết kế đang liên kết với giỏ báo giá.':'Lưu thiết kế để liên kết với giỏ báo giá.'}</p>
+        <div className="mb-3 space-y-1 text-sm"><p>Trước lần chỉnh · {formatBudgetRange(studio.previousBudget)} · {studio.previousBudget.unpricedCount} chưa có giá</p>
+        <p>Hiện tại · {formatBudgetRange(studio.budget)} · {studio.budget.unpricedCount} chưa có giá</p>
+        <p>Chênh lệch · {studio.previousBudget.unpricedCount || studio.budget.unpricedCount ? 'Chưa đủ dữ liệu giá' : [studio.budget.min-studio.previousBudget.min,studio.budget.max-studio.previousBudget.max].map(v=>v.toLocaleString('vi-VN')).join(' / ')+'đ'}</p></div>
         <BudgetTargetCard targetBudget={studio.state.targetBudget} onChange={studio.setTargetBudget} />
       </WorkspaceDialog>
 
@@ -656,7 +773,7 @@ export default function RoomStudioClient() {
         state={studio.state}
         placedViews={studio.placedViews}
         budget={studio.budget}
-        findings={technicalFindings}
+        findings={handoffFindings}
       />
 
       {/* Opened only when asked for — from "Gợi ý combo" in the product panel.

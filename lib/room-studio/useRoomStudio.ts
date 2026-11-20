@@ -19,7 +19,10 @@ import { calculateRoomBudget, type BudgetEstimate } from './budgetCalculator';
 import { clampToRoom, type Vec3 } from './placementRules';
 import { centreYForInstallationHeight, installationHeightRange, placementContextFor } from './mounting';
 import type { ArchitectureSettings, LightingPresetId } from './environment';
-import { buildStarterRoom, type StarterRoomPreset, type StarterRoomResult } from './roomPresets';
+import { starterRoomRequest, type StarterRoomPreset } from './roomPresets';
+import { applyRoomOperations, anchoredPosition, rotatePlacement, type RoomOperation } from './roomOperations';
+import { beginRoomDrag, commitRoom, createRoomHistory, endRoomDrag, redoRoom, undoRoom, updateRoomDrag } from './roomHistory';
+import { applyRoomProposal, previewRoomProposal, type ProposalRequest, type RoomProposal } from './roomProposal';
 import * as ops from './roomState';
 import type { PlacedProduct, RoomState } from './roomState';
 import type { UtilityPoint } from '@/lib/technical-advisor/types';
@@ -39,7 +42,20 @@ export interface PlacedProductView {
  */
 export function useRoomStudio(catalog: RoomStudioCatalog = 'livlab', storageScope?: string) {
   const roomStateRepository = useMemo(() => roomStateRepositoryFor(storageScope), [storageScope]);
-  const [state, setState] = useState<RoomState>(ops.createInitialRoomState);
+  const [history, setHistory] = useState(() => createRoomHistory(ops.createInitialRoomState()));
+  const state = history.current;
+  const commit = useCallback((label: string, update: (base: RoomState) => RoomState) => {
+    setHistory(h => commitRoom(h, label, update(h.current)));
+  }, []);
+  const linkQuote=useCallback(()=>{
+    const id=crypto.randomUUID();
+    commit('Liên kết báo giá',base=>base.quoteDesignId?base:{...base,quoteDesignId:id});
+  },[commit]);
+  const undo = useCallback(() => setHistory(h => undoRoom(h)), []);
+  const redo = useCallback(() => setHistory(redoRoom), []);
+  const undoStarterRoom = useCallback((snapshot: RoomState) => setHistory(h => undoRoom(h, snapshot)), []);
+  const beginDrag = useCallback((id: string) => setHistory(h => beginRoomDrag(h, id)), []);
+  const endDrag = useCallback((cancel = false) => setHistory(h => endRoomDrag(h, cancel)), []);
   const [products, setProducts] = useState<RoomStudioProduct[]>([]);
   const [selectedInstanceId, setSelectedInstanceId] = useState<string | null>(null);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
@@ -65,7 +81,7 @@ export function useRoomStudio(catalog: RoomStudioCatalog = 'livlab', storageScop
     roomStateRepository
       .load()
       .then((saved) => {
-        if (!cancelled && saved) setState(saved);
+        if (!cancelled && saved) setHistory(h => createRoomHistory(saved, h.revision + 1));
       })
       .finally(() => {
         if (!cancelled) setIsHydrated(true);
@@ -76,8 +92,7 @@ export function useRoomStudio(catalog: RoomStudioCatalog = 'livlab', storageScop
     };
   }, [catalog, roomStateRepository]);
 
-  // Persist through the repository, debounced so dragging a product does not
-  // write to storage on every pointer move.
+  // Only committed snapshots reach the repository. Coalesce repeated nudges.
   //
   // `isSaved` is reported rather than a Save button offered: the room is
   // written on its own, so a button would either duplicate this or do nothing,
@@ -104,44 +119,63 @@ export function useRoomStudio(catalog: RoomStudioCatalog = 'livlab', storageScop
     return map;
   }, [products]);
 
-  const resolveProduct = useCallback((id: string) => productById.get(id), [productById]);
+  const resolveProduct = useCallback((id: string, variant?: string) => {
+    const product = productById.get(id);
+    if (!product?.reconstruction || !variant || variant === product.reconstruction.variant) return product;
+    const model = reconstructionFor(product);
+    return model ? withReconstruction(product, model, variant) : product;
+  }, [productById]);
 
-  /**
-   * The product as THIS placement draws it. Identical to the catalogue record
-   * unless the customer chose another model variant for this one instance —
-   * the basin with its illustrative faucet — in which case the size, model
-   * and wording follow the variant everywhere: scene, collisions, panel.
-   */
-  const productFor = useCallback(
-    (placed: Pick<PlacedProduct, 'productId' | 'variant'>): RoomStudioProduct | undefined => {
-      const product = productById.get(placed.productId);
-      if (!product || !placed.variant || !product.reconstruction) return product;
-      if (placed.variant === product.reconstruction.variant) return product;
-      const model = reconstructionFor(product);
-      return model ? withReconstruction(product, model, placed.variant) : product;
-    },
-    [productById]
+  const run = useCallback((label: string, command: RoomOperation) => {
+    commit(label, base => {
+      const result = applyRoomOperations(base, [command], resolveProduct);
+      return result.ok ? result.state : base;
+    });
+  }, [commit, resolveProduct]);
+
+  const preview = useCallback((request: ProposalRequest) => {
+    const proposal = previewRoomProposal(history, request, resolveProduct);
+    setHistory(h => h.revision === proposal.sourceRevision ? { ...h, drag: null, proposal } : h);
+  }, [history, resolveProduct]);
+  const discard = useCallback(() => setHistory(h => ({ ...h, proposal: null })), []);
+  const apply = useCallback((proposal: RoomProposal) => {
+    setHistory(h => applyRoomProposal(h, proposal));
+  }, []);
+
+  const viewsFor = useCallback((placements: PlacedProduct[]) => placements.flatMap(placed => {
+    const product = resolveProduct(placed.productId, placed.variant);
+    return product ? [{ placed, product }] : [];
+  }), [resolveProduct]);
+  const placedViews = useMemo(() => viewsFor(state.placedProducts), [state.placedProducts, viewsFor]);
+  const draft = history.drag?.draft;
+  const dragViews = useMemo(() => draft ? viewsFor(draft.placedProducts) : placedViews, [draft, viewsFor, placedViews]);
+
+  const previewState = history.proposal?.preview;
+  const previewProducts = previewState?.placedProducts;
+  const visualViews = useMemo(
+    () => previewProducts && previewProducts !== state.placedProducts ? viewsFor(previewProducts) : dragViews,
+    [previewProducts, state.placedProducts, viewsFor, dragViews]
   );
-
-  /**
-   * Placed instances whose product still exists in the catalogue. An instance
-   * pointing at a removed SKU is skipped rather than rendered as a blank — the
-   * snapshot keeps it so it can come back if the SKU returns.
-   */
-  const placedViews = useMemo<PlacedProductView[]>(() => {
-    return state.placedProducts
-      .map((placed) => {
-        const product = productFor(placed);
-        return product ? { placed, product } : null;
-      })
-      .filter((v): v is PlacedProductView => v !== null);
-  }, [state.placedProducts, productFor]);
 
   const budget: BudgetEstimate = useMemo(
-    () => calculateRoomBudget(placedViews.map(({ product }) => ({ product, quantity: 1 }))),
-    [placedViews]
+    () => {
+      const estimate = calculateRoomBudget(placedViews.map(({ product }) => ({ product, quantity: 1 })));
+      estimate.itemCount = state.placedProducts.length;
+      estimate.unpricedCount += estimate.itemCount - placedViews.length;
+      return estimate;
+    },
+    [placedViews, state.placedProducts.length]
   );
 
+  const previousRoom=history.previous;
+  const previousBudget=useMemo(()=>{
+    if(!previousRoom)return budget;
+    const known=viewsFor(previousRoom.placedProducts);
+    const result=calculateRoomBudget(known.map(v=>({product:v.product,quantity:1})));
+    result.itemCount=previousRoom.placedProducts.length;
+    result.unpricedCount+=result.itemCount-known.length;
+    return result;
+  },[previousRoom,viewsFor,budget]);
   const selected = useMemo(
     () => placedViews.find((v) => v.placed.instanceId === selectedInstanceId) ?? null,
     [placedViews, selectedInstanceId]
@@ -150,23 +184,14 @@ export function useRoomStudio(catalog: RoomStudioCatalog = 'livlab', storageScop
   // ─── Actions ───────────────────────────────────────────────────────────────
 
   const setDimensions = useCallback(
-    (dimensions: RoomDimensions) => {
-      setState((prev) =>
-        ops.reflowPlacements(ops.setDimensions(prev, dimensions), (id) => {
-          const placed = prev.placedProducts.find((p) => p.productId === id);
-          return placed ? productFor(placed) : resolveProduct(id);
-        })
-      );
-    },
-    [resolveProduct, productFor]
+    (dimensions: RoomDimensions) => run('Đổi kích thước phòng', { op: 'dimensions', dimensions }),
+    [run]
   );
 
-  /** Patch one axis (material / color / finish) of a surface's finish. */
   const setSurfaceStyle = useCallback((surface: SurfaceId, patch: Partial<SurfaceStyle>) => {
-    setState((prev) => ops.setSurfaceStyle(prev, surface, patch));
-  }, []);
+    run('Đổi vật liệu', { op: 'surface', surface, patch });
+  }, [run]);
 
-  /** Adds a product and returns the id of the instance that was created. */
   /**
    * Places a product, or refuses to.
    *
@@ -179,14 +204,14 @@ export function useRoomStudio(catalog: RoomStudioCatalog = 'livlab', storageScop
    */
   const addProduct = useCallback(
     (product: RoomStudioProduct, atPoint?: Vec3) => {
-      if (!isPlaceable(product.capability)) return null;
+      if (!resolveProduct(product.id) || !isPlaceable(product.capability)) return null;
       if (!ops.canPlaceInRoom(state, product).fits) return null;
       const instanceId = ops.createInstanceId(product.id);
-      setState((prev) => ops.addProduct(prev, product, { instanceId, atPoint }));
+      run('Thêm ' + product.name, { op: 'add', productId: product.id, instanceId, atPoint });
       setSelectedInstanceId(instanceId);
       return instanceId;
     },
-    [state]
+    [state, resolveProduct, run]
   );
 
   /**
@@ -205,64 +230,48 @@ export function useRoomStudio(catalog: RoomStudioCatalog = 'livlab', storageScop
   );
 
   const removeProduct = useCallback((instanceId: string) => {
-    setState((prev) => ops.removeProduct(prev, instanceId));
+    run('Bỏ sản phẩm', { op: 'remove', instanceId });
     setSelectedInstanceId((prev) => (prev === instanceId ? null : prev));
-  }, []);
+  }, [run]);
 
   const duplicateProduct = useCallback((instanceId: string) => {
     const newInstanceId = ops.createInstanceId(instanceId);
-    setState((prev) => ops.duplicateProduct(prev, instanceId, newInstanceId));
+    commit('Nhân đôi sản phẩm', (prev) => ops.duplicateProduct(prev, instanceId, newInstanceId));
     setSelectedInstanceId(newInstanceId);
-  }, []);
+  }, [commit]);
 
-  /** Moves an instance, clamped to the room so it can never leave the space. */
-  const moveProduct = useCallback(
-    (instanceId: string, position: Vec3) => {
-      setState((prev) => {
-        const placed = prev.placedProducts.find((p) => p.instanceId === instanceId);
-        const product = placed ? productFor(placed) : undefined;
-        if (!placed || !product) return prev;
-        const clamped = clampToRoom(position, {
-          ...placementContextFor(product, prev.dimensions, placed),
-          placementType: placed.placementType,
-        });
-        return ops.updatePlacement(prev, instanceId, { position: clamped });
-      });
-    },
-    [productFor]
-  );
+  const move = useCallback((base: RoomState, instanceId: string, point: Vec3) => {
+    const placed = base.placedProducts.find(p => p.instanceId === instanceId);
+    const product = placed && resolveProduct(placed.productId, placed.variant);
+    if (!product || !placed) return base;
+    return ops.updatePlacement(base, instanceId, { position: anchoredPosition(base, placed, product, point) });
+  }, [resolveProduct]);
+  const moveProduct = useCallback((id: string, point: Vec3) => {
+    commit('Di chuyển sản phẩm', base => move(base, id, point));
+  }, [commit, move]);
+  const dragProduct = useCallback((id: string, point: Vec3) => {
+    setHistory(h => updateRoomDrag(h, id, base => move(base, id, point)));
+  }, [move]);
 
-  /**
-   * Turns a product, and keeps it in the room as turned. A 1.6m bath rotated
-   * against a side wall would otherwise end with half of it inside the wall,
-   * because its footprint along x and z just swapped.
-   */
-  const rotateProduct = useCallback(
-    (instanceId: string, deltaRadians: number) => {
-      setState((prev) => {
-        const placed = prev.placedProducts.find((p) => p.instanceId === instanceId);
-        const product = placed ? productFor(placed) : undefined;
-        if (!placed) return prev;
-        const rotationY = placed.rotationY + deltaRadians;
-        if (!product) return ops.updatePlacement(prev, instanceId, { rotationY });
-        const position = clampToRoom(placed.position, {
-          ...placementContextFor(product, prev.dimensions, { ...placed, rotationY }),
-          placementType: placed.placementType,
-        });
-        return ops.updatePlacement(prev, instanceId, { rotationY, position });
-      });
-    },
-    [productFor]
-  );
+  const rotateProduct = useCallback((instanceId: string, delta: number) => {
+    commit('Xoay sản phẩm', base => {
+      const placed = base.placedProducts.find(p => p.instanceId === instanceId);
+      const product = placed && resolveProduct(placed.productId, placed.variant);
+      if (!placed || !product || !Number.isFinite(delta)) return base;
+      // Manual rotation keeps the existing toolbar behaviour. Automated
+      // changes to wall-mounted products name the new wall explicitly.
+      return rotatePlacement(base, placed, product, placed.rotationY + delta);
+    });
+  }, [commit, resolveProduct]);
 
   /** Switches the model variant one placement draws, and re-anchors it. */
   const setPlacementVariant = useCallback(
     (instanceId: string, variant: string) => {
-      setState((prev) => {
+      commit('Đổi phiên bản sản phẩm', (prev) => {
         const placed = prev.placedProducts.find((p) => p.instanceId === instanceId);
         if (!placed) return prev;
         const next = { ...placed, variant };
-        const product = productFor(next);
+        const product = resolveProduct(next.productId, next.variant);
         if (!product) return prev;
         const position = clampToRoom(placed.position, {
           ...placementContextFor(product, prev.dimensions, next),
@@ -271,7 +280,7 @@ export function useRoomStudio(catalog: RoomStudioCatalog = 'livlab', storageScop
         return ops.updatePlacement(prev, instanceId, { variant, position });
       });
     },
-    [productFor]
+    [commit, resolveProduct]
   );
 
   /**
@@ -280,9 +289,9 @@ export function useRoomStudio(catalog: RoomStudioCatalog = 'livlab', storageScop
    */
   const setInstallationHeight = useCallback(
     (instanceId: string, height: number) => {
-      setState((prev) => {
+      commit('Đổi cao độ lắp đặt', (prev) => {
         const placed = prev.placedProducts.find((p) => p.instanceId === instanceId);
-        const product = placed ? productFor(placed) : undefined;
+        const product = placed ? resolveProduct(placed.productId, placed.variant) : undefined;
         if (!placed || !product) return prev;
         const range = installationHeightRange(product);
         if (!range) return prev;
@@ -297,123 +306,93 @@ export function useRoomStudio(catalog: RoomStudioCatalog = 'livlab', storageScop
         return ops.updatePlacement(prev, instanceId, { position, mountHeight });
       });
     },
-    [productFor]
+    [commit, resolveProduct]
   );
 
-  const setLighting = useCallback((lighting: LightingPresetId) => {
-    setState((prev) => ops.setLighting(prev, lighting));
-  }, []);
+  const setLighting = useCallback((preset: LightingPresetId) => {
+    run('Đổi ánh sáng', { op: 'lighting', preset });
+  }, [run]);
 
   const setArchitecture = useCallback((patch: Partial<ArchitectureSettings>) => {
-    setState((prev) => ops.setArchitecture(prev, patch));
-  }, []);
+    preview({ source: 'architecture', label: 'Chỉnh kiến trúc phòng', operations: [{ op: 'architecture', patch }] });
+  }, [preview]);
 
-  /**
-   * The room as it was just before the last starter room replaced it, so the
-   * replacement can be undone once. Cleared by the next preset; a normal edit
-   * after a preset keeps it, because "undo the preset" is the question the
-   * customer is asking, not "undo my last nudge".
-   */
-  // Held in a ref as well as state: the undo is handed to a toast at the
-  // moment of applying, and a callback closed over state would still see the
-  // snapshot from before this one — clicking it would restore nothing.
-  const beforePresetRef = useRef<RoomState | null>(null);
-  const [canUndoStarterRoom, setCanUndoStarterRoom] = useState(false);
-
-  const applyStarterRoom = useCallback(
-    (preset: StarterRoomPreset): StarterRoomResult => {
-      const result = buildStarterRoom(state, preset, products);
-      beforePresetRef.current = state;
-      setCanUndoStarterRoom(true);
-      setState(result.state);
-      setSelectedInstanceId(null);
-      return result;
-    },
-    [state, products]
-  );
-
-  const undoStarterRoom = useCallback(() => {
-    const previous = beforePresetRef.current;
-    if (!previous) return;
-    beforePresetRef.current = null;
-    setCanUndoStarterRoom(false);
-    setState(previous);
-    setSelectedInstanceId(null);
-  }, []);
+  const previewStarterRoom = useCallback((preset: StarterRoomPreset) => {
+    preview(starterRoomRequest(state, preset, products));
+  }, [state, products, preview]);
 
   const clearProducts = useCallback(() => {
-    setState(ops.clearProducts);
+    commit('Bỏ tất cả sản phẩm', ops.clearProducts);
     setSelectedInstanceId(null);
+  }, [commit]);
+
+  // Upload URLs are session resources. Keep a photograph usable while any
+  // reachable snapshot references it, even after its dialog closes.
+  const imageUrls = useRef(new Set<string>());
+  useEffect(() => {
+    const retained = new Set([state.roomContextImage]);
+    for (const tx of [...history.past, ...history.future]) {
+      retained.add(tx.before.roomContextImage);
+      retained.add(tx.after.roomContextImage);
+    }
+    for (const url of imageUrls.current) {
+      if (retained.has(url)) continue;
+      URL.revokeObjectURL(url);
+      imageUrls.current.delete(url);
+    }
+  }, [state, history.past, history.future]);
+  useEffect(() => {
+    const allocated = imageUrls.current;
+    return () => { for (const url of allocated) URL.revokeObjectURL(url); };
   }, []);
 
   const setRoomContextImage = useCallback((image?: string, label?: string) => {
-    setState((prev) => ops.setRoomContextImage(prev, image, label));
-  }, []);
+    if (image?.startsWith('blob:')) imageUrls.current.add(image);
+    commit('Đổi ảnh tham chiếu', (prev) => ops.setRoomContextImage(prev, image, label));
+  }, [commit]);
 
   const setTargetBudget = useCallback((targetBudget?: number) => {
-    setState((prev) => ops.setTargetBudget(prev, targetBudget));
-  }, []);
+    commit('Đổi ngân sách', (prev) => ops.setTargetBudget(prev, targetBudget));
+  }, [commit]);
 
   const setStylePreferences = useCallback((styles: string[]) => {
-    setState((prev) => ops.setStylePreferences(prev, styles));
-  }, []);
+    commit('Đổi phong cách', (prev) => ops.setStylePreferences(prev, styles));
+  }, [commit]);
 
   const addUtilityPoint = useCallback((point: UtilityPoint) => {
-    setState((prev) => ops.addUtilityPoint(prev, point));
-  }, []);
+    commit('Thêm điểm kỹ thuật', (prev) => ops.addUtilityPoint(prev, point));
+  }, [commit]);
 
   const removeUtilityPoint = useCallback((id: string) => {
-    setState((prev) => ops.removeUtilityPoint(prev, id));
-  }, []);
+    commit('Bỏ điểm kỹ thuật', (prev) => ops.removeUtilityPoint(prev, id));
+  }, [commit]);
 
-  /**
-   * Replaces the room with a demonstration room in one state update: size,
-   * finishes, then each product placed by the ordinary placement rules — at
-   * its `at` point as a drop would place it, or where "+ THÊM" would. A
-   * product that is missing or cannot be placed is skipped. Returns how many
-   * products were placed.
-   */
-  const loadPresetRoom = useCallback(
-    (preset: RoomStudioDemoRoom): number => {
-      const chosen = preset.products
-        .map((entry) => ({ entry, product: productById.get(entry.id) }))
-        .filter(
-          (c): c is { entry: (typeof preset.products)[number]; product: RoomStudioProduct } =>
-            Boolean(c.product) && isPlaceable(c.product!.capability)
-        );
-
-      let next = ops.clearProducts(ops.setDimensions(ops.createInitialRoomState(), preset.dimensions));
-      if (preset.floor) next = ops.setSurfaceStyle(next, 'floor', preset.floor as Partial<SurfaceStyle>);
-      if (preset.walls) next = ops.setSurfaceStyle(next, 'walls', preset.walls as Partial<SurfaceStyle>);
-
-      let selectedId: string | null = null;
-      for (const { entry, product } of chosen) {
-        const instanceId = ops.createInstanceId(product.id);
-        const atPoint: Vec3 | undefined = entry.at ? [entry.at[0], 0, entry.at[1]] : undefined;
-        next = ops.addProduct(next, product, { instanceId, atPoint });
-        if (product.id === preset.selectProductId || selectedId === null) selectedId = instanceId;
-      }
-
-      setState(next);
-      setSelectedInstanceId(selectedId);
-      return chosen.length;
-    },
-    [productById]
-  );
+  const previewDemoRoom = useCallback((preset: RoomStudioDemoRoom) => {
+    const operations: RoomOperation[] = [{ op: 'reset' }, { op: 'dimensions', dimensions: preset.dimensions }];
+    if (preset.floor) operations.push({ op: 'surface', surface: 'floor', patch: preset.floor as SurfaceStyle });
+    if (preset.walls) operations.push({ op: 'surface', surface: 'walls', patch: preset.walls as SurfaceStyle });
+    let selectOnApply: string | undefined;
+    for (const entry of preset.products) {
+      const instanceId = ops.createInstanceId(entry.id);
+      operations.push({ op: 'add', instanceId, productId: entry.id, atPoint: entry.at && [entry.at[0], 0, entry.at[1]] });
+      if (!selectOnApply || entry.id === preset.selectProductId) selectOnApply = instanceId;
+    }
+    preview({ source: 'demo', label: 'Phòng trình diễn', operations, selectOnApply });
+  }, [preview]);
 
   const resetRoom = useCallback(() => {
-    setState(ops.createInitialRoomState());
+    run('Đặt lại phòng', { op: 'reset' });
     setSelectedInstanceId(null);
-    void roomStateRepository.clear();
-  }, [roomStateRepository]);
+  }, [run]);
 
   return {
-    state,
+    state, linkQuote, resolveProduct, dragId:history.drag?.instanceId,
+    unlinkedDesignId:state.quoteDesignId ? undefined : history.previous?.quoteDesignId,
     products,
     placedViews,
     selected,
     selectedInstanceId,
-    budget,
+    budget, previousBudget,
     isLoadingProducts,
     isHydrated,
     isSaved,
@@ -432,15 +411,17 @@ export function useRoomStudio(catalog: RoomStudioCatalog = 'livlab', storageScop
     setStylePreferences,
     addUtilityPoint,
     removeUtilityPoint,
-    loadPresetRoom,
+    previewDemoRoom,
     resetRoom,
     explainPlacement,
     setPlacementVariant,
     setInstallationHeight,
     setLighting,
     setArchitecture,
-    applyStarterRoom,
+    previewStarterRoom,
     undoStarterRoom,
-    canUndoStarterRoom,
+    visualViews, dragViews, beginDrag, dragProduct, endDrag,
+    undo, redo, undoLabel: history.past.at(-1)?.label, redoLabel: history.future[0]?.label,
+    revision: history.revision, preview, proposal: history.proposal, apply, discard,
   };
 }

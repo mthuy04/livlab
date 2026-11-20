@@ -1,118 +1,50 @@
 'use client';
 
-import { memo, useMemo, useRef } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import type { RoomDimensions } from '@/lib/room-studio/roomGeometry';
 import { resolveSurfaceMaterial, type SurfaceStyle } from '@/lib/room-studio/materials';
 import {
-  glassPartitionRect,
   nicheRect,
-  windowRect,
   type ArchitectureSettings,
   type LightingPreset,
 } from '@/lib/room-studio/environment';
-import { useSurfaceMaps } from './useSurfaceMaps';
+import StyledSurfaceMaterial, {motionFraction} from './StyledSurfaceMaterial';
+import { STYLE_PACKS, styledChannel, type StylePackId, type VisualStyle } from '@/lib/room-studio/stylePacks';
 
-/** An opening cut through a wall, in the wall's own 2D frame (metres, origin bottom-left). */
-interface Opening {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
+import { elementsForFlags, isWallElement, renderedWalls, openingFitsWall, wallFrame, wallOpenings, wallCutaway, type ArchitecturalElement, type RoomWall, type WallElement, type WallOpening } from '@/lib/room-studio/architecture';
+import { solidWallRects, surfaceGeometry } from '@/lib/room-studio/wallMesh';
+import { WindowNode, PartitionNode } from './GlassArchitecture';
+import { canDrawPartition } from '@/lib/room-studio/glassGeometry';
+import EntranceDoorNode from './EntranceDoorNode';
 
-/**
- * A wall or floor as real geometry: a rectangle with its openings cut out,
- * UVs normalised to the rectangle so the PBR maps' repeat count — derived
- * from the surface's size in metres — lands every tile at its true size.
- */
-function surfaceGeometry(width: number, height: number, openings: Opening[]): THREE.BufferGeometry {
-  if (openings.length === 0) {
-    return new THREE.PlaneGeometry(width, height);
-  }
-  const shape = new THREE.Shape();
-  shape.moveTo(0, 0);
-  shape.lineTo(width, 0);
-  shape.lineTo(width, height);
-  shape.lineTo(0, height);
-  shape.lineTo(0, 0);
-  for (const o of openings) {
-    const hole = new THREE.Path();
-    hole.moveTo(o.x, o.y);
-    hole.lineTo(o.x, o.y + o.height);
-    hole.lineTo(o.x + o.width, o.y + o.height);
-    hole.lineTo(o.x + o.width, o.y);
-    hole.lineTo(o.x, o.y);
-    shape.holes.push(hole);
-  }
-  const geometry = new THREE.ShapeGeometry(shape);
-  const pos = geometry.attributes.position as THREE.BufferAttribute;
-  const uv = new Float32Array(pos.count * 2);
-  for (let i = 0; i < pos.count; i++) {
-    uv[i * 2] = pos.getX(i) / width;
-    uv[i * 2 + 1] = pos.getY(i) / height;
-  }
-  geometry.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
-  geometry.translate(-width / 2, -height / 2, 0);
-  return geometry;
-}
+const EMPTY: never[] = [];
 
 interface SurfaceProps {
+  mineralMap: THREE.Texture | null;
+  sunlightOccluder?: boolean;
+  role?: 'floor' | 'walls';
+  pack?: StylePackId;
   style: SurfaceStyle;
   width: number;
   height: number;
   position: [number, number, number];
   rotation: [number, number, number];
-  openings?: Opening[];
+  openings?: WallOpening[];
   /** Side walls take a touch less light so the corner reads. */
   tint?: number;
   resolution: number;
-  /**
-   * The point a camera must be on the FAR side of for this wall to fade — the
-   * wall's plane, and the direction pointing into the room.
-   */
-  cutaway?: { plane: THREE.Plane } | null;
+  doubleSided?: boolean;
 }
 
-function Surface({ style, width, height, position, rotation, openings = [], tint = 1, resolution, cutaway }: SurfaceProps) {
-  const material = resolveSurfaceMaterial(style);
-  const maps = useSurfaceMaps(material, width, height, resolution);
-  const geometry = useMemo(() => surfaceGeometry(width, height, openings), [width, height, openings]);
-  const matRef = useRef<THREE.MeshStandardMaterial>(null);
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  // Fade, don't delete: a wall the camera is behind becomes a ghost the
-  // customer can still read the room's edge from, and comes back the moment
-  // the camera is inside again.
-  useFrame(({ camera }) => {
-    const mat = matRef.current;
-    if (!mat || !cutaway) return;
-    const behind = cutaway.plane.distanceToPoint(camera.position) < 0;
-    const target = behind ? 0.12 : 1;
-    const next = mat.opacity + (target - mat.opacity) * 0.25;
-    if (Math.abs(next - mat.opacity) > 0.002) {
-      mat.opacity = next;
-      mat.transparent = next < 0.999;
-      mat.depthWrite = next > 0.5;
-      if (meshRef.current) meshRef.current.castShadow = next > 0.5;
-    }
-  });
-
-  const shade = `rgb(${Math.round(255 * tint)},${Math.round(255 * tint)},${Math.round(255 * tint)})`;
+function Surface({ style, pack, mineralMap, sunlightOccluder, role = 'walls', width, height, position, rotation, openings = EMPTY, tint = 1, resolution, doubleSided }: SurfaceProps) {
+  const cuts = JSON.stringify(openings.map(({ x, y, width, height }) => ({ x, y, width, height })));
+  const geometry = useMemo(() => surfaceGeometry(width, height, JSON.parse(cuts)), [width, height, cuts]);
+  useEffect(() => () => geometry.dispose(), [geometry]);
   return (
-    <mesh ref={meshRef} geometry={geometry} position={position} rotation={rotation} receiveShadow>
-      <meshStandardMaterial
-        ref={matRef}
-        map={maps?.map ?? null}
-        roughnessMap={maps?.roughnessMap ?? null}
-        bumpMap={maps?.bumpMap ?? null}
-        bumpScale={0.6}
-        color={maps ? shade : material.baseColor}
-        // The roughness map carries absolute values; 1 lets it through as drawn.
-        roughness={maps ? 1 : material.roughness}
-        metalness={material.metalness}
-      />
+    <mesh name="wall-surface" geometry={geometry} position={position} rotation={rotation} castShadow={sunlightOccluder} receiveShadow>
+      <StyledSurfaceMaterial {...{style,mineralMap,role,pack,width,height,tint,resolution,doubleSided}}/>
     </mesh>
   );
 }
@@ -127,28 +59,70 @@ function Skirting({ length, position, rotation, color }: { length: number; posit
   );
 }
 
-/** Dark section caps on top of the walls, so the plan view reads as a drawing. */
-function WallCaps({ dimensions }: { dimensions: RoomDimensions }) {
-  const { length, width, height } = dimensions;
-  const t = 0.1;
-  const mat = <meshStandardMaterial color="#7C848B" roughness={0.9} />;
-  return (
-    <group>
-      <mesh position={[0, height + 0.005, -width / 2 - t / 2]}>
-        <boxGeometry args={[length + t * 2, 0.01, t]} />
-        {mat}
-      </mesh>
-      <mesh position={[-length / 2 - t / 2, height + 0.005, 0]}>
-        <boxGeometry args={[t, 0.01, width]} />
-        {mat}
-      </mesh>
-      <mesh position={[length / 2 + t / 2, height + 0.005, 0]}>
-        <boxGeometry args={[t, 0.01, width]} />
-        {mat}
-      </mesh>
-    </group>
-  );
+interface WallProps { mineralMap: THREE.Texture | null; sunlightOccluder: boolean; pack?:StylePackId; room: RoomDimensions; wall: RoomWall; openings: WallOpening[]; wallStyle: SurfaceStyle; resolution: number;
+    cutaway: boolean; skirting: boolean; skirtColor: string; wallElements: WallElement[]; plan: boolean; legacy: boolean; selected?: string | null;
 }
+
+const Wall = memo(function Wall({ room, wall, openings, wallStyle, resolution, cutaway, skirting, skirtColor, wallElements, plan, legacy, selected, pack, mineralMap, sunlightOccluder }: WallProps) {
+  const group = useRef<THREE.Group>(null);
+  const frame = useMemo(() => wallFrame(room, wall), [room, wall]);
+  const centre = frame.point(frame.span / 2);
+  const solids = useMemo(() => solidWallRects(frame.span, room.height, openings), [frame.span, room.height, openings]);
+  const caps = useMemo(() => plan
+    ? solidWallRects(frame.span, 1, openings.filter(o => o.id !== 'niche').map(o => ({ ...o, y:0, height:1 })))
+    : solids.filter(r => Math.abs(r.y + r.height - room.height) < 1e-8), [plan, frame.span, room.height, openings, solids]);
+  const opacity = useRef(1);
+  const refresh = useRef(true);
+  useEffect(() => { refresh.current = true; });
+  useFrame(({ camera, invalidate }) => {
+    if (!group.current) return;
+    const outside = wallCutaway(frame, camera.position, cutaway && !plan);
+    const target = outside ? 0.12 : 1;
+    if (!refresh.current && opacity.current === target) return;
+    const next = opacity.current + (target - opacity.current) * 0.25;
+    opacity.current = Math.abs(next - target) < 0.002 ? target : next;
+    if (opacity.current !== target) invalidate();
+    refresh.current = false;
+    group.current.traverse(obj => {
+      if (!(obj instanceof THREE.Mesh) || !(obj.material instanceof THREE.MeshStandardMaterial)) return;
+      if (legacy && obj.name !== 'wall-surface') return;
+      const glassOpacity = obj.material.userData.glassOpacity;
+      if (typeof glassOpacity === 'number') {
+        obj.material.opacity = glassOpacity * opacity.current;
+        return;
+      }
+      obj.material.transparent = opacity.current < 1;
+      obj.material.depthWrite = opacity.current > 0.5;
+      obj.material.opacity = opacity.current;
+      if (obj.name === 'door-leaf') obj.castShadow = !outside;
+    });
+  });
+  const tint = wall === 'left' ? 0.94 : wall === 'right' ? 0.9 : 1;
+  return <group ref={group}>
+    <Surface mineralMap={mineralMap} sunlightOccluder={sunlightOccluder} pack={pack} style={wallStyle} width={frame.span} height={room.height} position={[centre.x, room.height/2, centre.z]}
+      rotation={[0, frame.yaw, 0]} openings={openings} tint={tint} resolution={resolution} doubleSided={wallElements.length > 0} />
+    {solids.filter(r => r.y === 0).map(r => {
+      const p = frame.point(r.x + r.width/2, 0.006);
+      return skirting && <Skirting key={r.x} length={r.width} position={[p.x, 0.04, p.z]} rotation={[0, frame.yaw, 0]} color={skirtColor} />;
+    })}
+    {caps.map(r => {
+      const leftExtension = wall === 'back' && r.x === 0 ? 0.1 : 0;
+      const rightExtension = wall === 'back' && r.x + r.width === frame.span ? 0.1 : 0;
+      const p = frame.point(r.x + (r.width + rightExtension - leftExtension)/2, -0.05);
+      return <mesh key={r.x} position={[p.x, room.height + 0.005, p.z]} rotation={[0, frame.yaw, 0]}>
+        <boxGeometry args={[r.width + leftExtension + rightExtension, 0.01, 0.1]} /><meshStandardMaterial color="#7C848B" roughness={0.9} />
+      </mesh>;
+    })}
+    {wallElements.map(d => d.type === 'window' ? <WindowNode key={d.id} room={room} element={d} plan={plan} selected={selected === d.id} /> : <EntranceDoorNode key={d.id} room={room} door={d} plan={plan} selected={selected === d.id} />)}
+  </group>;
+}, (a,b) => a.mineralMap === b.mineralMap && a.sunlightOccluder === b.sunlightOccluder && a.pack === b.pack && a.room === b.room && a.wall === b.wall && a.wallStyle === b.wallStyle && a.resolution === b.resolution &&
+  a.cutaway === b.cutaway && a.skirting === b.skirting && a.skirtColor === b.skirtColor && a.plan === b.plan &&
+  a.legacy === b.legacy && a.selected === b.selected && a.wallElements.length === b.wallElements.length &&
+  a.wallElements.every((el,i) => el === b.wallElements[i]) && a.openings.length === b.openings.length &&
+  a.openings.every((r,i) => {
+    const o = b.openings[i];
+    return r.x === o.x && r.y === o.y && r.width === o.width && r.height === o.height && r.id === o.id;
+  }));
 
 function Niche({ dimensions, wallStyle }: { dimensions: RoomDimensions; wallStyle: SurfaceStyle }) {
   const n = nicheRect(dimensions);
@@ -171,76 +145,7 @@ function Niche({ dimensions, wallStyle }: { dimensions: RoomDimensions; wallStyl
   );
 }
 
-function WindowOpening({ dimensions }: { dimensions: RoomDimensions }) {
-  const w = windowRect(dimensions);
-  const x = -dimensions.length / 2;
-  const frame = '#2F3438';
-  const t = 0.035;
-  return (
-    <group position={[x, w.sill + w.height / 2, w.centreZ]}>
-      {/* Daylight beyond the opening: an emissive panel, not a sky render. */}
-      <mesh position={[-0.25, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
-        <planeGeometry args={[w.width + 0.6, w.height + 0.6]} />
-        <meshBasicMaterial color="#EAF3FA" toneMapped={false} />
-      </mesh>
-      {[
-        [0, w.height / 2, 0, t, t, w.width + t * 2],
-        [0, -w.height / 2, 0, t, t, w.width + t * 2],
-        [0, 0, w.width / 2, t, w.height, t],
-        [0, 0, -w.width / 2, t, w.height, t],
-        [0, 0, 0, t * 0.6, w.height, t * 0.6],
-      ].map(([px, py, pz, sx, sy, sz], i) => (
-        <mesh key={i} position={[px, py, pz]} castShadow>
-          <boxGeometry args={[sx, sy, sz]} />
-          <meshStandardMaterial color={frame} roughness={0.4} metalness={0.4} />
-        </mesh>
-      ))}
-      <mesh rotation={[0, Math.PI / 2, 0]}>
-        <planeGeometry args={[w.width, w.height]} />
-        <meshStandardMaterial color="#DDE8EE" transparent opacity={0.15} roughness={0.05} metalness={0.1} />
-      </mesh>
-    </group>
-  );
-}
-
-function GlassPartition({ dimensions }: { dimensions: RoomDimensions }) {
-  const g = glassPartitionRect(dimensions);
-  const zBack = -dimensions.width / 2;
-  const frame = '#24282C';
-  const t = 0.018;
-  return (
-    <group position={[g.x, 0, zBack + g.depth / 2]}>
-      <mesh position={[0, g.height / 2, 0]} rotation={[0, Math.PI / 2, 0]}>
-        <planeGeometry args={[g.depth, g.height]} />
-        <meshStandardMaterial
-          color="#E9F1F4"
-          transparent
-          opacity={0.14}
-          roughness={0.04}
-          metalness={0.05}
-          envMapIntensity={1.4}
-          side={THREE.DoubleSide}
-          depthWrite={false}
-        />
-      </mesh>
-      {/* Slim black profile: top rail, front post, floor channel. */}
-      <mesh position={[0, g.height, 0]} castShadow>
-        <boxGeometry args={[t, t, g.depth]} />
-        <meshStandardMaterial color={frame} roughness={0.35} metalness={0.6} />
-      </mesh>
-      <mesh position={[0, g.height / 2, g.depth / 2]} castShadow>
-        <boxGeometry args={[t, g.height, t]} />
-        <meshStandardMaterial color={frame} roughness={0.35} metalness={0.6} />
-      </mesh>
-      <mesh position={[0, 0.006, 0]}>
-        <boxGeometry args={[t * 1.4, 0.012, g.depth]} />
-        <meshStandardMaterial color={frame} roughness={0.35} metalness={0.6} />
-      </mesh>
-    </group>
-  );
-}
-
-function Downlights({ dimensions, lighting, visible }: { dimensions: RoomDimensions; lighting: LightingPreset; visible: boolean }) {
+function Downlights({ dimensions, lighting, visible, styled }: { dimensions: RoomDimensions; lighting: LightingPreset; visible: boolean; styled:boolean }) {
   const { length, width, height } = dimensions;
   const points = useMemo<Array<[number, number]>>(() => {
     const nx = length > 3.2 ? 3 : 2;
@@ -248,12 +153,25 @@ function Downlights({ dimensions, lighting, visible }: { dimensions: RoomDimensi
     for (let i = 0; i < nx; i++) out.push([-length / 2 + ((i + 0.5) * length) / nx, -width * 0.12]);
     return out;
   }, [length, width]);
-  if (lighting.downlights.intensity <= 0) return null;
+  const group=useRef<THREE.Group>(null);
+  const reduced=useMemo(()=>window.matchMedia('(prefers-reduced-motion: reduce)'),[]);
+  const targetColor=useMemo(()=>new THREE.Color(lighting.downlights.color),[lighting.downlights.color]);
+  useFrame((state,dt)=>{
+    const target=lighting.downlights.intensity*1.6;
+    const fraction=motionFraction(dt,reduced.matches);
+    group.current?.traverse(obj=>{
+      if(!(obj instanceof THREE.PointLight))return;
+      if(Math.abs(target-obj.intensity)<.009){obj.intensity=target;obj.color.copy(targetColor);return;}
+      obj.intensity=THREE.MathUtils.lerp(obj.intensity,target,fraction);
+      obj.color.lerp(targetColor,fraction);state.invalidate();
+    });
+  });
+  // Keep the light count constant so the first style switch reuses warmed product shaders.
   return (
-    <group>
+    <group ref={group}>
       {points.map(([x, z]) => (
         <group key={`${x}:${z}`} position={[x, height - 0.01, z]}>
-          {visible && (
+          {visible && (styled || lighting.downlights.intensity > 0) && (
             <mesh rotation={[Math.PI / 2, 0, 0]}>
               <circleGeometry args={[0.045, 24]} />
               <meshBasicMaterial color="#FFF6E6" toneMapped={false} />
@@ -261,10 +179,10 @@ function Downlights({ dimensions, lighting, visible }: { dimensions: RoomDimensi
           )}
           <pointLight
             position={[0, -0.05, 0]}
-            intensity={lighting.downlights.intensity * 1.6}
+            intensity={0}
             distance={height * 2.2}
             decay={2}
-            color={lighting.downlights.color}
+            color="#fff4e4"
           />
         </group>
       ))}
@@ -273,11 +191,14 @@ function Downlights({ dimensions, lighting, visible }: { dimensions: RoomDimensi
 }
 
 interface RoomShellProps {
+  visualStyle?: VisualStyle;
   dimensions: RoomDimensions;
   floorStyle: SurfaceStyle;
   wallStyle: SurfaceStyle;
   showCeiling?: boolean;
   architecture: ArchitectureSettings;
+  elements?: ArchitecturalElement[];
+  selectedElementId?: string | null;
   lighting: LightingPreset;
   /** Canvas width of the procedural maps; lower on a lighter scene. */
   textureResolution: number;
@@ -285,60 +206,55 @@ interface RoomShellProps {
   planView?: boolean;
 }
 
-/**
- * The parametric room: floor, back wall, left wall, right wall — and an optional
- * ceiling, off by default. The front wall (z = +width/2) is intentionally left
- * open so the customer is always looking into the room rather than at a wall,
- * and the other three fade when the camera orbits behind them.
- *
- * Context — skirting, niche, window, glass screen — belongs to the room, not
- * the quote, and each piece is switched by `architecture`.
- */
+// Legacy designs retain the open viewing side. A front entrance brings its
+// own wall into the shell, with the same orbit-aware cutaway as the other walls.
 function RoomShell({
   dimensions,
   floorStyle,
-  wallStyle,
+  wallStyle, visualStyle,
   showCeiling = false,
-  architecture,
+  architecture, elements, selectedElementId,
   lighting,
   textureResolution,
   planView = false,
 }: RoomShellProps) {
   const { length, width, height } = dimensions;
 
-  const backOpenings = useMemo<Opening[]>(() => {
-    if (!architecture.niche) return [];
-    const n = nicheRect(dimensions);
-    return [{ x: n.centreX - n.width / 2 + length / 2, y: n.centreY - n.height / 2, width: n.width, height: n.height }];
-  }, [architecture.niche, dimensions, length]);
+  const [mineralMap, setMineralMap] = useState<THREE.Texture | null>(null);
+  useEffect(() => {
+    let active = true;
+    const texture = new THREE.TextureLoader().load('/room-studio/styles/minerals.webp', map => {
+      if (!active) return;
+      map.wrapS = map.wrapT = THREE.RepeatWrapping;
+      // RGB channels encode independent material fields in linear data space.
+      map.colorSpace = THREE.NoColorSpace;
+      map.anisotropy = 4;
+      setMineralMap(map);
+    });
+    return () => { active = false; texture.dispose(); };
+  }, []);
 
-  const leftOpenings = useMemo<Opening[]>(() => {
-    if (!architecture.window) return [];
-    const w = windowRect(dimensions);
-    // The left wall's own frame runs from the front (z = +width/2) to the back.
-    return [{ x: width / 2 - w.centreZ - w.width / 2, y: w.sill, width: w.width, height: w.height }];
-  }, [architecture.window, dimensions, width]);
+  // Standalone legacy scene callers still pass flags. Room Studio always supplies elements.
+  const layout = useMemo(() => elements ?? elementsForFlags(dimensions, [], architecture), [elements, dimensions, architecture]);
+  const walls = useMemo(() => {
+    const valid = layout.filter(isWallElement).filter(d => openingFitsWall(dimensions, d));
+    const openings = wallOpenings(dimensions, architecture, valid);
+    return renderedWalls(valid).map(wall => ({ wall, openings: openings.filter(o => o.wall === wall),
+      wallElements: valid.filter(d => d.wall === wall) }));
+  }, [dimensions, architecture, layout]);
 
-  const cut = architecture.cutaway && !planView;
-  const planes = useMemo(
-    () => ({
-      back: new THREE.Plane(new THREE.Vector3(0, 0, 1), width / 2),
-      left: new THREE.Plane(new THREE.Vector3(1, 0, 0), length / 2),
-      right: new THREE.Plane(new THREE.Vector3(-1, 0, 0), length / 2),
-    }),
-    [length, width]
-  );
-
+  const wallPack = styledChannel(visualStyle, 'walls');
   const skirtColor = useMemo(() => {
+    if (wallPack) return STYLE_PACKS[wallPack].walls.base;
     const c = new THREE.Color(resolveSurfaceMaterial(wallStyle).baseColor);
     c.offsetHSL(0, 0, -0.1);
     return `#${c.getHexString()}`;
-  }, [wallStyle]);
+  }, [wallStyle, wallPack]);
 
   return (
     <group>
       <Surface
-        style={floorStyle}
+        role="floor" mineralMap={mineralMap} pack={styledChannel(visualStyle,'floor')} style={floorStyle}
         width={length}
         height={width}
         position={[0, 0, 0]}
@@ -346,37 +262,8 @@ function RoomShell({
         resolution={textureResolution}
       />
 
-      <Surface
-        style={wallStyle}
-        width={length}
-        height={height}
-        position={[0, height / 2, -width / 2]}
-        rotation={[0, 0, 0]}
-        openings={backOpenings}
-        resolution={textureResolution}
-        cutaway={cut ? { plane: planes.back } : null}
-      />
-      <Surface
-        style={wallStyle}
-        width={width}
-        height={height}
-        position={[-length / 2, height / 2, 0]}
-        rotation={[0, Math.PI / 2, 0]}
-        openings={leftOpenings}
-        tint={0.94}
-        resolution={textureResolution}
-        cutaway={cut ? { plane: planes.left } : null}
-      />
-      <Surface
-        style={wallStyle}
-        width={width}
-        height={height}
-        position={[length / 2, height / 2, 0]}
-        rotation={[0, -Math.PI / 2, 0]}
-        tint={0.9}
-        resolution={textureResolution}
-        cutaway={cut ? { plane: planes.right } : null}
-      />
+      {walls.map(w => <Wall mineralMap={mineralMap} sunlightOccluder={!!styledChannel(visualStyle, 'lighting') && w.wallElements.some(e=>e.type==='window')} pack={styledChannel(visualStyle,'walls')} key={w.wall} {...w} room={dimensions} wallStyle={wallStyle} resolution={textureResolution}
+        legacy={!layout.length} cutaway={architecture.cutaway} skirting={architecture.skirting} skirtColor={skirtColor} plan={planView} selected={w.wallElements.some(e => e.id === selectedElementId) ? selectedElementId : undefined} />)}
 
       {showCeiling && !planView && (
         <mesh position={[0, height, 0]} rotation={[Math.PI / 2, 0, 0]}>
@@ -385,20 +272,11 @@ function RoomShell({
         </mesh>
       )}
 
-      {architecture.skirting && (
-        <group>
-          <Skirting length={length} position={[0, 0.04, -width / 2 + 0.006]} rotation={[0, 0, 0]} color={skirtColor} />
-          <Skirting length={width} position={[-length / 2 + 0.006, 0.04, 0]} rotation={[0, Math.PI / 2, 0]} color={skirtColor} />
-          <Skirting length={width} position={[length / 2 - 0.006, 0.04, 0]} rotation={[0, -Math.PI / 2, 0]} color={skirtColor} />
-        </group>
-      )}
-
       {architecture.niche && <Niche dimensions={dimensions} wallStyle={wallStyle} />}
-      {architecture.window && <WindowOpening dimensions={dimensions} />}
-      {architecture.glassPartition && <GlassPartition dimensions={dimensions} />}
+      {layout.map(e => e.type === 'shower-partition' && canDrawPartition(dimensions, e) &&
+        <PartitionNode trim={visualStyle && STYLE_PACKS[visualStyle.id].trim} key={e.id} element={e} selected={e.id === selectedElementId} plan={planView} />)}
 
-      <Downlights dimensions={dimensions} lighting={lighting} visible={showCeiling && !planView} />
-      <WallCaps dimensions={dimensions} />
+      <Downlights styled={!!visualStyle} dimensions={dimensions} lighting={lighting} visible={showCeiling && !planView} />
     </group>
   );
 }

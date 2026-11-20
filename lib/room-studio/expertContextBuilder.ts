@@ -20,6 +20,7 @@
 import type { QuoteItem } from '@/lib/types';
 import { getBudgetFit } from '@/lib/budget/getBudgetFit';
 import type { BudgetEstimate } from './budgetCalculator';
+import { parseArchitecture } from './environment';
 import { getFloorArea } from './roomGeometry';
 import { describeSurfaceStyle } from './materials';
 import type { RoomState } from './roomState';
@@ -146,6 +147,9 @@ export function buildExpertContext(params: {
       topFindings(
         runTechnicalAdvisor({
           room: state.dimensions,
+          elements: state.elements,
+          architecture: state.architecture,
+          counterSupport: parseArchitecture(state.architecture).basinCounter,
           entries: buildEntries(placedViews),
           utilityPoints: state.utilityPoints ?? [],
         })

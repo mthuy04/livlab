@@ -307,11 +307,13 @@ export default function QuoteForm({ quoteItems, onSuccess }: QuoteFormProps) {
       {quoteItems.length > 0 && form.budgetRange && (
         <div className="pt-4 border-t border-[#D8E2EA]">
           <h3 className="text-base font-bold text-[#0B1623] mb-4">Mức độ phù hợp ngân sách</h3>
-          <BudgetFitCard 
-            total={quoteTotalMin} 
+          {quoteItems.some(item => item.unpriced || (!item.priceMin && !item.priceMax)) ? (
+            <p className="text-sm">Có sản phẩm chưa có giá. Showroom sẽ xác nhận tổng chi phí.</p>
+          ) : <BudgetFitCard
+            total={quoteTotalMin}
             budgetMin={currentBudgetMin} 
-            budgetMax={currentBudgetMax} 
-          />
+            budgetMax={currentBudgetMax}
+          />}
         </div>
       )}
 

@@ -1,3 +1,4 @@
+import { parseVisualStyle, overrideChannel, type VisualStyle } from './stylePacks';
 /**
  * Serializable Room Studio state and the pure operations over it.
  *
@@ -27,7 +28,9 @@ import {
 } from './environment';
 import type { UtilityPoint } from '@/lib/technical-advisor/types';
 
-export const ROOM_STATE_VERSION = 1;
+import { elementsForFlags, isArchitecturalElement, type ArchitecturalElement } from './architecture';
+
+export const ROOM_STATE_VERSION = 3;
 
 export interface PlacedProduct {
   instanceId: string;
@@ -56,6 +59,8 @@ export interface PlacedProduct {
 }
 
 export interface RoomState {
+  visualStyle?: VisualStyle;
+  quoteDesignId?: string;
   version: number;
   dimensions: RoomDimensions;
   /**
@@ -90,6 +95,7 @@ export interface RoomState {
   lighting?: LightingPresetId;
   /** Context around the products. Absent in older snapshots: the defaults. */
   architecture?: ArchitectureSettings;
+  elements: ArchitecturalElement[];
 }
 
 export function createInitialRoomState(): RoomState {
@@ -103,6 +109,7 @@ export function createInitialRoomState(): RoomState {
     placedProducts: [],
     lighting: DEFAULT_LIGHTING,
     architecture: { ...DEFAULT_ARCHITECTURE },
+    elements: [],
   };
 }
 
@@ -131,10 +138,10 @@ export function setDimensions(state: RoomState, dimensions: RoomDimensions): Roo
  */
 export function reflowPlacements(
   state: RoomState,
-  resolveProduct: (productId: string) => RoomStudioProduct | undefined
+  resolveProduct: (productId: string, variant?: string) => RoomStudioProduct | undefined
 ): RoomState {
   const placedProducts = state.placedProducts.map((placed) => {
-    const product = resolveProduct(placed.productId);
+    const product = resolveProduct(placed.productId, placed.variant);
     if (!product) return placed;
     const position = clampToRoom(placed.position, {
       ...placementContextFor(product, state.dimensions, placed),
@@ -158,6 +165,7 @@ export function setSurfaceStyle(
   const next = normalizeSurfaceStyle(surface, { ...state.surfaceStyles[surface], ...patch });
   return {
     ...state,
+    ...overrideChannel(state.visualStyle, surface),
     surfaceStyles: { ...state.surfaceStyles, [surface]: next },
   };
 }
@@ -268,11 +276,17 @@ export function removeUtilityPoint(state: RoomState, id: string): RoomState {
 }
 
 export function setLighting(state: RoomState, lighting: LightingPresetId): RoomState {
-  return { ...state, lighting: parseLighting(lighting) };
+  return { ...state, ...overrideChannel(state.visualStyle, 'lighting'), lighting: parseLighting(lighting) };
 }
 
 export function setArchitecture(state: RoomState, patch: Partial<ArchitectureSettings>): RoomState {
-  return { ...state, architecture: parseArchitecture({ ...parseArchitecture(state.architecture), ...patch }) };
+  const architecture = parseArchitecture({ ...parseArchitecture(state.architecture), ...patch });
+  return withElements({ ...state, architecture }, elementsForFlags(state.dimensions, state.elements, patch));
+}
+
+export function withElements(state: RoomState, elements: ArchitecturalElement[]): RoomState {
+  return { ...state, elements, architecture: { ...parseArchitecture(state.architecture),
+    window: elements.some(e => e.type === 'window'), glassPartition: elements.some(e => e.type === 'shower-partition') } };
 }
 
 // ─── Serialization ────────────────────────────────────────────────────────────
@@ -340,7 +354,17 @@ export function deserializeRoomState(raw: unknown): RoomState {
         }))
     : [];
 
-  return {
+  const parsed = Array.isArray(data.elements) && (data.version ?? 1) >= 2
+    ? data.elements.filter(isArchitecturalElement).filter((e,i,all) => all.findIndex(other => other.id === e.id) === i).map(e => ({ ...e }))
+    : [];
+  const architecture = parseArchitecture(data.architecture);
+  const elements = (data.version ?? 1) < 3 ? elementsForFlags(dimensions, parsed, {
+    window: architecture.window || undefined, glassPartition: architecture.glassPartition || undefined,
+  }) : parsed;
+  const visualStyle = parseVisualStyle(data.visualStyle);
+  return withElements({
+    ...(visualStyle ? { visualStyle } : {}),
+    ...(typeof data.quoteDesignId === 'string' && data.quoteDesignId.trim() ? {quoteDesignId:data.quoteDesignId} : {}),
     version: ROOM_STATE_VERSION,
     dimensions,
     surfaceStyles: {
@@ -371,8 +395,8 @@ export function deserializeRoomState(raw: unknown): RoomState {
         )
       : undefined,
     lighting: parseLighting(data.lighting),
-    architecture: parseArchitecture(data.architecture),
-  };
+    architecture, elements,
+  }, elements);
 }
 
 export function serializeRoomState(state: RoomState): RoomState {

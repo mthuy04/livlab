@@ -13,6 +13,7 @@ import {
 import { ARCHITECTURE_LABEL, type ArchitectureSettings } from '@/lib/room-studio/environment';
 
 interface RoomTabProps {
+  confirmDimensions?: boolean;
   dimensions: RoomDimensions;
   onDimensionsChange: (dimensions: RoomDimensions) => void;
   showCeiling: boolean;
@@ -20,6 +21,7 @@ interface RoomTabProps {
   onOpenReferenceImage: () => void;
   hasReferenceImage: boolean;
   onOpenPresets: () => void;
+  architectureEditor: React.ReactNode;
   architecture: ArchitectureSettings;
   onArchitectureChange: (patch: Partial<ArchitectureSettings>) => void;
 }
@@ -29,9 +31,7 @@ const ARCHITECTURE_ORDER: Array<keyof ArchitectureSettings> = [
   'cutaway',
   'basinCounter',
   'skirting',
-  'glassPartition',
   'niche',
-  'window',
 ];
 
 /**
@@ -57,14 +57,14 @@ const FIELDS: { key: RoomDimensionKey; short: string }[] = [
  * the reason this is not a thin wrapper around three `<input>`s.
  */
 export default function RoomTab({
-  dimensions,
+  dimensions, confirmDimensions,
   onDimensionsChange,
   showCeiling,
   onToggleCeiling,
   onOpenReferenceImage,
   hasReferenceImage,
   onOpenPresets,
-  architecture,
+  architecture, architectureEditor,
   onArchitectureChange,
 }: RoomTabProps) {
   const [drafts, setDrafts] = useState<Record<RoomDimensionKey, string>>({
@@ -109,7 +109,7 @@ export default function RoomTab({
     const value = parseFloat(text.replace(',', '.'));
     const message = validateDimension(key, value);
     setErrors((prev) => ({ ...prev, [key]: message }));
-    if (!message) commit({ ...dimensions, [key]: value });
+    if (!message && !confirmDimensions) commit({ ...dimensions, [key]: value });
   };
 
   const handleBlur = (key: RoomDimensionKey) => () => {
@@ -223,6 +223,7 @@ export default function RoomTab({
           Chi tiết kiến trúc
         </h3>
         <p className="mb-1.5 text-[12px] leading-relaxed text-[#9AA9B6]">Bối cảnh minh hoạ, không tính vào báo giá.</p>
+        {architectureEditor}
         {ARCHITECTURE_ORDER.map((key) => (
           <label key={key} className="flex cursor-pointer items-center justify-between gap-3 py-1.5" title={ARCHITECTURE_LABEL[key].note}>
             <span className="min-w-0">

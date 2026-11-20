@@ -12,6 +12,8 @@
 
 import { technicalRulesConfig } from './config';
 import { getProductTechnicalMetadata } from './productTechnicalMetadata';
+import { glassArchitectureRule } from './rules/glassArchitectureRule';
+import { entranceDoorRule } from './rules/entranceDoorRule';
 import { clearanceRule } from './rules/clearanceRule';
 import { collisionRule } from './rules/collisionRule';
 import { placementSurfaceRule } from './rules/placementSurfaceRule';
@@ -33,6 +35,8 @@ export const TECHNICAL_RULES: TechnicalRule[] = [
   roomBoundsRule,
   placementSurfaceRule,
   collisionRule,
+  entranceDoorRule,
+  glassArchitectureRule,
   clearanceRule,
   plumbingPointRule,
 ];
@@ -44,7 +48,7 @@ const SEVERITY_ORDER: Record<TechnicalSeverity, number> = {
   SUITABLE: 2,
 };
 
-export function runTechnicalAdvisor(context: TechnicalContext): TechnicalValidationResult[] {
+export function runTechnicalAdvisor(context: TechnicalContext, options?: { strict: boolean }): TechnicalValidationResult[] {
   const focused: TechnicalContext = context.focusInstanceId
     ? { ...context, entries: context.entries.filter((e) => e.placed.instanceId === context.focusInstanceId) }
     : context;
@@ -56,13 +60,24 @@ export function runTechnicalAdvisor(context: TechnicalContext): TechnicalValidat
       // Collision needs every product in the room to be meaningful, so it always
       // sees the full set even when the panel is focused on one product; the
       // caller filters its findings by affectedInstanceIds afterwards.
-      results.push(...rule.run(rule.id === 'collision' ? context : focused));
+      results.push(...rule.run(rule.id === 'collision' || rule.id === 'clearance' ? context : focused));
     } catch (error) {
+      if (options?.strict) throw error;
       console.error(`[Technical Advisor] rule "${rule.id}" failed`, error);
     }
   }
 
   return results.sort((a, b) => SEVERITY_ORDER[a.severity] - SEVERITY_ORDER[b.severity]);
+}
+
+/** Only geometry rules participate in a live fixture gesture. */
+export function livePlacementFindings(context: TechnicalContext, id: string) {
+  const focused={...context,focusInstanceId:id};
+  const active={...focused,entries:context.entries.filter(e=>e.placed.instanceId===id)};
+  return [
+    ...roomBoundsRule.run(active), ...placementSurfaceRule.run(active), ...collisionRule.run(focused),
+    ...entranceDoorRule.run(active), ...glassArchitectureRule.run(active),
+  ].filter(f=>f.affectedInstanceIds.includes(id)).concat(clearanceRule.run(context));
 }
 
 /** Findings that mention a particular placed product. */
@@ -97,4 +112,9 @@ export function buildEntries(
     product,
     metadata: getProductTechnicalMetadata(product),
   }));
+}
+
+/** Architectural drags only change openings, obstacles and the space in front of fixtures. */
+export function liveArchitectureFindings(context: TechnicalContext) {
+  return [entranceDoorRule, glassArchitectureRule, placementSurfaceRule, clearanceRule].flatMap(rule => rule.run(context));
 }

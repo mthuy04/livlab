@@ -7,6 +7,8 @@ import {
   PageShell, Section, StatusChip, EmptyState, MigrationNotice, money, relativeTime,
 } from '@/components/showroom/ui/primitives';
 import { STAGE_LABEL, STAGE_ORDER } from '@/lib/showroom/leadStage';
+import { isArchitecturalElement } from '@/lib/room-studio/architecture';
+import { describeHandoffElement } from '@/lib/implementation/leadContext';
 
 /**
  * Everything the showroom received about one customer, on one screen.
@@ -97,11 +99,12 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
   // backfilled, so those fall back to the prose briefing further down.
   const ctx = lead.contextJson as
     | { version?: number;
-        room?: { length?: number; width?: number; height?: number };
+        room?: { length?: number; width?: number; height?: number; elements?: unknown };
         materials?: { floor?: string; walls?: string };
         technicalFindings?: { severity: string; title: string; message?: string; affectedProduct?: string }[] }
     | null;
   const openQuote = lead.quotes[0];
+  const elements = Array.isArray(ctx?.room?.elements) ? ctx.room.elements.filter(isArchitecturalElement) : [];
 
   return (
     <PageShell
@@ -194,6 +197,11 @@ export default function LeadDetailPage({ params }: { params: Promise<{ id: strin
                     <dd className="font-semibold">{lead.conceptName.replace(/^Room Studio · /, '')}</dd></div>
                 )}
               </dl>
+              {elements.length > 0 && (
+                <ul aria-label="Kiến trúc phòng" className="space-y-2 border-t border-[#F0F3F6] px-5 py-3 text-[13px] text-[#45586B]">
+                  {elements.map(el => <li key={el.id}>{describeHandoffElement(el)}</li>)}
+                </ul>
+              )}
             </Section>
           )}
 

@@ -19,49 +19,23 @@ import type { PlacedProductView } from '@/lib/room-studio/useRoomStudio';
 import { buildEntries, runTechnicalAdvisor } from './engine';
 import type { TechnicalValidationResult, UtilityPoint } from './types';
 
+const EMPTY_POINTS: UtilityPoint[] = [];
+
 export function useTechnicalAdvisor(params: {
+  architecture?: import('./types').TechnicalContext['architecture'];
+  elements?: import('./types').TechnicalContext['elements'];
   dimensions: RoomDimensions;
   placedViews: PlacedProductView[];
-  utilityPoints: UtilityPoint[];
+  utilityPoints?: UtilityPoint[];
   /** The room draws a counter under countertop products. */
   counterSupport?: boolean;
 }): TechnicalValidationResult[] {
-  const { dimensions, placedViews, utilityPoints, counterSupport = false } = params;
-
-  // A compact signature of everything the rules actually read. Deferring this
-  // rather than the arrays themselves means validation re-runs when a product
-  // genuinely moves, not merely when React re-renders with new array identities.
-  const signature = useMemo(
-    () =>
-      JSON.stringify({
-        d: [dimensions.length, dimensions.width, dimensions.height],
-        p: placedViews.map(({ placed }) => [
-          placed.instanceId,
-          placed.productId,
-          placed.position.map((n) => Math.round(n * 1000)),
-          Math.round(placed.rotationY * 1000),
-          placed.placementType,
-          placed.wall,
-        ]),
-        u: utilityPoints.map((point) => [point.id, point.type, point.position.map((n) => Math.round(n * 1000))]),
-        c: counterSupport,
-      }),
-    [dimensions, placedViews, utilityPoints, counterSupport]
-  );
-
-  const deferredSignature = useDeferredValue(signature);
-
-  return useMemo(
-    () =>
-      runTechnicalAdvisor({
-        room: dimensions,
-        entries: buildEntries(placedViews),
-        utilityPoints,
-        counterSupport,
-      }),
-    // Recompute only when the deferred signature changes. The other values are
-    // read through the closure and are consistent with it by construction.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [deferredSignature]
-  );
+  const { dimensions, architecture, elements, placedViews, utilityPoints = EMPTY_POINTS, counterSupport = false } = params;
+  const input = useMemo(() => ({ dimensions, architecture, elements, placedViews, utilityPoints, counterSupport }),
+    [dimensions, architecture, elements, placedViews, utilityPoints, counterSupport]);
+  const deferred = useDeferredValue(input);
+  return useMemo(() => runTechnicalAdvisor({
+    room: deferred.dimensions, architecture: deferred.architecture, elements: deferred.elements, entries: buildEntries(deferred.placedViews),
+    utilityPoints: deferred.utilityPoints, counterSupport: deferred.counterSupport,
+  }), [deferred]);
 }

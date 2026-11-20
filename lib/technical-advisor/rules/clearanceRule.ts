@@ -17,21 +17,9 @@
  * rotated by the product's own yaw.
  */
 
-import { getRoomBounds } from '@/lib/room-studio/roomGeometry';
-import { formatCm, getOverlap, getWorldAabb, type Aabb } from '../geometry';
-import type { TechnicalProductEntry, TechnicalRule, TechnicalValidationResult } from '../types';
-
-function boxFor(entry: TechnicalProductEntry): Aabb | null {
-  const { metadata, placed } = entry;
-  if (metadata.width === undefined || metadata.depth === undefined || metadata.height === undefined) return null;
-  return getWorldAabb({
-    position: placed.position,
-    width: metadata.width,
-    depth: metadata.depth,
-    height: metadata.height,
-    rotationY: placed.rotationY,
-  });
-}
+import { formatCm } from '../geometry';
+import { frontSpace } from '../spatialGeometry';
+import type { TechnicalRule, TechnicalValidationResult } from '../types';
 
 export const clearanceRule: TechnicalRule = {
   id: 'clearance',
@@ -39,13 +27,11 @@ export const clearanceRule: TechnicalRule = {
 
   run(context) {
     const results: TechnicalValidationResult[] = [];
-    const bounds = getRoomBounds(context.room);
-
-    const boxes = context.entries.map((entry) => ({ entry, box: boxFor(entry) }));
     const withoutFigure: string[] = [];
 
-    for (const { entry, box } of boxes) {
+    for (const entry of context.entries) {
       const { placed, product, metadata } = entry;
+      if(context.focusInstanceId && context.focusInstanceId!==placed.instanceId)continue;
       const recommendedFront = metadata.recommendedClearance?.front;
 
       if (recommendedFront === undefined) {
@@ -55,7 +41,8 @@ export const clearanceRule: TechnicalRule = {
         continue;
       }
 
-      if (!box) {
+      const space = frontSpace(context, entry);
+      if (!space) {
         results.push({
           id: `clearance:${placed.instanceId}`,
           ruleId: 'clearance',
@@ -72,38 +59,21 @@ export const clearanceRule: TechnicalRule = {
         continue;
       }
 
-      // Free run from the product's front face to the open side of the room,
-      // minus anything standing in the way.
-      let available = bounds.maxZ - box.maxZ;
-      let blockedBy: string | null = null;
-
-      for (const other of boxes) {
-        if (other.entry.placed.instanceId === placed.instanceId || !other.box) continue;
-        // Only things actually in front, and actually overlapping this
-        // product's width and height band.
-        if (other.box.minZ < box.maxZ) continue;
-        const overlap = getOverlap(box, other.box);
-        if (overlap.x <= 0 || overlap.y <= 0) continue;
-
-        const gap = other.box.minZ - box.maxZ;
-        if (gap < available) {
-          available = gap;
-          blockedBy = other.entry.product.name;
-        }
-      }
+      const { available, blockedBy } = space;
 
       if (available >= recommendedFront) {
         results.push({
           id: `clearance:${placed.instanceId}`,
           ruleId: 'clearance',
           category: 'CLEARANCE',
-          severity: 'SUITABLE',
-          title: 'Khoảng trống phía trước đạt khuyến nghị',
-          message: `Khoảng trống phía trước ${product.name} hiện khoảng ${formatCm(available)}, đạt mức ${formatCm(recommendedFront)} theo dữ liệu tham khảo của LivLab.`,
+          severity: space.missingObstacleDimensions ? 'VERIFY' : 'SUITABLE',
+          title: space.missingObstacleDimensions ? 'Cần xác minh vật cản' : 'Khoảng trống phía trước đạt khuyến nghị',
+          message: space.missingObstacleDimensions ? `Chưa đủ kích thước của thiết bị gần ${product.name} để xác minh khoảng trống.` : `Khoảng trống phía trước ${product.name} hiện khoảng ${formatCm(available)}, đạt mức ${formatCm(recommendedFront)} ${metadata.clearanceOrigin==='CATALOGUE'?'theo thông số sản phẩm.':'theo hướng dẫn tham khảo LivLab v1.'}`,
           affectedInstanceIds: [placed.instanceId],
           dataSource: 'PRODUCT_METADATA',
-          confidence: 'MEDIUM',
-          requiresHumanVerification: false,
+          confidence: space.missingObstacleDimensions ? 'LOW' : metadata.clearanceOrigin === 'CATALOGUE' ? 'HIGH' : 'MEDIUM',
+          requiresHumanVerification: space.missingObstacleDimensions,
+          reason: space.missingObstacleDimensions ? 'MISSING_DATA' : undefined,
         });
         continue;
       }
@@ -112,11 +82,11 @@ export const clearanceRule: TechnicalRule = {
         id: `clearance:${placed.instanceId}`,
         ruleId: 'clearance',
         category: 'CLEARANCE',
-        severity: 'OPTIMIZE',
+        severity: metadata.clearanceOrigin==='CATALOGUE'?'VERIFY':'OPTIMIZE',
         placementIssue: 'CLEARANCE',
         title: 'Khoảng trống phía trước còn hạn chế',
         message:
-          `Khoảng trống phía trước ${product.name} hiện khoảng ${formatCm(available)}; dữ liệu tham khảo của LivLab khuyến nghị khoảng ${formatCm(recommendedFront)}.` +
+          `Khoảng trống phía trước ${product.name} hiện khoảng ${formatCm(available)}; ${metadata.clearanceOrigin==='CATALOGUE'?'thông số sản phẩm yêu cầu':'hướng dẫn tham khảo LivLab v1 khuyến nghị'} khoảng ${formatCm(recommendedFront)}.` +
           (blockedBy ? ` Vị trí này đang bị ${blockedBy} chắn phía trước.` : ''),
         affectedInstanceIds: [placed.instanceId],
         dataSource: 'PRODUCT_METADATA',
@@ -140,9 +110,9 @@ export const clearanceRule: TechnicalRule = {
         message: `LivLab chưa có dữ liệu khoảng trống khuyến nghị cho ${named}${
           extra > 0 ? ` và ${extra} sản phẩm khác` : ''
         }, nên chưa thể đánh giá không gian thao tác phía trước các sản phẩm này.`,
-        affectedInstanceIds: boxes
-          .filter(({ entry }) => entry.metadata.recommendedClearance?.front === undefined)
-          .map(({ entry }) => entry.placed.instanceId),
+        affectedInstanceIds: context.entries
+          .filter(entry => entry.metadata.recommendedClearance?.front === undefined)
+          .map(entry => entry.placed.instanceId),
         dataSource: 'UNKNOWN',
         confidence: 'LOW',
         requiresHumanVerification: true,

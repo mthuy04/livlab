@@ -1,0 +1,166 @@
+
+A. file GLB khớp với bản đã kiểm tra
+  PASS  AC-1017VRN web: kích thước file
+  PASS  AC-1017VRN web: sha256
+  PASS  AC-1017VRN web: không có biến đổi node (scale 1, gốc nguyên)
+  PASS  AC-1017VRN web: số tam giác
+  PASS  AC-1017VRN web: hộp bao khớp bản ghi (≤ 0,01 mm)
+  PASS  AC-1017VRN high: kích thước file
+  PASS  AC-1017VRN high: sha256
+  PASS  AC-1017VRN high: không có biến đổi node (scale 1, gốc nguyên)
+  PASS  AC-1017VRN high: số tam giác
+  PASS  AC-1017VRN high: hộp bao khớp bản ghi (≤ 0,01 mm)
+  PASS  AC-912VN web: kích thước file
+  PASS  AC-912VN web: sha256
+  PASS  AC-912VN web: không có biến đổi node (scale 1, gốc nguyên)
+  PASS  AC-912VN web: số tam giác
+  PASS  AC-912VN web: hộp bao khớp bản ghi (≤ 0,01 mm)
+  PASS  AC-912VN high: kích thước file
+  PASS  AC-912VN high: sha256
+  PASS  AC-912VN high: không có biến đổi node (scale 1, gốc nguyên)
+  PASS  AC-912VN high: số tam giác
+  PASS  AC-912VN high: hộp bao khớp bản ghi (≤ 0,01 mm)
+  PASS  BF-1656V web: kích thước file
+  PASS  BF-1656V web: sha256
+  PASS  BF-1656V web: không có biến đổi node (scale 1, gốc nguyên)
+  PASS  BF-1656V web: số tam giác
+  PASS  BF-1656V web: hộp bao khớp bản ghi (≤ 0,01 mm)
+  PASS  BF-1656V high: kích thước file
+  PASS  BF-1656V high: sha256
+  PASS  BF-1656V high: không có biến đổi node (scale 1, gốc nguyên)
+  PASS  BF-1656V high: số tam giác
+  PASS  BF-1656V high: hộp bao khớp bản ghi (≤ 0,01 mm)
+  PASS  BFV-70S web: kích thước file
+  PASS  BFV-70S web: sha256
+  PASS  BFV-70S web: không có biến đổi node (scale 1, gốc nguyên)
+  PASS  BFV-70S web: số tam giác
+  PASS  BFV-70S web: hộp bao khớp bản ghi (≤ 0,01 mm)
+  PASS  BFV-70S high: kích thước file
+  PASS  BFV-70S high: sha256
+  PASS  BFV-70S high: không có biến đổi node (scale 1, gốc nguyên)
+  PASS  BFV-70S high: số tam giác
+  PASS  BFV-70S high: hộp bao khớp bản ghi (≤ 0,01 mm)
+  PASS  L-293V web: kích thước file
+  PASS  L-293V web: sha256
+  PASS  L-293V web: không có biến đổi node (scale 1, gốc nguyên)
+  PASS  L-293V web: số tam giác
+  PASS  L-293V web: hộp bao khớp bản ghi (≤ 0,01 mm)
+  PASS  L-293V high: kích thước file
+  PASS  L-293V high: sha256
+  PASS  L-293V high: không có biến đổi node (scale 1, gốc nguyên)
+  PASS  L-293V high: số tam giác
+  PASS  L-293V high: hộp bao khớp bản ghi (≤ 0,01 mm)
+  PASS  L-293V basin_only: kích thước file
+  PASS  L-293V basin_only: sha256
+  PASS  L-293V basin_only: không có biến đổi node (scale 1, gốc nguyên)
+  PASS  L-293V basin_only: số tam giác
+  PASS  L-293V basin_only: hộp bao khớp bản ghi (≤ 0,01 mm)
+
+B. chỉ khớp đúng hãng + mã
+  PASS  INAX AC-1017VRN → có
+  PASS  mã viết khác dạng vẫn khớp (ac1017vrn)
+  PASS  cùng mã nhưng JOMOO → không
+  PASS  cùng mã nhưng TOTO → không
+  PASS  L-293VFC (bản một lỗ) → L-293V
+  PASS  L-293VEC (bản ba lỗ) → không: các lỗ không có trong mô hình
+  PASS  mã họ hàng AC-1017 → không
+  PASS  không có hãng → không
+  PASS  sản phẩm JOMOO trùng mã không nhận mô hình INAX
+
+C. trạng thái sẵn sàng
+  PASS  AC-1017VRN: 3D_READY sau kiểm tra runtime
+  PASS  AC-1017VRN: có ngày và công cụ kiểm tra
+  PASS  AC-1017VRN: nguồn ghi là tái tạo, không dùng CAD hãng
+  PASS  AC-912VN: 3D_READY sau kiểm tra runtime
+  PASS  AC-912VN: có ngày và công cụ kiểm tra
+  PASS  AC-912VN: nguồn ghi là tái tạo, không dùng CAD hãng
+  PASS  BF-1656V: 3D_READY sau kiểm tra runtime
+  PASS  BF-1656V: có ngày và công cụ kiểm tra
+  PASS  BF-1656V: nguồn ghi là tái tạo, không dùng CAD hãng
+  PASS  BFV-70S: 3D_READY sau kiểm tra runtime
+  PASS  BFV-70S: có ngày và công cụ kiểm tra
+  PASS  BFV-70S: nguồn ghi là tái tạo, không dùng CAD hãng
+  PASS  L-293V: 3D_READY sau kiểm tra runtime
+  PASS  L-293V: có ngày và công cụ kiểm tra
+  PASS  L-293V: nguồn ghi là tái tạo, không dùng CAD hãng
+  PASS  cổng READY của file hãng vẫn = 0
+  PASS  chưa kiểm tra thì không vẽ
+
+D. sản phẩm trong Room Studio
+  PASS  bồn cầu: 3D TÁI TẠO, không phải 3D VERIFIED
+  PASS  bồn cầu: scale đúng 1
+  PASS  bồn cầu: kích thước 400 × 805 × 588
+  PASS  bồn cầu: đặt sàn
+  PASS  bồn tắm: nhóm bathtub, đặt sàn (không treo tường như phụ kiện)
+  PASS  bồn tắm: dài 1600 theo X, rộng 800 theo Z
+  PASS  sen: gắn tường
+  PASS  lavabo: mặc định chỉ chậu, cao 155
+  PASS  lavabo: đặt mặt bàn
+  PASS  lavabo kèm vòi: cao 278,75, ghi rõ vòi minh hoạ
+  PASS  biến thể không có thì về mặc định
+  PASS  sen: dữ liệu kỹ thuật cần nước nóng + lạnh, gắn tường
+  PASS  khoảng trống là tham khảo LivLab, không phải của hãng
+
+E. thư viện 3D của LivLab
+  PASS  năm sản phẩm 3D có trong thư viện LivLab
+  PASS  không giá, không tồn kho bịa
+  PASS  mỗi sản phẩm một id ổn định
+  PASS  mã đã có trong danh mục thì không thêm lần hai
+
+F. danh mục Tùng Đăng
+  PASS  cả năm mã INAX tái tạo có mô hình (đúng các mã showroom bán)
+  PASS  bồn tắm, sen và lavabo INAX mang giá showroom, không phải "Liên hệ"
+  PASS  không sản phẩm JOMOO/TOTO/CAESAR/VIGLACERA nào nhận mô hình INAX
+  PASS  giá của showroom giữ nguyên trong mục báo giá
+  PASS  bồn tắm của showroom đặt được trên sàn khi có đủ kích thước
+
+G. lắp đặt và độ vừa phòng
+  PASS  bồn cầu: đáy chạm sàn
+  PASS  bồn cầu: lưng cách tường 15 mm theo bản vẽ
+  PASS  sen: bộ trộn ở 1000 mm, không đặt xuống sàn
+  PASS  sen: sát tường (≤ 2 mm)
+  PASS  sen: đỉnh dưới trần
+  PASS  sen: kéo thấp quá vẫn giữ bộ trộn ≥ 800 mm
+  PASS  sen: đặt bộ trộn 1200 mm → đúng 1200
+  PASS  lavabo: đáy chậu ở mặt bàn 800 mm
+  PASS  lavabo: đổi mặt bàn 900 mm → chậu lên theo
+  PASS  bồn tắm vừa phòng 3,0 × 2,0
+  PASS  bồn tắm không vừa phòng 1,5 × 1,5 — có lý do, không thu nhỏ
+  PASS  kích thước bồn tắm không đổi sau khi từ chối
+  PASS  phòng hẹp nhưng sâu: vừa khi xoay 90°
+  PASS  bồn tắm xoay 90°: không xuyên tường (kẹp theo hình chiếu đã xoay)
+  PASS  bồn cầu dưới bệ đặt chậu: báo va chạm
+  PASS  tắt bệ minh hoạ: chậu treo trên cao không va chạm bồn cầu
+  PASS  phòng quá nhỏ: không thêm bồn tắm vào phòng
+
+H. phòng mẫu
+  PASS  empty: giữ ngân sách và điểm kỹ thuật
+  PASS  empty: 0 sản phẩm, không va chạm, không ra ngoài phòng
+  PASS  empty: chỉ dùng sản phẩm có trong danh mục
+  PASS  warm-stone: giữ ngân sách và điểm kỹ thuật
+  PASS  warm-stone: 3 sản phẩm, không va chạm, không ra ngoài phòng
+  PASS  warm-stone: chỉ dùng sản phẩm có trong danh mục
+  PASS  minimal-white: giữ ngân sách và điểm kỹ thuật
+  PASS  minimal-white: 2 sản phẩm, không va chạm, không ra ngoài phòng
+  PASS  minimal-white: chỉ dùng sản phẩm có trong danh mục
+  PASS  modern-hotel: giữ ngân sách và điểm kỹ thuật
+  PASS  modern-hotel: 4 sản phẩm, không va chạm, không ra ngoài phòng
+  PASS  modern-hotel: chỉ dùng sản phẩm có trong danh mục
+  PASS  Đá ấm (LivLab): lavabo + bồn cầu + sen INAX
+  PASS  Khách sạn (LivLab): đủ bốn vị trí kể cả bồn tắm
+  PASS  danh mục thiếu mã: bỏ trống vị trí, không thay bằng sản phẩm khác
+  PASS  Phòng trống: bỏ sản phẩm, giữ kích thước
+
+I. lưu và mở lại
+  PASS  giữ biến thể và cao mặt bàn
+  PASS  giữ ánh sáng và chi tiết kiến trúc
+  PASS  không lưu hình học hay vật liệu, chỉ tham chiếu
+  PASS  bản lưu cũ: sản phẩm và vị trí giữ nguyên
+  PASS  bản lưu cũ: ánh sáng và kiến trúc mặc định
+  PASS  giá trị hỏng bị bỏ, không đoán
+
+J. gốc toạ độ
+  PASS  sen: gốc (tâm bộ trộn) thấp hơn tâm hộp bao
+  PASS  sen: bao 294 × 524 × 1638 mm
+
+144 passed, 0 failed

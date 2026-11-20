@@ -1,8 +1,7 @@
 'use client';
 
+import {quoteLineKey} from '@/lib/room-studio/roomQuote';
 import { useQuote } from '@/lib/context/QuoteContext';
-import { getProductById } from '@/lib/data';
-import { Product } from '@/lib/types';
 import { ShoppingBag, Trash2, X, Plus, Minus } from 'lucide-react';
 import Link from 'next/link';
 
@@ -36,7 +35,7 @@ export default function QuoteSummary() {
             };
             const hasImg = !isUnrelatedRoomImage(item.image);
             return (
-            <div key={item.productId} className="bg-[#F3F7FA] rounded-2xl p-3">
+            <div key={quoteLineKey(item)} className="bg-[#F3F7FA] rounded-2xl p-3">
               <div className="flex items-start gap-3 mb-2">
                 <div className="w-12 h-12 rounded-xl overflow-hidden bg-[#EEF4F7] flex-shrink-0 relative">
                   {hasImg ? (
@@ -61,9 +60,9 @@ export default function QuoteSummary() {
                 <div className="flex-1 min-w-0">
                   <p className="text-[10px] text-[#627386] font-medium uppercase tracking-wider">{item.category}</p>
                   <p className="text-xs font-semibold text-[#0B1623] truncate leading-snug">{item.name}</p>
-                  <p className="text-xs font-bold text-[#C8A96A]">{item.priceRange}</p>
+                  <p className="text-xs font-bold text-[#C8A96A]">{item.roomDesignId && 'Thiết kế phòng · '}{item.priceRange}</p>
                 </div>
-                <button onClick={() => removeItem(item.productId)} className="hover:text-red-500 text-[#627386] transition-colors">
+                <button disabled={!!item.roomDesignId} title={item.roomDesignId ? 'Chỉnh số lượng trong thiết kế phòng' : undefined} onClick={() => removeItem(quoteLineKey(item))} className="hover:text-red-500 text-[#627386] transition-colors">
                   <X className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -73,11 +72,11 @@ export default function QuoteSummary() {
                   <p className="text-[10px] text-[#627386]">Có sẵn tại: <span className="text-[#0B1623] font-medium">{item.showroomName}</span></p>
                 ) : <span />}
                 <div className="flex items-center gap-1.5">
-                  <button onClick={() => decrease(item.productId)} className="w-5 h-5 rounded-full bg-white border border-[#D8E2EA] flex items-center justify-center hover:bg-[#EEF4F7]">
+                  <button disabled={!!item.roomDesignId} title={item.roomDesignId ? 'Chỉnh số lượng trong thiết kế phòng' : undefined} onClick={() => decrease(quoteLineKey(item))} className="w-5 h-5 rounded-full bg-white border border-[#D8E2EA] flex items-center justify-center hover:bg-[#EEF4F7]">
                     <Minus className="w-2.5 h-2.5 text-[#0B1623]" />
                   </button>
                   <span className="text-xs font-bold text-[#0B1623] w-4 text-center">{item.quantity}</span>
-                  <button onClick={() => increase(item.productId)} className="w-5 h-5 rounded-full bg-white border border-[#D8E2EA] flex items-center justify-center hover:bg-[#EEF4F7]">
+                  <button disabled={!!item.roomDesignId} title={item.roomDesignId ? 'Chỉnh số lượng trong thiết kế phòng' : undefined} onClick={() => increase(quoteLineKey(item))} className="w-5 h-5 rounded-full bg-white border border-[#D8E2EA] flex items-center justify-center hover:bg-[#EEF4F7]">
                     <Plus className="w-2.5 h-2.5 text-[#0B1623]" />
                   </button>
                 </div>
@@ -100,7 +99,7 @@ export default function QuoteSummary() {
       {items.length > 0 && (
         <div className="bg-[#EEF4F7] rounded-2xl p-4 mb-5">
           <p className="text-xs text-[#627386] mb-1">Tổng giá tham khảo</p>
-          <p className="text-xl font-bold text-[#0B1623]">{fmtVnd(totalMin)} – {fmtVnd(totalMax)}</p>
+          <p className="text-xl font-bold text-[#0B1623]">{fmtVnd(totalMin)} – {fmtVnd(totalMax)}{items.some(i=>i.unpriced) && ' + sản phẩm chưa có giá'}</p>
           <p className="text-[11px] text-[#627386] mt-2 leading-relaxed">
             Đây là giá tham khảo. Báo giá cuối sẽ được LivLab/showroom xác nhận sau khi kiểm tra tồn kho, diện tích và phương án lắp đặt.
           </p>

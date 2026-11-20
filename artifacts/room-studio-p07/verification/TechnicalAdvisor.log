@@ -1,0 +1,64 @@
+
+ROOM BOUNDS
+  PASS  product fully inside room -> SUITABLE
+  PASS  product partially outside -> VERIFY
+  PASS  breach message names the overshoot
+  PASS  no dimensions at all -> VERIFY, never a pass
+  PASS  no dimensions at all -> MISSING_DATA reason
+  PASS  no dimensions at all -> dataSource UNKNOWN
+  PASS  partial dimensions -> still checks the known axes
+  PASS  partial dimensions -> flagged MISSING_DATA
+  PASS  partial dimensions -> not claimed as measured geometry
+  PASS  partial dimensions -> title says it is partial
+  PASS  partial dimensions still catch a breach on a known axis
+
+ROOM BOUNDS — rotation awareness
+  PASS  wide product unrotated -> VERIFY
+  PASS  same product rotated 90 deg -> SUITABLE
+
+COLLISION
+  PASS  separated products -> no collision finding
+  PASS  separated products -> summary SUITABLE
+  PASS  obvious overlap -> VERIFY
+  PASS  products merely touching -> no collision
+
+CLEARANCE
+  PASS  enough space -> SUITABLE
+  PASS  insufficient space -> OPTIMIZE
+  PASS  insufficient space message quotes both figures
+  PASS  missing clearance data -> VERIFY, never assumed
+  PASS  missing clearance data -> dataSource UNKNOWN
+  PASS  missing clearance data aggregates into one finding
+  PASS  aggregated clearance finding still names every affected product
+
+PLACEMENT SURFACE
+  PASS  floor product on the floor -> SUITABLE
+  PASS  floor product floating -> VERIFY
+  PASS  wall product against its wall -> SUITABLE
+  PASS  wall product away from wall -> VERIFY
+  PASS  unknown placement type -> VERIFY
+  PASS  inferred placement -> VERIFY not SUITABLE
+  PASS  inferred placement -> reason INFERRED_DATA
+
+PLUMBING
+  PASS  requires drain, no room data -> VERIFY
+  PASS  requires drain, no room data -> MISSING_DATA
+  PASS  requires drain, no room data -> needs a human
+  PASS  drain point nearby -> SUITABLE
+  PASS  drain point nearby -> sourced from utility point
+  PASS  drain point far away -> VERIFY, never "impossible"
+  PASS  far drain message avoids declaring it unusable
+  PASS  only an unrelated point declared -> VERIFY
+  PASS  metadata says nothing needed -> SUITABLE
+  PASS  no plumbing metadata -> VERIFY
+
+DATA COMPLETENESS
+  PASS  missing plumbing metadata -> data incomplete VERIFY
+  PASS  full metadata -> data complete SUITABLE
+
+ENGINE
+  PASS  empty room produces no crash
+  PASS  findings sorted most actionable first
+  PASS  focus filters out other products
+
+46 passed, 0 failed

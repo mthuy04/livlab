@@ -1,0 +1,11 @@
+{
+  "viewport": "high",
+  "startTier": "high",
+  "endTier": "high",
+  "latency": [],
+  "warnings": [
+    "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead."
+  ],
+  "browser": "159.0.8154.6",
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1, Unspecified Version)"
+}

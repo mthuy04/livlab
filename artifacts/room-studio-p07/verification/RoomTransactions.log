@@ -1,0 +1,76 @@
+TAP version 13
+# Subtest: atomic batches round trip through JSON and preserve their input
+ok 1 - atomic batches round trip through JSON and preserve their input
+  ---
+  duration_ms: 3.5475
+  type: 'test'
+  ...
+# Subtest: malformed or unsupported operations reject the entire batch at the failing operation
+ok 2 - malformed or unsupported operations reject the entire batch at the failing operation
+  ---
+  duration_ms: 5.724583
+  type: 'test'
+  ...
+# Subtest: a complete gesture creates one exact transaction, cancelled or motionless gestures create none
+ok 3 - a complete gesture creates one exact transaction, cancelled or motionless gestures create none
+  ---
+  duration_ms: 0.808708
+  type: 'test'
+  ...
+# Subtest: history is bounded, labels survive redo, and branching drops the future
+ok 4 - history is bounded, labels survive redo, and branching drops the future
+  ---
+  duration_ms: 1.771084
+  type: 'test'
+  ...
+# Subtest: selected issue must exist, be resolved and introduce no new blocking conflicts
+ok 5 - selected issue must exist, be resolved and introduce no new blocking conflicts
+  ---
+  duration_ms: 6.464542
+  type: 'test'
+  ...
+# Subtest: unknown data cannot prove the intended fix and missing references reject previews
+ok 6 - unknown data cannot prove the intended fix and missing references reject previews
+  ---
+  duration_ms: 0.703041
+  type: 'test'
+  ...
+# Subtest: wall changes use the new wall orientation, mounting plane and current room bounds
+ok 7 - wall changes use the new wall orientation, mounting plane and current room bounds
+  ---
+  duration_ms: 1.0635
+  type: 'test'
+  ...
+# Subtest: replacement shows the catalogue price delta and a failed validator closes the gate
+ok 8 - replacement shows the catalogue price delta and a failed validator closes the gate
+  ---
+  duration_ms: 0.4795
+  type: 'test'
+  ...
+# Subtest: Apply requires the active revision and exactly the preview displayed; redo never re-runs it
+ok 9 - Apply requires the active revision and exactly the preview displayed; redo never re-runs it
+  ---
+  duration_ms: 1.906875
+  type: 'test'
+  ...
+# Subtest: every existing starter previews the original layout and its toast can undo past later edits
+ok 10 - every existing starter previews the original layout and its toast can undo past later edits
+  ---
+  duration_ms: 10.38175
+  type: 'test'
+  ...
+# Subtest: v1 persistence contains committed data only and preserves the tenant boundary
+ok 11 - v1 persistence contains committed data only and preserves the tenant boundary
+  ---
+  duration_ms: 0.978209
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 74.134083

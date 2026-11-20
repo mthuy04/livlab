@@ -17,6 +17,8 @@ import type { ArchitectureSettings, LightingPresetId } from './environment';
 import type { RoomStudioProduct } from './productAdapter';
 import * as ops from './roomState';
 import type { RoomState } from './roomState';
+import type { RoomOperation } from './roomOperations';
+import type { ProposalRequest } from './roomProposal';
 import { isPlaceable } from './productCapability';
 import { placementContextFor } from './mounting';
 import { clampToRoom, type Vec3 } from './placementRules';
@@ -201,4 +203,22 @@ export function buildStarterRoom(
     placed.push({ role: slot.role, product, instanceId });
   }
   return { state: next, placed, skipped };
+}
+
+/** Resolve optional slots before presenting the required, atomic operation list. */
+export function starterRoomRequest(base: RoomState, preset: StarterRoomPreset, products: RoomStudioProduct[]): ProposalRequest {
+  const layout = buildStarterRoom(base, preset, products);
+  const operations: RoomOperation[] = base.placedProducts.map(p => ({ op: 'remove', instanceId: p.instanceId }));
+  if (preset.dimensions) operations.push({ op: 'dimensions', dimensions: preset.dimensions });
+  if (preset.surfaces) {
+    for (const surface of ['floor', 'walls'] as const) operations.push({ op: 'surface', surface, patch: preset.surfaces[surface] });
+  }
+  if (preset.lighting) operations.push({ op: 'lighting', preset: preset.lighting });
+  if (preset.architecture) operations.push({ op: 'architecture', patch: preset.architecture });
+  for (const p of layout.state.placedProducts) {
+    operations.push({ op: 'add', productId: p.productId, instanceId: p.instanceId, rotationY: p.rotationY,
+      atPoint: p.position, ...(p.variant ? { variant: p.variant } : {}) });
+  }
+  return { source: 'starter', label: preset.name, operations,
+    notes: layout.skipped.map(role => 'Vị trí bỏ trống trong phòng mẫu: ' + role) };
 }

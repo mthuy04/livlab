@@ -1,0 +1,85 @@
+
+đọc chuỗi kích thước
+  PASS  ba số đọc đủ ba trục
+  PASS  hai số thì không có chiều cao
+  PASS  bốn số trở lên = không đọc được
+  PASS  năm số = không đọc được
+  PASS  "Theo model" = không có kích thước
+  PASS  cm đổi đúng
+
+quy tắc nhãn năng lực
+  PASS  không có asset + đủ ba chiều -> ĐÚNG KÍCH THƯỚC
+  PASS  không có asset + thiếu chiều -> không đặt được
+  PASS  nguồn .max đã xác minh KHÔNG thành 3D VERIFIED
+  PASS  READY nhưng chưa đủ QA -> không phải 3D VERIFIED
+  PASS  đủ QA nhưng chưa READY -> không phải 3D VERIFIED
+  PASS  READY + đủ QA + có GLB -> 3D VERIFIED
+  PASS  READY + đủ QA nhưng không có GLB -> không phải 3D VERIFIED
+  PASS  nhãn 3D VERIFIED đúng chữ
+  PASS  nhãn ĐÚNG KÍCH THƯỚC đúng chữ
+  PASS  không có nhãn nào chứa chữ "3D" đơn lẻ
+  PASS  không có nhãn cho sản phẩm thiếu kích thước
+  PASS  không đặt được thì không placeable
+  PASS  gạch là vật liệu bề mặt, không phải vật thể
+
+trạng thái thật của registry
+  PASS  registry có 7 asset, READY = 0
+  PASS  hiện tại không asset nào READY
+  PASS  không category nào trả model dùng chung
+
+danh mục thật (CSV seed)
+  57 sản phẩm · 19 đặt được · 0 có model 3D
+  PASS  không sản phẩm nào được gắn 3D VERIFIED
+  PASS  có sản phẩm đặt được
+  PASS  mọi sản phẩm đặt được đều có đủ ba chiều
+  PASS  model nào cũng phải khai báo: verified, minh hoạ hoặc tái tạo đúng mã
+  PASS  model minh hoạ không bao giờ mang 3D VERIFIED
+  PASS  model dùng chung phải là minh hoạ, không phải verified
+  PASS  đèn sưởi âm trần H4B không đặt được (chuỗi kích thước mơ hồ)
+  PASS  phụ kiện treo tường, không nằm sàn
+  PASS  AC-1008VRN: khớp 0 hoặc 1 dòng danh mục
+  PASS  AC-4005VN: khớp 0 hoặc 1 dòng danh mục
+  PASS  AC-2700VN: khớp 0 hoặc 1 dòng danh mục
+  PASS  AC-1135VN: khớp 0 hoặc 1 dòng danh mục
+  PASS  AC-1035VN: khớp 0 hoặc 1 dòng danh mục
+  PASS  AC-1017VRN: khớp 0 hoặc 1 dòng danh mục
+  PASS  TLG02301B#BFG: khớp 0 hoặc 1 dòng danh mục
+  PASS  tra registry theo SKU không khớp sai
+
+danh mục của showroom trong Room Studio
+  PASS  bồn cầu: "dài" là chiều sâu từ tường, không phải bề ngang
+  PASS  lavabo: "dài" chạy dọc tường
+  PASS  kích thước hãng đã xác minh đi tới sản phẩm
+  PASS  không có kích thước thì không đặt được
+  PASS  không dòng nào của showroom được gắn 3D VERIFIED
+  PASS  giỏ báo giá nhận đúng mục danh mục của showroom
+  PASS  một giá chào, không nới thành khoảng giá
+
+giao diện theo showroom
+  PASS  LivLab: cùng bố cục và thứ tự phần với storefront Tùng Đăng
+  PASS  LivLab: hero, danh mục và Room Studio biên tập; Tùng Đăng giữ commerce / iconRail / feature
+  PASS  LivLab hero: eyebrow và H1 hai dòng đúng nguyên văn, không dấu chấm
+  PASS  LivLab hero: mô tả ngắn đúng nguyên văn
+  PASS  LivLab hero: hai liên kết bên phải trỏ tới route có sẵn
+  PASS  LivLab: tiêu đề và mô tả trang chủ đúng nguyên văn
+  PASS  LivLab: các trang khác giữ tiêu đề mặc định
+  PASS  LivLab V3: tiêu đề và giới thiệu mục danh mục
+  PASS  LivLab gallery: năm ảnh danh mục, mỗi danh mục một ảnh riêng, không dùng ảnh hero
+  PASS  LivLab Room Studio: bốn bước, đúng nguyên văn bản SEO đã duyệt
+  PASS  LivLab Room Studio: mỗi bước một ảnh chụp riêng, đúng thứ tự
+  PASS  Room Studio bốn bước chỉ bật cho LivLab
+  PASS  LivLab closing: đúng nguyên văn bản SEO đã duyệt, một H2 hai dòng
+  PASS  LivLab hero: không còn dải ba tính năng dưới hero; hero đứng ngay trước danh mục
+  PASS  LivLab spaces: dòng chữ đã duyệt, một dòng mô tả cho mỗi không gian
+  PASS  LivLab closing: nền sạch và ảnh phòng tắm cho điện thoại
+  PASS  LivLab: ảnh hero là cảnh phòng tắm của mockup đã duyệt, kèm lớp kính
+  PASS  LivLab: cùng tông màu cam với storefront Tùng Đăng
+  PASS  LivLab: logo của LivLab, không phải logo showroom
+  PASS  LivLab: nội dung không nhắc tên showroom demo
+  PASS  LivLab: không mang hotline hay địa chỉ của showroom
+  PASS  livlab: tiêu đề thư viện chỉ nêu tên showroom khi là danh mục của showroom
+  PASS  luxbath: tiêu đề thư viện chỉ nêu tên showroom khi là danh mục của showroom
+  PASS  tungdang: tiêu đề thư viện chỉ nêu tên showroom khi là danh mục của showroom
+  PASS  giangson: tiêu đề thư viện chỉ nêu tên showroom khi là danh mục của showroom
+
+70 passed, 0 failed

@@ -88,7 +88,7 @@ export interface TechnicalValidationResult {
    * Set only when the rule found a real geometric problem with a placement,
    * as opposed to missing data. Drives the outline colour while positioning.
    */
-  placementIssue?: 'OUTSIDE_ROOM' | 'COLLISION' | 'UNSUPPORTED_SURFACE' | 'CLEARANCE';
+  placementIssue?: 'OUTSIDE_ROOM' | 'COLLISION' | 'UNSUPPORTED_SURFACE' | 'CLEARANCE' | 'DOOR_OPENING' | 'DOOR_SWING' | 'ARCHITECTURE';
 }
 
 /** A water/drain/electrical point the customer has told LivLab about. */
@@ -119,6 +119,8 @@ export interface TechnicalProductEntry {
 
 export interface TechnicalContext {
   room: RoomDimensions;
+  architecture?: import('../room-studio/environment').ArchitectureSettings;
+  elements?: readonly import('../room-studio/architecture').ArchitecturalElement[];
   entries: TechnicalProductEntry[];
   /** Optional and manual. LivLab never infers these from a photo. */
   utilityPoints: UtilityPoint[];

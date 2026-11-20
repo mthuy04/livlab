@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import React, { Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { ContactShadows, PerformanceMonitor, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
@@ -14,13 +14,13 @@ import type { SurfaceStyle } from '@/lib/room-studio/materials';
 import type { ArchitectureSettings, LightingPreset } from '@/lib/room-studio/environment';
 import type { PlacementStatus } from '@/lib/room-studio/placementStatus';
 import { getRealWorldSize } from '@/lib/room-studio/assetResolver';
-import SceneLighting from './scene/SceneLighting';
+import SceneLighting, { ReflectionStudio } from './scene/SceneLighting';
 import { useRenderQuality } from './scene/useRenderQuality';
 import PlacedProductNode, { type measureGlbForPlacement } from './scene/PlacedProductNode';
 
 /** What `measureGlbForPlacement` returns; named so the dev prop can state it. */
 type GlbMeasurement = ReturnType<typeof measureGlbForPlacement>;
-import DragPlane from './scene/DragPlane';
+import { trackPlaneDrag } from './scene/DragPlane';
 import RoomCameraControls, { type FocusTarget, type ViewMode } from './scene/RoomCameraControls';
 
 /**
@@ -82,6 +82,7 @@ class EnvironmentBoundary extends React.Component<{ children: React.ReactNode },
 }
 
 interface RoomScene3DProps {
+  visualStyle?: import('@/lib/room-studio/stylePacks').VisualStyle;
   dimensions: RoomDimensions;
   /** Chrome rendered over the canvas's top-left corner (the layout toggle). */
   overlayTopLeft?: ReactNode;
@@ -89,6 +90,8 @@ interface RoomScene3DProps {
   wallStyle: SurfaceStyle;
   lighting: LightingPreset;
   architecture: ArchitectureSettings;
+  elements?: import('@/lib/room-studio/architecture').ArchitecturalElement[];
+  selectedElementId?: string | null;
   /** Per-instance placement state, colouring each outline. */
   placementStatus?: Record<string, PlacementStatus>;
   placedViews: PlacedProductView[];
@@ -96,7 +99,9 @@ interface RoomScene3DProps {
   showCeiling: boolean;
   onToggleCeiling: (value: boolean) => void;
   onSelect: (instanceId: string | null) => void;
-  onMove: (instanceId: string, position: Vec3) => void;
+  onMove: (instanceId: string, position: Vec3, tolerance?: number) => void;
+  onBeginDrag?: (instanceId: string) => void;
+  onEndDrag?: (cancelled: boolean) => void;
   /** Drop a product from the library onto a point on the floor. */
   onDropProduct: (productId: string, point: Vec3) => void;
   /** Jumps the product library to a category, from the empty-room prompt. */
@@ -109,6 +114,7 @@ interface RoomScene3DProps {
    * real scene rather than a copy of it that could pass while this one is
    * broken.
    */
+  spatialOverlay?: ReactNode;
   devSceneOverlay?: ReactNode;
   /** Dev harness only: forwarded to the placed node so the QA panel can report
    *  what the renderer measured rather than measuring the file a second way. */
@@ -119,11 +125,11 @@ interface RoomScene3DProps {
 
 export default function RoomScene3D({
   dimensions,
-  overlayTopLeft,
+  overlayTopLeft, visualStyle,
   floorStyle,
   wallStyle,
   lighting,
-  architecture,
+  architecture, elements, selectedElementId,
   placementStatus,
   placedViews,
   selectedInstanceId,
@@ -131,9 +137,11 @@ export default function RoomScene3D({
   onToggleCeiling,
   onSelect,
   onMove,
+  onBeginDrag,
+  onEndDrag,
   onDropProduct,
   onPickCategory,
-  devSceneOverlay,
+  spatialOverlay, devSceneOverlay,
   onModelMeasured,
   onModelLoadError,
 }: RoomScene3DProps) {
@@ -166,28 +174,13 @@ export default function RoomScene3D({
     setViewMode('perspective');
     setFocus({ center: selectedView.placed.position, size: [size.width, size.height, size.depth], nonce: Date.now() });
   };
-  const [dragging, setDragging] = useState<{ instanceId: string; offset: Vec3 } | null>(null);
+  const [dragging, setDragging] = useState(false);
+  const cancelDrag = useRef<(() => void) | null>(null);
   const [isDropTarget, setIsDropTarget] = useState(false);
   const cameraRef = useRef<THREE.Camera | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const draggingView = useMemo(
-    () => placedViews.find((v) => v.placed.instanceId === dragging?.instanceId) ?? null,
-    [placedViews, dragging]
-  );
-
-  // A pointer released outside the Canvas must still end the drag, otherwise the
-  // product would keep following the cursor after the button is up.
-  useEffect(() => {
-    if (!dragging) return;
-    const end = () => setDragging(null);
-    window.addEventListener('pointerup', end);
-    window.addEventListener('pointercancel', end);
-    return () => {
-      window.removeEventListener('pointerup', end);
-      window.removeEventListener('pointercancel', end);
-    };
-  }, [dragging]);
+  useEffect(() => () => cancelDrag.current?.(), []);
 
   /**
    * Frees the GPU memory of GLBs no product in the room uses any more. drei's
@@ -206,21 +199,20 @@ export default function RoomScene3D({
     });
   }, [placedViews]);
 
-  const handleDragStart = useCallback((instanceId: string, offset: Vec3) => {
-    setDragging({ instanceId, offset });
-  }, []);
-
-  const handleDragMove = useCallback(
-    (point: Vec3) => {
-      if (!dragging) return;
-      onMove(dragging.instanceId, [
-        point[0] + dragging.offset[0],
-        point[1] + dragging.offset[1],
-        point[2] + dragging.offset[2],
-      ]);
-    },
-    [dragging, onMove]
-  );
+  const handleDragStart = useCallback<React.ComponentProps<typeof PlacedProductNode>['onDragStart']>((placed, e) => {
+    const canvas = containerRef.current;
+    if (!canvas) return;
+    cancelDrag.current?.();
+    onBeginDrag?.(placed.instanceId);
+    setDragging(true);
+    cancelDrag.current = trackPlaneDrag(placed, e.point, e.camera, canvas, e.nativeEvent,
+      (point,tolerance) => onMove(placed.instanceId, point,tolerance),
+      cancelled => {
+        cancelDrag.current = null;
+        setDragging(false);
+        onEndDrag?.(cancelled);
+      });
+  }, [onBeginDrag, onEndDrag, onMove]);
 
   /** Projects a drop point from screen coordinates onto the floor plane. */
   const handleHtmlDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -266,7 +258,8 @@ export default function RoomScene3D({
       // selection. Without it the hint strip and the labels sitting over the
       // canvas highlight blue mid-drag, which reads as the drag having gone
       // wrong at exactly the moment it is going right.
-      className={`absolute inset-0 select-none overflow-hidden bg-[#E9EEF1] transition-colors ${
+      data-render-tier={quality.tier}
+      className={`absolute inset-0 touch-none select-none overflow-hidden bg-[#E9EEF1] transition-colors ${
         isDropTarget ? 'ring-2 ring-inset ring-[#C8A96A]' : ''
       }`}
     >
@@ -285,6 +278,7 @@ export default function RoomScene3D({
               key={id}
               type="button"
               onClick={() => setViewMode(id)}
+              aria-label={label}
               aria-pressed={viewMode === id}
               title={id === 'plan' ? 'Nhìn thẳng từ trên xuống như bản vẽ mặt bằng' : 'Góc nhìn phối cảnh trong phòng'}
               className={`flex items-center gap-1.5 px-2.5 py-1.5 text-[12px] font-medium transition-colors ${
@@ -366,18 +360,24 @@ export default function RoomScene3D({
           }}
           onPointerMissed={() => onSelect(null)}
           className="h-full w-full bg-[#E9EEF1]"
+          frameloop="demand"
           dpr={quality.dpr}
           gl={{ antialias: true, powerPreference: 'high-performance' }}
-          shadows={{ type: THREE.PCFSoftShadowMap }}
+          shadows={{ type: THREE.PCFShadowMap }}
         >
           {/* Steps down to the lighter tier when the real frame rate drops;
               never back up within a session, so the room does not flicker
               between two looks. */}
           <PerformanceMonitor onDecline={() => setQualityTier('low')} />
           <CameraTracker cameraRef={cameraRef} />
+          <SceneLighting
+            windows={visualStyle && !visualStyle.overrides.includes('lighting') ? elements : undefined}
+            dimensions={dimensions} lighting={lighting} quality={quality}
+          />
           <EnvironmentBoundary>
             <Suspense fallback={null}>
-              <SceneLighting dimensions={dimensions} lighting={lighting} quality={quality} />
+              <ReflectionStudio resolution={quality.environmentResolution}
+                tint={visualStyle && !visualStyle.overrides.includes('lighting') ? '#FFFFFF' : lighting.environmentTint} />
             </Suspense>
           </EnvironmentBoundary>
 
@@ -389,12 +389,12 @@ export default function RoomScene3D({
             focus={focus}
           />
 
-          <RoomShell
+          <RoomShell visualStyle={visualStyle}
             dimensions={dimensions}
             floorStyle={floorStyle}
             wallStyle={wallStyle}
             showCeiling={showCeiling}
-            architecture={architecture}
+            architecture={architecture} elements={elements} selectedElementId={selectedElementId}
             lighting={lighting}
             textureResolution={quality.textureResolution}
             planView={viewMode === 'plan'}
@@ -404,7 +404,8 @@ export default function RoomScene3D({
             position={[0, 0.002, 0]}
             scale={Math.max(dimensions.length, dimensions.width) * 1.5}
             opacity={0.42}
-            blur={2.4}
+            smooth={quality.tier === 'high'}
+            blur={2.0}
             far={1.2}
             resolution={quality.tier === 'high' ? 1024 : 512}
           />
@@ -416,7 +417,7 @@ export default function RoomScene3D({
               product={product}
               selected={placed.instanceId === selectedInstanceId}
               status={placementStatus?.[placed.instanceId]}
-              showCounter={architecture.basinCounter}
+              stylePack={placed.placementType==='counter' ? visualStyle?.id : undefined} showCounter={architecture.basinCounter}
               onSelect={onSelect}
               onDragStart={handleDragStart}
               onMeasured={onModelMeasured ? (m) => onModelMeasured(m, placed.instanceId) : undefined}
@@ -424,17 +425,8 @@ export default function RoomScene3D({
             />
           ))}
 
-          {devSceneOverlay}
+          {spatialOverlay}{devSceneOverlay}
 
-          {dragging && draggingView && (
-            <DragPlane
-              dimensions={dimensions}
-              placementType={draggingView.placed.placementType}
-              wall={draggingView.placed.wall}
-              onMove={handleDragMove}
-              onEnd={() => setDragging(null)}
-            />
-          )}
         </Canvas>
       </CanvasErrorBoundary>
 
@@ -449,7 +441,7 @@ export default function RoomScene3D({
       {/* An empty room is a valid state, not an error — the prompt suggests the
           three products a bathroom is actually planned around and gets out of
           the way of the space itself. */}
-      {placedViews.length === 0 && (
+      {placedViews.length === 0 && !elements?.length && (
         <div className="absolute inset-x-0 bottom-10 flex justify-center px-6">
           <div className="rounded border border-[#D8E2EA] bg-white/95 px-4 py-3 text-center shadow-sm backdrop-blur">
             <p className="text-[13px] font-medium text-[#0B1623]">Bắt đầu với một thiết bị chính.</p>

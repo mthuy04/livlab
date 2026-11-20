@@ -151,7 +151,8 @@ export function basinCounterExtent(basin: { width: number; depth: number; height
   const back = -basin.depth / 2 - BASIN_COUNTER.back;
   const front = basin.depth / 2 + BASIN_COUNTER.front;
   const below = BASIN_COUNTER.top + BASIN_COUNTER.cabinet;
-  return { width, back, front, depth: front - back, below };
+  const cabinet = { width: width - 0.02, back, front: front - 0.04 };
+  return { width, back, front, depth: front - back, below, cabinet };
 }
 
 /**

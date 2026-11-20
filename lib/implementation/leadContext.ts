@@ -1,4 +1,5 @@
-import type { HumanHandoffPackage } from './types';
+import { ELEMENT_LABEL, WALL_LABEL, type ArchitecturalElement } from '../room-studio/architecture';
+import type { HumanHandoffPackage, RoomSnapshot } from './types';
 
 /**
  * The machine-readable handoff LivLab writes onto a new lead.
@@ -15,7 +16,7 @@ import type { HumanHandoffPackage } from './types';
 export interface LeadContextV1 {
   version: 1;
   source: 'ROOM_STUDIO';
-  room?: { length: number; width: number; height: number; floorAreaM2?: number };
+  room?: Pick<RoomSnapshot, 'length' | 'width' | 'height' | 'elements'> & { floorAreaM2?: number };
   materials?: { floor?: string; walls?: string };
   budget?: { target?: number; estimatedProductTotal?: number };
   products?: {
@@ -34,6 +35,27 @@ export interface LeadContextV1 {
   }[];
 }
 
+const centimetres = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 3 });
+const cm = (metres: number) => centimetres.format(metres * 100);
+const glazing = { clear: 'kính trong', frosted: 'kính mờ', tinted: 'kính ám xanh' };
+
+/** Read the dimensions and mechanism as they were at the time of handoff. */
+export function describeHandoffElement(el: ArchitecturalElement): string {
+  const label = ELEMENT_LABEL[el.type];
+  if (el.type === 'shower-partition') {
+    const mechanism = { fixed: 'cố định', 'walk-in': 'hở lối vào', hinged: 'cửa bản lề', sliding: 'cửa trượt' }[el.mechanism];
+    const entry = el.mechanism === 'fixed' ? '' : (el.entrySide === 'left' ? ', lối vào bên trái' : ', lối vào bên phải');
+    const swing = el.mechanism === 'hinged' ? (el.swing === 'forward' ? ', mở về phía trước' : ', mở về phía sau') : '';
+    return `${label} · ${mechanism}${entry}${swing} · ${cm(el.length)} × ${cm(el.height)} cm · tâm X ${cm(el.x)}, Z ${cm(el.z)} cm · ${el.rotation}° · ${glazing[el.glazing]}`;
+  }
+  const location = `${WALL_LABEL[el.wall]} · cách đầu tường ${cm(el.offset)} cm · ${cm(el.width)} × ${cm(el.height)} cm`;
+  if (el.type === 'window') {
+    const mechanism = el.mechanism === 'fixed' ? 'cố định' : 'mở quay ra ngoài';
+    return `${label} · ${location} · bậu ${cm(el.sill)} cm · ${mechanism} · ${glazing[el.glazing]} · khung ${el.frame === 'ivory' ? 'trắng ngà' : 'than chì'}`;
+  }
+  return `${label} · ${location} · bản lề ${el.hinge === 'left' ? 'trái' : 'phải'} · mở ${el.swing === 'inward' ? 'vào trong' : 'ra ngoài'}`;
+}
+
 /**
  * Projects the handoff package into the stored snapshot.
  *
@@ -50,6 +72,7 @@ export function toLeadContext(pkg: HumanHandoffPackage): LeadContextV1 {
       width: pkg.room.width,
       height: pkg.room.height,
       floorAreaM2: pkg.room.floorAreaM2,
+      ...(pkg.room.elements?.length ? { elements: pkg.room.elements.map(el => ({ ...el })) } : {}),
     };
     if (pkg.room.floorFinish || pkg.room.wallFinish) {
       context.materials = { floor: pkg.room.floorFinish, walls: pkg.room.wallFinish };

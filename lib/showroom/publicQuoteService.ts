@@ -27,6 +27,9 @@ interface IncomingLine {
   priceMin?: number;
   priceMax?: number;
   priceSnapshot?: number | null;
+  tenantId?: string;
+  roomDesignId?: string;
+  unpriced?: boolean;
   sourceContext?: string;
 }
 
@@ -151,16 +154,21 @@ export async function createPublicQuoteRequest(
   );
   const incoming = Array.isArray(body.items) ? body.items.slice(0, 100) : [];
   let estimatedValue = 0;
+  let unpricedCount = 0;
   const contextLines: Record<string, unknown>[] = [];
   const items = incoming.map((line) => {
+    if (line.tenantId && line.tenantId !== tenant.id) {
+      throw new PublicQuoteError('Sản phẩm thuộc showroom khác.', 400, 'TENANT_MISMATCH');
+    }
     const key = line.catalogProductId || line.productId || line.id || '';
     const product = canonicalById.get(key) ?? canonicalById.get(line.productId || line.id || '');
     const quantity = Math.min(99, Math.max(1, Math.round(Number(line.quantity) || 1)));
-    const price = product?.showroomPrice ?? product?.referencePrice ?? 0;
+    const price = product?.showroomPrice ?? product?.referencePrice ?? null;
     const fallbackMin = integerOrNull(line.priceMin ?? line.priceSnapshot ?? line.price);
     const fallbackMax = integerOrNull(line.priceMax ?? line.priceSnapshot ?? line.price);
-    const priceMin = product ? price : fallbackMin;
-    const priceMax = product ? (product.referencePrice ?? price) : fallbackMax;
+    const priceMin = product ? price : line.unpriced ? null : fallbackMin;
+    const priceMax = product ? (product.referencePrice ?? price) : line.unpriced ? null : fallbackMax;
+    if (priceMin===null && priceMax===null) unpricedCount+=quantity;
     estimatedValue += (priceMin ?? 0) * quantity;
 
     const catalogProductId = (product?.catalogProductId ?? line.catalogProductId ?? key) || null;
@@ -170,6 +178,8 @@ export async function createPublicQuoteRequest(
       sku: product?.sku ?? line.sku ?? null,
       priceSnapshot: priceMin,
       sourceContext: line.sourceContext ?? null,
+      ...(line.sourceContext === 'ROOM_DESIGN' && typeof line.roomDesignId === 'string' ? {roomDesignId:line.roomDesignId,tenantId:tenant.id} : {}),
+      ...(priceMin===null && priceMax===null ? {unpriced:true} : {}),
       quantity,
     });
 
@@ -184,7 +194,7 @@ export async function createPublicQuoteRequest(
 
   const budgetMin = integerOrNull(body.budgetMin);
   const budgetMax = integerOrNull(body.budgetMax);
-  const fit = getBudgetFit({ total: estimatedValue, budgetMin, budgetMax });
+  const fit = getBudgetFit({ total: unpricedCount ? 0 : estimatedValue, budgetMin, budgetMax });
   const suppliedContext = body.context && typeof body.context === 'object' ? body.context : {};
   const contextJson = {
     ...(suppliedContext as Record<string, Prisma.InputJsonValue>),
@@ -193,6 +203,7 @@ export async function createPublicQuoteRequest(
     tenantId: tenant.id,
     workspaceKind: workspace?.workspaceKind ?? null,
     catalogLines: contextLines,
+    unpricedCount,
   } as Prisma.InputJsonValue;
 
   try {
@@ -224,7 +235,7 @@ export async function createPublicQuoteRequest(
           budgetMax,
           budgetFit: fit.status as BudgetFitStatus,
           conceptName: body.conceptName?.trim() || null,
-          estimatedValue,
+          estimatedValue: unpricedCount && !estimatedValue ? null : estimatedValue,
           notes: body.notes?.trim() || null,
           consent: true,
           showroomId: workspace?.id ?? null,

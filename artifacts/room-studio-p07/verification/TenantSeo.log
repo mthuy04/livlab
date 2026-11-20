@@ -1,0 +1,83 @@
+
+hostname
+  PASS  chuẩn hoá chữ hoa, cổng, dấu chấm cuối
+  PASS  bỏ phần sau dấu phẩy (header gộp)
+  PASS  từ chối host không hợp lệ
+  PASS  giangson.livlab.space → giangson
+  PASS  www.livlab.space và livlab.space → livlab
+  PASS  vercel.app, localhost không thuộc tenant nào
+  PASS  hậu tố giả không khớp
+  PASS  mỗi host chỉ thuộc một tenant
+
+ngữ cảnh site
+  PASS  trên domain Giang Sơn, cookie Tùng Đăng bị bỏ qua
+  PASS  origin canonical là giangson.livlab.space
+  PASS  domain Giang Sơn được index
+  PASS  preview Tùng Đăng trên LivLab: không index
+  PASS  cookie Giang Sơn trên www.livlab.space: vẫn là LivLab
+  PASS  cookie Giang Sơn trên alias LivLab: vẫn là LivLab, không index
+  PASS  www.livlab.space: LivLab, được index, origin www
+  PASS  livlab.vercel.app: LivLab nhưng không index, canonical về www
+  PASS  host lạ: LivLab, không index
+  PASS  host tạm .vercel.app: phục vụ Giang Sơn, cookie khác bị bỏ qua
+  PASS  host tạm: không index, canonical vẫn về giangson.livlab.space
+  PASS  host tạm: không có sitemap, robots không quảng bá sitemap
+  PASS  absoluteUrl giữ đúng origin
+
+robots.txt
+  PASS  Giang Sơn: sitemap trên domain của mình
+  PASS  cho phép trang công khai
+  PASS  chặn API, portal, công cụ nội bộ, công tắc preview
+  PASS  không chặn /showrooms (trang công khai của LivLab)
+  PASS  không chặn trang có noindex (để Google đọc được noindex)
+  PASS  host không index: không quảng bá sitemap
+
+sitemap.xml
+  PASS  mọi URL thuộc giangson.livlab.space
+  PASS  có trang chủ, danh mục, liên hệ, Room Studio
+  PASS  đủ 10 trang sản phẩm
+  PASS  có trang từng danh mục
+  PASS  không có trang cá nhân, portal hay preview
+  PASS  không trùng URL
+  PASS  LivLab: có trang showroom, liên hệ, cẩm nang và bài viết
+  PASS  Giang Sơn: không liệt kê trang riêng hay bài viết của LivLab
+  PASS  LivLab: không liệt kê trang sản phẩm (vẫn noindex như trước)
+  PASS  LivLab: chỉ URL của www.livlab.space
+  PASS  host không index: sitemap rỗng
+  PASS  preview: sitemap rỗng
+
+structured data
+  PASS  WebSite.name = "Thiết bị vệ sinh Giang Sơn"
+  PASS  WebSite.url là trang chủ subdomain
+  PASS  H1 bắt đầu bằng WebSite.name
+  PASS  LocalBusiness: điện thoại theo trang Facebook
+  PASS  LocalBusiness: địa chỉ 240 Hồ Tùng Mậu, Hà Nội
+  PASS  LocalBusiness: sameAs Facebook
+  PASS  không có rating, review, giờ mở cửa, toạ độ chưa xác minh
+  PASS  LivLab không có LocalBusiness
+  PASS  LivLab: Organization tên LivLab, logo tuyệt đối
+  PASS  LivLab: WebSite trỏ publisher về Organization
+  PASS  Giang Sơn: không có Organization riêng (đã có LocalBusiness)
+  PASS  điện thoại hiển thị và cấu hình khớp nhau
+  PASS  giá tham khảo: Product không kèm Offer
+  PASS  ảnh tương đối thành URL tuyệt đối trên đúng origin
+  PASS  giá showroom xác nhận: Offer VND, không kèm tồn kho tự đặt
+  PASS  JSON-LD không thể đóng thẻ script
+  PASS  Breadcrumb trên đúng origin
+
+cô lập dữ liệu danh mục
+  PASS  mỗi tenant giữ danh mục riêng trong cùng một tiến trình
+  PASS  mọi sản phẩm Giang Sơn mang mã danh mục của Giang Sơn
+  PASS  Giang Sơn không dùng ảnh lấy từ website Tùng Đăng
+  PASS  Tùng Đăng vẫn dùng ảnh của chính mình
+  PASS  logo thương hiệu (nguồn Tùng Đăng) chỉ hiện trên Tùng Đăng
+
+nguồn truy cập (cho KPI lead)
+  PASS  Google → organic_search
+  PASS  Cốc Cốc → organic_search
+  PASS  Facebook → social
+  PASS  utm_medium=cpc → paid
+  PASS  không referrer → direct
+  PASS  nội bộ → direct
+
+67 passed, 0 failed

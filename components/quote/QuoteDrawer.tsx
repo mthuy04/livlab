@@ -1,5 +1,6 @@
 'use client';
 
+import {quoteLineKey} from '@/lib/room-studio/roomQuote';
 import { useQuote } from '@/lib/context/QuoteContext';
 import { X, ShoppingBag, Trash2, ArrowRight, Plus, Minus } from 'lucide-react';
 import Link from 'next/link';
@@ -79,7 +80,7 @@ export default function QuoteDrawer() {
               const hasImg = !isUnrelatedRoomImage(item.image);
 
               return (
-                <div key={item.productId} className="bg-[color:var(--tenant-ui-surface,#F3F7FA)] rounded-[var(--tenant-ui-radius,1rem)] p-3">
+                <div key={quoteLineKey(item)} className="bg-[color:var(--tenant-ui-surface,#F3F7FA)] rounded-[var(--tenant-ui-radius,1rem)] p-3">
                   <div className="flex items-start gap-3 mb-2">
                     <div className="w-14 h-14 rounded-[var(--tenant-ui-radius,0.75rem)] overflow-hidden bg-[#EEF4F7] flex-shrink-0 relative">
                       {hasImg ? (
@@ -103,20 +104,20 @@ export default function QuoteDrawer() {
                     <div className="flex-1 min-w-0">
                       <p className="text-[10px] text-[#627386] font-medium uppercase tracking-wide mb-0.5">{item.category}</p>
                       <p className="text-xs font-semibold text-[#0B1623] leading-snug">{item.name}</p>
-                      <p className="text-xs font-bold text-[color:var(--tenant-price,#C8A96A)] mt-0.5">{item.priceRange}</p>
+                      <p className="text-xs font-bold text-[color:var(--tenant-price,#C8A96A)] mt-0.5">{item.roomDesignId && 'Thiết kế phòng · '}{item.priceRange}</p>
                     </div>
-                    <button onClick={() => removeItem(item.productId)} className="flex-shrink-0 w-6 h-6 rounded-full bg-white flex items-center justify-center hover:bg-red-50 transition-colors">
+                    <button disabled={!!item.roomDesignId} title={item.roomDesignId ? 'Chỉnh số lượng trong thiết kế phòng' : undefined} onClick={() => removeItem(quoteLineKey(item))} className="flex-shrink-0 w-6 h-6 rounded-full bg-white flex items-center justify-center hover:bg-red-50 transition-colors">
                       <X className="w-3 h-3 text-[#627386] hover:text-red-400" />
                     </button>
                 </div>
                 {/* Qty controls */}
                 <div className="flex items-center gap-2">
                   <p className="text-[10px] text-[#627386] mr-auto">Số lượng:</p>
-                  <button onClick={() => updateQty(item.productId, item.quantity - 1)} className="w-6 h-6 rounded-full bg-white border border-[#D8E2EA] flex items-center justify-center hover:bg-[#EEF4F7] transition-colors">
+                  <button disabled={!!item.roomDesignId} title={item.roomDesignId ? 'Chỉnh số lượng trong thiết kế phòng' : undefined} onClick={() => updateQty(quoteLineKey(item), item.quantity - 1)} className="w-6 h-6 rounded-full bg-white border border-[#D8E2EA] flex items-center justify-center hover:bg-[#EEF4F7] transition-colors">
                     <Minus className="w-3 h-3 text-[#0B1623]" />
                   </button>
                   <span className="text-sm font-bold text-[#0B1623] w-5 text-center">{item.quantity}</span>
-                  <button onClick={() => updateQty(item.productId, item.quantity + 1)} className="w-6 h-6 rounded-full bg-white border border-[#D8E2EA] flex items-center justify-center hover:bg-[#EEF4F7] transition-colors">
+                  <button disabled={!!item.roomDesignId} title={item.roomDesignId ? 'Chỉnh số lượng trong thiết kế phòng' : undefined} onClick={() => updateQty(quoteLineKey(item), item.quantity + 1)} className="w-6 h-6 rounded-full bg-white border border-[#D8E2EA] flex items-center justify-center hover:bg-[#EEF4F7] transition-colors">
                     <Plus className="w-3 h-3 text-[#0B1623]" />
                   </button>
                 </div>
@@ -136,7 +137,7 @@ export default function QuoteDrawer() {
           <div className="border-t border-[#D8E2EA] px-5 py-5 space-y-3">
             <div className="bg-[color:var(--tenant-ui-surface,#EEF4F7)] rounded-[var(--tenant-ui-radius,1rem)] p-4">
               <p className="text-[11px] text-[#627386] uppercase tracking-wider mb-1">Tổng giá tham khảo</p>
-              <p className="text-lg font-bold text-[#0B1623]">{fmtVnd(totalMin)} – {fmtVnd(totalMax)}</p>
+              <p className="text-lg font-bold text-[#0B1623]">{fmtVnd(totalMin)} – {fmtVnd(totalMax)}{items.some(i=>i.unpriced) && ' + sản phẩm chưa có giá'}</p>
               <p className="text-[10px] text-[#627386] mt-0.5">{items.length} sản phẩm</p>
             </div>
             <Link

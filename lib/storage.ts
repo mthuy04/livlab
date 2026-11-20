@@ -1,5 +1,6 @@
 
 
+import { quoteLineKey } from './room-studio/roomQuote';
 import { QuoteItem, Lead, Product, Concept } from './types';
 
 // ─── Keys ─────────────────────────────────────────────────────────────────────
@@ -31,8 +32,16 @@ export function getStoredUsers(): User[] { return safeGet<User[]>(USERS_KEY, [])
 export function saveStoredUsers(users: User[]): void { safeSet(USERS_KEY, users); }
 
 // ─── Quote Items ──────────────────────────────────────────────────────────────
-export function getQuoteItems(): QuoteItem[]          { return safeGet<QuoteItem[]>(QUOTE_KEY, []); }
-export function saveQuoteItems(items: QuoteItem[]): void { safeSet(QUOTE_KEY, items); }
+const basketKey = (tenant: string) => tenant === 'livlab' ? QUOTE_KEY : QUOTE_KEY + ':' + tenant;
+export function getQuoteItems(tenant = 'livlab'): QuoteItem[] {
+  const legacy = safeGet<QuoteItem[]>(QUOTE_KEY, []);
+  if (tenant === 'livlab') return legacy.filter(i => !i.tenantId || i.tenantId === tenant);
+  return safeGet<QuoteItem[]>(basketKey(tenant), legacy.filter(i => i.tenantId === tenant));
+}
+export function saveQuoteItems(items: QuoteItem[], tenant = 'livlab'): void {
+  const legacyForeign = tenant === 'livlab' ? safeGet<QuoteItem[]>(QUOTE_KEY, []).filter(i => i.tenantId && i.tenantId !== tenant) : [];
+  safeSet(basketKey(tenant), [...items,...legacyForeign]);
+}
 
 export interface QuotePrefill {
   roomType?: string;
@@ -56,35 +65,34 @@ export function calculateQuoteTotalRange(items: QuoteItem[]): { min: number; max
   return { min, max };
 }
 
-export function addQuoteItem(item: QuoteItem): QuoteItem[] {
-  const items = getQuoteItems();
-  const existing = items.find((i) => i.productId === item.productId);
+export function addQuoteItem(item: QuoteItem, tenant = 'livlab'): QuoteItem[] {
+  const items = getQuoteItems(tenant);
+  const existing = items.find((i) => quoteLineKey(i) === quoteLineKey(item));
   if (existing) {
-    const updated = items.map((i) => i.productId === item.productId ? { ...i, quantity: i.quantity + 1 } : i);
-    saveQuoteItems(updated);
+    const updated = items.map((i) => quoteLineKey(i) === quoteLineKey(item) ? { ...i, quantity: i.quantity + 1 } : i);
+    saveQuoteItems(updated,tenant);
     return updated;
   }
   const updated = [...items, item];
-  saveQuoteItems(updated);
+  saveQuoteItems(updated,tenant);
   return updated;
 }
 
-export function removeQuoteItem(productId: string): QuoteItem[] {
-  const items = getQuoteItems().filter((i) => i.productId !== productId);
-  saveQuoteItems(items);
+export function removeQuoteItem(productId: string, tenant = 'livlab'): QuoteItem[] {
+  const items = getQuoteItems(tenant).filter((i) => quoteLineKey(i) !== productId);
+  saveQuoteItems(items,tenant);
   return items;
 }
 
-export function updateQuoteItemQty(productId: string, quantity: number): QuoteItem[] {
-  if (quantity < 1) return removeQuoteItem(productId);
-  const items = getQuoteItems().map((i) => i.productId === productId ? { ...i, quantity } : i);
-  saveQuoteItems(items);
+export function updateQuoteItemQty(productId: string, quantity: number, tenant = 'livlab'): QuoteItem[] {
+  if (quantity < 1) return removeQuoteItem(productId,tenant);
+  const items = getQuoteItems(tenant).map((i) => quoteLineKey(i) === productId ? { ...i, quantity } : i);
+  saveQuoteItems(items,tenant);
   return items;
 }
 
-export function clearQuoteItems(): void {
-  if (typeof window === 'undefined') return;
-  localStorage.removeItem(QUOTE_KEY);
+export function clearQuoteItems(tenant = 'livlab'): void {
+  saveQuoteItems([],tenant);
 }
 
 // ─── Leads ────────────────────────────────────────────────────────────────────
@@ -97,7 +105,7 @@ export function getLeads(): Lead[] {
     saveLeads(rawLeads);
   }
   return rawLeads.map((lead) => {
-    let normalized = { ...lead };
+    const normalized = { ...lead };
     if (!normalized.requestCode && typeof normalized.id === 'string' && normalized.id.startsWith('LLQ-')) {
       normalized.requestCode = normalized.id;
     }
@@ -271,10 +279,10 @@ export function saveStoredCombos(combos: ComboPackage[]): void { safeSet(COMBOS_
 // ─── Sources ──────────────────────────────────────────────────────────────────
 const SOURCES_KEY = 'livlab_sources';
 
-export function getStoredSources(): any[] | null {
-  return safeGet<any[] | null>(SOURCES_KEY, null);
+export function getStoredSources(): Record<string, string>[] | null {
+  return safeGet<Record<string, string>[] | null>(SOURCES_KEY, null);
 }
-export function saveStoredSources(sources: any[]): void { safeSet(SOURCES_KEY, sources); }
+export function saveStoredSources(sources: Record<string, string>[]): void { safeSet(SOURCES_KEY, sources); }
 
 // ─── Seeding ──────────────────────────────────────────────────────────────────
 import { seededProducts, seededConcepts, seededCombos } from './seedData';

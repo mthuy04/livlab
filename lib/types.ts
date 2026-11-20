@@ -78,6 +78,8 @@ export interface Product {
   // (which holds unstructured Vietnamese phrases unsuitable for logic). Defaults
   // to "floor" when unset — assign per-SKU manually, do not infer from name/text.
   mountType?: 'wall' | 'floor';
+  /** Manufacturer-supplied front clearance, in metres, when documented. */
+  verifiedFrontClearanceM?: number;
   warranty?: string;
   origin?: string;
 
@@ -183,6 +185,8 @@ export interface Concept {
 }
 
 export interface QuoteItem {
+  roomDesignId?: string;
+  unpriced?: boolean;
   productId: string;
 
   /**

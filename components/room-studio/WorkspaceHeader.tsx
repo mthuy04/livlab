@@ -1,12 +1,16 @@
 'use client';
 
-import { Check, HelpCircle } from 'lucide-react';
+import { Check, HelpCircle, Undo2, Redo2 } from 'lucide-react';
 import type { RoomDimensions } from '@/lib/room-studio/roomGeometry';
 
 interface WorkspaceHeaderProps {
   dimensions: RoomDimensions;
   /** Whether the current room has been written to the browser's own storage. */
   saved: boolean;
+  undoLabel?: string;
+  redoLabel?: string;
+  onUndo: () => void;
+  onRedo: () => void;
   onOpenGuide: () => void;
 }
 
@@ -23,7 +27,7 @@ export function formatMetres(value: number): string {
  * still does the selling; repeating the pitch here cost the viewport a third
  * of its height and told the customer nothing they had not just read.
  */
-export default function WorkspaceHeader({ dimensions, saved, onOpenGuide }: WorkspaceHeaderProps) {
+export default function WorkspaceHeader({ dimensions, saved, undoLabel, redoLabel, onUndo, onRedo, onOpenGuide }: WorkspaceHeaderProps) {
   return (
     <header className="flex shrink-0 items-center justify-between gap-4 border-b border-[#E1E8ED] bg-white px-4 py-2.5 md:px-6">
       <div className="flex min-w-0 items-baseline gap-3">
@@ -46,6 +50,16 @@ export default function WorkspaceHeader({ dimensions, saved, onOpenGuide }: Work
       </div>
 
       <div className="flex shrink-0 items-center gap-1">
+        {[
+          { label: 'Hoàn tác', action: undoLabel, click: onUndo, Icon: Undo2 },
+          { label: 'Làm lại', action: redoLabel, click: onRedo, Icon: Redo2 },
+        ].map(({ label, action, click, Icon }) => (
+          <button key={label} type="button" disabled={!action} onClick={click}
+            aria-label={action ? label + ' · ' + action : label} title={action ? label + ' · ' + action : label}
+            className="rounded p-2 text-[#3F4F5C] hover:bg-[#F3F7FA] disabled:opacity-30">
+            <Icon className="h-4 w-4" aria-hidden />
+          </button>
+        ))}
         <button
           type="button"
           onClick={onOpenGuide}

@@ -177,7 +177,7 @@ export default function CommandBar({
                           the design is still here rather than dropped. */}
                       <button
                         type="button"
-                        disabled={empty}
+
                         onClick={() => {
                           onSaveDesign();
                           setMenuOpen(false);
@@ -203,8 +203,8 @@ export default function CommandBar({
           <button
             type="button"
             onClick={onSaveDesign}
-            disabled={empty}
-            title="Lưu những sản phẩm đang trong phòng vào giỏ báo giá"
+
+            title="Liên kết thiết kế này để giỏ báo giá cập nhật theo phòng đã áp dụng"
             className="hidden whitespace-nowrap rounded border border-[#D8E2EA] px-3.5 py-2 text-[13px] font-medium text-[#0B2239] transition-colors hover:border-[#0B2239] disabled:cursor-not-allowed disabled:opacity-40 lg:block"
           >
             Lưu thiết kế

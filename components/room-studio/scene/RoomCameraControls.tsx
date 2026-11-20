@@ -92,6 +92,7 @@ export default function RoomCameraControls({
   const startGlide = (toPos: THREE.Vector3, toTarget: THREE.Vector3) => {
     const controls = controlsRef.current;
     if (!controls) return;
+    get().invalidate();
     glide.current = {
       fromPos: get().camera.position.clone(),
       toPos,
@@ -169,6 +170,7 @@ export default function RoomCameraControls({
     controls.target.lerpVectors(g.fromTarget, g.toTarget, k);
     controls.update();
     if (g.t >= 1) glide.current = null;
+    else get().invalidate();
   });
 
 

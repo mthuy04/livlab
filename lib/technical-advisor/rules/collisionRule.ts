@@ -49,6 +49,9 @@ function boxFor(entry: TechnicalProductEntry, counterSupport: boolean): Aabb | n
   });
 }
 
+import { fixtureVolumes } from '../architectureGeometry';
+import { area, intersection } from '../spatialGeometry';
+
 export const collisionRule: TechnicalRule = {
   id: 'collision',
   category: 'COLLISION',
@@ -65,6 +68,7 @@ export const collisionRule: TechnicalRule = {
       for (let j = i + 1; j < measured.length; j++) {
         const a = measured[i];
         const b = measured[j];
+        if (context.focusInstanceId && ![a.entry.placed.instanceId,b.entry.placed.instanceId].includes(context.focusInstanceId)) continue;
         const overlap = getOverlap(a.box, b.box);
 
         if (overlap.x <= collisionEpsilonM || overlap.y <= collisionEpsilonM || overlap.z <= collisionEpsilonM) {
@@ -74,11 +78,13 @@ export const collisionRule: TechnicalRule = {
         // Compare the shared floor area against the smaller product's own
         // footprint, so "clipping a corner" and "sitting inside each other"
         // are not treated the same.
-        const sharedArea = overlap.x * overlap.z;
-        const areaA = (a.box.maxX - a.box.minX) * (a.box.maxZ - a.box.minZ);
-        const areaB = (b.box.maxX - b.box.minX) * (b.box.maxZ - b.box.minZ);
-        const smaller = Math.min(areaA, areaB);
-        if (smaller <= 0 || sharedArea / smaller < collisionMinOverlapRatio) continue;
+        const volumesA = fixtureVolumes(a.entry, !!context.counterSupport) ?? [];
+        const volumesB = fixtureVolumes(b.entry, !!context.counterSupport) ?? [];
+        const hit = volumesA.some(v => volumesB.some(u =>
+          Math.min(v.top,u.top) - Math.max(v.bottom,u.bottom) > collisionEpsilonM &&
+          area(intersection(v.footprint,u.footprint)) >
+            Math.min(area(v.footprint),area(u.footprint)) * collisionMinOverlapRatio));
+        if (!hit) continue;
 
         results.push({
           id: `collision:${a.entry.placed.instanceId}:${b.entry.placed.instanceId}`,
@@ -98,7 +104,7 @@ export const collisionRule: TechnicalRule = {
     }
 
     // Only say "no overlaps" when there was actually something to compare.
-    if (results.length === 0 && measured.length >= 2) {
+    if (results.length === 0 && measured.length >= 2 && measured.length === context.entries.length) {
       results.push({
         id: 'collision:none',
         ruleId: 'collision',
@@ -122,7 +128,7 @@ export const collisionRule: TechnicalRule = {
         severity: 'VERIFY',
         title: 'Chưa kiểm tra được va chạm cho một số sản phẩm',
         message: `${unmeasured} sản phẩm chưa có đủ kích thước trong dữ liệu LivLab, nên chưa thể kiểm tra chồng lấn với các sản phẩm khác.`,
-        affectedInstanceIds: [],
+        affectedInstanceIds: context.entries.filter(entry => !boxFor(entry, Boolean(context.counterSupport))).map(entry => entry.placed.instanceId),
         dataSource: 'UNKNOWN',
         confidence: 'LOW',
         requiresHumanVerification: true,

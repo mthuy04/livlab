@@ -1,13 +1,14 @@
 'use client';
 
 import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
-import { useGLTF, Html } from '@react-three/drei';
+import { useGLTF, Html, RoundedBox } from '@react-three/drei';
 import { useThree, type ThreeEvent } from '@react-three/fiber';
 import * as THREE from 'three';
 import { toCreasedNormals } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import type { RoomStudioProduct } from '@/lib/room-studio/productAdapter';
 import type { PlacedProduct } from '@/lib/room-studio/roomState';
 import { getRealWorldSize, resolveModelScale } from '@/lib/room-studio/assetResolver';
+import { STYLE_PACKS, type StylePackId } from '@/lib/room-studio/stylePacks';
 import type { PlacementStatus } from '@/lib/room-studio/placementStatus';
 import { PLACEMENT_STATUS_COLOR } from '@/lib/room-studio/placementStatus';
 import { BASIN_COUNTER, basinCounterExtent } from '@/lib/room-studio/environment';
@@ -216,11 +217,32 @@ function FloorFootprint({ product, centreY, color }: { product: RoomStudioProduc
  * under it: a stone top with a slim floating cabinet. Context, not product —
  * it is never quoted, and the room's architecture settings switch it off.
  */
-function BasinCounter({ product }: { product: RoomStudioProduct }) {
+function BasinCounter({ product, pack }: { product: RoomStudioProduct; pack?:StylePackId }) {
   const size = getRealWorldSize(product);
   const c = basinCounterExtent(size);
   const bottomOfBasin = -size.height / 2;
   const midZ = (c.front + c.back) / 2;
+  if(pack){
+    const finish=STYLE_PACKS[pack], cabinet=c.cabinet;
+    const h=BASIN_COUNTER.cabinet, y=bottomOfBasin-BASIN_COUNTER.top;
+    return <group>
+      <RoundedBox args={[c.width,BASIN_COUNTER.top,c.depth]} radius={.005} smoothness={2}
+        position={[0,bottomOfBasin-BASIN_COUNTER.top/2,midZ]} castShadow receiveShadow>
+        <meshStandardMaterial color={finish.floor.base} roughness={.31}/>
+      </RoundedBox>
+      <mesh position={[0,y-h/2,(cabinet.front+cabinet.back-.016)/2]} castShadow receiveShadow>
+        <boxGeometry args={[cabinet.width,h,cabinet.front-cabinet.back-.016]}/>
+        <meshStandardMaterial color={finish.cabinet} roughness={.47}/>
+      </mesh>
+      {[0,1].map(i=><RoundedBox key={i} args={[cabinet.width-.009,h/2-.008,.016]} radius={.003} smoothness={1}
+        position={[0,y-h*(.25+i*.5),cabinet.front-.008]} receiveShadow>
+        <meshStandardMaterial color={finish.cabinet} roughness={.42}/>
+      </RoundedBox>)}
+      <mesh position={[0,y-h/2,cabinet.front-.014]}><planeGeometry args={[cabinet.width-.012,.005]}/>
+        <meshStandardMaterial color={finish.trim} roughness={.38} metalness={.62}/>
+      </mesh>
+    </group>;
+  }
   return (
     <group>
       <mesh position={[0, bottomOfBasin - BASIN_COUNTER.top / 2, midZ]} castShadow receiveShadow>
@@ -228,11 +250,11 @@ function BasinCounter({ product }: { product: RoomStudioProduct }) {
         <meshStandardMaterial color="#E7E2D9" roughness={0.38} />
       </mesh>
       <mesh
-        position={[0, bottomOfBasin - BASIN_COUNTER.top - BASIN_COUNTER.cabinet / 2, midZ - 0.02]}
+        position={[0, bottomOfBasin - BASIN_COUNTER.top - BASIN_COUNTER.cabinet / 2, (c.cabinet.front + c.cabinet.back) / 2]}
         castShadow
         receiveShadow
       >
-        <boxGeometry args={[c.width - 0.02, BASIN_COUNTER.cabinet, c.depth - 0.04]} />
+        <boxGeometry args={[c.cabinet.width, BASIN_COUNTER.cabinet, c.cabinet.front - c.cabinet.back]} />
         <meshStandardMaterial color="#8C6C4F" roughness={0.62} />
       </mesh>
     </group>
@@ -296,7 +318,7 @@ function ProductLabel({
     //
     // Anchored by its bottom edge rather than `center`, because a label the
     // size of a basin, centred on a point just above a basin, covers the basin.
-    <Html position={[0, size.height / 2 + 0.06, 0]} pointerEvents="none" zIndexRange={[20, 0]}>
+    <Html position={[0, size.height / 2 + 0.06, 0]} wrapperClass="pointer-events-none" zIndexRange={[20, 0]}>
       <div
         style={{ transform: 'translate(-50%, -100%)' }}
         className="pointer-events-none w-max max-w-[200px] rounded bg-[#0B1623]/92 px-2 py-1 text-center text-white shadow-md"
@@ -379,20 +401,21 @@ interface PlacedProductNodeProps {
   status?: PlacementStatus;
   /** Draw the context counter under a countertop product. */
   showCounter?: boolean;
+  stylePack?:StylePackId;
   onSelect: (instanceId: string) => void;
-  onDragStart: (instanceId: string, grabOffset: [number, number, number]) => void;
+  onDragStart: (placed: PlacedProduct, event: ThreeEvent<PointerEvent>) => void;
   /** Dev harness only (see /dev/room-studio-3d-test). Undefined in the workspace. */
   onMeasured?: (measurement: ReturnType<typeof measureGlbForPlacement>) => void;
   /** Dev harness only. Reports a GLB that failed to load. */
   onLoadError?: () => void;
 }
 
-export default function PlacedProductNode({
+function PlacedProductNode({
   placed,
   product,
   selected,
   status,
-  showCounter = false,
+  showCounter = false, stylePack,
   onSelect,
   onDragStart,
   onMeasured,
@@ -400,7 +423,7 @@ export default function PlacedProductNode({
 }: PlacedProductNodeProps) {
   const [hovered, setHovered] = useState(false);
   // `makeDefault` on OrbitControls publishes the instance here.
-  const controls = useThree((state) => state.controls) as { enabled: boolean } | null;
+  const getScene = useThree((state) => state.get);
   /**
    * WHICH url failed, not whether one did.
    *
@@ -435,6 +458,7 @@ export default function PlacedProductNode({
      * `enabled` prop then re-asserts the same value on the next render, and
      * restores it when the drag ends.
      */
+    const controls = getScene().controls as { enabled: boolean } | null;
     if (controls) controls.enabled = false;
 
     // Keep receiving moves even when the pointer leaves the product — or the
@@ -450,13 +474,7 @@ export default function PlacedProductNode({
     }
 
     onSelect(placed.instanceId);
-    // Remember where inside the product the customer grabbed it, so it does not
-    // snap its centre to the cursor the moment the drag begins.
-    onDragStart(placed.instanceId, [
-      placed.position[0] - e.point.x,
-      placed.position[1] - e.point.y,
-      placed.position[2] - e.point.z,
-    ]);
+    onDragStart(placed, e);
   };
 
   const showLabel = hovered || selected;
@@ -491,7 +509,7 @@ export default function PlacedProductNode({
         <ProductPlaceholder product={product} selected={selected} statusColor={statusColor} />
       )}
 
-      {showCounter && placed.placementType === 'counter' && <BasinCounter product={product} />}
+      {showCounter && placed.placementType === 'counter' && <BasinCounter pack={stylePack} product={product} />}
 
       {selected && placed.placementType !== 'wall' && (
         <FloorFootprint product={product} centreY={placed.position[1]} color={statusColor ?? '#C8A96A'} />
@@ -534,3 +552,5 @@ function GrabVolume({ product }: { product: RoomStudioProduct }) {
     </mesh>
   );
 }
+
+export default React.memo(PlacedProductNode);

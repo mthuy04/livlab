@@ -176,7 +176,10 @@ export function getProductTechnicalMetadata(product: RoomStudioProduct): Product
   // to make a scene look right, not to answer "will it fit".
   const hasAnyDims = product.width !== undefined || product.depth !== undefined || product.height !== undefined;
 
-  const placementType = curated?.placementType ?? PLACEMENT_MAP[product.placementType] ?? 'UNKNOWN';
+  const declared=product.source?.mountType;
+  const verified=product.source?.verifiedFrontClearanceM;
+  const front=typeof verified==='number' && Number.isFinite(verified) && verified>0 ? verified:undefined;
+  const placementType = declared==='wall'?'WALL':declared==='floor'?'FLOOR':curated?.placementType ?? PLACEMENT_MAP[product.placementType] ?? 'UNKNOWN';
 
   return {
     width: product.width,
@@ -187,12 +190,12 @@ export function getProductTechnicalMetadata(product: RoomStudioProduct): Product
     placementType,
     // Without a curated entry, placement is a guess from the category name —
     // Product.mountType is declared in lib/types.ts but set for no product.
-    placementOrigin: curated?.placementType ? 'CURATED_DEMO' : 'INFERRED',
+    placementOrigin: declared ? 'CATALOGUE':curated?.placementType ? 'CURATED_DEMO' : 'INFERRED',
 
-    allowedSurfaces: curated?.allowedSurfaces,
+    allowedSurfaces: declared ? [declared === 'wall' ? 'WALL' : 'FLOOR'] : curated?.allowedSurfaces,
 
-    recommendedClearance: curated?.recommendedClearance,
-    clearanceOrigin: curated?.recommendedClearance ? 'CURATED_DEMO' : 'MISSING',
+    recommendedClearance: front===undefined?curated?.recommendedClearance:{...curated?.recommendedClearance,front},
+    clearanceOrigin: front!==undefined?'CATALOGUE':curated?.recommendedClearance ? 'CURATED_DEMO' : 'MISSING',
 
     plumbing: curated?.plumbing,
     plumbingOrigin: curated?.plumbing ? 'CURATED_DEMO' : 'MISSING',

@@ -16,6 +16,8 @@
  * suy ra từ nhóm sản phẩm" rather than asserting a mismatch it cannot prove.
  */
 
+import {wallFrame,wallOpenings} from '../../room-studio/architecture';
+import {parseArchitecture} from '../../room-studio/environment';
 import { getRoomBounds } from '@/lib/room-studio/roomGeometry';
 import { technicalRulesConfig } from '../config';
 import { formatCm, getWorldAabb } from '../geometry';
@@ -59,6 +61,12 @@ export const placementSurfaceRule: TechnicalRule = {
         continue;
       }
 
+      const mount = {floor:'FLOOR',wall:'WALL',counter:'COUNTERTOP',ceiling:'CEILING'}[placed.placementType as 'floor'|'wall'|'counter'|'ceiling'];
+      if(metadata.placementOrigin !== 'INFERRED' && metadata.allowedSurfaces && (!mount || !metadata.allowedSurfaces.some(s=>s===mount)) ||
+        metadata.placementOrigin==='CATALOGUE' && mount!==metadata.placementType){
+        results.push({id:'mount-type:'+placed.instanceId,ruleId:'placement-surface',category:'PLACEMENT_SURFACE',severity:'VERIFY',placementIssue:'UNSUPPORTED_SURFACE',
+          title:'Bề mặt lắp không phù hợp',message:product.name+' không phù hợp với bề mặt đã chọn.',affectedInstanceIds:[placed.instanceId],dataSource:'PRODUCT_METADATA',confidence:'HIGH',requiresHumanVerification:false});
+      }
       const inferred = metadata.placementOrigin === 'INFERRED';
 
       if (metadata.width === undefined || metadata.depth === undefined || metadata.height === undefined) {
@@ -92,6 +100,13 @@ export const placementSurfaceRule: TechnicalRule = {
 
       if (metadata.placementType === 'WALL') {
         const wall = placed.wall ?? 'back';
+        const frame=wallFrame(context.room,wall);
+        const u=frame.local({x:placed.position[0],z:placed.position[2]}).u;
+        const cut=wallOpenings(context.room,parseArchitecture(context.architecture),context.elements??[]).find(o=>
+          o.wall===wall && u+metadata.width!/2>o.x && u-metadata.width!/2<o.x+o.width && box.maxY>o.y && box.minY<o.y+o.height);
+        if(cut)results.push({id:'mount-opening:'+placed.instanceId+':'+cut.id,ruleId:'placement-surface',category:'PLACEMENT_SURFACE',
+          severity:'VERIFY',placementIssue:'UNSUPPORTED_SURFACE',title:'Ô mở trên tường',message:product.name+' có vùng tựa lưng trùng ô mở trên tường.',
+          affectedInstanceIds:[placed.instanceId],dataSource:'ROOM_GEOMETRY',confidence:'HIGH',requiresHumanVerification:false});
         surfaceName = wall === 'left' ? 'tường trái' : wall === 'right' ? 'tường phải' : 'tường trong';
         gap =
           wall === 'left'

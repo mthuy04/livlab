@@ -1,0 +1,172 @@
+TAP version 13
+# Subtest: cut wall and working casement on back
+ok 1 - cut wall and working casement on back
+  ---
+  duration_ms: 6.754709
+  type: 'test'
+  ...
+# Subtest: cut wall and working casement on right
+ok 2 - cut wall and working casement on right
+  ---
+  duration_ms: 1.595959
+  type: 'test'
+  ...
+# Subtest: cut wall and working casement on front
+ok 3 - cut wall and working casement on front
+  ---
+  duration_ms: 0.9445
+  type: 'test'
+  ...
+# Subtest: cut wall and working casement on left
+ok 4 - cut wall and working casement on left
+  ---
+  duration_ms: 0.56425
+  type: 'test'
+  ...
+# Subtest: window resizing, touching, stacking, competing openings and invalid syntax
+ok 5 - window resizing, touching, stacking, competing openings and invalid syntax
+  ---
+  duration_ms: 2.906834
+  type: 'test'
+  ...
+# Subtest: partition rotation and bounded translation at 0 degrees
+ok 6 - partition rotation and bounded translation at 0 degrees
+  ---
+  duration_ms: 0.799667
+  type: 'test'
+  ...
+# Subtest: partition rotation and bounded translation at 45 degrees
+ok 7 - partition rotation and bounded translation at 45 degrees
+  ---
+  duration_ms: 0.360041
+  type: 'test'
+  ...
+# Subtest: partition rotation and bounded translation at 90 degrees
+ok 8 - partition rotation and bounded translation at 90 degrees
+  ---
+  duration_ms: 0.221458
+  type: 'test'
+  ...
+# Subtest: partition rotation and bounded translation at -90 degrees
+ok 9 - partition rotation and bounded translation at -90 degrees
+  ---
+  duration_ms: 0.311667
+  type: 'test'
+  ...
+# Subtest: partition rotation and bounded translation at 180 degrees
+ok 10 - partition rotation and bounded translation at 180 degrees
+  ---
+  duration_ms: 0.582834
+  type: 'test'
+  ...
+# Subtest: fixed glass versus a rotated known footprint, elevation and unknown metadata
+ok 11 - fixed glass versus a rotated known footprint, elevation and unknown metadata
+  ---
+  duration_ms: 3.234916
+  type: 'test'
+  ...
+# Subtest: actual walk-in passage, hinged sweep and sliding travel on left
+ok 12 - actual walk-in passage, hinged sweep and sliding travel on left
+  ---
+  duration_ms: 3.747041
+  type: 'test'
+  ...
+# Subtest: actual walk-in passage, hinged sweep and sliding travel on right
+ok 13 - actual walk-in passage, hinged sweep and sliding travel on right
+  ---
+  duration_ms: 0.603125
+  type: 'test'
+  ...
+# Subtest: entrance and shower swing, partition pairs and clear mixed design
+ok 14 - entrance and shower swing, partition pairs and clear mixed design
+  ---
+  duration_ms: 1.937
+  type: 'test'
+  ...
+# Subtest: legacy 1 with window=true partition=true
+ok 15 - legacy 1 with window=true partition=true
+  ---
+  duration_ms: 0.892417
+  type: 'test'
+  ...
+# Subtest: legacy 1 with window=true partition=false
+ok 16 - legacy 1 with window=true partition=false
+  ---
+  duration_ms: 0.324584
+  type: 'test'
+  ...
+# Subtest: legacy 1 with window=false partition=true
+ok 17 - legacy 1 with window=false partition=true
+  ---
+  duration_ms: 0.126416
+  type: 'test'
+  ...
+# Subtest: legacy 1 with window=false partition=false
+ok 18 - legacy 1 with window=false partition=false
+  ---
+  duration_ms: 0.133542
+  type: 'test'
+  ...
+# Subtest: legacy 2 with window=true partition=true
+ok 19 - legacy 2 with window=true partition=true
+  ---
+  duration_ms: 0.229959
+  type: 'test'
+  ...
+# Subtest: legacy 2 with window=true partition=false
+ok 20 - legacy 2 with window=true partition=false
+  ---
+  duration_ms: 0.111458
+  type: 'test'
+  ...
+# Subtest: legacy 2 with window=false partition=true
+ok 21 - legacy 2 with window=false partition=true
+  ---
+  duration_ms: 0.120416
+  type: 'test'
+  ...
+# Subtest: legacy 2 with window=false partition=false
+ok 22 - legacy 2 with window=false partition=false
+  ---
+  duration_ms: 0.072792
+  type: 'test'
+  ...
+# Subtest: existing explicit IDs take precedence, compatibility flags never resurrect a removed element
+ok 23 - existing explicit IDs take precedence, compatibility flags never resurrect a removed element
+  ---
+  duration_ms: 0.176625
+  type: 'test'
+  ...
+# Subtest: atomic preview, discard, undo/redo, reloaded edits, tenant isolation and committed handoff
+ok 24 - atomic preview, discard, undo/redo, reloaded edits, tenant isolation and committed handoff
+  ---
+  duration_ms: 2.402791
+  type: 'test'
+  ...
+# Subtest: frame members at adjoining walls conflict only at overlapping elevations
+ok 25 - frame members at adjoining walls conflict only at overlapping elevations
+  ---
+  duration_ms: 0.503041
+  type: 'test'
+  ...
+# Subtest: the showroom request carries the committed architecture through preview, Apply, Undo and Redo
+ok 26 - the showroom request carries the committed architecture through preview, Apply, Undo and Redo
+  ---
+  duration_ms: 21.833334
+  type: 'test'
+  ...
+# Subtest: shrinking the room and editing already invalid imported geometry both leave the original intact
+ok 27 - shrinking the room and editing already invalid imported geometry both leave the original intact
+  ---
+  duration_ms: 0.53025
+  type: 'test'
+  ...
+1..27
+# tests 27
+# suites 0
+# pass 27
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 82.363584
