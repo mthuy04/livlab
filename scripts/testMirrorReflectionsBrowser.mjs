@@ -15,7 +15,7 @@
 // Headless Chrome (SwiftShader) via the DevTools protocol; no dependencies.
 // Uses localStorage only: nothing is saved to the database.
 import { spawn } from 'node:child_process';
-import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -62,7 +62,8 @@ const snapshot = {
 /* ── DevTools plumbing ─────────────────────────────────────────────────── */
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const port = 9400 + Math.floor(Math.random() * 400);
-const chrome = spawn(bin, ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', `--remote-debugging-port=${port}`, `--user-data-dir=${mkdtempSync(join(tmpdir(), 'mirror-qa-'))}`, '--hide-scrollbars', 'about:blank'], { stdio: 'ignore' });
+const profile = mkdtempSync(join(tmpdir(), 'mirror-qa-'));
+const chrome = spawn(bin, ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', `--remote-debugging-port=${port}`, `--user-data-dir=${profile}`, '--hide-scrollbars', 'about:blank'], { stdio: 'ignore' });
 let wsUrl;
 for (let i = 0; i < 60 && !wsUrl; i++) {
   await sleep(200);
@@ -316,6 +317,7 @@ try {
 } finally {
   ws.close();
   chrome.kill();
+  try { rmSync(profile, { recursive: true, force: true }); } catch {}
 }
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);

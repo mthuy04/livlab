@@ -433,8 +433,10 @@ function RoomWorkspace({ tenant }: { tenant: ReturnType<typeof useTenant> }) {
         </div>
       )}
       {toolTab === 'technical' && (
-        <>{studio.proposal?.source==='smart-fix' ? <RoomProposalDialog inline proposal={studio.proposal} onApply={acceptProposal} onDiscard={studio.discard}/> : <SmartFixPanel key={studio.revision} state={studio.state} products={studio.products} views={studio.placedViews} findings={shownFindings} preview={studio.preview}/>}
+        <>
         <TechnicalTab
+          smartFix={studio.proposal?.source==='smart-fix' ? <RoomProposalDialog inline proposal={studio.proposal} onApply={acceptProposal} onDiscard={studio.discard}/> : <SmartFixPanel key={studio.revision} state={studio.state} products={studio.products} views={studio.placedViews} findings={shownFindings} preview={studio.preview} apply={(p)=>studio.apply(p)}/>}
+          nameOf={(id)=>{const product=studio.placedViews.find(v=>v.placed.instanceId===id)?.product;if(!product)return undefined;const cut=product.brand?product.name.toLowerCase().indexOf(' '+product.brand.toLowerCase()):-1;return cut>0?product.name.slice(0,cut):product.name;}}
           dimensions={studio.state.dimensions}
           points={utilityPoints}
           findings={shownFindings}

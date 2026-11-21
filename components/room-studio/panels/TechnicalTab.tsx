@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { ChevronDown, Plus, X } from 'lucide-react';
 import type { UtilityPoint, UtilityPointType, TechnicalValidationResult } from '@/lib/technical-advisor/types';
 import { TECHNICAL_DISCLAIMER } from '@/lib/technical-advisor/config';
-import { topFindings } from '@/lib/technical-advisor/engine';
 import { getRoomBounds, type RoomDimensions } from '@/lib/room-studio/roomGeometry';
-import TechnicalFindingRow from '../technical/TechnicalFindingRow';
+import { groupFindings, type TopicAction } from '../technical/advisorGroups';
+import { AdvisorNote, AdvisorSection, AdvisorSummary, IssueCard, PassedList, TopicCard } from '../technical/AdvisorPanel';
 
 interface TechnicalTabProps {
   dimensions: RoomDimensions;
@@ -20,6 +20,10 @@ interface TechnicalTabProps {
   onRequestTechnicalCheck: () => void;
   /** The mini floor plan, rendered by the workspace and passed in. */
   floorPlan: React.ReactNode;
+  /** Smart Fix, shown right under the summary when there is something to fix. */
+  smartFix?: ReactNode;
+  /** A short product name for an instance, for cards that name what they are about. */
+  nameOf?: (instanceId: string) => string | undefined;
 }
 
 /**
@@ -83,6 +87,8 @@ export default function TechnicalTab({
   onPendingTypeChange,
   onRequestTechnicalCheck,
   floorPlan,
+  smartFix,
+  nameOf = () => undefined,
 }: TechnicalTabProps) {
   const [showNumeric, setShowNumeric] = useState(false);
   const [numericType, setNumericType] = useState<UtilityPointType>('DRAIN');
@@ -91,7 +97,31 @@ export default function TechnicalTab({
   const [error, setError] = useState<string | null>(null);
 
   const bounds = getRoomBounds(dimensions);
-  const visibleFindings = topFindings(findings);
+  const groups = useMemo(() => groupFindings(findings), [findings]);
+  const [open, setOpen] = useState({ amber: true, blue: true, green: false });
+  const [highlightPoints, setHighlightPoints] = useState(false);
+  const names = (list: TechnicalValidationResult[]) =>
+    [...new Set(list.flatMap((f) => f.affectedInstanceIds.map((id) => nameOf(id)).filter((n): n is string => !!n)))];
+  const firstName = (f: TechnicalValidationResult) => (f.affectedInstanceIds[0] ? nameOf(f.affectedInstanceIds[0]) : undefined);
+
+  const jump = (tone: 'amber' | 'blue' | 'green') => {
+    setOpen((o) => ({ ...o, [tone]: true }));
+    requestAnimationFrame(() =>
+      document.getElementById(`advisor-${tone}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    );
+  };
+  // A finding's "fix" button hands the issue to Smart Fix, which selects it and searches.
+  const smartFixFor = (finding: TechnicalValidationResult) => {
+    window.dispatchEvent(new CustomEvent('livlab:smart-fix', { detail: finding.id }));
+    document.getElementById('smart-fix')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  const topicAction = (key: TopicAction) => {
+    if (key === 'water') {
+      document.getElementById('advisor-points')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setHighlightPoints(true);
+      window.setTimeout(() => setHighlightPoints(false), 1600);
+    } else onRequestTechnicalCheck();
+  };
 
   const handleNumericAdd = () => {
     const left = parseFloat(fromLeft.replace(',', '.'));
@@ -113,21 +143,64 @@ export default function TechnicalTab({
   };
 
   return (
-    <div className="space-y-5">
-      <section>
-        <h3 className="mb-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#8C9BAB]">
-          Sơ đồ phòng
-        </h3>
+    <div className="space-y-4">
+      <AdvisorSummary groups={groups} onJump={jump} />
+
+      {smartFix}
+
+      <div className="space-y-3">
+        <AdvisorSection
+          id="advisor-amber"
+          tone="amber"
+          title="Cần xử lý ngay"
+          count={groups.action.length}
+          open={open.amber}
+          onToggle={() => setOpen((o) => ({ ...o, amber: !o.amber }))}
+        >
+          {groups.action.map((f) => (
+            <IssueCard key={f.id} finding={f} product={firstName(f)} onSmartFix={smartFixFor} />
+          ))}
+        </AdvisorSection>
+        <AdvisorSection
+          id="advisor-blue"
+          tone="blue"
+          title="Thiếu dữ liệu để kiểm tra"
+          count={groups.missingCount}
+          open={open.blue}
+          onToggle={() => setOpen((o) => ({ ...o, blue: !o.blue }))}
+        >
+          {groups.missing.map((topic) => (
+            <TopicCard key={topic.key} topic={topic} names={names(topic.findings)} onAction={topicAction} />
+          ))}
+        </AdvisorSection>
+        <AdvisorSection
+          id="advisor-green"
+          tone="green"
+          title="Đã đạt / hợp lệ"
+          count={groups.passed.length}
+          open={open.green}
+          onToggle={() => setOpen((o) => ({ ...o, green: !o.green }))}
+        >
+          <PassedList findings={groups.passed} nameOf={firstName} />
+        </AdvisorSection>
+        {findings.length === 0 && (
+          <AdvisorNote>Chưa có sản phẩm nào để kiểm tra. Thêm thiết bị vào phòng để LivLab đánh giá bố trí.</AdvisorNote>
+        )}
+      </div>
+
+      <section className="border-t border-[#EDF2F5] pt-4">
+        <h3 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#8C9BAB]">Sơ đồ phòng</h3>
         {floorPlan}
       </section>
 
-      <section className="border-t border-[#EDF2F5] pt-4">
-        <h3 className="mb-1 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#8C9BAB]">
-          Điểm kỹ thuật
-        </h3>
-        <p className="mb-3 text-[12px] leading-relaxed text-[#8C9BAB]">
-          Không bắt buộc. Khai báo các điểm đã có trong phòng để LivLab kiểm tra giúp bạn.
-        </p>
+      <section
+        id="advisor-points"
+        className={`scroll-mt-4 rounded-xl border p-3 transition-colors duration-500 ${
+          highlightPoints ? 'border-[#7FA7C9] bg-[#F1F6FB]' : 'border-transparent'
+        } -mx-3`}
+      >
+        <h3 className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#8C9BAB]">Điểm nước & điện</h3>
+        <p className="mb-3 text-[12px] leading-relaxed text-[#8C9BAB]">Chọn loại điểm rồi chạm vào sơ đồ phòng.</p>
 
         {points.length > 0 && (
           <ul className="mb-3 space-y-1">
@@ -160,7 +233,7 @@ export default function TechnicalTab({
         )}
 
         {pendingType ? (
-          <div className="rounded border border-[#C8A96A] bg-[#FDFBF6] p-3">
+          <div className="rounded-lg border border-[#7FA7C9] bg-[#F1F6FB] p-3">
             <p className="text-[13px] font-medium text-[#0B1623]">
               {UTILITY_TYPE_LABEL[pendingType]}
             </p>
@@ -180,7 +253,7 @@ export default function TechnicalTab({
                 key={type}
                 type="button"
                 onClick={() => onPendingTypeChange(type)}
-                className="flex items-center gap-1 rounded border border-[#D8E2EA] bg-white px-2.5 py-1.5 text-[12px] font-medium text-[#3F4F5C] transition-colors hover:border-[#0F3D5C]"
+                className="flex items-center gap-1 rounded-lg border border-[#D8E2EA] bg-white px-2.5 py-1.5 text-[12px] font-medium text-[#3F4F5C] transition-colors hover:border-[#0F3D5C] hover:text-[#0B2239] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7FA7C9]"
               >
                 <Plus className="h-3.5 w-3.5 text-[#8C9BAB]" aria-hidden />
                 {UTILITY_TYPE_LABEL[type]}
@@ -258,31 +331,15 @@ export default function TechnicalTab({
         )}
       </section>
 
-      <section className="border-t border-[#EDF2F5] pt-4">
-        <h3 className="mb-2 text-[12px] font-semibold uppercase tracking-[0.12em] text-[#8C9BAB]">
-          Kiểm tra
-        </h3>
-        {visibleFindings.length === 0 ? (
-          <p className="text-[13px] leading-relaxed text-[#8C9BAB]">
-            Chưa phát hiện điểm nào cần kiểm tra với những gì đang có trong phòng.
-          </p>
-        ) : (
-          <ul className="space-y-2">
-            {visibleFindings.map((finding) => (
-              <TechnicalFindingRow key={finding.id} finding={finding} />
-            ))}
-          </ul>
-        )}
-
-        <p className="mt-3 text-[12px] leading-relaxed text-[#9AA9B6]">{TECHNICAL_DISCLAIMER}</p>
-
+      <section className="space-y-3 border-t border-[#EDF2F5] pt-4">
         <button
           type="button"
           onClick={onRequestTechnicalCheck}
-          className="mt-3 w-full rounded border border-[#D8E2EA] py-2 text-[13px] font-medium text-[#0B2239] transition-colors hover:border-[#0B2239]"
+          className="w-full rounded-lg border border-[#0B2239] py-2.5 text-[13px] font-semibold text-[#0B2239] transition-colors hover:bg-[#0B2239] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7FA7C9]"
         >
           Yêu cầu kiểm tra kỹ thuật
         </button>
+        <AdvisorNote>{TECHNICAL_DISCLAIMER}</AdvisorNote>
       </section>
     </div>
   );
