@@ -15,6 +15,7 @@ import type { ArchitectureSettings, LightingPreset } from '@/lib/room-studio/env
 import type { PlacementStatus } from '@/lib/room-studio/placementStatus';
 import { getRealWorldSize } from '@/lib/room-studio/assetResolver';
 import SceneLighting, { ReflectionStudio } from './scene/SceneLighting';
+import StudioStage from './scene/StudioStage';
 import { useRenderQuality } from './scene/useRenderQuality';
 import PlacedProductNode, { type measureGlbForPlacement } from './scene/PlacedProductNode';
 
@@ -288,14 +289,14 @@ export default function RoomScene3D({
       // wrong at exactly the moment it is going right.
       data-camera-mode={request.mode}
       data-render-tier={quality.tier}
-      className={`${walking ? 'fixed z-[100]' : 'absolute'} inset-0 touch-none select-none overflow-hidden bg-[#E9EEF1] transition-colors ${
+      className={`${walking ? 'fixed z-[100]' : 'absolute'} inset-0 touch-none select-none overflow-hidden bg-[#ECE9E4] bg-[radial-gradient(120%_95%_at_50%_36%,#FBFAF8_0%,#F0EDE8_50%,#E4E0DA_100%)] transition-colors ${
         isDropTarget ? 'ring-2 ring-inset ring-[#C8A96A]' : ''
       }`}
     >
       <div ref={curtain} aria-hidden className="pointer-events-none absolute inset-0 z-10 bg-[#eef1f2] opacity-0" />
       {walking && <WalkthroughOverlay obstruction={obstruction} input={input} exit={exit}/>}
       {!walking && overlayTopLeft && <div className="absolute bottom-12 left-3 z-10 flex gap-2">{overlayTopLeft}</div>}
-      {!walking && <div className="absolute right-2 top-2 z-10 flex flex-wrap justify-end gap-1 rounded border border-[#d8e2ea] bg-white/95 p-1 shadow-sm">
+      {!walking && <div className="absolute right-2 top-2 z-10 flex flex-wrap justify-end gap-0.5 rounded-xl border border-[#D8E2EA] bg-white/95 p-1 shadow-[0_6px_20px_rgba(11,34,57,0.08)] backdrop-blur">
         {([
           {mode:'overview',label:'Toàn cảnh',title:'Đưa cả phòng vào khung nhìn',icon:Box,action:()=>setRequest({mode:'overview'})},
           {mode:'plan',label:'Mặt bằng',title:'Nhìn thẳng từ trên xuống như bản vẽ mặt bằng',icon:LayoutGrid,action:()=>setRequest({mode:'plan'})},
@@ -303,18 +304,18 @@ export default function RoomScene3D({
           ...(selectedView?[{mode:'product',label:'Tập trung',title:'Phóng tới sản phẩm đang chọn',icon:Focus,action:focusSelected}]:[]),
         ]).map(({mode,label,title,icon:Icon,action})=><button key={mode} type="button" aria-label={label} aria-pressed={request.mode===mode}
           title={title} onClick={action}
-          className={'flex min-h-9 items-center gap-1 rounded px-2 text-xs font-semibold disabled:opacity-45 '+(request.mode===mode?'bg-[#e9dfca] text-[#30291d]':'text-[#253641] hover:bg-[#f3f4f4]')}>
+          className={'flex min-h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7FA7C9] disabled:opacity-45 '+(request.mode===mode?'bg-[#0B2239] text-white shadow-sm':'text-[#253641] hover:bg-[#EEF3F7]')}>
           <Icon size={15}/><span className="hidden sm:inline">{label}</span></button>)}
         <button ref={enterButton} type="button" aria-label="Tham quan 3D" disabled={!spawn} onClick={()=>{
           if(!spawn)return;cancelDrag.current?.();previous.current=request;setRequest({mode:'walkthrough'});onTourChange?.(true);
-        }} className="flex min-h-9 items-center gap-1 rounded px-2 text-xs font-semibold text-[#253641] hover:bg-[#f3f4f4] disabled:opacity-45">
+        }} className="flex min-h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-[#253641] transition-colors hover:bg-[#EEF3F7] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7FA7C9] disabled:opacity-45">
           <Footprints size={15}/>Tham quan 3D</button>
         <button
           type="button"
           onClick={() => onToggleCeiling(!showCeiling)}
           aria-pressed={showCeiling}
           title={showCeiling ? 'Ẩn trần phòng' : 'Hiện trần phòng'}
-          className="flex items-center gap-1.5 rounded border border-[#D8E2EA] bg-white/92 px-2.5 py-1.5 text-[12px] font-medium text-[#0B1623] shadow-sm backdrop-blur transition-colors hover:bg-white"
+          className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[12px] font-semibold transition-colors hover:bg-[#EEF3F7] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7FA7C9] ${showCeiling ? 'bg-[#EEF3F7] text-[#0B2239]' : 'text-[#253641]'}`}
         >
           {showCeiling ? (
             <EyeOff className="h-3.5 w-3.5" aria-hidden />
@@ -356,7 +357,7 @@ export default function RoomScene3D({
             canvas.addEventListener('webglcontextrestored', () => setContextLost(false));
           }}
           onPointerMissed={() => {if(!walking)onSelect(null);}}
-          className="h-full w-full bg-[#E9EEF1]"
+          className="h-full w-full bg-transparent"
           frameloop="demand"
           dpr={quality.dpr}
           gl={{ antialias: true, powerPreference: 'high-performance' }}
@@ -371,6 +372,7 @@ export default function RoomScene3D({
             windows={visualStyle && !visualStyle.overrides.includes('lighting') ? elements : undefined}
             dimensions={dimensions} lighting={lighting} quality={quality}
           />
+          <StudioStage dimensions={dimensions} quality={quality.tier} />
           <EnvironmentBoundary>
             <Suspense fallback={null}>
               <ReflectionStudio resolution={quality.environmentResolution}

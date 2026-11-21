@@ -40,7 +40,7 @@ const FACE_OFFSET_M = 0.0004;
 const SILVER_REFLECTANCE = 0.92;
 
 /** What a reflection shows where there is no room — matches the canvas behind the scene. */
-const PASS_BACKGROUND = new THREE.Color('#E9EEF1');
+const PASS_BACKGROUND = new THREE.Color('#ECE9E4');
 
 const MirrorShader = {
   name: 'LivLabMirrorShader',

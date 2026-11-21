@@ -1,6 +1,7 @@
 'use client';
 import { Html, Line } from '@react-three/drei';
-import { DoubleSide, Shape } from 'three';
+import { BoxGeometry, DoubleSide, EdgesGeometry, Shape } from 'three';
+import { useEffect, useMemo } from 'react';
 import { doorGeometry, wallFrame, type PlanPoint } from '@/lib/room-studio/architecture';
 import { partitionGeometry } from '@/lib/room-studio/glassGeometry';
 import { fixtureVolumes } from '@/lib/technical-advisor/architectureGeometry';
@@ -222,16 +223,31 @@ export default function SpatialOverlay({
         );
       })}
       {ghosts.map((e) => (
-        <mesh
+        <GhostBox
           key={e.placed.instanceId}
           position={e.placed.position}
-          rotation-y={e.placed.rotationY}
-          raycast={() => null}
-        >
-          <boxGeometry args={[e.metadata.width, e.metadata.height, e.metadata.depth]} />
-          <meshBasicMaterial transparent opacity={0.22} color="#658498" depthWrite={false} />
-        </mesh>
+          rotationY={e.placed.rotationY}
+          size={[e.metadata.width ?? 0, e.metadata.height ?? 0, e.metadata.depth ?? 0]}
+        />
       ))}
     </>
+  );
+}
+
+/** Where a product was before a Smart Fix preview: a faint red volume inside a crisp red frame. */
+function GhostBox({ position, rotationY, size }: { position: [number, number, number]; rotationY: number; size: [number, number, number] }) {
+  const [w, h, d] = size;
+  const box = useMemo(() => new BoxGeometry(w, h, d), [w, h, d]);
+  const edges = useMemo(() => new EdgesGeometry(box), [box]);
+  useEffect(() => () => { box.dispose(); edges.dispose(); }, [box, edges]);
+  return (
+    <group position={position} rotation-y={rotationY}>
+      <mesh geometry={box} raycast={() => null} renderOrder={2}>
+        <meshBasicMaterial transparent opacity={0.14} color="#D64545" depthWrite={false} />
+      </mesh>
+      <lineSegments geometry={edges} raycast={() => null} renderOrder={3}>
+        <lineBasicMaterial color="#C62828" transparent opacity={0.95} depthTest={false} />
+      </lineSegments>
+    </group>
   );
 }

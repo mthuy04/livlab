@@ -2,7 +2,7 @@
 
 import { memo, useEffect, useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { Environment, Lightformer } from '@react-three/drei';
+import { ContactShadows, Environment, Lightformer } from '@react-three/drei';
 import * as THREE from 'three';
 import type { RoomDimensions } from '@/lib/room-studio/roomGeometry';
 import type { LightingPreset } from '@/lib/room-studio/environment';
@@ -25,6 +25,14 @@ import type { RenderQuality } from './useRenderQuality';
  * renderer and scene, not to any product's materials: a product's own PBR
  * values are never overridden.
  */
+/**
+ * AgX: a photographic response — highlights roll off and desaturate the way a
+ * camera's do, so a warm preset reads as warm light rather than peach paint.
+ * It sits a little darker than ACES at the same exposure; the presets were
+ * tuned for ACES, so exposure is lifted by this much.
+ */
+const NEUTRAL_EXPOSURE = 1.12;
+
 export default function SceneLighting({
   dimensions,
   lighting,
@@ -61,7 +69,7 @@ export default function SceneLighting({
   const lastFrame = useRef(0);
   useEffect(() => {
     const state = get();
-    state.gl.toneMapping = THREE.ACESFilmicToneMapping;
+    state.gl.toneMapping = THREE.AgXToneMapping;
     state.gl.outputColorSpace = THREE.SRGBColorSpace;
     lastFrame.current = performance.now();
     blend.current = 1;
@@ -88,7 +96,7 @@ export default function SceneLighting({
     key.intensity = THREE.MathUtils.lerp(key.intensity, lighting.key.intensity, k);
     bounce.intensity = THREE.MathUtils.lerp(bounce.intensity, lighting.fill.intensity, k);
     hemi.intensity = THREE.MathUtils.lerp(hemi.intensity, lighting.hemisphereIntensity, k);
-    state.gl.toneMappingExposure = THREE.MathUtils.lerp(state.gl.toneMappingExposure, lighting.exposure, k);
+    state.gl.toneMappingExposure = THREE.MathUtils.lerp(state.gl.toneMappingExposure, lighting.exposure * NEUTRAL_EXPOSURE, k);
     state.scene.environmentIntensity = THREE.MathUtils.lerp(
       state.scene.environmentIntensity,
       lighting.environmentIntensity,
@@ -129,6 +137,18 @@ export default function SceneLighting({
         shadow-radius={4}
       />
       <directionalLight ref={fill} />
+      {/* Soft contact shadows: products sit on the floor instead of floating,
+          and the floor darkens gently where it meets a wall. One depth pass,
+          redrawn only in frames the room redraws anyway. */}
+      <ContactShadows
+        position={[0, 0.003, 0]}
+        scale={[dimensions.length + 0.3, dimensions.width + 0.3]}
+        resolution={quality.tier === 'high' ? 1024 : 512}
+        blur={2.6}
+        far={0.9}
+        opacity={0.4}
+        color="#1B2733"
+      />
     </>
   );
 }

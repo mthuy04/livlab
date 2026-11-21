@@ -439,7 +439,7 @@ function ProductLabel({
     <Html position={[0, size.height / 2 + 0.06, 0]} wrapperClass="pointer-events-none" zIndexRange={[20, 0]}>
       <div
         style={{ transform: 'translate(-50%, -100%)' }}
-        className="pointer-events-none w-max max-w-[200px] rounded bg-[#0B1623]/92 px-2 py-1 text-center text-white shadow-md"
+        className="pointer-events-none w-max max-w-[180px] rounded-md bg-[#0B1623]/88 px-2 py-1 text-center text-white shadow-[0_4px_12px_rgba(11,22,35,0.25)] backdrop-blur-sm"
       >
         {detailed && (product.brand || product.sku) && (
           <p className="text-[10px] uppercase tracking-[0.08em] text-white/60">
@@ -596,7 +596,7 @@ function PlacedProductNode({
     onDragStart(placed, e);
   };
 
-  const showLabel = interactive && (hovered || selected);
+  const showLabel = interactive && hovered;
   const statusColor = status ? PLACEMENT_STATUS_COLOR[status] : undefined;
 
   return (
