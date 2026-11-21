@@ -11,6 +11,7 @@
  * Run with:  npm run test:inax-3d
  */
 
+import { referencePriceFor } from '@/lib/pricing/referencePrices';
 import { createHash } from 'node:crypto';
 import { readFileSync, statSync } from 'node:fs';
 import { getBounds, NodeIO } from '@gltf-transform/core';
@@ -205,7 +206,10 @@ console.log('\nE. thư viện 3D của LivLab');
     'KF-6075VAR', 'KF-6090VA', 'K-30638-CPL', 'A812401000', 'KF-545VW', 'KF-546V', 'KF-541V', 'A851693513', 'PBFV-600'];
   const skus = new Set(library.map((p) => p.sku));
   check('thư viện LivLab chứa đúng các mã 3D đã duyệt', library.length === expectedSkus.length && expectedSkus.every((sku) => skus.has(sku)), [...skus]);
-  check('không giá, không tồn kho bịa', library.every((p) => !p.priceMin && p.source.priceRange === 'Liên hệ' && !p.source.availability));
+  check('giá chỉ từ bảng giá tham khảo có nguồn; không tồn kho bịa', library.every((p) => {
+    const ref = referencePriceFor(p.brand, p.sku);
+    return (ref ? p.priceMin === ref.priceVnd && p.priceMax === ref.priceVnd : !p.priceMin && p.source.priceRange === 'Liên hệ') && !p.source.availability;
+  }));
   check('mỗi sản phẩm một id ổn định', new Set(library.map((p) => p.id)).size === library.length);
   const already = livlab3dLibraryProducts([...mapped, library[0]]);
   check('mã đã có trong danh mục thì không thêm lần hai', already.length === library.length - 1 && already.every((p) => p.id !== library[0].id));

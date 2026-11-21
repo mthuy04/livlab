@@ -8,6 +8,7 @@
  * undefined, and the UI is responsible for degrading gracefully.
  */
 
+import { referencePriceBasis, referencePriceFor } from '@/lib/pricing/referencePrices';
 import { Product } from '@/lib/types';
 import { normalizeCategory } from '@/lib/visualStudioHelpers';
 import { normalizeSku, type CatalogProduct } from '@/lib/storefront/catalogTypes';
@@ -338,9 +339,11 @@ export async function loadRoomStudioProducts(
  * LivLab's own 3D library, offered in LivLab's Room Studio only.
  *
  * Each reconstructed SKU that LivLab's catalogue does not already list is
- * offered once, under a stable id, with no price, stock or seller written in
- * — the library knows the product's size and shape, not what it costs or who
- * stocks it, so the basket records it as "Liên hệ". A showroom's Room Studio
+ * offered once, under a stable id. Its price is LivLab's reference price from
+ * data/pricing/reference-prices.json (manufacturer list price or a public
+ * retail listing, with source and date) — labelled as such in `priceRange`,
+ * never as a showroom quote. A SKU with no verifiable price stays "Liên hệ".
+ * No stock or seller is written in. A showroom's Room Studio
  * never receives these: it shows a model only where the showroom's own
  * catalogue carries the exact SKU.
  *
@@ -353,6 +356,7 @@ export function livlab3dLibraryProducts(existing: RoomStudioProduct[]): RoomStud
     .filter((model) => canRenderReconstruction(model) && !listed.has(model.id))
     .map((model) => {
       const id = libraryProductId(model);
+      const reference = referencePriceFor(model.brand, model.sku);
       const source: Product = {
         id,
         slug: id,
@@ -361,9 +365,9 @@ export function livlab3dLibraryProducts(existing: RoomStudioProduct[]): RoomStud
         subCategory: model.subCategory,
         brand: model.brand,
         sku: model.sku,
-        priceMin: 0,
-        priceMax: 0,
-        priceRange: 'Liên hệ',
+        priceMin: reference?.priceVnd ?? 0,
+        priceMax: reference?.priceVnd ?? 0,
+        priceRange: reference ? referencePriceBasis(reference) : 'Liên hệ',
         dimensions: model.envelopeLabel,
         image: model.thumbnailUrl,
         imageAlt: `Ảnh dựng từ mô hình 3D tái tạo của ${model.sku}, không phải ảnh chụp sản phẩm`,

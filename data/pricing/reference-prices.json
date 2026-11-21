@@ -1,0 +1,23 @@
+{
+  "about": "LivLab reference prices for SKUs that have no showroom offer: the manufacturer's published Vietnamese list price where one exists, otherwise a public Vietnamese retail listing for the exact SKU. These are reference prices, never a showroom quotation. Showroom prices stay in each tenant's own catalogue.",
+  "currency": "VND",
+  "prices": [
+    { "brand": "INAX", "sku": "AC-1017VRN", "priceVnd": 17290000, "promoPriceVnd": 12968000, "kind": "MANUFACTURER_LIST", "sourceName": "INAX Việt Nam", "sourceUrl": "https://www.inax.com.vn/products/toilet/ac-1017vrn/", "checkedAt": "2026-11-21" },
+    { "brand": "INAX", "sku": "AC-912VN", "priceVnd": 10900000, "promoPriceVnd": 8938000, "kind": "MANUFACTURER_LIST", "sourceName": "INAX Việt Nam", "sourceUrl": "https://www.inax.com.vn/products/toilet/ac-912vn/", "checkedAt": "2026-11-21" },
+    { "brand": "INAX", "sku": "BF-1656V", "priceVnd": 46880000, "kind": "MANUFACTURER_LIST", "sourceName": "INAX Việt Nam", "sourceUrl": "https://www.inax.com.vn/vi/products/bathtub/bon-tam-dat-san-bf-1656v/", "checkedAt": "2026-11-21" },
+    { "brand": "INAX", "sku": "BFV-70S", "priceVnd": 18420000, "promoPriceVnd": 14736000, "kind": "MANUFACTURER_LIST", "sourceName": "INAX Việt Nam", "sourceUrl": "https://www.inax.com.vn/products/shower/bfv-70s/", "checkedAt": "2026-11-21" },
+    { "brand": "INAX", "sku": "L-293V", "priceVnd": 2990000, "kind": "RETAILER_PUBLIC", "sourceName": "META.vn", "sourceUrl": "https://meta.vn/chau-rua-lavabo-inax-l-293-bw-v-p98202", "checkedAt": "2026-10-19", "needsReview": "Recovered from LivLab's own record (listing 'L-293 BW/V', 2.990.000đ incl. VAT, 2026-10-19). On 2026-11-21 the same page shows 'L-293VFC/BW1' at 3.190.000đ — a different code; confirm with INAX or a dealer. INAX's own site lists no L-293V page." },
+    { "brand": "INAX", "sku": "KF-6075VAR", "priceVnd": 1540000, "kind": "MANUFACTURER_LIST", "sourceName": "INAX Việt Nam", "sourceUrl": "https://www.inax.com.vn/vi/products/accessories/guong-treo-tuong-nha-tam-kf-6075var/", "checkedAt": "2026-11-21" },
+    { "brand": "INAX", "sku": "KF-6090VA", "priceVnd": 1730000, "kind": "MANUFACTURER_LIST", "sourceName": "INAX Việt Nam", "sourceUrl": "https://www.inax.com.vn/vi/products/accessories/guong-treo-tuong-nha-tam-kf-6090va/", "checkedAt": "2026-11-21" },
+    { "brand": "INAX", "sku": "KF-545VW", "priceVnd": 1930000, "kind": "MANUFACTURER_LIST", "sourceName": "INAX Việt Nam", "sourceUrl": "https://www.inax.com.vn/products/accessories/kf-545vw/", "checkedAt": "2026-11-21" },
+    { "brand": "INAX", "sku": "KF-546V", "priceVnd": 1050000, "kind": "MANUFACTURER_LIST", "sourceName": "INAX Việt Nam", "sourceUrl": "https://www.inax.com.vn/products/accessories/kf-546v/", "checkedAt": "2026-11-21" },
+    { "brand": "INAX", "sku": "KF-541V", "priceVnd": 400000, "kind": "MANUFACTURER_LIST", "sourceName": "INAX Việt Nam", "sourceUrl": "https://www.inax.com.vn/products/accessories/kf-541v/", "checkedAt": "2026-11-21" },
+    { "brand": "INAX", "sku": "PBFV-600", "priceVnd": 4930000, "kind": "MANUFACTURER_LIST", "sourceName": "INAX Việt Nam", "sourceUrl": "https://www.inax.com.vn/products/accessories/pbfv-600/", "checkedAt": "2026-11-21" }
+  ],
+  "unpriced": [
+    { "brand": "Kohler", "sku": "K-30638-CPL", "checkedAt": "2026-11-21", "reason": "No Vietnamese listing found. Kohler US shows the product without a VND price; the US dealer (firstsupply.com) hides pricing behind sign-in. A USD price is not used." },
+    { "brand": "Roca", "sku": "A812401000", "checkedAt": "2026-11-21", "reason": "No Vietnamese listing found. Roca's export site marks this SKU discontinued; only sibling SKUs carry UK prices, which are a different model." },
+    { "brand": "Roca", "sku": "A851693513", "checkedAt": "2026-11-21", "reason": "No Vietnamese listing found. Only a UK retailer price (cityplumbing.co.uk, £1,358.57 inc. VAT) — not a Vietnamese price and not converted." },
+    { "brand": "Karat", "sku": "EM-02-402-50", "checkedAt": "2026-11-21", "reason": "The source listing (luxbath.vn) is 'Liên hệ báo giá'; no public price for this exact code was found." }
+  ]
+}

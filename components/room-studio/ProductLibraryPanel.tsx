@@ -287,6 +287,11 @@ export default function ProductLibraryPanel({
                       <span className="text-[13px] font-semibold text-[#0B1623]">
                         {formatProductPrice(product)}
                       </span>
+                      {/^Giá (hãng|bán lẻ)/.test(product.source.priceRange ?? '') && (product.priceMin ?? 0) > 0 && (
+                        <span className="text-[10.5px] font-medium text-[#8C9BAB]">
+                          {product.source.priceRange!.split(' · ')[0].toLowerCase()}
+                        </span>
+                      )}
                       {/* The only 3D claim in Room Studio. `3D VERIFIED` needs
                           a READY asset that passed every QA check; a dimension
                           volume gets ĐÚNG KÍCH THƯỚC and never the word 3D. */}

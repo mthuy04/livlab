@@ -6,6 +6,7 @@ import { TENANTS, type TenantStorefrontConfig } from './tenantConfig';
 import { imageVerdicts, isRejected, type ImageStatus } from './imageQuality';
 import { manufacturerRecords, type ImageSource, type ManufacturerRecord } from './manufacturerData';
 import { imageAssets } from './imageAssets';
+import { referencePriceBasis, referencePriceFor } from '@/lib/pricing/referencePrices';
 import {
   libraryProductId,
   listedReconstructions,
@@ -267,7 +268,9 @@ async function fromDatabase(tenant: TenantStorefrontConfig): Promise<Catalog> {
       const offer = offerByProduct.get(p.id);
       const verdict = verdicts.get(p.id);
       const status = (verdict?.status ?? 'ACCEPTABLE') as ImageStatus;
-      const showroomPrice = offer?.promotionPrice ?? offer?.showroomPrice ?? p.priceMin ?? null;
+      // A stored 0 means "not priced", never a free product.
+      const positive = (v: number | null | undefined) => (typeof v === 'number' && v > 0 ? v : null);
+      const showroomPrice = positive(offer?.promotionPrice) ?? positive(offer?.showroomPrice) ?? positive(p.priceMin);
       // A struck price is a claim of a discount, so it is shown only for a
       // showroom's own promotion against its own price. `priceMax` is the top
       // of a reference range gathered from sources, not a list price: struck
@@ -526,6 +529,7 @@ const MOUNTING_TEXT = (m: ReconstructedModel['mounting']): string => {
 function libraryRow(tenant: TenantStorefrontConfig, model: ReconstructedModel): CatalogProduct {
   const listing = model.listing!;
   const file = model.files[model.defaultVariant]!;
+  const reference = referencePriceFor(model.brand, model.sku);
   const id = libraryProductId(model);
   const brand = normaliseBrand(model.brand) as string;
   const { width, height, depth } = listing.dimensionsMm;
@@ -552,10 +556,12 @@ function libraryRow(tenant: TenantStorefrontConfig, model: ReconstructedModel): 
     image: model.thumbnailUrl,
     additionalImages: [],
     technicalDrawing: null,
-    // The approval pack carries no price, and none is made up here.
-    showroomPrice: null,
+    // LivLab's reference price (manufacturer list or public retail, sourced
+    // and dated in data/pricing/reference-prices.json). It is labelled by its
+    // basis everywhere and is never a showroom quotation; none is made up.
+    showroomPrice: reference?.priceVnd ?? null,
     referencePrice: null,
-    priceBasis: null,
+    priceBasis: reference ? referencePriceBasis(reference) : null,
     dimensions: null,
     dimensionsRaw: `Rộng ${mm(width)} × Sâu ${mm(depth)} × Cao ${mm(height)} mm`,
     color: listing.color,

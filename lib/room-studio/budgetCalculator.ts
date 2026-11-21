@@ -60,7 +60,7 @@ export function formatVnd(value: number): string {
 export function formatProductPrice(product: { priceMin?: number; priceMax?: number }): string {
   const lo = product.priceMin ?? 0;
   const hi = product.priceMax ?? lo;
-  if (lo <= 0 && hi <= 0) return 'Liên hệ';
+  if (lo <= 0 && hi <= 0) return 'Liên hệ báo giá';
   if (hi > lo) return `Từ ${formatVnd(lo)}`;
   return formatVnd(lo);
 }

@@ -91,7 +91,7 @@ export default function CatalogProductCard({
         {product.showroomPrice ? (
           <span style={{ fontSize: 16, fontWeight: 600, color: `var(--tenant-price, ${TEXT})` }}>{formatVnd(product.showroomPrice)}</span>
         ) : (
-          <span style={{ fontSize: 14, color: TEXT_FAINT }}>Liên hệ</span>
+          <span style={{ fontSize: 14, color: TEXT_FAINT }}>Liên hệ báo giá</span>
         )}
         {/* Struck through only when the catalogue really holds a higher list price. */}
         {product.referencePrice && (

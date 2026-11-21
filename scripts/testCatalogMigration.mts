@@ -17,6 +17,7 @@ import { livlab3dLibraryProducts, toRoomStudioProduct, withReconstruction } from
 import { placementContextFor, installationHeight } from '@/lib/room-studio/mounting';
 import { clampToRoom, getDefaultPlacement } from '@/lib/room-studio/placementRules';
 import { getProductTechnicalMetadata } from '@/lib/technical-advisor/productTechnicalMetadata';
+import { referencePriceFor, UNPRICED_SKUS } from '@/lib/pricing/referencePrices';
 
 let passed = 0;
 let failed = 0;
@@ -97,7 +98,12 @@ for (const m of APPROVED_GLB_MODELS) {
   check(`${m.sku}: tệp nguyên bản (sha256)`, createHash('sha256').update(bytes).digest('hex') === file.sha256);
   const listed = items.find((i) => JSON.stringify(i).includes(file.sha256));
   check(`${m.sku}: sha256 khớp manifest của gói`, items.length === 0 || Boolean(listed));
-  check(`${m.sku}: không có giá`, library.find((p) => p.sku === m.sku)?.showroomPrice === null);
+  const ref = referencePriceFor(m.brand, m.sku);
+  const row = library.find((p) => p.sku === m.sku);
+  check(
+    `${m.sku}: ${ref ? `giá tham khảo ${ref.priceVnd.toLocaleString('vi-VN')}đ có nguồn` : 'chưa có giá xác minh → để trống'}`,
+    ref ? row?.showroomPrice === ref.priceVnd && !!row?.priceBasis && /^https:\/\//.test(ref.sourceUrl) : row?.showroomPrice === null && UNPRICED_SKUS.some((u) => u.sku === m.sku)
+  );
   check(`${m.sku}: giữ cờ tin cậy và lưu ý`, Boolean(m.listing?.technicalConfidence) && (m.listing?.caveats.length ?? 0) > 0);
   check(`${m.sku}: không dùng CAD hãng, không tuyên bố chứng nhận`, m.provenance.manufacturerCadUsed === false);
 }
@@ -107,7 +113,9 @@ console.log('\nE. Trang chi tiết');
 for (const m of APPROVED_GLB_MODELS) {
   const vm = await getProductDetail(TENANTS.livlab, libraryProductId(m));
   check(`${m.sku}: trang chi tiết có mô hình 3D`, vm?.model3d?.url === m.files.web!.url);
-  check(`${m.sku}: giá "Liên hệ"`, vm?.pricing.showroomPrice === null);
+  const priced = referencePriceFor(m.brand, m.sku);
+  check(`${m.sku}: trang chi tiết ${priced ? 'ghi giá là giá tham khảo, không phải giá showroom' : 'ghi "Liên hệ"'}`,
+    priced ? vm?.pricing.showroomPrice === priced.priceVnd && vm?.pricing.displayPriceLabel !== 'GIÁ SHOWROOM' : vm?.pricing.showroomPrice === null);
 }
 const sample = migrated.find((p) => p.image) ?? migrated[0];
 const tdVm = await getProductDetail(TENANTS.livlab, sample.id);
@@ -142,7 +150,10 @@ for (const m of APPROVED_GLB_MODELS) {
 }
 const led = roomLib.find((p) => p.sku === 'A812401000');
 check('gương LED mang vật liệu phát sáng riêng', led?.reconstruction?.emissive?.materialName === 'LED_ON__3000K_PERIMETER_DIFFUSER');
-check('không tự thêm vào phòng hay báo giá: giá Room Studio là "Liên hệ"', roomLib.every((p) => !p.priceMin && p.source.priceRange === 'Liên hệ'));
+check('Room Studio: giá tham khảo có nhãn, SKU chưa có giá vẫn là "Liên hệ"', roomLib.every((p) => {
+  const ref = referencePriceFor(p.brand, p.sku);
+  return ref ? p.priceMin === ref.priceVnd && /^Giá (hãng|bán lẻ)/.test(p.source.priceRange ?? '') : !p.priceMin && p.source.priceRange === 'Liên hệ';
+}));
 // A catalogue product carrying the SKU keeps its own record; the model attaches to it.
 const recon = APPROVED_GLB_MODELS[0];
 const withModel = withReconstruction(toRoomStudioProduct({ id: 'x', slug: 'x', name: recon.name, brand: recon.brand, sku: recon.sku, category: recon.catalogueCategory, priceMin: 1, priceMax: 1 } as never), recon);

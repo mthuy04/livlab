@@ -35,7 +35,8 @@ export function reconcileRoomQuote(
       tenantId,
       roomDesignId: designId,
       sourceContext: 'ROOM_DESIGN',
-      priceSnapshot: entry ? entry.showroomPrice : p.priceMin ?? null,
+      // An unknown price is null, never a 0đ line in the quotation.
+      priceSnapshot: entry ? entry.showroomPrice : p.priceMin && p.priceMin > 0 ? p.priceMin : null,
       name: p.name,
       sku: p.sku ?? p.id,
       category: p.category,
